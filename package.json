@@ -1,20 +1,39 @@
 {
-  "name": "eslint-repo-tester",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "start": "nodemon index.js"
-  },
-  "dependencies": {
-    "eslint": "^7.8.1",
-    "eslint-plugin-react": "^7.20.6",
-    "node-fetch": "^2.6.0",
-    "nodemon": "^2.0.4"
-  },
-  "devDependencies": {
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.1.1"
-  }
+    "name": "eslint-remote-tester",
+    "version": "0.0.1",
+    "author": "Ari Perkkio <ari.perkkio@gmail.com>",
+    "description": "Tool for running ESLint on multiple repositories",
+    "main": "lib/index.js",
+    "files": [
+        "lib"
+    ],
+    "bin": "lib/index.js",
+    "engines": {
+        "node": ">=10"
+    },
+    "license": "MIT",
+    "scripts": {
+        "start": "nodemon lib/index.js --ignore results --ignore .cache-eslint-repo-tester"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AriPerkkio/eslint-remote-tester"
+    },
+    "homepage": "https://github.com/AriPerkkio/eslint-remote-tester",
+    "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
+    "dependencies": {
+        "chalk": "^4.1.0",
+        "eslint": "^7.9.0",
+        "simple-git": "^2.20.1"
+    },
+    "devDependencies": {
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-prettier": "^3.1.4",
+        "nodemon": "^2.0.4",
+        "prettier": "^2.1.1"
+    },
+    "keywords": [
+        "eslint",
+        "eslint-test"
+    ]
 }
