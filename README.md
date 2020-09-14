@@ -6,6 +6,9 @@
 ```sh
 # In your project directory
 $ yarn add --dev eslint-remote-tester
+
+# eslint is also required as peer dependency
+$ yarn add --dev eslint
 ```
 
 ## Configuration
@@ -100,7 +103,7 @@ module.exports = {
 ```
 
 ```sh
-$ yarn add --dev eslint-remote-tester react
+$ yarn add --dev eslint-remote-tester eslint react
 # Use local changes of rules under development
 $ yarn link eslint-react-plugin
 $ yarn lint:remote

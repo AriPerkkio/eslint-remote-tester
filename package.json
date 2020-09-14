@@ -23,14 +23,17 @@
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "dependencies": {
         "chalk": "^4.1.0",
-        "eslint": "^7.9.0",
         "simple-git": "^2.20.1"
     },
     "devDependencies": {
+        "eslint": "^7.9.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-prettier": "^3.1.4",
         "nodemon": "^2.0.4",
         "prettier": "^2.1.1"
+    },
+    "peerDependencies": {
+        "eslint": ">=7"
     },
     "keywords": [
         "eslint",
