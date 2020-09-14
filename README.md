@@ -2,9 +2,6 @@
 
 `eslint-remote-tester` is a CLI tool for testing given [ESlint](https://github.com/eslint/eslint) rules against multiple repositories at once. It's designed to be used when validating regression of new rules.
 
-
-![demo](https://github.com/AriPerkkio/eslint-remote-tester/blob/master/media/cli.png)
-
 ## Installation
 ```sh
 # In your project directory
