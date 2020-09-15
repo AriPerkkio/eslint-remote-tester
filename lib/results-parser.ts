@@ -1,33 +1,27 @@
-const fs = require('fs');
+import fs from 'fs';
+
+import { LintMessage } from './types';
 
 const RESULTS_LOCATION = './results';
 if (!fs.existsSync(RESULTS_LOCATION)) {
     fs.mkdirSync(RESULTS_LOCATION);
 }
 
-const RESULT_TEMPLATE = result =>
+const RESULT_TEMPLATE = (result: LintMessage) =>
     `Rule: ${result.ruleId}
 Message: ${result.message}
 Path: ${result.path}
 ${result.source}
 `;
 
-function formatResults(results) {
+function formatResults(results: LintMessage[]) {
     return results.map(RESULT_TEMPLATE).join('\n');
 }
 
 /**
  * Write results to file at `./results`
- *
- * @param {Array.<{
- *  ruleId: String,
- *  message: String,
- *  path: String,
- *  source: String
- * }>} results Results to write
- * @param {String} repository Repository being scanned
  */
-function writeResults(results, repository) {
+export function writeResults(results: LintMessage[], repository: string): void {
     const [, repoName] = repository.split('/');
 
     const formattedResults = results.length
@@ -40,5 +34,3 @@ function writeResults(results, repository) {
         'utf8'
     );
 }
-
-module.exports = { writeResults };

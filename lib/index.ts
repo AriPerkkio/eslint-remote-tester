@@ -1,21 +1,20 @@
 #!/usr/bin/env node
 
-const engine = require('./engine');
-const client = require('./client');
-const config = require('./config');
-const resultParser = require('./results-parser');
-const logger = require('./process-logger');
+import engine from './engine';
+import client from './client';
+import config from './config';
+import logger from './process-logger';
+import { writeResults } from './results-parser';
+import { LintMessage } from './types';
 
 const DEFAULT_CONCURRENT_TASKS = 5;
 
 /**
  * Scan given repository
- *
- * @param {String} repository Repository to scan
  */
-async function scanRepo(repository) {
+async function scanRepo(repository: string) {
     const files = await client.getFiles(repository);
-    const results = [];
+    const results: LintMessage[] = [];
 
     logger.onLintStart(repository, files.length);
 
@@ -24,7 +23,7 @@ async function scanRepo(repository) {
         results.push(...lintMessages);
     }
 
-    resultParser.writeResults(results, repository);
+    writeResults(results, repository);
     logger.onLintEnd(repository, results.length);
 }
 
@@ -36,7 +35,7 @@ async function scanRepo(repository) {
 (async function main() {
     const pool = config.repositories.map(repos => () => scanRepo(repos));
 
-    async function execute() {
+    async function execute(): Promise<void> {
         const task = pool.shift();
 
         if (task) {

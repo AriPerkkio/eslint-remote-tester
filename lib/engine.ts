@@ -1,10 +1,14 @@
-const { ESLint } = require('eslint');
-const config = require('./config');
+import { ESLint, Linter } from 'eslint';
+
+import config from './config';
+import { LintMessage, SourceFile } from './types';
 
 /**
  * Wrapper around ESLint's engine
  */
 class Engine {
+    linter: ESLint;
+
     constructor() {
         this.linter = new ESLint({
             useEslintrc: false,
@@ -14,16 +18,8 @@ class Engine {
 
     /**
      * Run ESLint on given file
-     *
-     * @param {{ content: String, path: String }} file File to lint
-     * @returns {Promise<Array.<{
-     *  ruleId: String,
-     *  message: String,
-     *  path: String,
-     *  source: String
-     * }>>}
      */
-    async lint(file) {
+    async lint(file: SourceFile): Promise<LintMessage[]> {
         const { content, path } = file;
 
         const result = await this.linter.lintText(content);
@@ -35,9 +31,13 @@ class Engine {
     }
 }
 
-function mergeMessagesWithSource(all, result) {
-    const messages = result.messages.filter(message =>
-        config.rulesUnderTesting.includes(message.ruleId)
+function mergeMessagesWithSource(
+    all: Linter.LintMessage[],
+    result: ESLint.LintResult
+) {
+    const messages = result.messages.filter(
+        message =>
+            message.ruleId && config.rulesUnderTesting.includes(message.ruleId)
     );
 
     // Process only rules that are under testing
@@ -45,7 +45,7 @@ function mergeMessagesWithSource(all, result) {
         return all;
     }
 
-    const sourceLines = result.source.split('\n');
+    const sourceLines = result.source ? result.source.split('\n') : [];
 
     return [
         ...all,
@@ -55,11 +55,11 @@ function mergeMessagesWithSource(all, result) {
             source: sourceLines
                 .slice(
                     Math.max(0, message.line - 2),
-                    Math.min(sourceLines.length, message.endLine + 2)
+                    Math.min(sourceLines.length, 2 + (message.endLine || 0))
                 )
                 .join('\n'),
         })),
     ];
 }
 
-module.exports = new Engine();
+export default new Engine();

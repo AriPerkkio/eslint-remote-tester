@@ -1,7 +1,9 @@
-const fs = require('fs');
-const simpleGit = require('simple-git');
-const logger = require('./process-logger');
-const config = require('./config');
+import fs from 'fs';
+import simpleGit from 'simple-git';
+
+import logger from './process-logger';
+import config from './config';
+import { SourceFile } from './types';
 const git = simpleGit();
 
 const URL = 'https://github.com';
@@ -11,10 +13,8 @@ const ENCODING = 'utf8';
 
 /**
  * Prepare cache and repository directories
- *
- * @param {String} repository Repository being scanned
  */
-async function prepare(repository) {
+async function prepare(repository: string) {
     const repoLocation = `${CACHE_LOCATION}/${repository}`;
 
     if (!fs.existsSync(CACHE_LOCATION)) {
@@ -29,11 +29,8 @@ async function prepare(repository) {
 
 /**
  * Construct flat file tree recursively from given directory
- *
- * @param {String} dir Directory to start from
- * @returns {String[]} File paths
  */
-function constructTreeFromDir(dir) {
+function constructTreeFromDir(dir: string): string[] {
     return fs
         .readdirSync(dir)
         .map(fileOrDir => {
@@ -45,16 +42,13 @@ function constructTreeFromDir(dir) {
                 : currentPath;
         })
         .filter(Boolean)
-        .reduce((all, current) => all.concat(current), []);
+        .reduce<string[]>((all, current) => all.concat(current), []);
 }
 
 /**
  * Get all files from given repository matching the extensions set by configuraiton
- *
- * @param {String} repository Repository to scan
- * @returns {Promise<Array.<{ path: string, content: string }>>}
  */
-async function getFiles(repository) {
+async function getFiles(repository: string): Promise<SourceFile[]> {
     await prepare(repository);
 
     const paths = constructTreeFromDir(`${CACHE_LOCATION}/${repository}`);
@@ -68,6 +62,6 @@ async function getFiles(repository) {
     return files;
 }
 
-module.exports = {
+export default {
     getFiles,
 };

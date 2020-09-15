@@ -1,9 +1,15 @@
-/**
- * Configuration file should only be accessed through here
- */
+import fs from 'fs';
+import path from 'path';
+import { Linter } from 'eslint';
 
-const fs = require('fs');
-const path = require('path');
+/** Contents of the `eslint-remote-tester.config.js` */
+interface Config {
+    repositories: string[];
+    extensions: string[];
+    rulesUnderTesting: string[];
+    concurrentTasks: number;
+    eslintrc: Linter.Config;
+}
 
 const CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
 const CONFIGURATION_FILE_TEMPLATE = `module.exports = {
@@ -53,18 +59,8 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
     );
 }
 
-/**
- * Contents of the `eslint-remote-tester.config.js`
- * @type {{
- *  repositories: String[],
- *  extensions: String[],
- *  rulesUnderTesting: String[],
- *  concurrentTasks: number,
- *  eslintrc: {},
- * }}
- */
-const config = require(path.resolve(CONFIGURATION_FILE));
-const errors = [];
+const config: Config = require(path.resolve(CONFIGURATION_FILE));
+const errors: string[] = [];
 
 // Required fields
 if (!config.repositories || !config.repositories.length) {
@@ -81,8 +77,10 @@ if (!config.eslintrc) {
 }
 
 // Optional fields
-if (config.concurrentTasks && typeof concurrentTasks === 'number') {
-    errors.push(`concurrentTasks should be a number in ${CONFIGURATION_FILE}.`);
+if (config.concurrentTasks && typeof config.concurrentTasks !== 'number') {
+    errors.push(
+        `concurrentTasks (${config.concurrentTasks}) should be a number in ${CONFIGURATION_FILE}.`
+    );
 }
 
 if (errors.length) {
@@ -93,4 +91,4 @@ if (errors.length) {
     );
 }
 
-module.exports = config;
+export default config;

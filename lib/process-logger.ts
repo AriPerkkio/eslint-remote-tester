@@ -1,13 +1,18 @@
-const chalk = require('chalk');
-const config = require('./config');
+import chalk from 'chalk';
 
-const CLONE = 'CLONE';
-const LINT = 'LINT';
-const TASK_TEMPLATE = task => {
-    if (task.step === CLONE) {
+import config from './config';
+
+interface Task {
+    step: 'CLONE' | 'LINT';
+    repository: string;
+    fileCount?: number;
+}
+
+const TASK_TEMPLATE = (task: Task) => {
+    if (task.step === 'CLONE') {
         return `${chalk.yellow('[CLONING]')} ${task.repository}`;
     }
-    if (task.step === LINT) {
+    if (task.step === 'LINT') {
         return `${chalk.green('[LINTING]')} ${task.repository} - ${
             task.fileCount
         } files`;
@@ -15,25 +20,20 @@ const TASK_TEMPLATE = task => {
 };
 
 class ProcessLogger {
+    messages: string[];
+    tasks: Task[];
+    scannedRepositories: number;
+
     constructor() {
-        /** @type {String[]} */
         this.messages = [];
-
-        /** @type {Array.<{ repository: String, step: String }>} */
         this.tasks = [];
-
-        /** @type {Number} */
         this.scannedRepositories = 0;
     }
 
     /**
      * Apply updates to given task
-     *
-     * @param {String} repository Repository of the task
-     * @param {Object} updates Updates to apply
-     * @private
      */
-    updateTask(repository, updates) {
+    updateTask(repository: string, updates: Omit<Task, 'repository'>) {
         const taskExists = this.tasks.find(
             task => task.repository === repository
         );
@@ -56,20 +56,15 @@ class ProcessLogger {
     /**
      * Log start of linting of given repository
      *
-     * @param {String} repository Repository being linted
-     * @param {Number} fileCount Count of files being linted
      */
-    onLintStart(repository, fileCount) {
-        this.updateTask(repository, { fileCount, step: LINT });
+    onLintStart(repository: string, fileCount: number) {
+        this.updateTask(repository, { fileCount, step: 'LINT' });
     }
 
     /**
      * Log end of linting of given repository
-     *
-     * @param {String} repository Linted repository
-     * @param {Number} resultCount Count of linting results
      */
-    onLintEnd(repository, resultCount) {
+    onLintEnd(repository: string, resultCount: number) {
         this.scannedRepositories++;
         this.tasks = this.tasks.filter(task => task.repository !== repository);
 
@@ -85,16 +80,13 @@ class ProcessLogger {
 
     /**
      * Log start of cloning of given repository
-     *
-     * @param {String} repository Linted repository
      */
-    onRepositoryClone(repository) {
-        this.updateTask(repository, { step: CLONE });
+    onRepositoryClone(repository: string) {
+        this.updateTask(repository, { step: 'CLONE' });
     }
 
     /**
      * Print current tasks and messages
-     * @private
      */
     print() {
         const formattedMessage = [
@@ -111,4 +103,4 @@ class ProcessLogger {
     }
 }
 
-module.exports = new ProcessLogger();
+export default new ProcessLogger();
