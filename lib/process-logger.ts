@@ -6,6 +6,7 @@ interface Task {
     step: 'CLONE' | 'LINT';
     repository: string;
     fileCount?: number;
+    currentFileIndex?: number;
 }
 
 const TASK_TEMPLATE = (task: Task) => {
@@ -13,9 +14,10 @@ const TASK_TEMPLATE = (task: Task) => {
         return `${chalk.yellow('[CLONING]')} ${task.repository}`;
     }
     if (task.step === 'LINT') {
-        return `${chalk.green('[LINTING]')} ${task.repository} - ${
-            task.fileCount
-        } files`;
+        return (
+            `${chalk.green('[LINTING]')} ${task.repository} - ` +
+            `${task.currentFileIndex}/${task.fileCount} files`
+        );
     }
 };
 
@@ -58,7 +60,11 @@ class ProcessLogger {
      *
      */
     onLintStart(repository: string, fileCount: number) {
-        this.updateTask(repository, { fileCount, step: 'LINT' });
+        this.updateTask(repository, {
+            fileCount,
+            currentFileIndex: 0,
+            step: 'LINT',
+        });
     }
 
     /**
@@ -76,6 +82,10 @@ class ProcessLogger {
 
         this.messages.push(color(`[DONE] ${repository} ${postfix}`));
         this.print();
+    }
+
+    onFileLintEnd(repository: string, currentFileIndex: number) {
+        this.updateTask(repository, { currentFileIndex, step: 'LINT' });
     }
 
     /**

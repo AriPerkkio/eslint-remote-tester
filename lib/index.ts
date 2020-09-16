@@ -18,9 +18,15 @@ async function scanRepo(repository: string) {
 
     logger.onLintStart(repository, files.length);
 
-    for (const file of files) {
+    for (const [index, file] of files.entries()) {
         const lintMessages = await engine.lint(file);
         results.push(...lintMessages);
+
+        // Report every 10th file to logger
+        const count = index + 1;
+        if (count % 10 === 0) {
+            logger.onFileLintEnd(repository, count);
+        }
     }
 
     writeResults(results, repository);
