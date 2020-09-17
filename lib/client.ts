@@ -7,9 +7,12 @@ import { SourceFile } from './types';
 const git = simpleGit();
 
 const URL = 'https://github.com';
-const IGNORED_PATHS = ['.git'];
 const CACHE_LOCATION = './.cache-eslint-repo-tester';
 const ENCODING = 'utf8';
+
+const pathIgnorePattern = config.pathIgnorePattern
+    ? new RegExp(config.pathIgnorePattern)
+    : undefined;
 
 /**
  * Prepare cache and repository directories
@@ -28,13 +31,20 @@ async function prepare(repository: string) {
 }
 
 /**
+ * Check whether given directory or path is set to be ignored by config
+ */
+function isDirectoryIgnored(fileOrDir: string) {
+    return pathIgnorePattern && pathIgnorePattern.test(fileOrDir);
+}
+
+/**
  * Construct flat file tree recursively from given directory
  */
 function constructTreeFromDir(dir: string): string[] {
     return fs
         .readdirSync(dir)
         .map(fileOrDir => {
-            if (IGNORED_PATHS.includes(fileOrDir)) return;
+            if (isDirectoryIgnored(fileOrDir)) return;
             const currentPath = `${dir}/${fileOrDir}`;
 
             return fs.lstatSync(currentPath).isDirectory()

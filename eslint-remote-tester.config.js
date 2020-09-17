@@ -25,6 +25,8 @@ module.exports = {
 
     extensions: ['js', 'jsx', 'ts', 'tsx'],
 
+    pathIgnorePattern: "(node_modules|^\\.|test-results)",
+
     rulesUnderTesting: ['react/no-unstable-nested-components'],
 
     concurrentTasks: 5,

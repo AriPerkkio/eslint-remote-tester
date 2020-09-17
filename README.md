@@ -29,6 +29,9 @@ module.exports = {
     /** Extensions of files under scanning */
     extensions: [],
 
+    /** Optional pattern used to exclude paths */
+    pathIgnorePattern: "(node_modules|^\\.|test-results)",
+
     /** Rules used to filter out results */
     rulesUnderTesting: [],
 
@@ -73,6 +76,8 @@ module.exports = {
 
     extensions: ['js', 'jsx', 'ts', 'tsx'],
 
+    pathIgnorePattern: "(node_modules|^\\.|test-results)",
+
     rulesUnderTesting: ['react/no-unstable-nested-components'],
 
     concurrentTasks: 5,
@@ -108,20 +113,17 @@ $ yarn add --dev eslint-remote-tester eslint react
 $ yarn link eslint-react-plugin
 $ yarn lint:remote
 
-Status (9/21)
+Status (6/21)
 [CLONING] ant-design/ant-design
-[LINTING] mui-org/material-ui - 9895 files
-[LINTING] withspectrum/spectrum - 1689 files
-[LINTING] codesandbox/codesandbox-client - 1591 files
-[CLONING] Automattic/wp-calypso
+[LINTING] mui-org/material-ui - 260/9885 files
+[LINTING] reach/reach-ui - 260/269 files
+[LINTING] react-bootstrap/react-bootstrap - 260/485 files
+[LINTING] withspectrum/spectrum - 20/1688 files
 
 [DONE] AriPerkkio/js-framework-playground without errors
-[DONE] oldboyxx/jira_clone without errors
 [DONE] StreakYC/react-smooth-collapse without errors
-[DONE] reach/reach-ui with 1 errors
 [DONE] react-spring/react-spring without errors
 [DONE] AriPerkkio/scrpr without errors
+[DONE] oldboyxx/jira_clone without errors
 [DONE] AriPerkkio/suspense-examples without errors
-[DONE] AriPerkkio/state-mgmt-examples without errors
-[DONE] react-bootstrap/react-bootstrap without errors
 ```
