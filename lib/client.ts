@@ -60,8 +60,11 @@ function constructTreeFromDir(dir: string): string[] {
  */
 async function getFiles(repository: string): Promise<SourceFile[]> {
     await prepare(repository);
+    logger.onRepositoryRead(repository);
 
-    const paths = constructTreeFromDir(`${CACHE_LOCATION}/${repository}`);
+    const paths = await new Promise<string[]>(r => {
+        r(constructTreeFromDir(`${CACHE_LOCATION}/${repository}`));
+    });
     const files = paths
         .filter(path => config.extensions.some(ext => path.endsWith(ext)))
         .map(path => ({

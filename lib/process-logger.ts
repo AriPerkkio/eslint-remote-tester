@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import config from './config';
 
 interface Task {
-    step: 'CLONE' | 'LINT';
+    step: 'CLONE' | 'READ' | 'LINT';
     repository: string;
     fileCount?: number;
     currentFileIndex?: number;
@@ -16,6 +16,9 @@ const TASK_TEMPLATE = (task: Task) => {
     switch (task.step) {
         case 'CLONE':
             return `${chalk.yellow('[CLONING]')} ${task.repository}`;
+
+        case 'READ':
+            return `${chalk.yellow('[READING]')} ${task.repository}`;
 
         case 'LINT':
             return (
@@ -32,17 +35,14 @@ class ProcessLogger {
     messages: string[];
     tasks: Task[];
     scannedRepositories: number;
-    timerMs: number;
     intervalHandle: NodeJS.Timeout;
 
     constructor() {
         this.messages = [];
         this.tasks = [];
         this.scannedRepositories = 0;
-        this.timerMs = 0;
 
         this.intervalHandle = setInterval(() => {
-            this.timerMs += REFRESH_INTERVAL_MS;
             this.print();
         }, REFRESH_INTERVAL_MS);
     }
@@ -93,6 +93,7 @@ class ProcessLogger {
             currentFileIndex: 0,
             step: 'LINT',
         });
+        this.print();
     }
 
     /**
@@ -123,13 +124,18 @@ class ProcessLogger {
     }
 
     /**
+     * Log start of cloning of given repository
+     */
+    onRepositoryRead(repository: string) {
+        this.updateTask(repository, { step: 'READ' });
+        this.print();
+    }
+
+    /**
      * Print current tasks and messages
      */
     print() {
-        const timeSeconds = Math.floor(this.timerMs / 1000);
-
         const formattedMessage = [
-            `Time ${timeSeconds}s`,
             `Repositories (${this.scannedRepositories}/${config.repositories.length})`,
             ...this.tasks.map(TASK_TEMPLATE),
             ' ', // Empty line between tasks and messages
