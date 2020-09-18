@@ -1,35 +1,8 @@
+import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
 import { ESLint, Linter } from 'eslint';
 
 import config from './config';
 import { LintMessage, SourceFile } from './types';
-
-/**
- * Wrapper around ESLint's engine
- */
-class Engine {
-    linter: ESLint;
-
-    constructor() {
-        this.linter = new ESLint({
-            useEslintrc: false,
-            overrideConfig: config.eslintrc,
-        });
-    }
-
-    /**
-     * Run ESLint on given file
-     */
-    async lint(file: SourceFile): Promise<LintMessage[]> {
-        const { content, path } = file;
-
-        const result = await this.linter.lintText(content);
-        const messages = result
-            .reduce(mergeMessagesWithSource, [])
-            .filter(Boolean);
-
-        return messages.map(message => ({ ...message, path }));
-    }
-}
 
 function mergeMessagesWithSource(
     all: Linter.LintMessage[],
@@ -62,4 +35,54 @@ function mergeMessagesWithSource(
     ];
 }
 
-export default new Engine();
+if (!isMainThread) {
+    (async function lint() {
+        const files: SourceFile[] = workerData;
+
+        const linter = new ESLint({
+            useEslintrc: false,
+            overrideConfig: config.eslintrc,
+        });
+
+        const results: LintMessage[] = [];
+
+        for (const [index, file] of files.entries()) {
+            const { content, path } = file;
+
+            const result = await linter.lintText(content);
+            const messages = result
+                .reduce(mergeMessagesWithSource, [])
+                .filter(Boolean)
+                .map(message => ({ ...message, path }));
+
+            results.push(...messages);
+            parentPort.postMessage(index + 1);
+        }
+
+        parentPort.postMessage(results);
+    })();
+}
+
+function lintFiles(
+    files: SourceFile[],
+    onFileLinted: (i: number) => void
+): Promise<LintMessage[]> {
+    return new Promise((resolve, reject) => {
+        const worker = new Worker(__filename, { workerData: files });
+
+        worker.on('message', (results: number | LintMessage[]) => {
+            if (typeof results === 'number') {
+                onFileLinted(results);
+            } else {
+                resolve(results);
+            }
+        });
+        worker.on('error', reject);
+        worker.on('exit', code => {
+            if (code !== 0)
+                reject(new Error(`Worker stopped with exit code ${code}`));
+        });
+    });
+}
+
+export default { lintFiles };

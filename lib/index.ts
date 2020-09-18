@@ -14,20 +14,11 @@ const DEFAULT_CONCURRENT_TASKS = 5;
  */
 async function scanRepo(repository: string) {
     const files = await client.getFiles(repository);
-    const results: LintMessage[] = [];
-
     logger.onLintStart(repository, files.length);
 
-    for (const [index, file] of files.entries()) {
-        const lintMessages = await engine.lint(file);
-        results.push(...lintMessages);
-
-        // Report every 10th file to logger
-        const count = index + 1;
-        if (count % 10 === 0) {
-            logger.onFileLintEnd(repository, count);
-        }
-    }
+    const results: LintMessage[] = await engine.lintFiles(files, count =>
+        logger.onFileLintEnd(repository, count)
+    );
 
     writeResults(results, repository);
     logger.onLintEnd(repository, results.length);
@@ -56,4 +47,6 @@ async function scanRepo(repository: string) {
             .fill(execute)
             .map(task => task())
     );
+
+    logger.onAllRepositoriesScanned();
 })();

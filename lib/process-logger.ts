@@ -9,15 +9,22 @@ interface Task {
     currentFileIndex?: number;
 }
 
+// How often logger should refresh termnial
+const REFRESH_INTERVAL_MS = 200;
+
 const TASK_TEMPLATE = (task: Task) => {
-    if (task.step === 'CLONE') {
-        return `${chalk.yellow('[CLONING]')} ${task.repository}`;
-    }
-    if (task.step === 'LINT') {
-        return (
-            `${chalk.green('[LINTING]')} ${task.repository} - ` +
-            `${task.currentFileIndex}/${task.fileCount} files`
-        );
+    switch (task.step) {
+        case 'CLONE':
+            return `${chalk.yellow('[CLONING]')} ${task.repository}`;
+
+        case 'LINT':
+            return (
+                `${chalk.green('[LINTING]')} ${task.repository} - ` +
+                `${task.currentFileIndex}/${task.fileCount} files`
+            );
+
+        default:
+            return `Unknown step ${task.step}`;
     }
 };
 
@@ -25,11 +32,34 @@ class ProcessLogger {
     messages: string[];
     tasks: Task[];
     scannedRepositories: number;
+    timerMs: number;
+    intervalHandle: NodeJS.Timeout;
 
     constructor() {
         this.messages = [];
         this.tasks = [];
         this.scannedRepositories = 0;
+        this.timerMs = 0;
+
+        this.intervalHandle = setInterval(() => {
+            this.timerMs += REFRESH_INTERVAL_MS;
+            this.print();
+        }, REFRESH_INTERVAL_MS);
+    }
+
+    /**
+     * Clear refresh interval
+     */
+    onAllRepositoriesScanned() {
+        this.messages.push(
+            chalk.green(
+                `[DONE] Finished scan of ${this.scannedRepositories} repositories`
+            )
+        );
+
+        setTimeout(() => {
+            clearTimeout(this.intervalHandle);
+        }, REFRESH_INTERVAL_MS);
     }
 
     /**
@@ -51,8 +81,6 @@ class ProcessLogger {
         } else {
             this.tasks.push({ repository, ...updates });
         }
-
-        this.print();
     }
 
     /**
@@ -81,7 +109,6 @@ class ProcessLogger {
             : 'without errors';
 
         this.messages.push(color(`[DONE] ${repository} ${postfix}`));
-        this.print();
     }
 
     onFileLintEnd(repository: string, currentFileIndex: number) {
@@ -99,8 +126,11 @@ class ProcessLogger {
      * Print current tasks and messages
      */
     print() {
+        const timeSeconds = Math.floor(this.timerMs / 1000);
+
         const formattedMessage = [
-            `Status (${this.scannedRepositories}/${config.repositories.length})`,
+            `Time ${timeSeconds}s`,
+            `Repositories (${this.scannedRepositories}/${config.repositories.length})`,
             ...this.tasks.map(TASK_TEMPLATE),
             ' ', // Empty line between tasks and messages
             ...this.messages,

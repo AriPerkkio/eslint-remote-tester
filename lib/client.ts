@@ -72,6 +72,4 @@ async function getFiles(repository: string): Promise<SourceFile[]> {
     return files;
 }
 
-export default {
-    getFiles,
-};
+export default { getFiles };
