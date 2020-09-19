@@ -110,24 +110,3 @@ module.exports = {
     },
 };
 ```
-
-```sh
-$ yarn add --dev eslint-remote-tester eslint react
-# Use local changes of rules under development
-$ yarn link eslint-react-plugin
-$ yarn lint:remote
-
-Status (6/21)
-[CLONING] ant-design/ant-design
-[LINTING] mui-org/material-ui - 260/9885 files
-[LINTING] reach/reach-ui - 260/269 files
-[LINTING] react-bootstrap/react-bootstrap - 260/485 files
-[LINTING] withspectrum/spectrum - 20/1688 files
-
-[DONE] AriPerkkio/js-framework-playground without errors
-[DONE] StreakYC/react-smooth-collapse without errors
-[DONE] react-spring/react-spring without errors
-[DONE] AriPerkkio/scrpr without errors
-[DONE] oldboyxx/jira_clone without errors
-[DONE] AriPerkkio/suspense-examples without errors
-```

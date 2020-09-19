@@ -1,43 +1,29 @@
 import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
-import { ESLint, Linter } from 'eslint';
+import { ESLint } from 'eslint';
 
 import config from './config';
-import { LintMessage, SourceFile } from './types';
+import client from './repository-client';
+import { mergeMessagesWithSource } from './results-parser';
+import { LintMessage, WorkerMessage } from './types';
 
-function mergeMessagesWithSource(
-    all: Linter.LintMessage[],
-    result: ESLint.LintResult
-) {
-    const messages = result.messages.filter(
-        message =>
-            message.ruleId && config.rulesUnderTesting.includes(message.ruleId)
-    );
-
-    // Process only rules that are under testing
-    if (messages.length === 0) {
-        return all;
-    }
-
-    const sourceLines = result.source ? result.source.split('\n') : [];
-
-    return [
-        ...all,
-        ...messages.map(message => ({
-            ...message,
-            // Construct small snippet of the erroneous code block
-            source: sourceLines
-                .slice(
-                    Math.max(0, message.line - 2),
-                    Math.min(sourceLines.length, 2 + (message.endLine || 0))
-                )
-                .join('\n'),
-        })),
-    ];
-}
-
+/**
+ * Task for worker threads:
+ * - Read files from repository-client
+ * - Run ESLint on file contents
+ * - Parse messages and pass lint results back to the main thread
+ * - Keep process-logger up-to-date of status via onMessage
+ */
 if (!isMainThread) {
-    (async function lint() {
-        const files: SourceFile[] = workerData;
+    (async function lintRepositorysFiles() {
+        // Wrapper used to enfore WorkerMessage type to parentPort.postMessage calls
+        const postMessage = (message: WorkerMessage) =>
+            parentPort.postMessage(message);
+
+        const files = await client.getFiles({
+            repository: workerData,
+            onClone: () => postMessage({ type: 'CLONE' }),
+            onRead: () => postMessage({ type: 'READ' }),
+        });
 
         const linter = new ESLint({
             useEslintrc: false,
@@ -45,6 +31,7 @@ if (!isMainThread) {
         });
 
         const results: LintMessage[] = [];
+        postMessage({ type: 'LINT_START', payload: files.length });
 
         for (const [index, file] of files.entries()) {
             const { content, path } = file;
@@ -56,27 +43,35 @@ if (!isMainThread) {
                 .map(message => ({ ...message, path }));
 
             results.push(...messages);
-            parentPort.postMessage(index + 1);
+            postMessage({ type: 'FILE_LINT_END', payload: index + 1 });
         }
 
-        parentPort.postMessage(results);
+        postMessage({ type: 'LINT_END', payload: results });
     })();
 }
 
-function lintFiles(
-    files: SourceFile[],
-    onFileLinted: (i: number) => void
+/**
+ * Start scanning of given repository in a separate thread
+ * - Keeps process-logger up-to-date via onMessage
+ */
+function scanRepository(
+    repository: string,
+    onMessage: (message: WorkerMessage) => void
 ): Promise<LintMessage[]> {
     return new Promise((resolve, reject) => {
-        const worker = new Worker(__filename, { workerData: files });
+        const worker = new Worker(__filename, { workerData: repository });
 
-        worker.on('message', (results: number | LintMessage[]) => {
-            if (typeof results === 'number') {
-                onFileLinted(results);
-            } else {
-                resolve(results);
+        worker.on('message', (message: WorkerMessage) => {
+            switch (message.type) {
+                case 'LINT_END':
+                    return resolve(message.payload);
+
+                default:
+                    return onMessage(message);
             }
         });
+
+        // TODO handle error cases with descriptive status messages
         worker.on('error', reject);
         worker.on('exit', code => {
             if (code !== 0)
@@ -85,4 +80,4 @@ function lintFiles(
     });
 }
 
-export default { lintFiles };
+export default { scanRepository };

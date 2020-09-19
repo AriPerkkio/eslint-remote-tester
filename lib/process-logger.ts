@@ -9,7 +9,7 @@ interface Task {
     currentFileIndex?: number;
 }
 
-// How often logger should refresh termnial
+// Interval of how often logger should refresh termnial
 const REFRESH_INTERVAL_MS = 200;
 
 const TASK_TEMPLATE = (task: Task) => {
@@ -31,10 +31,24 @@ const TASK_TEMPLATE = (task: Task) => {
     }
 };
 
+/**
+ * Logger for updating the terminal with current status
+ * - Updates are printed based on `REFRESH_INTERVAL_MS`
+ * - Should be ran on main thread separate from worker threads in order to
+ *   avoid blocking updates
+ * - TODO: Handle failures when one of the following fails: clone, read, lint, write
+ */
 class ProcessLogger {
+    /** Messages printed as a list under tasks */
     messages: string[];
+
+    /** Messages of the task runners */
     tasks: Task[];
+
+    /** Count of finished repositories */
     scannedRepositories: number;
+
+    /** Handle of refresh interval */
     intervalHandle: NodeJS.Timeout;
 
     constructor() {
@@ -57,6 +71,7 @@ class ProcessLogger {
             )
         );
 
+        // Stop updating afer one final printing
         setTimeout(() => {
             clearTimeout(this.intervalHandle);
         }, REFRESH_INTERVAL_MS);
@@ -85,7 +100,6 @@ class ProcessLogger {
 
     /**
      * Log start of linting of given repository
-     *
      */
     onLintStart(repository: string, fileCount: number) {
         this.updateTask(repository, {
@@ -93,7 +107,6 @@ class ProcessLogger {
             currentFileIndex: 0,
             step: 'LINT',
         });
-        this.print();
     }
 
     /**
@@ -112,6 +125,9 @@ class ProcessLogger {
         this.messages.push(color(`[DONE] ${repository} ${postfix}`));
     }
 
+    /**
+     * Log end of a single file lint
+     */
     onFileLintEnd(repository: string, currentFileIndex: number) {
         this.updateTask(repository, { currentFileIndex, step: 'LINT' });
     }
@@ -128,7 +144,6 @@ class ProcessLogger {
      */
     onRepositoryRead(repository: string) {
         this.updateTask(repository, { step: 'READ' });
-        this.print();
     }
 
     /**

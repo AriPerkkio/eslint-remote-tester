@@ -1,23 +1,35 @@
 #!/usr/bin/env node
 
 import engine from './engine';
-import client from './client';
 import config from './config';
 import logger from './process-logger';
 import { writeResults } from './results-parser';
-import { LintMessage } from './types';
+import { WorkerMessage } from './types';
 
 const DEFAULT_CONCURRENT_TASKS = 5;
 
 /**
- * Scan given repository
+ * Run repository scanning on separate thread in order to keep main one
+ * free for logger updates
  */
 async function scanRepo(repository: string) {
-    const files = await client.getFiles(repository);
-    logger.onLintStart(repository, files.length);
+    const results = await engine.scanRepository(
+        repository,
+        (message: WorkerMessage) => {
+            switch (message.type) {
+                case 'READ':
+                    return logger.onRepositoryRead(repository);
 
-    const results: LintMessage[] = await engine.lintFiles(files, count =>
-        logger.onFileLintEnd(repository, count)
+                case 'CLONE':
+                    return logger.onRepositoryClone(repository);
+
+                case 'LINT_START':
+                    return logger.onLintStart(repository, message.payload);
+
+                case 'FILE_LINT_END':
+                    return logger.onFileLintEnd(repository, message.payload);
+            }
+        }
     );
 
     writeResults(results, repository);
