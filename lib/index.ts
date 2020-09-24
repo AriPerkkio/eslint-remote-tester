@@ -28,11 +28,25 @@ async function scanRepo(repository: string) {
 
                 case 'FILE_LINT_END':
                     return logger.onFileLintEnd(repository, message.payload);
+
+                case 'LINTER_CRASH':
+                    return logger.onLinterCrash(repository, message.payload);
+
+                case 'CLONE_FAILURE':
+                    return logger.onCloneFailure(repository);
+
+                case 'READ_FAILURE':
+                    return logger.onReadFailure(repository);
             }
         }
     );
 
-    writeResults(results, repository);
+    try {
+        writeResults(results, repository);
+    } catch (e) {
+        logger.onWriteFailure(repository);
+    }
+
     logger.onLintEnd(repository, results.length);
 }
 

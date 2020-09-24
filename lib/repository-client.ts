@@ -7,7 +7,9 @@ import { SourceFile } from './types';
 interface GetFilesArguments {
     repository: string;
     onClone: () => void;
+    onCloneFailure: () => void;
     onRead: () => void;
+    onReadFailure: () => void;
 }
 
 const URL = 'https://github.com';
@@ -24,7 +26,8 @@ const pathIgnorePattern = config.pathIgnorePattern
  */
 async function prepare(
     repository: string,
-    onClone: GetFilesArguments['onClone']
+    onClone: GetFilesArguments['onClone'],
+    onCloneFailure: GetFilesArguments['onCloneFailure']
 ) {
     const repoLocation = `${CACHE_LOCATION}/${repository}`;
 
@@ -34,7 +37,11 @@ async function prepare(
 
     if (!fs.existsSync(repoLocation)) {
         onClone();
-        await git.clone(`${URL}/${repository}.git`, repoLocation);
+        try {
+            await git.clone(`${URL}/${repository}.git`, repoLocation);
+        } catch (e) {
+            onCloneFailure();
+        }
     }
 }
 
@@ -69,19 +76,26 @@ function constructTreeFromDir(dir: string): string[] {
 async function getFiles({
     repository,
     onClone,
+    onCloneFailure,
     onRead,
+    onReadFailure,
 }: GetFilesArguments): Promise<SourceFile[]> {
-    await prepare(repository, onClone);
+    await prepare(repository, onClone, onCloneFailure);
 
     onRead();
-    const paths = constructTreeFromDir(`${CACHE_LOCATION}/${repository}`);
+    try {
+        const paths = constructTreeFromDir(`${CACHE_LOCATION}/${repository}`);
 
-    return paths
-        .filter(path => config.extensions.some(ext => path.endsWith(ext)))
-        .map(path => ({
-            path,
-            content: fs.readFileSync(path, ENCODING),
-        }));
+        return paths
+            .filter(path => config.extensions.some(ext => path.endsWith(ext)))
+            .map(path => ({
+                path,
+                content: fs.readFileSync(path, ENCODING),
+            }));
+    } catch (e) {
+        onReadFailure();
+        return [];
+    }
 }
 
 export default { getFiles };

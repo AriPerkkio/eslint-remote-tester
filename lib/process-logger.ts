@@ -3,11 +3,12 @@ import chalk, { Chalk } from 'chalk';
 import config from './config';
 
 interface Task {
-    step: 'CLONE' | 'READ' | 'LINT';
+    step?: 'CLONE' | 'READ' | 'LINT';
     color?: Chalk;
     repository: string;
     fileCount?: number;
     currentFileIndex?: number;
+    warnings?: string[];
 }
 
 interface LogMessage {
@@ -46,12 +47,20 @@ const TASK_TEMPLATE = (task: Task) => {
 const REPOSITORIES_STATUS_TEMPLATE = (scannedRepositories: number) =>
     `Repositories (${scannedRepositories}/${config.repositories.length})`;
 
+const LINT_FAILURE_TEMPLATE = (repository: string, rule?: string) =>
+    `[WARN] ${repository} crashed${rule ? `: ${rule}` : ''}`;
+const CLONE_FAILURE_TEMPLATE = (repository: string) =>
+    `[WARN] ${repository} failed to clone`;
+const READ_FAILURE_TEMPLATE = (repository: string) =>
+    `[WARN] ${repository} failed to read files`;
+const WRITE_FAILURE_TEMPLATE = (repository: string) =>
+    `[WARN] ${repository} failed to write results`;
+
 /**
  * Logger for updating the terminal with current status
  * - Updates are printed based on `REFRESH_INTERVAL_MS`
  * - Should be ran on main thread separate from worker threads in order to
  *   avoid blocking updates
- * - TODO: Handle failures when one of the following fails: clone, read, lint, write
  */
 class ProcessLogger {
     /** Messages printed as a list under tasks */
@@ -82,6 +91,12 @@ class ProcessLogger {
         this.intervalHandle = setInterval(() => {
             this.print();
         }, REFRESH_INTERVAL_MS);
+
+        // On terminal height change full print is required
+        process.stdout.on('resize', () => {
+            this.previousLog = '';
+            this.previousColors = [];
+        });
 
         console.clear();
     }
@@ -120,6 +135,29 @@ class ProcessLogger {
         } else {
             this.tasks.push({ repository, ...updates });
         }
+    }
+
+    /**
+     * Apply warning to given task. Duplicate warnings are ignored.
+     * Returns boolean indicating whether warning did not exist on task already
+     */
+    addWarningToTask(repository: string, warning: string): boolean {
+        const task = this.tasks.find(task => task.repository === repository);
+
+        if (task) {
+            const warnings = task.warnings || [];
+            const hasWarnedAlready = warnings.includes(warning);
+
+            if (!hasWarnedAlready) {
+                this.updateTask(repository, {
+                    warnings: [...warnings, warning],
+                });
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -165,6 +203,50 @@ class ProcessLogger {
     }
 
     /**
+     * Log warning about linter crashing
+     */
+    onLinterCrash(repository: string, erroneousRule: string) {
+        const isNewWarning = this.addWarningToTask(repository, erroneousRule);
+
+        if (isNewWarning) {
+            this.messages.push({
+                content: LINT_FAILURE_TEMPLATE(repository, erroneousRule),
+                color: chalk.yellow,
+            });
+        }
+    }
+
+    /**
+     * Log warning about clone failure
+     */
+    onCloneFailure(repository: string) {
+        this.messages.push({
+            content: CLONE_FAILURE_TEMPLATE(repository),
+            color: chalk.yellow,
+        });
+    }
+
+    /**
+     * Log warning about filesystem read failure
+     */
+    onReadFailure(repository: string) {
+        this.messages.push({
+            content: READ_FAILURE_TEMPLATE(repository),
+            color: chalk.yellow,
+        });
+    }
+
+    /**
+     * Log warning about result writing failure
+     */
+    onWriteFailure(repository: string) {
+        this.messages.push({
+            content: WRITE_FAILURE_TEMPLATE(repository),
+            color: chalk.yellow,
+        });
+    }
+
+    /**
      * Log start of cloning of given repository
      */
     onRepositoryClone(repository: string) {
@@ -182,19 +264,21 @@ class ProcessLogger {
      * Print current tasks and messages
      */
     print() {
+        const terminalHeight = process.stdout.rows;
+
         const rows = [
             REPOSITORIES_STATUS_TEMPLATE(this.scannedRepositories),
             ...this.tasks.map(TASK_TEMPLATE),
             ' ', // Empty line between tasks and messages
             ...this.messages.map(message => message.content),
-        ];
+        ].slice(0, terminalHeight);
 
         const colors = [
             null,
             ...this.tasks.map(task => task.color),
             null,
             ...this.messages.map(message => message.color),
-        ];
+        ].slice(0, terminalHeight);
 
         // Update colors of whole row
         for (const [rowIndex, color] of colors.entries()) {
@@ -210,6 +294,7 @@ class ProcessLogger {
 
         const formattedLog = rows.join('\n');
         const updates = diffLogs(this.previousLog, formattedLog);
+        this.previousLog = formattedLog;
 
         // Update single character changes, e.g. step or file count changes
         for (const { x, y, character } of updates) {
@@ -221,10 +306,9 @@ class ProcessLogger {
             process.stdout.cursorTo(x, y);
             process.stdout.write(colorMethod(character));
         }
-
-        process.stdout.cursorTo(0, rows.length);
-        this.previousLog = formattedLog;
         this.previousColors = colors;
+
+        process.stdout.cursorTo(0, terminalHeight);
     }
 }
 

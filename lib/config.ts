@@ -81,8 +81,10 @@ if (!repositories || !repositories.length) {
 if (!extensions || !extensions.length) {
     errors.push(`Missing extensions.`);
 }
-if (!rulesUnderTesting || !rulesUnderTesting.length) {
+if (!rulesUnderTesting) {
     errors.push(`Missing rulesUnderTesting.`);
+} else if (!Array.isArray(rulesUnderTesting)) {
+    errors.push(`Config rulesUnderTesting should be an array.`);
 }
 if (!eslintrc) {
     errors.push(`Missing eslintrc.`);

@@ -6,6 +6,15 @@ import client from './repository-client';
 import { mergeMessagesWithSource } from './results-parser';
 import { LintMessage, WorkerMessage } from './types';
 
+const LINT_FAILURE_BASE = {
+    column: 0,
+    line: 0,
+    severity: 0,
+} as const;
+
+// Regex used to attempt parsing our rule which caused linter to crash
+const RULE_REGEXP = /rules\/(.*?)\.js/;
+
 /**
  * Task for worker threads:
  * - Read files from repository-client
@@ -22,7 +31,9 @@ if (!isMainThread) {
         const files = await client.getFiles({
             repository: workerData,
             onClone: () => postMessage({ type: 'CLONE' }),
+            onCloneFailure: () => postMessage({ type: 'CLONE_FAILURE' }),
             onRead: () => postMessage({ type: 'READ' }),
+            onReadFailure: () => postMessage({ type: 'READ_FAILURE' }),
         });
 
         const linter = new ESLint({
@@ -35,8 +46,27 @@ if (!isMainThread) {
 
         for (const [index, file] of files.entries()) {
             const { content, path } = file;
+            let result;
 
-            const result = await linter.lintText(content);
+            try {
+                result = await linter.lintText(content);
+            } catch (error) {
+                // Catch crashing linter
+                const stack = error.stack || '';
+                const ruleMatch = stack.match(RULE_REGEXP) || [];
+                const ruleId = ruleMatch.pop();
+
+                results.push({
+                    ...LINT_FAILURE_BASE,
+                    path,
+                    message: error.message,
+                    source: error.stack,
+                    ruleId,
+                });
+                postMessage({ type: 'LINTER_CRASH', payload: ruleId });
+                continue;
+            }
+
             const messages = result
                 .reduce(mergeMessagesWithSource, [])
                 .filter(Boolean)
