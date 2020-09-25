@@ -74,7 +74,7 @@ const linter = new ESLint({
  * - Read files from repository-client
  * - Run ESLint on file contents
  * - Parse messages and pass lint results back to the main thread
- * - Keep process-logger up-to-date of status via onMessage
+ * - Keep progress-logger up-to-date of status via onMessage
  */
 export default async function workerTask(): Promise<void> {
     const files = await getFiles({

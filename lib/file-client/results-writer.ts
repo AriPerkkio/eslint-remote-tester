@@ -23,15 +23,15 @@ function formatResults(results: LintMessage[]) {
  * Write results to file at `./results`
  */
 export function writeResults(results: LintMessage[], repository: string): void {
+    // Don't write empty files for completely valid results
+    if (results.length) {
+        return;
+    }
     const [, repositoryName] = repository.split('/');
-
-    const formattedResults = results.length
-        ? formatResults(results)
-        : 'No issues';
 
     fs.writeFileSync(
         `${RESULTS_LOCATION}/${repositoryName}`,
-        formattedResults,
+        formatResults(results),
         'utf8'
     );
 }

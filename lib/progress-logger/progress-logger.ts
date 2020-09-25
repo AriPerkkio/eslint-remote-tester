@@ -36,20 +36,28 @@ class ProgressLogger {
         this.messages = [];
         this.tasks = [];
         this.scannedRepositories = 0;
-        this.previousLog = '';
-        this.previousColors = [];
 
-        this.intervalHandle = setInterval(() => {
-            this.print();
-        }, REFRESH_INTERVAL_MS);
-
-        // On terminal height change full print is required
-        process.stdout.on('resize', () => {
+        const startPrinting = () => {
             this.previousLog = '';
             this.previousColors = [];
+
+            console.clear();
+            this.intervalHandle = setInterval(() => {
+                this.print();
+            }, REFRESH_INTERVAL_MS);
+        };
+
+        // On terminal height change full print is required. Stop previous printing and start again
+        process.stdout.on('resize', () => {
+            if (this.intervalHandle !== null) {
+                clearTimeout(this.intervalHandle);
+                this.intervalHandle = null;
+            }
+
+            startPrinting();
         });
 
-        console.clear();
+        startPrinting();
     }
 
     /**
@@ -219,24 +227,38 @@ class ProgressLogger {
      */
     print() {
         const terminalHeight = process.stdout.rows;
-        // TODO [... and 5 hidden lines below]
+
+        // Keep track of interval handle changes. Used to recover from terminal height changes.
+        const intervalHandle = this.intervalHandle;
+        const shouldBailOut = () => intervalHandle !== this.intervalHandle;
 
         const rows = [
             Templates.REPOSITORIES_STATUS_TEMPLATE(this.scannedRepositories),
             ...this.tasks.map(Templates.TASK_TEMPLATE),
             ' ', // Empty line between tasks and messages
             ...this.messages.map(message => message.content),
-        ].slice(0, terminalHeight);
+        ];
 
         const colors = [
             null,
             ...this.tasks.map(task => task.color),
             null,
             ...this.messages.map(message => message.color),
-        ].slice(0, terminalHeight);
+        ];
+
+        const overflowingRowCount = rows.length - terminalHeight;
+        if (overflowingRowCount > 0) {
+            rows.splice(terminalHeight - 1);
+            colors.splice(terminalHeight - 1);
+
+            rows.push(`[... and ${overflowingRowCount} hidden lines below]`);
+            colors.push(chalk.black.bgYellow);
+        }
 
         // Update colors of whole row
         for (const [rowIndex, color] of colors.entries()) {
+            if (shouldBailOut()) return;
+
             if (this.previousColors[rowIndex] !== color) {
                 const row = rows[rowIndex];
                 const colorMethod = color || DEFAULT_COLOR_METHOD;
@@ -249,21 +271,27 @@ class ProgressLogger {
 
         const formattedLog = rows.join('\n');
         const updates = diffLogs(this.previousLog, formattedLog);
-        this.previousLog = formattedLog;
 
-        // Update single character changes, e.g. step or file count changes
-        for (const { x, y, character } of updates) {
+        // Update characters changes, e.g. step or file count changes
+        for (const { x, y, characters, wholeRow } of updates) {
+            if (shouldBailOut()) return;
             const colorMethod = colors[y] || DEFAULT_COLOR_METHOD;
 
             // These were already updated by row's color update
             if (this.previousColors[y] !== colors[y]) continue;
 
             process.stdout.cursorTo(x, y);
-            process.stdout.write(colorMethod(character));
+            wholeRow && process.stdout.clearLine(0);
+            process.stdout.write(colorMethod(characters));
         }
-        this.previousColors = colors;
 
-        process.stdout.cursorTo(0, terminalHeight);
+        process.stdout.cursorTo(
+            overflowingRowCount >= 0 ? process.stdout.columns : 0,
+            rows.length + 1
+        );
+
+        this.previousColors = colors;
+        this.previousLog = formattedLog;
     }
 }
 

@@ -15,7 +15,8 @@ export interface LogMessage {
 }
 
 export interface LogUpdate {
-    character: string;
+    characters: string;
     x: number;
     y: number;
+    wholeRow?: boolean;
 }
