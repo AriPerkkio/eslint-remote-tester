@@ -1,6 +1,6 @@
 # eslint-remote-tester
 
-`eslint-remote-tester` is a CLI tool for testing given [ESlint](https://github.com/eslint/eslint) rules against multiple repositories at once. It's designed to be used when validating regression of new rules.
+`eslint-remote-tester` is a CLI tool for testing given [ESlint](https://github.com/eslint/eslint) rules against multiple repositories at once. It's designed to be used when validating regression of new rules. It can be used to spot whether a new rule flags false positives or crashes ESLint completely.
 
 <p align="center">
   <img width="640" src="https://raw.githubusercontent.com/AriPerkkio/eslint-remote-tester/HEAD/docs/demo.svg">
@@ -36,7 +36,7 @@ module.exports = {
     /** Optional pattern used to exclude paths */
     pathIgnorePattern: "(node_modules|^\\.|test-results)",
 
-    /** Rules used to filter out results */
+    /** Rules used to filter out results. Use empty array when ESLint crashes are the only interest */
     rulesUnderTesting: [],
 
     /** Maximum amount of tasks ran concurrently */
@@ -104,6 +104,7 @@ module.exports = {
             },
         },
         plugins: ['react'],
+        extends: ['plugin:react/all'],
         rules: {
             'react/no-unstable-nested-components': ['error'],
         },

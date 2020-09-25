@@ -27,7 +27,7 @@ module.exports = {
 
     pathIgnorePattern: "(node_modules|^\\.|test-results)",
 
-    rulesUnderTesting: ['react/no-unstable-nested-components'],
+    rulesUnderTesting: ['react/no-direct-mutation-state'],
 
     concurrentTasks: 5,
 
@@ -49,8 +49,9 @@ module.exports = {
             },
         },
         plugins: ['react'],
+        extends: ['plugin:react/all'],
         rules: {
-            'react/no-unstable-nested-components': ['error'],
+            'react/no-direct-mutation-state': ['error'],
         },
     },
 };
