@@ -24,7 +24,7 @@ function formatResults(results: LintMessage[]) {
  */
 export function writeResults(results: LintMessage[], repository: string): void {
     // Don't write empty files for completely valid results
-    if (results.length) {
+    if (!results.length) {
         return;
     }
     const [, repositoryName] = repository.split('/');
