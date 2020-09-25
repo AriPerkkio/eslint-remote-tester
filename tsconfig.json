@@ -4,9 +4,13 @@
         "module": "commonjs",
         "target": "es6",
         "outDir": "dist",
+        "moduleResolution": "node",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true
+
+        // TODO tspaths?
+        // "baseUrl": "./lib"
     },
     "include": ["lib"]
 }

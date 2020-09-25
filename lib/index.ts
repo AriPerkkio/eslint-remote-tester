@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-import engine from './engine';
+import engine, { WorkerMessage } from './engine';
 import config from './config';
-import logger from './process-logger';
-import { writeResults } from './results-parser';
-import { WorkerMessage } from './types';
+import logger from './progress-logger';
+import { writeResults } from './file-client';
 
 const DEFAULT_CONCURRENT_TASKS = 5;
 

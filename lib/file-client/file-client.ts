@@ -1,8 +1,12 @@
 import fs from 'fs';
-import simpleGit from 'simple-git';
 
-import config from './config';
-import { SourceFile } from './types';
+import { cloneRepository, CACHE_LOCATION } from './repository-client';
+import config from '../config';
+
+export interface SourceFile {
+    content: string;
+    path: string;
+}
 
 interface GetFilesArguments {
     repository: string;
@@ -12,38 +16,9 @@ interface GetFilesArguments {
     onReadFailure: () => void;
 }
 
-const URL = 'https://github.com';
-const CACHE_LOCATION = './.cache-eslint-repo-tester';
-const ENCODING = 'utf8';
-
-const git = simpleGit();
 const pathIgnorePattern = config.pathIgnorePattern
     ? new RegExp(config.pathIgnorePattern)
     : undefined;
-
-/**
- * Prepare cache and repository directories
- */
-async function prepare(
-    repository: string,
-    onClone: GetFilesArguments['onClone'],
-    onCloneFailure: GetFilesArguments['onCloneFailure']
-) {
-    const repoLocation = `${CACHE_LOCATION}/${repository}`;
-
-    if (!fs.existsSync(CACHE_LOCATION)) {
-        fs.mkdirSync(CACHE_LOCATION);
-    }
-
-    if (!fs.existsSync(repoLocation)) {
-        onClone();
-        try {
-            await git.clone(`${URL}/${repository}.git`, repoLocation);
-        } catch (e) {
-            onCloneFailure();
-        }
-    }
-}
 
 /**
  * Check whether given directory or path is set to be ignored by config
@@ -73,14 +48,14 @@ function constructTreeFromDir(dir: string): string[] {
 /**
  * Get all files from given repository matching the extensions set by configuraiton
  */
-async function getFiles({
+export async function getFiles({
     repository,
     onClone,
     onCloneFailure,
     onRead,
     onReadFailure,
 }: GetFilesArguments): Promise<SourceFile[]> {
-    await prepare(repository, onClone, onCloneFailure);
+    await cloneRepository(repository, onClone, onCloneFailure);
 
     onRead();
     try {
@@ -90,12 +65,10 @@ async function getFiles({
             .filter(path => config.extensions.some(ext => path.endsWith(ext)))
             .map(path => ({
                 path,
-                content: fs.readFileSync(path, ENCODING),
+                content: fs.readFileSync(path, 'utf8'),
             }));
     } catch (e) {
         onReadFailure();
         return [];
     }
 }
-
-export default { getFiles };

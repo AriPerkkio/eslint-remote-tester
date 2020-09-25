@@ -1,60 +1,11 @@
 import chalk, { Chalk } from 'chalk';
 
-import config from './config';
+import diffLogs from './log-diff';
+import * as Templates from './log-templates';
+import { LogMessage, Task } from './types';
 
-interface Task {
-    step?: 'CLONE' | 'READ' | 'LINT';
-    color?: Chalk;
-    repository: string;
-    fileCount?: number;
-    currentFileIndex?: number;
-    warnings?: string[];
-}
-
-interface LogMessage {
-    content: string;
-    color?: Chalk;
-}
-
-interface LogUpdate {
-    character: string;
-    x: number;
-    y: number;
-}
-
-// Interval of how often logger should refresh termnial
 const REFRESH_INTERVAL_MS = 200;
-
 const DEFAULT_COLOR_METHOD = (c: string) => c;
-const TASK_TEMPLATE = (task: Task) => {
-    switch (task.step) {
-        case 'CLONE':
-            return `[CLONING] ${task.repository}`;
-
-        case 'READ':
-            return `[READING] ${task.repository}`;
-
-        case 'LINT':
-            return (
-                `[LINTING] ${task.repository} - ` +
-                `${task.currentFileIndex}/${task.fileCount} files`
-            );
-
-        default:
-            return `Unknown step ${task.step}`;
-    }
-};
-const REPOSITORIES_STATUS_TEMPLATE = (scannedRepositories: number) =>
-    `Repositories (${scannedRepositories}/${config.repositories.length})`;
-
-const LINT_FAILURE_TEMPLATE = (repository: string, rule?: string) =>
-    `[WARN] ${repository} crashed${rule ? `: ${rule}` : ''}`;
-const CLONE_FAILURE_TEMPLATE = (repository: string) =>
-    `[WARN] ${repository} failed to clone`;
-const READ_FAILURE_TEMPLATE = (repository: string) =>
-    `[WARN] ${repository} failed to read files`;
-const WRITE_FAILURE_TEMPLATE = (repository: string) =>
-    `[WARN] ${repository} failed to write results`;
 
 /**
  * Logger for updating the terminal with current status
@@ -62,7 +13,7 @@ const WRITE_FAILURE_TEMPLATE = (repository: string) =>
  * - Should be ran on main thread separate from worker threads in order to
  *   avoid blocking updates
  */
-class ProcessLogger {
+class ProgressLogger {
     /** Messages printed as a list under tasks */
     messages: LogMessage[];
 
@@ -210,7 +161,10 @@ class ProcessLogger {
 
         if (isNewWarning) {
             this.messages.push({
-                content: LINT_FAILURE_TEMPLATE(repository, erroneousRule),
+                content: Templates.LINT_FAILURE_TEMPLATE(
+                    repository,
+                    erroneousRule
+                ),
                 color: chalk.yellow,
             });
         }
@@ -221,7 +175,7 @@ class ProcessLogger {
      */
     onCloneFailure(repository: string) {
         this.messages.push({
-            content: CLONE_FAILURE_TEMPLATE(repository),
+            content: Templates.CLONE_FAILURE_TEMPLATE(repository),
             color: chalk.yellow,
         });
     }
@@ -231,7 +185,7 @@ class ProcessLogger {
      */
     onReadFailure(repository: string) {
         this.messages.push({
-            content: READ_FAILURE_TEMPLATE(repository),
+            content: Templates.READ_FAILURE_TEMPLATE(repository),
             color: chalk.yellow,
         });
     }
@@ -241,7 +195,7 @@ class ProcessLogger {
      */
     onWriteFailure(repository: string) {
         this.messages.push({
-            content: WRITE_FAILURE_TEMPLATE(repository),
+            content: Templates.WRITE_FAILURE_TEMPLATE(repository),
             color: chalk.yellow,
         });
     }
@@ -265,10 +219,11 @@ class ProcessLogger {
      */
     print() {
         const terminalHeight = process.stdout.rows;
+        // TODO [... and 5 hidden lines below]
 
         const rows = [
-            REPOSITORIES_STATUS_TEMPLATE(this.scannedRepositories),
-            ...this.tasks.map(TASK_TEMPLATE),
+            Templates.REPOSITORIES_STATUS_TEMPLATE(this.scannedRepositories),
+            ...this.tasks.map(Templates.TASK_TEMPLATE),
             ' ', // Empty line between tasks and messages
             ...this.messages.map(message => message.content),
         ].slice(0, terminalHeight);
@@ -312,41 +267,4 @@ class ProcessLogger {
     }
 }
 
-/**
- * Compares two given strings and construct `LogUpdate` steps of the changes
- * - This gets called during every print; optimization should be considered
- */
-function diffLogs(previousLog: string, newLog: string): LogUpdate[] {
-    const updates: LogUpdate[] = [];
-    const previousRows = previousLog.split('\n');
-
-    for (const [y, row] of newLog.split('\n').entries()) {
-        const previousRow = previousRows[y];
-        const characters = row.split('');
-
-        if (!previousRow) {
-            for (const [x, character] of characters.entries()) {
-                updates.push({ character, x, y });
-            }
-            continue;
-        }
-
-        const previousCharacters = previousRow.split('');
-        for (const [x, character] of characters.entries()) {
-            if (character === previousCharacters[x]) continue;
-            updates.push({ x, y, character });
-        }
-
-        if (previousCharacters.length > characters.length) {
-            const rightPad = characters.length;
-
-            for (let i = 0; i < previousCharacters.length - rightPad; i++) {
-                updates.push({ x: rightPad + i, y, character: ' ' });
-            }
-        }
-    }
-
-    return updates;
-}
-
-export default new ProcessLogger();
+export default new ProgressLogger();
