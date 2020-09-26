@@ -47,14 +47,16 @@ class ProgressLogger {
             }, REFRESH_INTERVAL_MS);
         };
 
-        // On terminal height change full print is required. Stop previous printing and start again
+        // On terminal size change full print is required
         process.stdout.on('resize', () => {
             if (this.intervalHandle !== null) {
+                // This will stop current printing immediately
                 clearTimeout(this.intervalHandle);
                 this.intervalHandle = null;
-            }
 
-            startPrinting();
+                // Reset printing status and start over in order to recover from terminal size change
+                startPrinting();
+            }
         });
 
         startPrinting();
@@ -117,6 +119,16 @@ class ProgressLogger {
         }
 
         return false;
+    }
+
+    /**
+     * Log start of task runner
+     */
+    onTaskStart(repository: string) {
+        this.updateTask(repository, {
+            step: 'START',
+            color: chalk.yellow,
+        });
     }
 
     /**
@@ -227,17 +239,21 @@ class ProgressLogger {
      */
     print() {
         const terminalHeight = process.stdout.rows;
-
-        // Keep track of interval handle changes. Used to recover from terminal height changes.
-        const intervalHandle = this.intervalHandle;
-        const shouldBailOut = () => intervalHandle !== this.intervalHandle;
+        const terminalWidth = process.stdout.columns;
 
         const rows = [
             Templates.REPOSITORIES_STATUS_TEMPLATE(this.scannedRepositories),
             ...this.tasks.map(Templates.TASK_TEMPLATE),
             ' ', // Empty line between tasks and messages
             ...this.messages.map(message => message.content),
-        ];
+        ].map(row => {
+            // Prevent row wrapping
+            if (row.length > terminalWidth) {
+                return `${row.slice(0, terminalWidth - 3)}...`;
+            }
+
+            return row;
+        });
 
         const colors = [
             null,
@@ -246,19 +262,18 @@ class ProgressLogger {
             ...this.messages.map(message => message.color),
         ];
 
+        // Display notification about overflowing rows
         const overflowingRowCount = rows.length - terminalHeight;
         if (overflowingRowCount > 0) {
             rows.splice(terminalHeight - 1);
             colors.splice(terminalHeight - 1);
 
-            rows.push(`[... and ${overflowingRowCount} hidden lines below]`);
+            rows.push(Templates.OVERFLOWING_ROWS(overflowingRowCount));
             colors.push(chalk.black.bgYellow);
         }
 
         // Update colors of whole row
         for (const [rowIndex, color] of colors.entries()) {
-            if (shouldBailOut()) return;
-
             if (this.previousColors[rowIndex] !== color) {
                 const row = rows[rowIndex];
                 const colorMethod = color || DEFAULT_COLOR_METHOD;
@@ -274,7 +289,6 @@ class ProgressLogger {
 
         // Update characters changes, e.g. step or file count changes
         for (const { x, y, characters, wholeRow } of updates) {
-            if (shouldBailOut()) return;
             const colorMethod = colors[y] || DEFAULT_COLOR_METHOD;
 
             // These were already updated by row's color update
@@ -285,8 +299,9 @@ class ProgressLogger {
             process.stdout.write(colorMethod(characters));
         }
 
+        // Keep cursor on last row at the first or last column
         process.stdout.cursorTo(
-            overflowingRowCount >= 0 ? process.stdout.columns : 0,
+            overflowingRowCount >= 0 ? terminalWidth : 0,
             rows.length + 1
         );
 

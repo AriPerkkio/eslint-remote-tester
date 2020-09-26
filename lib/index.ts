@@ -8,6 +8,33 @@ import { writeResults } from './file-client';
 const DEFAULT_CONCURRENT_TASKS = 5;
 
 /**
+ * Entrypoint of the application.
+ * Runs ESLint to given repositories and filters out only the rules being under testing.
+ * Results are written to ./results directory.
+ */
+(async function main() {
+    const pool = config.repositories.map(repo => () => scanRepo(repo));
+
+    async function execute(): Promise<void> {
+        const task = pool.shift();
+
+        if (task) {
+            await task();
+            return execute();
+        }
+    }
+
+    // Start x amount of task runners parallel until we are out of repositories to scan
+    await Promise.all(
+        Array(config.concurrentTasks || DEFAULT_CONCURRENT_TASKS)
+            .fill(execute)
+            .map(task => task())
+    );
+
+    logger.onAllRepositoriesScanned();
+})();
+
+/**
  * Run repository scanning on separate thread in order to keep main one
  * free for logger updates
  */
@@ -16,6 +43,9 @@ async function scanRepo(repository: string) {
         repository,
         (message: WorkerMessage) => {
             switch (message.type) {
+                case 'START':
+                    return logger.onTaskStart(repository);
+
                 case 'READ':
                     return logger.onRepositoryRead(repository);
 
@@ -48,30 +78,3 @@ async function scanRepo(repository: string) {
 
     logger.onLintEnd(repository, results.length);
 }
-
-/**
- * Entrypoint of the application.
- * Runs ESLint to given repositories and filters out only the rule being under testing.
- * Results are written to ./results directory.
- */
-(async function main() {
-    const pool = config.repositories.map(repos => () => scanRepo(repos));
-
-    async function execute(): Promise<void> {
-        const task = pool.shift();
-
-        if (task) {
-            await task();
-            return execute();
-        }
-    }
-
-    // Start x amount of task runners parallel until we are out of repositories to scan
-    await Promise.all(
-        Array(config.concurrentTasks || DEFAULT_CONCURRENT_TASKS)
-            .fill(execute)
-            .map(task => task())
-    );
-
-    logger.onAllRepositoriesScanned();
-})();

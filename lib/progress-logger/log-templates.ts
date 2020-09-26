@@ -3,6 +3,9 @@ import { Task } from './types';
 
 export const TASK_TEMPLATE = (task: Task): string => {
     switch (task.step) {
+        case 'START':
+            return `[STARTING] ${task.repository}`;
+
         case 'CLONE':
             return `[CLONING] ${task.repository}`;
 
@@ -37,3 +40,6 @@ export const READ_FAILURE_TEMPLATE = (repository: string): string =>
 
 export const WRITE_FAILURE_TEMPLATE = (repository: string): string =>
     `[WARN] ${repository} failed to write results`;
+
+export const OVERFLOWING_ROWS = (overflowingRowCount: number): string =>
+    `[... and ${overflowingRowCount} hidden lines below]`;

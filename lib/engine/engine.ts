@@ -16,6 +16,10 @@ function scanRepository(
     onMessage: (message: WorkerMessage) => void
 ): Promise<LintMessage[]> {
     return new Promise((resolve, reject) => {
+        // Notify about worker starting. It can take a while to get worker starting up
+        // Prevents showing blank screen between worker start and repository reading
+        onMessage({ type: 'START' });
+
         const worker = new Worker(__filename, { workerData: repository });
 
         worker.on('message', (message: WorkerMessage) => {

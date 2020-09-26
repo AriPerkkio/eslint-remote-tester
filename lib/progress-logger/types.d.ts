@@ -1,7 +1,7 @@
 import { Chalk } from 'chalk';
 
 export interface Task {
-    step?: 'CLONE' | 'READ' | 'LINT';
+    step?: 'START' | 'CLONE' | 'READ' | 'LINT';
     color?: Chalk;
     repository: string;
     fileCount?: number;

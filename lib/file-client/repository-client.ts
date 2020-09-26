@@ -29,4 +29,5 @@ export async function cloneRepository(
             onCloneFailure();
         }
     }
+    // TODO: else: git pull
 }
