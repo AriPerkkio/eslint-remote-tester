@@ -3,7 +3,7 @@ import { ESLint, Linter } from 'eslint';
 
 import config from '../config';
 import { getFiles } from '../file-client';
-import { LintMessage } from '../types';
+import { LintMessage } from './types';
 
 export type WorkerMessage =
     | { type: 'START' }

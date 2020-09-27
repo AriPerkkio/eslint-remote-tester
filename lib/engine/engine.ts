@@ -1,7 +1,7 @@
 import { Worker, isMainThread } from 'worker_threads';
 
 import workerTask, { WorkerMessage } from './worker-task';
-import { LintMessage } from '../types';
+import { LintMessage } from './types';
 
 if (!isMainThread) {
     workerTask();

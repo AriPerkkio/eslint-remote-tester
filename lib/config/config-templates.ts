@@ -13,6 +13,9 @@ export const CONFIGURATION_FILE_TEMPLATE =
     /** Rules used to filter out results */
     rulesUnderTesting: ['react/no-direct-mutation-state'],
 
+    /** Optional syntax for the result parser. Valid values are plaintext, markdown. Defaults to markdown on CLI, plaintext on CI */
+    resultParser: 'markdown',
+
     /** Maximum amount of tasks ran concurrently */
     concurrentTasks: 5,
 

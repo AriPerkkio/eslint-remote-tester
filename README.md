@@ -39,6 +39,9 @@ module.exports = {
     /** Rules used to filter out results. Use empty array when ESLint crashes are the only interest */
     rulesUnderTesting: [],
 
+    /** Optional syntax for the result parser. Valid values are plaintext, markdown. Defaults to markdown on CLI, plaintext on CI */
+    resultParser: 'markdown',
+
     /** Maximum amount of tasks ran concurrently */
     concurrentTasks: 5,
 
@@ -86,6 +89,8 @@ module.exports = {
     pathIgnorePattern: "(node_modules|^\\.|test-results)",
 
     rulesUnderTesting: ['react/no-unstable-nested-components'],
+
+    resultParser: undefined,
 
     concurrentTasks: 5,
 

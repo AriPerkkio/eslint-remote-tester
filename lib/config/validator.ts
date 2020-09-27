@@ -1,5 +1,8 @@
-import { Config } from './types';
+import { Config, ResultParser } from './types';
 
+const RESULT_PARSERS: ResultParser[] = ['plaintext', 'markdown'];
+const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
+const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
 const DEFAULT_CONCURRENT_TASKS = 5;
 
 export default function constructAndValidateConfiguration(
@@ -10,6 +13,7 @@ export default function constructAndValidateConfiguration(
         extensions,
         pathIgnorePattern,
         rulesUnderTesting,
+        resultParser,
         concurrentTasks,
         eslintrc,
         CI,
@@ -48,16 +52,29 @@ export default function constructAndValidateConfiguration(
         }
     }
 
+    if (CI != null && typeof CI !== 'boolean') {
+        errors.push(`CI (${CI}) should be a boolean.`);
+    } else {
+        // Resolve CI from environment variables, if found. Fallback to configuration file.
+        config.CI = process.env.CI == null ? CI : !!process.env.CI;
+    }
+
+    if (resultParser && !RESULT_PARSERS.includes(resultParser)) {
+        errors.push(
+            `resultParser (${resultParser}) is not valid value. Known values are ${RESULT_PARSERS.join(
+                ', '
+            )}`
+        );
+    } else if (!resultParser) {
+        config.resultParser = config.CI
+            ? DEFAULT_RESULT_PARSER_CI
+            : DEFAULT_RESULT_PARSER_CLI;
+    }
+
     if (concurrentTasks && typeof concurrentTasks !== 'number') {
         errors.push(`concurrentTasks (${concurrentTasks}) should be a number.`);
     } else if (concurrentTasks == null) {
         config.concurrentTasks = DEFAULT_CONCURRENT_TASKS;
-    }
-
-    if (CI != null && typeof CI !== 'boolean') {
-        errors.push(`CI (${CI}) should be a boolean.`);
-    } else {
-        config.CI = process.env.CI == null ? CI : !!process.env.CI;
     }
 
     if (errors.length) {

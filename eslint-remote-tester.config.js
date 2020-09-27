@@ -1,9 +1,7 @@
 module.exports = {
     repositories: [
-        'ant-design/ant-design',
         'AriPerkkio/js-framework-playground',
         'oldboyxx/jira_clone',
-        'mui-org/material-ui',
         'reach/reach-ui',
         'react-bootstrap/react-bootstrap',
         'StreakYC/react-smooth-collapse',
@@ -11,6 +9,8 @@ module.exports = {
         'AriPerkkio/scrpr',
         'AriPerkkio/state-mgmt-examples',
         'AriPerkkio/suspense-examples',
+        'ant-design/ant-design',
+        'mui-org/material-ui',
         'withspectrum/spectrum',
         'codesandbox/codesandbox-client',
         'Automattic/wp-calypso',
@@ -28,6 +28,8 @@ module.exports = {
     pathIgnorePattern: "(node_modules|^\\.|test-results)",
 
     rulesUnderTesting: ['react/no-direct-mutation-state'],
+
+    resultParser: undefined,
 
     concurrentTasks: 5,
 

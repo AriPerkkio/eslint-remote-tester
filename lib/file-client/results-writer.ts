@@ -2,11 +2,18 @@ import fs from 'fs';
 
 import config from '../config';
 import { CACHE_LOCATION, URL } from './repository-client';
-import { LintMessage } from '../types';
+import {
+    RESULT_PARSER_TO_TEMPLATE,
+    RESULT_PARSER_TO_EXTENSION,
+} from './result-templates';
+import { LintMessage } from '../engine/types';
 
 const RESULTS_CI: string[] = [];
 const RESULTS_LOCATION = './results';
+const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
+const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
 
+// Start with empty results directory
 if (!fs.existsSync(RESULTS_LOCATION)) {
     fs.mkdirSync(RESULTS_LOCATION);
 } else {
@@ -16,18 +23,23 @@ if (!fs.existsSync(RESULTS_LOCATION)) {
 }
 
 const RESULT_TEMPLATE_CLI = (result: LintMessage) => {
-    const fullPath = result.path.replace(`${CACHE_LOCATION}/`, '');
-    const [project, repository, ...pathParts] = fullPath.split('/');
+    const path = result.path.replace(`${CACHE_LOCATION}/`, '');
+    const extension = path.split('.').pop();
     const lines = `#L${result.line}${
         result.endLine ? `-L${result.endLine}` : ''
     }`;
 
-    return `Rule: ${result.ruleId}
-Message: ${result.message}
-Path: ${fullPath}
-Link: ${URL}/${project}/${repository}/blob/HEAD/${pathParts.join('/')}${lines}
-${result.source}
-`;
+    const [project, repository, ...pathParts] = path.split('/');
+    const filePath = pathParts.join('/');
+
+    return RESULT_TEMPLATE({
+        rule: result.ruleId,
+        message: result.message,
+        path,
+        link: `${URL}/${project}/${repository}/blob/HEAD/${filePath}${lines}`,
+        extension,
+        source: result.source,
+    });
 };
 
 const RESULT_TEMPLATE_CI = (results: string, repository: string) =>
@@ -59,7 +71,7 @@ export function writeResults(results: LintMessage[], repository: string): void {
         RESULTS_CI.push(formattedResults);
     } else {
         fs.writeFileSync(
-            `${RESULTS_LOCATION}/${repositoryName}`,
+            `${RESULTS_LOCATION}/${repositoryName}${RESULT_EXTENSION}`,
             formattedResults,
             'utf8'
         );
