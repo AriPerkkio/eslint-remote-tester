@@ -3,7 +3,7 @@
 import engine, { WorkerMessage } from './engine';
 import config from './config';
 import logger from './progress-logger';
-import { writeResults, printResultsCI } from './file-client';
+import { writeResults, printResultsCI, clearResults } from './file-client';
 
 /**
  * Entrypoint of the application.
@@ -21,6 +21,9 @@ import { writeResults, printResultsCI } from './file-client';
             return execute();
         }
     }
+
+    // Clear possible earlier results / initialize results folder
+    clearResults();
 
     // Start x amount of task runners parallel until we are out of repositories to scan
     await Promise.all(

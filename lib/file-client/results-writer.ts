@@ -13,13 +13,16 @@ const RESULTS_LOCATION = './results';
 const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
 const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
 
-// Start with empty results directory
-if (!fs.existsSync(RESULTS_LOCATION)) {
+/**
+ * Initialize results folder
+ * - Should be ran once from the main thread
+ */
+export function clearResults(): void {
+    if (fs.existsSync(RESULTS_LOCATION)) {
+        fs.rmdirSync(RESULTS_LOCATION, { recursive: true });
+    }
+
     fs.mkdirSync(RESULTS_LOCATION);
-} else {
-    fs.readdirSync(RESULTS_LOCATION).forEach(result =>
-        fs.unlinkSync(`${RESULTS_LOCATION}/${result}`)
-    );
 }
 
 const RESULT_TEMPLATE_CLI = (result: LintMessage) => {
