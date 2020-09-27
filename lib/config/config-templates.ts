@@ -38,5 +38,8 @@ export const CONFIGURATION_FILE_TEMPLATE =
         rules: {
             'react/no-direct-mutation-state': ['error'],
         },
-    }
+    },
+
+    /** Optional boolean flag used to set CI mode. Ignored when process.env.CI is set. */
+    CI: false,
 }`;

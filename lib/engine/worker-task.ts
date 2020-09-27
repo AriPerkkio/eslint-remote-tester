@@ -24,6 +24,7 @@ const LINT_FAILURE_BASE = {
 
 // Regex used to attempt parsing out rule which caused linter to crash
 const RULE_REGEXP = /rules\/(.*?)\.js/;
+const SOURCE_WINDOW_SIZE = 10;
 
 /**
  * Picks out messages which are under testing and constructs a small snippet of
@@ -44,6 +45,7 @@ function mergeMessagesWithSource(
     }
 
     const sourceLines = result.source ? result.source.split('\n') : [];
+    const sourceLinesPadding = Math.abs(SOURCE_WINDOW_SIZE / 2);
 
     return [
         ...all,
@@ -52,8 +54,11 @@ function mergeMessagesWithSource(
             // Construct small snippet of the erroneous code block
             source: sourceLines
                 .slice(
-                    Math.max(0, message.line - 2),
-                    Math.min(sourceLines.length, 2 + (message.endLine || 0))
+                    Math.max(0, message.line - sourceLinesPadding),
+                    Math.min(
+                        sourceLines.length,
+                        sourceLinesPadding + (message.endLine || 0)
+                    )
                 )
                 .join('\n'),
         })),

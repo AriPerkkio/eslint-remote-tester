@@ -1,6 +1,10 @@
 import { Config } from './types';
 
-export default function validateConfiguration(config: Config): void {
+const DEFAULT_CONCURRENT_TASKS = 5;
+
+export default function constructAndValidateConfiguration(
+    configToValidate: Config
+): Config {
     const {
         repositories,
         extensions,
@@ -8,21 +12,27 @@ export default function validateConfiguration(config: Config): void {
         rulesUnderTesting,
         concurrentTasks,
         eslintrc,
-    } = config;
+        CI,
+    } = configToValidate;
+
+    const config = { ...configToValidate };
     const errors: string[] = [];
 
     // Required fields
     if (!repositories || !repositories.length) {
         errors.push(`Missing repositories.`);
     }
+
     if (!extensions || !extensions.length) {
         errors.push(`Missing extensions.`);
     }
+
     if (!rulesUnderTesting) {
         errors.push(`Missing rulesUnderTesting.`);
     } else if (!Array.isArray(rulesUnderTesting)) {
         errors.push(`Config rulesUnderTesting should be an array.`);
     }
+
     if (!eslintrc) {
         errors.push(`Missing eslintrc.`);
     }
@@ -30,15 +40,24 @@ export default function validateConfiguration(config: Config): void {
     // Optional fields
     if (pathIgnorePattern) {
         try {
-            new RegExp(pathIgnorePattern);
+            config.pathIgnorePattern = new RegExp(pathIgnorePattern);
         } catch (e) {
             errors.push(
                 `pathIgnorePattern (${pathIgnorePattern}) is not valid regex: ${e.message}`
             );
         }
     }
+
     if (concurrentTasks && typeof concurrentTasks !== 'number') {
         errors.push(`concurrentTasks (${concurrentTasks}) should be a number.`);
+    } else if (concurrentTasks == null) {
+        config.concurrentTasks = DEFAULT_CONCURRENT_TASKS;
+    }
+
+    if (CI != null && typeof CI !== 'boolean') {
+        errors.push(`CI (${CI}) should be a boolean.`);
+    } else {
+        config.CI = process.env.CI == null ? CI : !!process.env.CI;
     }
 
     if (errors.length) {
@@ -48,4 +67,6 @@ export default function validateConfiguration(config: Config): void {
 
         throw new Error(configurationValidationErrors);
     }
+
+    return config;
 }

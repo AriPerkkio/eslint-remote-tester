@@ -43,7 +43,10 @@ module.exports = {
     concurrentTasks: 5,
 
     /** ESLint configuration */
-    eslintrc: {}
+    eslintrc: {},
+
+    /** Optional boolean flag used to set CI mode. Ignored when process.env.CI is set. */
+    CI: false,
 }
 ```
 

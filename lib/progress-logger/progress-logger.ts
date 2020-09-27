@@ -1,5 +1,6 @@
 import chalk, { Chalk } from 'chalk';
 
+import config from '../config';
 import diffLogs from './log-diff';
 import * as Templates from './log-templates';
 import { LogMessage, Task } from './types';
@@ -9,9 +10,11 @@ const DEFAULT_COLOR_METHOD = (c: string) => c;
 
 /**
  * Logger for updating the terminal with current status
- * - Updates are printed based on `REFRESH_INTERVAL_MS`
+ * - Updates are printed based on `REFRESH_INTERVAL_MS` when in CLI mode
  * - Should be ran on main thread separate from worker threads in order to
  *   avoid blocking updates
+ * - On CI mode logs contain only messages of the logger. Tasks' status updates
+ *   are not spammed to CI's stdout
  */
 class ProgressLogger {
     /** Messages printed as a list under tasks */
@@ -41,9 +44,12 @@ class ProgressLogger {
             this.previousLog = '';
             this.previousColors = [];
 
+            // On CI mode printing won't be ran on interval
+            if (config.CI) return;
+
             console.clear();
             this.intervalHandle = setInterval(() => {
-                this.print();
+                this.printCLI();
             }, REFRESH_INTERVAL_MS);
         };
 
@@ -63,10 +69,22 @@ class ProgressLogger {
     }
 
     /**
+     * Add new message to logger
+     */
+    addNewMessage(message: LogMessage) {
+        this.messages.push(message);
+
+        // Keep CI's stdout updated of new messages
+        if (config.CI) {
+            this.printCI();
+        }
+    }
+
+    /**
      * Clear refresh interval
      */
     onAllRepositoriesScanned() {
-        this.messages.push({
+        this.addNewMessage({
             content: `[DONE] Finished scan of ${this.scannedRepositories} repositories`,
             color: chalk.green,
         });
@@ -84,6 +102,7 @@ class ProgressLogger {
         const taskExists = this.tasks.find(
             task => task.repository === repository
         );
+        let ciMessage;
 
         if (taskExists) {
             this.tasks = this.tasks.map(task => {
@@ -91,10 +110,23 @@ class ProgressLogger {
                     return task;
                 }
 
-                return { ...task, ...updates };
+                const updatedTask = { ...task, ...updates };
+                if (task.step !== updates.step) {
+                    ciMessage = Templates.TASK_TEMPLATE(updatedTask);
+                }
+
+                return updatedTask;
             });
         } else {
-            this.tasks.push({ repository, ...updates });
+            const task = { repository, ...updates };
+            this.tasks.push(task);
+
+            ciMessage = Templates.TASK_TEMPLATE(task);
+        }
+
+        // Keep CI updated of new tasks and their step changes
+        if (config.CI && ciMessage) {
+            this.addNewMessage({ content: ciMessage });
         }
     }
 
@@ -150,15 +182,9 @@ class ProgressLogger {
         this.scannedRepositories++;
         this.tasks = this.tasks.filter(task => task.repository !== repository);
 
-        const hasErrors = resultCount > 0;
-        const color = hasErrors ? chalk.red : chalk.green;
-        const postfix = hasErrors
-            ? `with ${resultCount} errors`
-            : 'without errors';
-
-        this.messages.push({
-            content: `[DONE] ${repository} ${postfix}`,
-            color,
+        this.addNewMessage({
+            content: Templates.LINT_END_TEMPLATE(repository, resultCount),
+            color: resultCount > 0 ? chalk.red : chalk.green,
         });
     }
 
@@ -180,7 +206,7 @@ class ProgressLogger {
         const isNewWarning = this.addWarningToTask(repository, erroneousRule);
 
         if (isNewWarning) {
-            this.messages.push({
+            this.addNewMessage({
                 content: Templates.LINT_FAILURE_TEMPLATE(
                     repository,
                     erroneousRule
@@ -194,7 +220,7 @@ class ProgressLogger {
      * Log warning about clone failure
      */
     onCloneFailure(repository: string) {
-        this.messages.push({
+        this.addNewMessage({
             content: Templates.CLONE_FAILURE_TEMPLATE(repository),
             color: chalk.yellow,
         });
@@ -204,7 +230,7 @@ class ProgressLogger {
      * Log warning about filesystem read failure
      */
     onReadFailure(repository: string) {
-        this.messages.push({
+        this.addNewMessage({
             content: Templates.READ_FAILURE_TEMPLATE(repository),
             color: chalk.yellow,
         });
@@ -214,7 +240,7 @@ class ProgressLogger {
      * Log warning about result writing failure
      */
     onWriteFailure(repository: string) {
-        this.messages.push({
+        this.addNewMessage({
             content: Templates.WRITE_FAILURE_TEMPLATE(repository),
             color: chalk.yellow,
         });
@@ -235,9 +261,10 @@ class ProgressLogger {
     }
 
     /**
-     * Print current tasks and messages
+     * Printing method for CLI mode
+     * - Updates termnial with status of tasks and adds new messages
      */
-    print() {
+    printCLI() {
         const terminalHeight = process.stdout.rows;
         const terminalWidth = process.stdout.columns;
 
@@ -307,6 +334,14 @@ class ProgressLogger {
 
         this.previousColors = colors;
         this.previousLog = formattedLog;
+    }
+
+    /**
+     * Printing method for CI mode
+     * - Prints only the latest message
+     */
+    printCI() {
+        console.log(this.messages.map(m => m.content).pop());
     }
 }
 

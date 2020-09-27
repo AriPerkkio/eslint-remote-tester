@@ -12,20 +12,27 @@ export const TASK_TEMPLATE = (task: Task): string => {
         case 'READ':
             return `[READING] ${task.repository}`;
 
-        case 'LINT':
-            return (
-                `[LINTING] ${task.repository} - ` +
-                `${task.currentFileIndex}/${task.fileCount} files`
-            );
+        case 'LINT': {
+            const status =
+                task.currentFileIndex === 0 ? '' : `${task.currentFileIndex}/`;
+
+            return `[LINTING] ${task.repository} - ${status}${task.fileCount} files`;
+        }
 
         default:
             return `Unknown step ${task.step}`;
     }
 };
+
 export const REPOSITORIES_STATUS_TEMPLATE = (
     scannedRepositories: number
 ): string =>
     `Repositories (${scannedRepositories}/${config.repositories.length})`;
+
+export const LINT_END_TEMPLATE = (
+    repository: string,
+    errorCount: number
+): string => `[DONE] ${repository} ${errorCount} errors`;
 
 export const LINT_FAILURE_TEMPLATE = (
     repository: string,

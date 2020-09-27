@@ -3,9 +3,7 @@
 import engine, { WorkerMessage } from './engine';
 import config from './config';
 import logger from './progress-logger';
-import { writeResults } from './file-client';
-
-const DEFAULT_CONCURRENT_TASKS = 5;
+import { writeResults, printResultsCI } from './file-client';
 
 /**
  * Entrypoint of the application.
@@ -26,12 +24,17 @@ const DEFAULT_CONCURRENT_TASKS = 5;
 
     // Start x amount of task runners parallel until we are out of repositories to scan
     await Promise.all(
-        Array(config.concurrentTasks || DEFAULT_CONCURRENT_TASKS)
+        Array(config.concurrentTasks)
             .fill(execute)
             .map(task => task())
     );
 
     logger.onAllRepositoriesScanned();
+
+    // On CI mode print results of scan to stdout
+    if (config.CI) {
+        printResultsCI();
+    }
 })();
 
 /**

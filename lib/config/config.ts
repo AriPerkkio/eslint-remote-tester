@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import validateConfiguration from './validator';
+import constructAndValidateConfiguration from './validator';
 import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
 import { Config } from './types';
 
@@ -18,5 +18,4 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
 
 const config: Config = require(path.resolve(CONFIGURATION_FILE));
 
-validateConfiguration(config);
-export default config;
+export default constructAndValidateConfiguration(config);

@@ -16,15 +16,11 @@ interface GetFilesArguments {
     onReadFailure: () => void;
 }
 
-const pathIgnorePattern = config.pathIgnorePattern
-    ? new RegExp(config.pathIgnorePattern)
-    : undefined;
-
 /**
  * Check whether given directory or path is set to be ignored by config
  */
 function isDirectoryIgnored(fileOrDir: string) {
-    return pathIgnorePattern && pathIgnorePattern.test(fileOrDir);
+    return config.pathIgnorePattern && config.pathIgnorePattern.test(fileOrDir);
 }
 
 /**

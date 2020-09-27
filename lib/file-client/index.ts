@@ -1,2 +1,2 @@
 export { getFiles } from './file-client';
-export { writeResults } from './results-writer';
+export { writeResults, printResultsCI } from './results-writer';

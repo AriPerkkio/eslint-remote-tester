@@ -4,8 +4,9 @@ import { Linter } from 'eslint';
 export interface Config {
     repositories: string[];
     extensions: string[];
-    pathIgnorePattern?: string;
+    pathIgnorePattern?: RegExp;
     rulesUnderTesting: string[];
     concurrentTasks?: number;
     eslintrc: Linter.Config;
+    CI?: boolean;
 }

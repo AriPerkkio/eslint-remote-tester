@@ -16,7 +16,8 @@
         "prebuild": "rimraf dist",
         "build": "tsc",
         "watch": "tsc -w",
-        "start": "nodemon --watch dist dist/index.js"
+        "start": "nodemon --watch dist dist/index.js",
+        "start:ci": "CI=true yarn start"
     },
     "repository": {
         "type": "git",

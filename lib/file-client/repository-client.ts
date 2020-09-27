@@ -1,7 +1,7 @@
 import fs from 'fs';
 import simpleGit from 'simple-git';
 
-const URL = 'https://github.com';
+export const URL = 'https://github.com';
 export const CACHE_LOCATION = './.cache-eslint-repo-tester';
 
 // Create cache if missing
