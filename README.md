@@ -57,6 +57,14 @@ module.exports = {
 Run `yarn lint:remote`. Results are written into `./results` folder.
 
 ## Example
+
+### Results:
+
+* [markdown](docs/results-markdown.md)
+* [plaintext](docs/results-plaintext)
+
+### Configuration
+
 ```js
 // eslint-remote-tester.config.js
 module.exports = {
