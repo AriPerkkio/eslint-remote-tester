@@ -2,7 +2,7 @@ import fs from 'fs';
 import simpleGit from 'simple-git';
 
 export const URL = 'https://github.com';
-export const CACHE_LOCATION = './.cache-eslint-repo-tester';
+export const CACHE_LOCATION = './.cache-eslint-remote-tester';
 
 // Create cache if missing
 if (!fs.existsSync(CACHE_LOCATION)) {
