@@ -15,6 +15,7 @@ module.exports = {
         'prettier/@typescript-eslint',
     ],
     rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
         'node/no-missing-import': [
             'error',
             {

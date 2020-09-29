@@ -9,6 +9,9 @@
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true
 
+        // TODO
+        // "strict": true
+
         // TODO tspaths?
         // "baseUrl": "./lib"
     },
