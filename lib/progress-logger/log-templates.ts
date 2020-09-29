@@ -29,6 +29,9 @@ export const REPOSITORIES_STATUS_TEMPLATE = (
 ): string =>
     `Repositories (${scannedRepositories}/${config.repositories.length})`;
 
+export const CI_STATUS_TEMPLATE = (scannedRepositories: number): string =>
+    `[INFO] ${REPOSITORIES_STATUS_TEMPLATE(scannedRepositories)}`;
+
 export const LINT_END_TEMPLATE = (
     repository: string,
     errorCount: number

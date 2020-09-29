@@ -12,8 +12,6 @@ module.exports = {
         'ant-design/ant-design',
         'mui-org/material-ui',
         'withspectrum/spectrum',
-        'codesandbox/codesandbox-client',
-        'Automattic/wp-calypso',
         'vercel/next-site',
         'artsy/force',
         'reactjs/reactjs.org',
@@ -25,13 +23,13 @@ module.exports = {
 
     extensions: ['js', 'jsx', 'ts', 'tsx'],
 
-    pathIgnorePattern: "(node_modules|^\\.|test-results)",
+    pathIgnorePattern: "(node_modules|^\\.|test-results|tests|docs)",
 
-    rulesUnderTesting: ['react/no-direct-mutation-state'],
+    rulesUnderTesting: [],
 
     resultParser: undefined,
 
-    concurrentTasks: 5,
+    concurrentTasks: 10,
 
     eslintrc: {
         root: true,
@@ -45,15 +43,6 @@ module.exports = {
                 jsx: true,
             },
         },
-        settings: {
-            react: {
-                version: '16.13.1',
-            },
-        },
-        plugins: ['react'],
-        extends: ['plugin:react/all'],
-        rules: {
-            'react/no-direct-mutation-state': ['error'],
-        },
+        extends: ['eslint:recommended'],
     },
 };

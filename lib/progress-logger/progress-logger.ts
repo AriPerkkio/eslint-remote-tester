@@ -6,6 +6,7 @@ import * as Templates from './log-templates';
 import { LogMessage, Task } from './types';
 
 const REFRESH_INTERVAL_MS = 200;
+const CI_KEEP_ALIVE_INTERVAL_MS = 60 * 5 * 1000;
 const DEFAULT_COLOR_METHOD = (c: string) => c;
 
 /**
@@ -44,8 +45,13 @@ class ProgressLogger {
             this.previousLog = '';
             this.previousColors = [];
 
-            // On CI mode printing won't be ran on interval
-            if (config.CI) return;
+            if (config.CI) {
+                this.intervalHandle = setInterval(() => {
+                    this.onCiStatus();
+                }, CI_KEEP_ALIVE_INTERVAL_MS);
+
+                return;
+            }
 
             console.clear();
             this.intervalHandle = setInterval(() => {
@@ -126,7 +132,7 @@ class ProgressLogger {
 
         // Keep CI updated of new tasks and their step changes
         if (config.CI && ciMessage) {
-            this.addNewMessage({ content: ciMessage });
+            this.addNewMessage({ content: ciMessage, color: updates.color });
         }
     }
 
@@ -261,6 +267,16 @@ class ProgressLogger {
     }
 
     /**
+     * Log status of scanning to CI
+     */
+    onCiStatus() {
+        this.addNewMessage({
+            content: Templates.CI_STATUS_TEMPLATE(this.scannedRepositories),
+            color: chalk.yellow,
+        });
+    }
+
+    /**
      * Printing method for CLI mode
      * - Updates termnial with status of tasks and adds new messages
      */
@@ -341,7 +357,12 @@ class ProgressLogger {
      * - Prints only the latest message
      */
     printCI() {
-        console.log(this.messages.map(m => m.content).pop());
+        const lastMessage = [...this.messages].pop();
+
+        if (lastMessage) {
+            const color = lastMessage.color || DEFAULT_COLOR_METHOD;
+            console.log(color(lastMessage.content));
+        }
     }
 }
 

@@ -81,9 +81,15 @@ export function writeResults(results: LintMessage[], repository: string): void {
     }
 }
 
+/**
+ * Print results and exit with error code if any errors exist
+ */
 export function printResultsCI(): void {
     if (RESULTS_CI.length) {
         console.log(RESULTS_CI.join('\n'));
+
+        // eslint-disable-next-line no-process-exit
+        process.exit(1);
     } else {
         console.log('No errors');
     }
