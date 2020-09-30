@@ -66,7 +66,12 @@ function mergeMessagesWithSource(
 }
 
 // Wrapper used to enfore WorkerMessage type to parentPort.postMessage calls
-const postMessage = (message: WorkerMessage) => parentPort.postMessage(message);
+const postMessage = (message: WorkerMessage) => {
+    if (parentPort) {
+        return parentPort.postMessage(message);
+    }
+    throw new Error(`parentPort unavailable, message: (${message})`);
+};
 
 const linter = new ESLint({
     useEslintrc: false,

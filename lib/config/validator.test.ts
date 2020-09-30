@@ -6,7 +6,7 @@ const DEFAULT_CONFIGURATION: Config = {
     extensions: ['.ts', '.tsx'],
     pathIgnorePattern: undefined,
     rulesUnderTesting: [],
-    resultParser: undefined,
+    resultParser: 'plaintext',
     concurrentTasks: undefined,
     eslintrc: {},
     CI: undefined,
@@ -15,7 +15,7 @@ const DEFAULT_CONFIGURATION: Config = {
 describe('Config validator', () => {
     test('repositories are required', () => {
         expect(() =>
-            validator({ ...DEFAULT_CONFIGURATION, repositories: null })
+            validator({ ...DEFAULT_CONFIGURATION, repositories: undefined! })
         ).toThrowError('Configuration validation errors: Missing repositories');
     });
 });

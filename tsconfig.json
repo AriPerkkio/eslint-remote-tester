@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "strict": true,
         "sourceMap": true,
         "module": "commonjs",
         "target": "es6",
@@ -8,9 +9,6 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true
-
-        // TODO
-        // "strict": true
 
         // TODO tspaths?
         // "baseUrl": "./lib"

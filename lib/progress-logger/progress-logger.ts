@@ -28,18 +28,21 @@ class ProgressLogger {
     scannedRepositories: number;
 
     /** Handle of refresh interval */
-    intervalHandle: NodeJS.Timeout;
+    intervalHandle: NodeJS.Timeout | null;
 
     /** Contents of previous log. Used to diff new contents */
     previousLog: string;
 
     /** Colors of previous log */
-    previousColors: Chalk[];
+    previousColors: (Chalk | null | undefined)[];
 
     constructor() {
         this.messages = [];
         this.tasks = [];
         this.scannedRepositories = 0;
+        this.intervalHandle = null;
+        this.previousLog = '';
+        this.previousColors = [];
 
         const startPrinting = () => {
             this.previousLog = '';
@@ -97,7 +100,9 @@ class ProgressLogger {
 
         // Stop updating afer one final printing
         setTimeout(() => {
-            clearTimeout(this.intervalHandle);
+            if (this.intervalHandle !== null) {
+                clearTimeout(this.intervalHandle);
+            }
         }, REFRESH_INTERVAL_MS);
     }
 

@@ -1,5 +1,6 @@
 .eslintrc.js
 jest.config.js
+eslint-remote-tester.config.js
 .cache-eslint-remote-tester
 dist
-eslint-remote-tester.config.js
+docs

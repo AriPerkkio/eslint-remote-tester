@@ -1,12 +1,13 @@
 import { ResultParser } from '../config/types';
+import { LintMessage } from '../engine/types';
 
 interface ResultTemplateOptions {
-    rule: string;
-    message: string;
+    rule: LintMessage['ruleId'];
+    message: LintMessage['message'];
     path: string;
     link: string;
-    extension: string;
-    source: string;
+    extension?: string;
+    source: LintMessage['source'];
 }
 
 const RESULT_TEMPLATE_PLAINTEXT = (options: ResultTemplateOptions): string =>
@@ -22,7 +23,7 @@ const RESULT_TEMPLATE_MARKDOWN = (options: ResultTemplateOptions): string =>
 - Message: \`${options.message}\`
 - Path: \`${options.path}\`
 - [Link](${options.link})
-\`\`\`${options.extension}
+\`\`\`${options.extension || ''}
 ${options.source}
 \`\`\`
 `;

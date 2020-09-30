@@ -38,7 +38,10 @@ function constructTreeFromDir(dir: string): string[] {
                 : currentPath;
         })
         .filter(Boolean)
-        .reduce<string[]>((all, current) => all.concat(current), []);
+        .reduce<string[]>(
+            (all, current) => (current ? all.concat(current) : all),
+            []
+        );
 }
 
 /**
