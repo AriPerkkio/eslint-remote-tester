@@ -238,6 +238,16 @@ class ProgressLogger {
     }
 
     /**
+     * Log warning about pull failure
+     */
+    onPullFailure(repository: string) {
+        this.addNewMessage({
+            content: Templates.PULL_FAILURE_TEMPLATE(repository),
+            color: chalk.yellow,
+        });
+    }
+
+    /**
      * Log warning about filesystem read failure
      */
     onReadFailure(repository: string) {
@@ -262,6 +272,13 @@ class ProgressLogger {
      */
     onRepositoryClone(repository: string) {
         this.updateTask(repository, { step: 'CLONE', color: chalk.yellow });
+    }
+
+    /**
+     * Log start of pulling of given repository
+     */
+    onRepositoryPull(repository: string) {
+        this.updateTask(repository, { step: 'PULL', color: chalk.yellow });
     }
 
     /**

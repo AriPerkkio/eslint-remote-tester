@@ -9,12 +9,14 @@ export type WorkerMessage =
     | { type: 'START' }
     | { type: 'READ' }
     | { type: 'CLONE' }
+    | { type: 'PULL' }
     | { type: 'LINT_START'; payload: number }
     | { type: 'LINT_END'; payload: LintMessage[] }
     | { type: 'FILE_LINT_END'; payload: number }
     | { type: 'LINTER_CRASH'; payload: string }
     | { type: 'READ_FAILURE' }
-    | { type: 'CLONE_FAILURE' };
+    | { type: 'CLONE_FAILURE' }
+    | { type: 'PULL_FAILURE' };
 
 const LINT_FAILURE_BASE = {
     column: 0,
@@ -91,6 +93,8 @@ export default async function workerTask(): Promise<void> {
         repository: workerData,
         onClone: () => postMessage({ type: 'CLONE' }),
         onCloneFailure: () => postMessage({ type: 'CLONE_FAILURE' }),
+        onPull: () => postMessage({ type: 'PULL' }),
+        onPullFailure: () => postMessage({ type: 'PULL_FAILURE' }),
         onRead: () => postMessage({ type: 'READ' }),
         onReadFailure: () => postMessage({ type: 'READ_FAILURE' }),
     });

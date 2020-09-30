@@ -1,6 +1,14 @@
 import fs from 'fs';
 import simpleGit from 'simple-git';
 
+export interface RepositoryClientOptions {
+    repository: string;
+    onClone: () => void;
+    onCloneFailure: () => void;
+    onPull: () => void;
+    onPullFailure: () => void;
+}
+
 export const URL = 'https://github.com';
 export const CACHE_LOCATION = './.cache-eslint-remote-tester';
 
@@ -10,13 +18,15 @@ if (!fs.existsSync(CACHE_LOCATION)) {
 }
 
 /**
- * Clone given repository if it doesn't exist in cache yet
+ * Clone or pull latest of given repository
  */
-export async function cloneRepository(
-    repository: string,
-    onClone: () => void,
-    onCloneFailure: () => void
-): Promise<void> {
+export async function cloneRepository({
+    repository,
+    onClone,
+    onCloneFailure,
+    onPull,
+    onPullFailure,
+}: RepositoryClientOptions): Promise<void> {
     const repoLocation = `${CACHE_LOCATION}/${repository}`;
 
     if (!fs.existsSync(repoLocation)) {
@@ -28,6 +38,14 @@ export async function cloneRepository(
         } catch (e) {
             onCloneFailure();
         }
+    } else {
+        onPull();
+
+        try {
+            const git = simpleGit({ baseDir: repoLocation });
+            await git.pull();
+        } catch (e) {
+            onPullFailure();
+        }
     }
-    // TODO: else: git pull
 }

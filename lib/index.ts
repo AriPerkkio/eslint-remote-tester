@@ -58,6 +58,9 @@ async function scanRepo(repository: string) {
                 case 'CLONE':
                     return logger.onRepositoryClone(repository);
 
+                case 'PULL':
+                    return logger.onRepositoryPull(repository);
+
                 case 'LINT_START':
                     return logger.onLintStart(repository, message.payload);
 
@@ -69,6 +72,9 @@ async function scanRepo(repository: string) {
 
                 case 'CLONE_FAILURE':
                     return logger.onCloneFailure(repository);
+
+                case 'PULL_FAILURE':
+                    return logger.onPullFailure(repository);
 
                 case 'READ_FAILURE':
                     return logger.onReadFailure(repository);

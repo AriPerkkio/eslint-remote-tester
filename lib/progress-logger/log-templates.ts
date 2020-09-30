@@ -9,6 +9,9 @@ export const TASK_TEMPLATE = (task: Task): string => {
         case 'CLONE':
             return `[CLONING] ${task.repository}`;
 
+        case 'PULL':
+            return `[PULLING] ${task.repository}`;
+
         case 'READ':
             return `[READING] ${task.repository}`;
 
@@ -41,6 +44,9 @@ export const LINT_FAILURE_TEMPLATE = (
     repository: string,
     rule?: string
 ): string => `[WARN] ${repository} crashed${rule ? `: ${rule}` : ''}`;
+
+export const PULL_FAILURE_TEMPLATE = (repository: string): string =>
+    `[WARN] ${repository} failed to pull`;
 
 export const CLONE_FAILURE_TEMPLATE = (repository: string): string =>
     `[WARN] ${repository} failed to clone`;

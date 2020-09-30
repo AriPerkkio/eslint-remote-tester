@@ -1,6 +1,10 @@
 import fs from 'fs';
 
-import { cloneRepository, CACHE_LOCATION } from './repository-client';
+import {
+    cloneRepository,
+    CACHE_LOCATION,
+    RepositoryClientOptions,
+} from './repository-client';
 import config from '../config';
 
 export interface SourceFile {
@@ -8,10 +12,8 @@ export interface SourceFile {
     path: string;
 }
 
-interface GetFilesArguments {
+interface FileClientOptions extends RepositoryClientOptions {
     repository: string;
-    onClone: () => void;
-    onCloneFailure: () => void;
     onRead: () => void;
     onReadFailure: () => void;
 }
@@ -51,10 +53,18 @@ export async function getFiles({
     repository,
     onClone,
     onCloneFailure,
+    onPull,
+    onPullFailure,
     onRead,
     onReadFailure,
-}: GetFilesArguments): Promise<SourceFile[]> {
-    await cloneRepository(repository, onClone, onCloneFailure);
+}: FileClientOptions): Promise<SourceFile[]> {
+    await cloneRepository({
+        repository,
+        onClone,
+        onCloneFailure,
+        onPull,
+        onPullFailure,
+    });
 
     onRead();
     try {
