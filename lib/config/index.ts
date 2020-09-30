@@ -1,1 +1,1 @@
-export { default } from './config';
+export { default, resolveConfigurationLocation } from './config';

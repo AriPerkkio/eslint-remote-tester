@@ -1,19 +1,59 @@
 import fs from 'fs';
 import path from 'path';
+import { workerData, isMainThread } from 'worker_threads';
 
 import constructAndValidateConfiguration from './validator';
 import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
 import { Config } from './types';
+import { WorkerData } from '../engine/types';
 
-const CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
+const DEFAULT_CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
+const CLI_ARGS_CONFIG = ['-c', '--config'];
+
+export function resolveConfigurationLocation(): string {
+    // Main thread can read config location from args
+    const configArgumentIndex = process.argv.findIndex(arg =>
+        CLI_ARGS_CONFIG.includes(arg)
+    );
+    const cliConfigLocation =
+        configArgumentIndex !== -1 && process.argv[configArgumentIndex + 1];
+
+    // Worker threads can read config location from workerData
+    const workerDataConfiguration =
+        !isMainThread &&
+        workerData &&
+        (workerData as WorkerData).configurationLocation;
+
+    return (
+        cliConfigLocation ||
+        workerDataConfiguration ||
+        DEFAULT_CONFIGURATION_FILE
+    );
+}
+
+const CONFIGURATION_FILE = resolveConfigurationLocation();
 
 if (!fs.existsSync(CONFIGURATION_FILE)) {
-    fs.writeFileSync(CONFIGURATION_FILE, CONFIGURATION_FILE_TEMPLATE, 'utf8');
+    let defaultCreated = false;
 
-    throw new Error( // Configuration file was not found
-        `Missing configuratin file ${CONFIGURATION_FILE}.` +
-            '\nDefault configuration file created.'
-    );
+    if (CONFIGURATION_FILE === DEFAULT_CONFIGURATION_FILE) {
+        fs.writeFileSync(
+            CONFIGURATION_FILE,
+            CONFIGURATION_FILE_TEMPLATE,
+            'utf8'
+        );
+        defaultCreated = true;
+    }
+
+    const errors = [
+        `Missing configuratin file ${CONFIGURATION_FILE}.`,
+        defaultCreated &&
+            `Default configuration file created: ${DEFAULT_CONFIGURATION_FILE}`,
+    ]
+        .filter(Boolean)
+        .join('\n');
+
+    throw new Error(errors); // Configuration file was not found
 }
 
 const config: Config = require(path.resolve(CONFIGURATION_FILE));

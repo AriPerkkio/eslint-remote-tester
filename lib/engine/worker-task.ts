@@ -3,7 +3,7 @@ import { ESLint, Linter } from 'eslint';
 
 import config from '../config';
 import { getFiles } from '../file-client';
-import { LintMessage } from './types';
+import { LintMessage, WorkerData } from './types';
 
 export type WorkerMessage =
     | { type: 'START' }
@@ -89,8 +89,10 @@ const linter = new ESLint({
  * - Keep progress-logger up-to-date of status via onMessage
  */
 export default async function workerTask(): Promise<void> {
+    const { repository } = workerData as WorkerData;
+
     const files = await getFiles({
-        repository: workerData,
+        repository,
         onClone: () => postMessage({ type: 'CLONE' }),
         onCloneFailure: () => postMessage({ type: 'CLONE_FAILURE' }),
         onPull: () => postMessage({ type: 'PULL' }),

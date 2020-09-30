@@ -2,6 +2,7 @@ import { Worker, isMainThread } from 'worker_threads';
 
 import workerTask, { WorkerMessage } from './worker-task';
 import { LintMessage } from './types';
+import { resolveConfigurationLocation } from '../config';
 
 if (!isMainThread) {
     workerTask();
@@ -20,7 +21,12 @@ function scanRepository(
         // Prevents showing blank screen between worker start and repository reading
         onMessage({ type: 'START' });
 
-        const worker = new Worker(__filename, { workerData: repository });
+        const worker = new Worker(__filename, {
+            workerData: {
+                repository,
+                configurationLocation: resolveConfigurationLocation(),
+            },
+        });
 
         worker.on('message', (message: WorkerMessage) => {
             switch (message.type) {

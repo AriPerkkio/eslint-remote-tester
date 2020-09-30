@@ -24,7 +24,7 @@ Add new script to your `package.json` file.
 ```
 
 ### eslint-remote-tester.config.js
-Create new configuration file `eslint-remote-tester.config.js` in the root of your project.
+Create new configuration file `eslint-remote-tester.config.js` in the root of your project. This is used as configuration file by default. Use `-c` or `--config` argument for custom configuration file, e.g. `--config path/custom.config.js`.
 ```js
 module.exports = {
     /** Repositories to scan */
