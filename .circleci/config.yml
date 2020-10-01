@@ -18,5 +18,5 @@ jobs:
                 name: Unit test
                 command: yarn test
             - run:
-                name: Smoke test
-                command: node dist
+                name: Integration test
+                command: yarn test:integration

@@ -10,7 +10,7 @@ import { writeResults, printResultsCI, clearResults } from './file-client';
  * Runs ESLint to given repositories and filters out only the rules being under testing.
  * Results are written to ./results directory.
  */
-(async function main() {
+async function main() {
     const pool = config.repositories.map(repo => () => scanRepo(repo));
 
     async function execute(): Promise<void> {
@@ -38,7 +38,7 @@ import { writeResults, printResultsCI, clearResults } from './file-client';
     if (config.CI) {
         printResultsCI();
     }
-})();
+}
 
 /**
  * Run repository scanning on separate thread in order to keep main one
@@ -90,3 +90,6 @@ async function scanRepo(repository: string) {
 
     logger.onLintEnd(repository, results.length);
 }
+
+// Run entrypoint and export handle for tests to await for
+export const __handleForTests = main();

@@ -35,7 +35,7 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['config.ts'],
+            files: ['config.ts', 'integration-tests/*.ts'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',
             },

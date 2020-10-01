@@ -9,9 +9,6 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true
-
-        // TODO tspaths?
-        // "baseUrl": "./lib"
     },
-    "include": ["lib"]
+    "include": ["lib", "integration-tests"]
 }

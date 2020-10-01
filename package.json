@@ -14,12 +14,12 @@
     "license": "MIT",
     "scripts": {
         "prebuild": "rimraf dist",
-        "build": "tsc",
+        "build": "tsc --project tsconfig.prod.json",
         "watch": "tsc -w",
         "start": "nodemon --watch dist dist/index.js",
         "start:ci": "CI=true yarn start",
         "test": "jest",
-        "test:watch": "jest --watch"
+        "test:integration": "jest --config ./integration-tests/jest.config.integration.js"
     },
     "repository": {
         "type": "git",
