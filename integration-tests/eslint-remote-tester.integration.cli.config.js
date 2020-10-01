@@ -9,8 +9,8 @@ module.exports = {
         'getter-return',
         'no-compare-neg-zero',
     ],
-    resultParser: 'markdown',
-    concurrentTasks: 5,
+    resultParser: undefined,
+    concurrentTasks: undefined,
     eslintrc: {
         root: true,
         extends: ['eslint:recommended'],
