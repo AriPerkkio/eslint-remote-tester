@@ -19,7 +19,8 @@
         "start": "nodemon --watch dist dist/index.js",
         "start:ci": "CI=true yarn start",
         "test": "jest",
-        "test:integration": "jest --config ./integration-tests/jest.config.integration.js"
+        "test:integration": "jest --config ./integration-tests/jest.config.integration.js",
+        "lint:react": "node dist --config eslint-remote-tester.react.config.js"
     },
     "repository": {
         "type": "git",
