@@ -86,9 +86,10 @@ export function writeResults(results: LintMessage[], repository: string): void {
  */
 export function printResultsCI(): void {
     if (RESULTS_CI.length) {
+        // TODO: Add support for custom onExit hook for CIs
+        // e.g. "onExit": function(results) { ... }
         console.log(RESULTS_CI.join('\n'));
 
-        // eslint-disable-next-line no-process-exit
         process.exit(1);
     } else {
         console.log('No errors');

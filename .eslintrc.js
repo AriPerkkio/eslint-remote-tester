@@ -35,6 +35,12 @@ module.exports = {
     },
     overrides: [
         {
+            files: ['log-renderer.ts', 'results-writer.ts'],
+            rules: {
+                'no-process-exit': 'off'
+            }
+        },
+        {
             files: ['config.ts', 'integration-tests/*.ts'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',

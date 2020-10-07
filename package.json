@@ -15,7 +15,7 @@
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc --project tsconfig.prod.json",
-        "watch": "tsc -w",
+        "watch": "tsc --watch --project tsconfig.prod.json",
         "start": "nodemon --watch dist dist/index.js",
         "start:ci": "CI=true yarn start",
         "test": "jest",

@@ -13,9 +13,10 @@ export default function diffLogs(
 ): LogUpdate[] {
     const updates: LogUpdate[] = [];
     const previousRows = previousLog.split('\n');
+    const newRows = newLog.split('\n');
 
     // Go through new log row by row
-    for (const [y, row] of newLog.split('\n').entries()) {
+    for (const [y, row] of newRows.entries()) {
         const previousRow = previousRows[y];
         const characters = row.split('');
 
@@ -76,6 +77,20 @@ export default function diffLogs(
                 characters: ' '.repeat(previousCharacters.length - rightPad),
             });
         }
+    }
+
+    // Previous log had more rows than new one, clear the empty rows
+    if (previousRows.length > newRows.length) {
+        Array(previousRows.length - newRows.length)
+            .fill(null)
+            .forEach((_, index) =>
+                updates.push({
+                    wholeRow: true,
+                    y: newRows.length + index + 1,
+                    x: 0,
+                    characters: ' ',
+                })
+            );
     }
 
     return updates;

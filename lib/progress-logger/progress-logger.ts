@@ -1,80 +1,57 @@
-import chalk, { Chalk } from 'chalk';
+import chalk from 'chalk';
 
 import config from '../config';
-import diffLogs from './log-diff';
 import * as Templates from './log-templates';
-import { LogMessage, Task } from './types';
+import { LogMessage, Task, Listeners, Listener } from './types';
 
-const REFRESH_INTERVAL_MS = 200;
-const CI_KEEP_ALIVE_INTERVAL_MS = 60 * 5 * 1000;
-const DEFAULT_COLOR_METHOD = (c: string) => c;
+const CI_KEEP_ALIVE_INTERVAL = 5 * 60 * 1000;
+const execute = (method: Listener) => method();
 
 /**
  * Logger for updating the terminal with current status
- * - Updates are printed based on `REFRESH_INTERVAL_MS` when in CLI mode
- * - Should be ran on main thread separate from worker threads in order to
- *   avoid blocking updates
- * - On CI mode logs contain only messages of the logger. Tasks' status updates
- *   are not spammed to CI's stdout
  */
 class ProgressLogger {
     /** Messages printed as a list under tasks */
-    messages: LogMessage[];
+    messages: LogMessage[] = [];
 
     /** Messages of the task runners */
-    tasks: Task[];
+    tasks: Task[] = [];
 
     /** Count of finished repositories */
-    scannedRepositories: number;
+    scannedRepositories = 0;
 
-    /** Handle of refresh interval */
-    intervalHandle: NodeJS.Timeout | null;
+    /** Event listeners */
+    listeners: Listeners = {
+        exit: [],
+        taskEnd: [],
+        message: [],
+    };
 
-    /** Contents of previous log. Used to diff new contents */
-    previousLog: string;
-
-    /** Colors of previous log */
-    previousColors: (Chalk | null | undefined)[];
+    /** Interval of CI status messages. Used to avoid CIs timeouting. */
+    ciKeepAliveIntervalHandle: NodeJS.Timeout | null = null;
 
     constructor() {
-        this.messages = [];
-        this.tasks = [];
-        this.scannedRepositories = 0;
-        this.intervalHandle = null;
-        this.previousLog = '';
-        this.previousColors = [];
+        if (config.CI) {
+            this.ciKeepAliveIntervalHandle = setInterval(() => {
+                this.onCiStatus();
+            }, CI_KEEP_ALIVE_INTERVAL);
+        }
+    }
 
-        const startPrinting = () => {
-            this.previousLog = '';
-            this.previousColors = [];
+    /**
+     * Subscribe on logger's events
+     */
+    on(event: keyof Listeners, listener: Listener) {
+        switch (event) {
+            case 'message':
+                return this.listeners.message.push(listener);
 
-            if (config.CI) {
-                this.intervalHandle = setInterval(() => {
-                    this.onCiStatus();
-                }, CI_KEEP_ALIVE_INTERVAL_MS);
+            case 'taskEnd':
+                return this.listeners.taskEnd.push(listener);
 
-                return;
-            }
-
-            console.clear();
-            this.intervalHandle = setInterval(() => {
-                this.printCLI();
-            }, REFRESH_INTERVAL_MS);
-        };
-
-        // On terminal size change full print is required
-        process.stdout.on('resize', () => {
-            if (this.intervalHandle !== null) {
-                // This will stop current printing immediately
-                clearTimeout(this.intervalHandle);
-                this.intervalHandle = null;
-
-                // Reset printing status and start over in order to recover from terminal size change
-                startPrinting();
-            }
-        });
-
-        startPrinting();
+            case 'exit':
+                return this.listeners.exit.push(listener);
+        }
     }
 
     /**
@@ -82,28 +59,24 @@ class ProgressLogger {
      */
     addNewMessage(message: LogMessage) {
         this.messages.push(message);
-
-        // Keep CI's stdout updated of new messages
-        if (config.CI) {
-            this.printCI();
-        }
+        this.listeners.message.forEach(execute);
     }
 
     /**
-     * Clear refresh interval
+     * Add final message and fire exit event
      */
     onAllRepositoriesScanned() {
         this.addNewMessage({
-            content: `[DONE] Finished scan of ${this.scannedRepositories} repositories`,
+            content: Templates.SCAN_FINISHED(this.scannedRepositories),
             color: chalk.green,
         });
 
-        // Stop updating afer one final printing
-        setTimeout(() => {
-            if (this.intervalHandle !== null) {
-                clearTimeout(this.intervalHandle);
-            }
-        }, REFRESH_INTERVAL_MS);
+        // Stop CI messages
+        if (this.ciKeepAliveIntervalHandle !== null) {
+            clearInterval(this.ciKeepAliveIntervalHandle);
+        }
+
+        this.listeners.exit.forEach(execute);
     }
 
     /**
@@ -197,6 +170,8 @@ class ProgressLogger {
             content: Templates.LINT_END_TEMPLATE(repository, resultCount),
             color: resultCount > 0 ? chalk.red : chalk.green,
         });
+
+        this.listeners.taskEnd.forEach(execute);
     }
 
     /**
@@ -296,95 +271,6 @@ class ProgressLogger {
             content: Templates.CI_STATUS_TEMPLATE(this.scannedRepositories),
             color: chalk.yellow,
         });
-    }
-
-    /**
-     * Printing method for CLI mode
-     * - Updates termnial with status of tasks and adds new messages
-     */
-    printCLI() {
-        const terminalHeight = process.stdout.rows;
-        const terminalWidth = process.stdout.columns;
-
-        const rows = [
-            Templates.REPOSITORIES_STATUS_TEMPLATE(this.scannedRepositories),
-            ...this.tasks.map(Templates.TASK_TEMPLATE),
-            ' ', // Empty line between tasks and messages
-            ...this.messages.map(message => message.content),
-        ].map(row => {
-            // Prevent row wrapping
-            if (row.length > terminalWidth) {
-                return `${row.slice(0, terminalWidth - 3)}...`;
-            }
-
-            return row;
-        });
-
-        const colors = [
-            null,
-            ...this.tasks.map(task => task.color),
-            null,
-            ...this.messages.map(message => message.color),
-        ];
-
-        // Display notification about overflowing rows
-        const overflowingRowCount = rows.length - terminalHeight;
-        if (overflowingRowCount > 0) {
-            rows.splice(terminalHeight - 1);
-            colors.splice(terminalHeight - 1);
-
-            rows.push(Templates.OVERFLOWING_ROWS(overflowingRowCount));
-            colors.push(chalk.black.bgYellow);
-        }
-
-        // Update colors of whole row
-        for (const [rowIndex, color] of colors.entries()) {
-            if (this.previousColors[rowIndex] !== color) {
-                const row = rows[rowIndex];
-                const colorMethod = color || DEFAULT_COLOR_METHOD;
-
-                process.stdout.cursorTo(0, rowIndex);
-                process.stdout.clearLine(0);
-                process.stdout.write(colorMethod(row));
-            }
-        }
-
-        const formattedLog = rows.join('\n');
-        const updates = diffLogs(this.previousLog, formattedLog);
-
-        // Update characters changes, e.g. step or file count changes
-        for (const { x, y, characters, wholeRow } of updates) {
-            const colorMethod = colors[y] || DEFAULT_COLOR_METHOD;
-
-            // These were already updated by row's color update
-            if (this.previousColors[y] !== colors[y]) continue;
-
-            process.stdout.cursorTo(x, y);
-            wholeRow && process.stdout.clearLine(0);
-            process.stdout.write(colorMethod(characters));
-        }
-
-        // Keep cursor on last row at the first or last column
-        process.stdout.cursorTo(
-            overflowingRowCount >= 0 ? terminalWidth : 0,
-            rows.length + 1
-        );
-
-        this.previousColors = colors;
-        this.previousLog = formattedLog;
-    }
-
-    /**
-     * Printing method for CI mode
-     * - Prints only the latest message
-     */
-    printCI() {
-        const lastMessage = [...this.messages].pop();
-
-        if (lastMessage) {
-            const color = lastMessage.color || DEFAULT_COLOR_METHOD;
-            console.log(color(lastMessage.content));
-        }
     }
 }
 

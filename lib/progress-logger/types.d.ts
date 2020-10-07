@@ -20,3 +20,11 @@ export interface LogUpdate {
     y: number;
     wholeRow?: boolean;
 }
+
+export type Listener = () => void;
+
+export interface Listeners {
+    exit: Listener[];
+    message: Listener[];
+    taskEnd: Listener[];
+}
