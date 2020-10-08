@@ -7,6 +7,7 @@ import * as Templates from './log-templates';
 import config from '../config';
 
 const REFRESH_INTERVAL_MS = 200;
+const KEY_DOWN_TIMER_MS = 200;
 const DEFAULT_COLOR_METHOD = (c: string) => c;
 
 // Status row + empty line between tasks and messages
@@ -24,6 +25,9 @@ class LogRenderer {
 
     /** Indicates how many rows have been scrolled from top */
     scrollTop = 0;
+
+    /** Used to prevent flooding key down events when key is held down */
+    isKeyPressed = false;
 
     constructor() {
         logger.on('exit', () => this.stop());
@@ -52,7 +56,6 @@ class LogRenderer {
 
         this.previousLog = '';
         this.previousColors = [];
-        this.scrollTop = 0;
 
         console.clear();
         this.intervalHandle = setInterval(() => {
@@ -70,11 +73,7 @@ class LogRenderer {
         }
 
         if (!config.CI) {
-            const overflowingCount = this.getOverflowingMessageCount();
-
-            if (overflowingCount > 0) {
-                this.scrollTop += overflowingCount + 1;
-            }
+            this.scrollToBottom();
             this.printCLI();
         }
         process.stdin.pause();
@@ -91,13 +90,25 @@ class LogRenderer {
 
     /**
      * Handle key down events
+     * - Waits `KEY_DOWN_TIMER_MS` until next key press is accepted
      */
     handleKeyPress(key: any) {
-        const { name, ctrl } = key || {};
+        if (this.isKeyPressed) return;
+        this.isKeyPressed = true;
+
+        setTimeout(() => {
+            this.isKeyPressed = false;
+        }, KEY_DOWN_TIMER_MS);
+
+        const { name, ctrl, shift } = key || {};
 
         switch (name) {
             case 'c':
                 return ctrl && this.stop(true);
+            case 'l':
+                return ctrl && this.start();
+            case 'g':
+                return shift && this.scrollToBottom();
             case 'down':
                 return this.scrollDown();
             case 'up':
@@ -124,7 +135,7 @@ class LogRenderer {
      * Move scroll down, if possible
      */
     scrollDown() {
-        if (this.getOverflowingMessageCount() >= 0) {
+        if (this.getOverflowingMessageCount() > 0) {
             this.scrollTop++;
         }
     }
@@ -139,15 +150,32 @@ class LogRenderer {
     }
 
     /**
+     * Move scroll to bottom
+     */
+    scrollToBottom() {
+        const overflowingCount = this.getOverflowingMessageCount();
+
+        if (overflowingCount > 0) {
+            this.scrollTop += overflowingCount + 1;
+        }
+    }
+
+    /**
      * Synchronize scroll with latest message count when scroll is at bottom
      */
     synchronizeScroll() {
+        // Increase scroll if it's already at the bottom
         const isScrollAtBottom =
             logger.messages.length - this.getMaxMessageCount() ===
             this.scrollTop;
 
-        if (isScrollAtBottom) {
-            this.scrollDown();
+        // Prevent scrolling too much when content is reducing due to tasks running out
+        const tasksReducing =
+            config.repositories.length - logger.scannedRepositories >=
+            (config.concurrentTasks || 5);
+
+        if (isScrollAtBottom && tasksReducing) {
+            this.scrollTop++;
         }
     }
 
