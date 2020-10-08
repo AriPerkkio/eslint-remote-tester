@@ -1,6 +1,6 @@
 import { Worker, isMainThread } from 'worker_threads';
 
-import workerTask, { WorkerMessage } from './worker-task';
+import workerTask, { WorkerMessage, createErrorMessage } from './worker-task';
 import { LintMessage } from './types';
 import { resolveConfigurationLocation } from '../config';
 
@@ -16,7 +16,7 @@ function scanRepository(
     repository: string,
     onMessage: (message: WorkerMessage) => void
 ): Promise<LintMessage[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         // Notify about worker starting. It can take a while to get worker starting up
         // Prevents showing blank screen between worker start and repository reading
         onMessage({ type: 'START' });
@@ -38,10 +38,29 @@ function scanRepository(
             }
         });
 
-        worker.on('error', reject);
+        worker.on('error', (error: Error & { code?: string }) => {
+            onMessage({
+                type: 'WORKER_ERROR',
+                payload: error.code,
+            });
+
+            const message = [error.code, error.message]
+                .filter(Boolean)
+                .join(' ');
+
+            resolve([createErrorMessage({ message, path: '', ruleId: '' })]);
+        });
+
         worker.on('exit', code => {
-            if (code !== 0)
-                reject(new Error(`Worker stopped with exit code ${code}`));
+            if (code !== 0) {
+                resolve([
+                    createErrorMessage({
+                        message: `Worker exited with code ${code}`,
+                        path: '',
+                        ruleId: '',
+                    }),
+                ]);
+            }
         });
     });
 }

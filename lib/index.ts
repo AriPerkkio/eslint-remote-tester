@@ -70,6 +70,9 @@ async function scanRepo(repository: string) {
                 case 'LINTER_CRASH':
                     return logger.onLinterCrash(repository, message.payload);
 
+                case 'WORKER_ERROR':
+                    return logger.onWorkerCrash(repository, message.payload);
+
                 case 'CLONE_FAILURE':
                     return logger.onCloneFailure(repository);
 

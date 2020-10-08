@@ -45,6 +45,14 @@ export const LINT_FAILURE_TEMPLATE = (
     rule?: string
 ): string => `[WARN] ${repository} crashed${rule ? `: ${rule}` : ''}`;
 
+export const WORKER_FAILURE_TEMPLATE = (
+    repository: string,
+    errorCode?: string
+): string =>
+    `[WARN] Worker crashed on ${repository}${
+        errorCode ? ` (${errorCode})` : ''
+    }`;
+
 export const PULL_FAILURE_TEMPLATE = (repository: string): string =>
     `[WARN] ${repository} failed to pull`;
 

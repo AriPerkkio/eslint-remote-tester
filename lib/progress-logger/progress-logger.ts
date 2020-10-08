@@ -203,6 +203,23 @@ class ProgressLogger {
     }
 
     /**
+     * Log warning about worker crashing
+     */
+    onWorkerCrash(repository: string, errorCode?: string) {
+        const isNewWarning = this.addWarningToTask(repository, 'worker-crash');
+
+        if (isNewWarning) {
+            this.addNewMessage({
+                content: Templates.WORKER_FAILURE_TEMPLATE(
+                    repository,
+                    errorCode
+                ),
+                color: chalk.yellow,
+            });
+        }
+    }
+
+    /**
      * Log warning about clone failure
      */
     onCloneFailure(repository: string) {

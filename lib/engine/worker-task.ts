@@ -14,15 +14,24 @@ export type WorkerMessage =
     | { type: 'LINT_END'; payload: LintMessage[] }
     | { type: 'FILE_LINT_END'; payload: number }
     | { type: 'LINTER_CRASH'; payload: string }
+    | { type: 'WORKER_ERROR'; payload?: string }
     | { type: 'READ_FAILURE' }
     | { type: 'CLONE_FAILURE' }
     | { type: 'PULL_FAILURE' };
 
-const LINT_FAILURE_BASE = {
-    column: 0,
-    line: 0,
-    severity: 0,
-} as const;
+/**
+ * Create error message for LintMessage results
+ */
+export function createErrorMessage(
+    error: Omit<LintMessage, 'column' | 'line' | 'severity'>
+): LintMessage {
+    return {
+        ...error,
+        column: 0,
+        line: 0,
+        severity: 0,
+    };
+}
 
 // Regex used to attempt parsing out rule which caused linter to crash
 const RULE_REGEXP = /rules\/(.*?)\.js/;
@@ -116,13 +125,14 @@ export default async function workerTask(): Promise<void> {
             const ruleMatch = stack.match(RULE_REGEXP) || [];
             const ruleId = ruleMatch.pop();
 
-            results.push({
-                ...LINT_FAILURE_BASE,
-                path,
-                message: error.message,
-                source: error.stack,
-                ruleId,
-            });
+            results.push(
+                createErrorMessage({
+                    path,
+                    message: error.message,
+                    source: error.stack,
+                    ruleId,
+                })
+            );
             postMessage({ type: 'LINTER_CRASH', payload: ruleId });
             continue;
         }
