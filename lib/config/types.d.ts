@@ -9,7 +9,7 @@ export interface Config {
     pathIgnorePattern?: RegExp;
     rulesUnderTesting: string[];
     resultParser: ResultParser;
-    concurrentTasks?: number;
+    concurrentTasks: number;
     eslintrc: Linter.Config;
-    CI?: boolean;
+    CI: boolean;
 }

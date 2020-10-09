@@ -7,9 +7,9 @@ const DEFAULT_CONFIGURATION: Config = {
     pathIgnorePattern: undefined,
     rulesUnderTesting: [],
     resultParser: 'plaintext',
-    concurrentTasks: undefined,
+    concurrentTasks: undefined as any,
     eslintrc: {},
-    CI: undefined,
+    CI: undefined as any,
 };
 
 describe('Config validator', () => {
