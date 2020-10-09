@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { isMainThread } from 'worker_threads';
 
 import config from '../config';
 import { CACHE_LOCATION, URL } from './repository-client';
@@ -8,7 +9,7 @@ import {
 } from './result-templates';
 import { LintMessage } from '../engine/types';
 
-const RESULTS_CI: string[] = [];
+const RESULTS: string[] = [];
 const RESULTS_LOCATION = './results';
 const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
 const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
@@ -18,11 +19,13 @@ const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
  * - Should be ran once from the main thread
  */
 export function clearResults(): void {
-    if (fs.existsSync(RESULTS_LOCATION)) {
-        fs.rmdirSync(RESULTS_LOCATION, { recursive: true });
-    }
+    if (isMainThread) {
+        if (fs.existsSync(RESULTS_LOCATION)) {
+            fs.rmdirSync(RESULTS_LOCATION, { recursive: true });
+        }
 
-    fs.mkdirSync(RESULTS_LOCATION);
+        fs.mkdirSync(RESULTS_LOCATION);
+    }
 }
 
 const RESULT_TEMPLATE_CLI = (result: LintMessage) => {
@@ -69,10 +72,9 @@ export function writeResults(results: LintMessage[], repository: string): void {
     }
     const [, repositoryName] = repository.split('/');
     const formattedResults = formatResults(results, repository);
+    RESULTS.push(formattedResults);
 
-    if (config.CI) {
-        RESULTS_CI.push(formattedResults);
-    } else {
+    if (!config.CI) {
         fs.writeFileSync(
             `${RESULTS_LOCATION}/${repositoryName}${RESULT_EXTENSION}`,
             formattedResults,
@@ -81,17 +83,6 @@ export function writeResults(results: LintMessage[], repository: string): void {
     }
 }
 
-/**
- * Print results and exit with error code if any errors exist
- */
-export function printResultsCI(): void {
-    if (RESULTS_CI.length) {
-        // TODO: Add support for custom onExit hook for CIs
-        // e.g. "onExit": function(results) { ... }
-        console.log(RESULTS_CI.join('\n'));
-
-        process.exit(1);
-    } else {
-        console.log('No errors');
-    }
+export function getResults(): string[] {
+    return RESULTS;
 }

@@ -35,7 +35,7 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['log-renderer.ts', 'results-writer.ts'],
+            files: ['log-renderer.ts'],
             rules: {
                 'no-process-exit': 'off'
             }

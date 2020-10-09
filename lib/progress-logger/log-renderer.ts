@@ -5,10 +5,16 @@ import logger from './progress-logger';
 import diffLogs from './log-diff';
 import * as Templates from './log-templates';
 import config from '../config';
+import { getResults } from '../file-client';
 
 const REFRESH_INTERVAL_MS = 200;
 const KEY_DOWN_TIMER_MS = 200;
 const DEFAULT_COLOR_METHOD = (c: string) => c;
+
+const times = (count: number) => (method: () => void) =>
+    Array(Math.floor(count))
+        .fill(null)
+        .forEach(() => method());
 
 // Status row + empty line between tasks and messages
 const CONTENT_PADDING = 2;
@@ -30,30 +36,26 @@ class LogRenderer {
     isKeyPressed = false;
 
     constructor() {
-        logger.on('exit', () => this.stop());
-        logger.on('message', () => {
-            if (config.CI) {
-                this.printCI();
-            } else {
-                this.synchronizeScroll();
-            }
-        });
+        if (config.CI) {
+            logger.on('message', () => this.printCI());
+            logger.on('exit', () => this.stopCI());
+        } else {
+            logger.on('message', () => this.synchronizeScroll());
+            logger.on('exit', () => this.stopCLI());
 
-        readline.emitKeypressEvents(process.stdin);
-        process.stdout.on('resize', () => this.handleResize());
-        process.stdin.on('keypress', (_, key) => this.handleKeyPress(key));
-        process.stdin.setRawMode(true);
+            readline.emitKeypressEvents(process.stdin);
+            process.stdout.on('resize', () => this.handleResize());
+            process.stdin.on('keypress', (_, key) => this.handleKeyPress(key));
+            process.stdin.setRawMode(true);
 
-        this.start();
+            this.start();
+        }
     }
 
     /**
      * Initialize/reset previous printing values and start printing on interval
      */
     start() {
-        // On CI messages are printed by listening message event, not on interval
-        if (config.CI) return;
-
         this.previousLog = '';
         this.previousColors = [];
 
@@ -64,28 +66,34 @@ class LogRenderer {
     }
 
     /**
-     * Stop printing interval
+     * Stop CLI's printing interval
      * - Move scroll to bottom and perform one final print
      */
-    stop(stoppedByUser?: boolean) {
+    stopCLI() {
         if (this.intervalHandle !== null) {
             clearTimeout(this.intervalHandle);
         }
 
-        if (!config.CI) {
-            this.scrollToBottom();
-            this.printCLI();
-        }
+        this.scrollToBottom();
+        this.printCLI();
         process.stdin.pause();
 
         // Reset cursor and exit
         process.stdout.cursorTo(0, this.getContentHeight());
+        process.exit();
+    }
 
-        // CI should not stop, unless this was a stop event from user input
-        // This will also terminate all the currently running workers
-        if (stoppedByUser || !config.CI) {
-            process.exit();
-        }
+    /**
+     * Stop CI's printing
+     */
+    stopCI() {
+        const results = getResults();
+
+        const formattedResults =
+            results.length > 0 ? results.join('\n') : 'No errors';
+
+        console.log(formattedResults);
+        process.exit();
     }
 
     /**
@@ -104,11 +112,15 @@ class LogRenderer {
 
         switch (name) {
             case 'c':
-                return ctrl && this.stop(true);
+                return ctrl && this.stopCLI();
             case 'l':
                 return ctrl && this.start();
             case 'g':
                 return shift && this.scrollToBottom();
+            case 'd':
+                return this.scrollHalfPageDown();
+            case 'u':
+                return this.scrollHalfPageUp();
             case 'down':
                 return this.scrollDown();
             case 'up':
@@ -154,10 +166,25 @@ class LogRenderer {
      */
     scrollToBottom() {
         const overflowingCount = this.getOverflowingMessageCount();
+        const padding = logger.tasks.length === 0 ? 1 : 0;
 
         if (overflowingCount > 0) {
-            this.scrollTop += overflowingCount + 1;
+            this.scrollTop += overflowingCount + padding;
         }
+    }
+
+    /**
+     * Scroll half a page down
+     */
+    scrollHalfPageDown() {
+        times(this.getContentHeight() / 2)(() => this.scrollDown());
+    }
+
+    /**
+     * Scroll half a page down
+     */
+    scrollHalfPageUp() {
+        times(this.getContentHeight() / 2)(() => this.scrollUp());
     }
 
     /**
@@ -172,7 +199,7 @@ class LogRenderer {
         // Prevent scrolling too much when content is reducing due to tasks running out
         const tasksReducing =
             config.repositories.length - logger.scannedRepositories >=
-            (config.concurrentTasks || 5);
+            config.concurrentTasks;
 
         if (isScrollAtBottom && tasksReducing) {
             this.scrollTop++;

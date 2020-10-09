@@ -3,7 +3,7 @@
 import engine, { WorkerMessage } from './engine';
 import config from './config';
 import logger from './progress-logger';
-import { writeResults, printResultsCI, clearResults } from './file-client';
+import { writeResults, clearResults } from './file-client';
 
 /**
  * Entrypoint of the application.
@@ -33,11 +33,6 @@ async function main() {
     );
 
     logger.onAllRepositoriesScanned();
-
-    // On CI mode print results of scan to stdout
-    if (config.CI) {
-        printResultsCI();
-    }
 }
 
 /**
