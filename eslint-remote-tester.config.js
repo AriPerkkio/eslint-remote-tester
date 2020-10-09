@@ -29,7 +29,7 @@ module.exports = {
 
     resultParser: undefined,
 
-    concurrentTasks: 5,
+    concurrentTasks: 3,
 
     eslintrc: {
         root: true,

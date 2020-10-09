@@ -181,7 +181,7 @@ module.exports = {
     resultParser: 'markdown',
 
     /** Maximum amount of tasks ran concurrently */
-    concurrentTasks: 5,
+    concurrentTasks: 3,
 
     /** ESLint configuration */
     eslintrc: {
