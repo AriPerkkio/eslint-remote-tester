@@ -24,7 +24,7 @@ const RESULT_TEMPLATE_MARKDOWN = (options: ResultTemplateOptions): string =>
 - Path: \`${options.path}\`
 - [Link](${options.link})
 \`\`\`${options.extension || ''}
-${options.source}
+${options.source || ''}
 \`\`\`
 `;
 

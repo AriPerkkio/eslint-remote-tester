@@ -31,18 +31,19 @@ export function clearResults(): void {
 const RESULT_TEMPLATE_CLI = (result: LintMessage) => {
     const path = result.path.replace(`${CACHE_LOCATION}/`, '');
     const extension = path.split('.').pop();
-    const lines = `#L${result.line}${
-        result.endLine ? `-L${result.endLine}` : ''
-    }`;
+    const lines = result.line
+        ? `#L${result.line}${result.endLine ? `-L${result.endLine}` : ''}`
+        : '';
 
     const [project, repository, ...pathParts] = path.split('/');
-    const filePath = pathParts.join('/');
+    const filePath = pathParts.join('/') + lines;
+    const postfix = filePath ? `/blob/HEAD/${filePath}` : '';
 
     return RESULT_TEMPLATE({
         rule: result.ruleId,
         message: result.message,
         path,
-        link: `${URL}/${project}/${repository}/blob/HEAD/${filePath}${lines}`,
+        link: `${URL}/${project}/${repository}${postfix}`,
         extension,
         source: result.source,
     });

@@ -1,5 +1,6 @@
 import config from '../config';
 import { Task } from './types';
+import { CACHE_LOCATION } from '../file-client/repository-client';
 
 export const TASK_TEMPLATE = (task: Task): string => {
     switch (task.step) {
@@ -39,6 +40,13 @@ export const LINT_END_TEMPLATE = (
     repository: string,
     errorCount: number
 ): string => `[DONE] ${repository} ${errorCount} errors`;
+
+export const LINT_SLOW_TEMPLATE = (lintTime: number, file: string): string => {
+    const path = file.replace(`${CACHE_LOCATION}/`, '').split('/');
+    const fileName = path.pop();
+
+    return `[WARN] Linting ${fileName} took ${lintTime}s at ${path.join('/')}`;
+};
 
 export const LINT_FAILURE_TEMPLATE = (
     repository: string,

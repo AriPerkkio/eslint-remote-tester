@@ -186,6 +186,20 @@ class ProgressLogger {
     }
 
     /**
+     * Log warning about slow linting
+     */
+    onFileLintSlow(repository: string, lintTime: number, file: string) {
+        const isNewWarning = this.addWarningToTask(repository, file);
+
+        if (isNewWarning) {
+            this.addNewMessage({
+                content: Templates.LINT_SLOW_TEMPLATE(lintTime, file),
+                color: chalk.yellow,
+            });
+        }
+    }
+
+    /**
      * Log warning about linter crashing
      */
     onLinterCrash(repository: string, erroneousRule: string) {

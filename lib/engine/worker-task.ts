@@ -13,11 +13,17 @@ export type WorkerMessage =
     | { type: 'LINT_START'; payload: number }
     | { type: 'LINT_END'; payload: LintMessage[] }
     | { type: 'FILE_LINT_END'; payload: number }
+    | { type: 'FILE_LINT_SLOW'; payload: { path: string; lintTime: number } }
     | { type: 'LINTER_CRASH'; payload: string }
     | { type: 'WORKER_ERROR'; payload?: string }
     | { type: 'READ_FAILURE' }
     | { type: 'CLONE_FAILURE' }
     | { type: 'PULL_FAILURE' };
+
+// Regex used to attempt parsing out rule which caused linter to crash
+const RULE_REGEXP = /rules\/(.*?)\.js/;
+const SOURCE_WINDOW_SIZE = 10;
+const MAX_LINT_TIME_SECONDS = 5;
 
 /**
  * Create error message for LintMessage results
@@ -33,9 +39,21 @@ export function createErrorMessage(
     };
 }
 
-// Regex used to attempt parsing out rule which caused linter to crash
-const RULE_REGEXP = /rules\/(.*?)\.js/;
-const SOURCE_WINDOW_SIZE = 10;
+async function executionTimeWarningWrapper<T>(
+    method: () => Promise<T>,
+    warningMethod: (executionTime: number) => void,
+    time: number
+): Promise<T> {
+    const startTime = process.hrtime();
+    const results = await method();
+    const [endTime] = process.hrtime(startTime);
+
+    if (endTime > time) {
+        warningMethod(endTime);
+    }
+
+    return results;
+}
 
 /**
  * Picks out messages which are under testing and constructs a small snippet of
@@ -115,10 +133,21 @@ export default async function workerTask(): Promise<void> {
 
     for (const [index, file] of files.entries()) {
         const { content, path } = file;
-        let result;
+        let result: ESLint.LintResult[];
 
         try {
-            result = await linter.lintText(content);
+            result = await executionTimeWarningWrapper(
+                () => linter.lintText(content),
+
+                // Warn about files taking more than 5s to lint
+                // Useful to identify minified files commited to remote
+                lintTime =>
+                    postMessage({
+                        type: 'FILE_LINT_SLOW',
+                        payload: { path, lintTime },
+                    }),
+                MAX_LINT_TIME_SECONDS
+            );
         } catch (error) {
             // Catch crashing linter
             const stack = error.stack || '';

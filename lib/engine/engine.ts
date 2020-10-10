@@ -48,7 +48,9 @@ function scanRepository(
                 .filter(Boolean)
                 .join(' ');
 
-            resolve([createErrorMessage({ message, path: '', ruleId: '' })]);
+            resolve([
+                createErrorMessage({ message, path: repository, ruleId: '' }),
+            ]);
         });
 
         worker.on('exit', code => {
@@ -56,7 +58,7 @@ function scanRepository(
                 resolve([
                     createErrorMessage({
                         message: `Worker exited with code ${code}`,
-                        path: '',
+                        path: repository,
                         ruleId: '',
                     }),
                 ]);

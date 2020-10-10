@@ -1,11 +1,12 @@
 module.exports = {
     repositories: [
+        'codesandbox/codesandbox-client',
         'AriPerkkio/js-framework-playground',
         'oldboyxx/jira_clone',
         'reach/reach-ui',
         'react-bootstrap/react-bootstrap',
         'StreakYC/react-smooth-collapse',
-        'react-spring/react-spring',
+        'pmndrs/react-spring',
         'AriPerkkio/scrpr',
         'AriPerkkio/state-mgmt-examples',
         'AriPerkkio/suspense-examples',
@@ -23,7 +24,17 @@ module.exports = {
 
     extensions: ['js', 'jsx', 'ts', 'tsx'],
 
-    pathIgnorePattern: "(node_modules|^\\.|test-results|tests|docs)",
+    pathIgnorePattern: `(${[
+        'node_modules',
+        '\\/\\.', // Any file or directory starting with dot, e.g. ".git"
+        'test-results',
+        'tests',
+        'docs',
+
+        // Codesandbox commits minified JS to remote
+        'codesandbox-client/packages/app/static/js',
+        'codesandbox-client/standalone-packages',
+    ].join('|')})`,
 
     rulesUnderTesting: [],
 

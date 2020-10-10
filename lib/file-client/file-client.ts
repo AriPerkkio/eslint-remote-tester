@@ -20,9 +20,15 @@ interface FileClientOptions extends RepositoryClientOptions {
 
 /**
  * Check whether given directory or path is set to be ignored by config
+ * - Comparison is done against whole repository path: `<org>/<repository>/path/to/file.<ext>`
  */
-function isDirectoryIgnored(fileOrDir: string) {
-    return config.pathIgnorePattern && config.pathIgnorePattern.test(fileOrDir);
+function isDirectoryIgnored(directory: string) {
+    return (
+        config.pathIgnorePattern &&
+        config.pathIgnorePattern.test(
+            directory.replace(`${CACHE_LOCATION}/`, '')
+        )
+    );
 }
 
 /**
@@ -32,8 +38,8 @@ function constructTreeFromDir(dir: string): string[] {
     return fs
         .readdirSync(dir)
         .map(fileOrDir => {
-            if (isDirectoryIgnored(fileOrDir)) return;
             const currentPath = `${dir}/${fileOrDir}`;
+            if (isDirectoryIgnored(currentPath)) return;
 
             return fs.lstatSync(currentPath).isDirectory()
                 ? constructTreeFromDir(currentPath)

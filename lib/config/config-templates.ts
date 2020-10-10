@@ -8,7 +8,14 @@ export const CONFIGURATION_FILE_TEMPLATE =
     extensions: ['.js'],
 
     /** Optional pattern used to exclude paths */
-    pathIgnorePattern: "(node_modules|^\\\\.|test-results)",
+    /** Optional pattern used to exclude paths */
+    pathIgnorePattern: \`(\${[
+        'node_modules',
+        '\\/\\.', // Any file or directory starting with dot, e.g. ".git"
+        'test-results',
+        'tests',
+        'docs',
+    ].join('|')})\`,
 
     /** Rules used to filter out results */
     rulesUnderTesting: ['react/no-direct-mutation-state'],

@@ -62,6 +62,13 @@ async function scanRepo(repository: string) {
                 case 'FILE_LINT_END':
                     return logger.onFileLintEnd(repository, message.payload);
 
+                case 'FILE_LINT_SLOW':
+                    return logger.onFileLintSlow(
+                        repository,
+                        message.payload.lintTime,
+                        message.payload.path
+                    );
+
                 case 'LINTER_CRASH':
                     return logger.onLinterCrash(repository, message.payload);
 
