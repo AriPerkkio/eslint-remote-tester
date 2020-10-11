@@ -74,12 +74,20 @@ class LogRenderer {
             clearTimeout(this.intervalHandle);
         }
 
-        this.scrollToBottom();
-        this.printCLI();
-        process.stdin.pause();
+        const messages = logger.messages.map(message => {
+            const color = message.color || DEFAULT_COLOR_METHOD;
 
-        // Reset cursor and exit
-        process.stdout.cursorTo(0, this.getContentHeight());
+            return color(message.content);
+        });
+
+        // Print all messages to console for unlocked scroll
+        const formattedLog = ['Full log:', ...messages].join('\n');
+
+        console.clear();
+        process.stdout.cursorTo(0, 0);
+        console.log(formattedLog);
+
+        process.stdin.pause();
         process.exit();
     }
 
