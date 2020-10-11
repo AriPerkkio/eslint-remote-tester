@@ -26,5 +26,6 @@ export type Listener = () => void;
 export interface Listeners {
     exit: Listener[];
     message: Listener[];
+    taskStart: Listener[];
     taskEnd: Listener[];
 }

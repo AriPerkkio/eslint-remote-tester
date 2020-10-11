@@ -23,6 +23,7 @@ class ProgressLogger {
     /** Event listeners */
     listeners: Listeners = {
         exit: [],
+        taskStart: [],
         taskEnd: [],
         message: [],
     };
@@ -145,6 +146,8 @@ class ProgressLogger {
             step: 'START',
             color: chalk.yellow,
         });
+
+        this.listeners.taskStart.forEach(execute);
     }
 
     /**

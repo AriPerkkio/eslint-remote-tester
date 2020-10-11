@@ -48,14 +48,14 @@ class LogRenderer {
             process.stdin.on('keypress', (_, key) => this.handleKeyPress(key));
             process.stdin.setRawMode(true);
 
-            this.start();
+            this.startCLI();
         }
     }
 
     /**
      * Initialize/reset previous printing values and start printing on interval
      */
-    start() {
+    startCLI() {
         this.previousLog = '';
         this.previousColors = [];
 
@@ -114,7 +114,7 @@ class LogRenderer {
             case 'c':
                 return ctrl && this.stopCLI();
             case 'l':
-                return ctrl && this.start();
+                return ctrl && this.startCLI();
             case 'g':
                 return shift && this.scrollToBottom();
             case 'd':
@@ -139,7 +139,7 @@ class LogRenderer {
             this.intervalHandle = null;
 
             // Reset printing status and start over in order to recover from terminal size change
-            this.start();
+            this.startCLI();
         }
     }
 
@@ -191,18 +191,19 @@ class LogRenderer {
      * Synchronize scroll with latest message count when scroll is at bottom
      */
     synchronizeScroll() {
+        const newScrollTop = this.scrollTop + 1;
+
         // Increase scroll if it's already at the bottom
         const isScrollAtBottom =
-            logger.messages.length - this.getMaxMessageCount() ===
-            this.scrollTop;
+            logger.messages.length - this.getMaxMessageCount() === newScrollTop;
 
         // Prevent scrolling too much when content is reducing due to tasks running out
         const tasksReducing =
-            config.repositories.length - logger.scannedRepositories >=
-            config.concurrentTasks;
+            config.concurrentTasks >
+            config.repositories.length - logger.scannedRepositories;
 
-        if (isScrollAtBottom && tasksReducing) {
-            this.scrollTop++;
+        if (isScrollAtBottom && !tasksReducing) {
+            this.scrollTop = newScrollTop;
         }
     }
 
@@ -223,7 +224,18 @@ class LogRenderer {
     getMaxMessageCount() {
         const terminalHeight = process.stdout.rows;
 
-        return terminalHeight - logger.tasks.length - CONTENT_PADDING;
+        return terminalHeight - this.getTaskCount() - CONTENT_PADDING;
+    }
+
+    /**
+     * Calculate how many rows should be dedicated to tasks
+     */
+    getTaskCount() {
+        const tasksReducing =
+            config.concurrentTasks >
+            config.repositories.length - logger.scannedRepositories;
+
+        return tasksReducing ? logger.tasks.length : config.concurrentTasks;
     }
 
     /**
@@ -245,6 +257,9 @@ class LogRenderer {
         const { messages, tasks, scannedRepositories } = logger;
         const terminalHeight = process.stdout.rows;
         const terminalWidth = process.stdout.columns;
+
+        // Prevent blinking screen when task count changes between prints
+        const tasksPadding = this.getTaskCount() - tasks.length;
 
         // Render only the amount of messages the screen can fit
         // Pick messages based on scroll position
@@ -273,6 +288,7 @@ class LogRenderer {
         const rows = [
             Templates.REPOSITORIES_STATUS_TEMPLATE(scannedRepositories),
             ...tasks.map(Templates.TASK_TEMPLATE),
+            ...Array(tasksPadding).fill(' '),
             ' ', // Line break between tasks and messages
             ...messageRows.map(message => message.content),
         ].map(row => {
@@ -287,6 +303,7 @@ class LogRenderer {
         const colors = [
             null, // Status row
             ...tasks.map(task => task.color),
+            ...Array(tasksPadding).fill(DEFAULT_COLOR_METHOD),
             null, // Line break
             ...messageRows.map(message => message.color),
         ];

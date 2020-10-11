@@ -1,6 +1,6 @@
 import config from '../config';
 import { Task } from './types';
-import { CACHE_LOCATION } from '../file-client/repository-client';
+import { CACHE_LOCATION } from '../file-client';
 
 export const TASK_TEMPLATE = (task: Task): string => {
     switch (task.step) {
