@@ -178,12 +178,21 @@ module.exports = {
         'test-results',
         'tests',
         'docs',
+        '/dist/',
+        '/build/',
 
-        // Codesandbox commits minified JS to remote
+        // Minified JS committed to remote
         'codesandbox-client/packages/app/static/js',
         'codesandbox-client/standalone-packages',
+        'dockunit/platform/assets',
+        'hyper/bin',
+        'react-solitaire/lib/index\\.js',
+        'babel\\.js',
+        'chunk\\.js',
+        'react-dom\\.development\\.js',
+        'vendor\\.min\\.js',
+        'jquery-3\\.4\\.1\\.min\\.js'
     ].join('|')})`,
-
 
     /** Rules used to filter out results */
     rulesUnderTesting: ['react/no-unstable-nested-components'],
