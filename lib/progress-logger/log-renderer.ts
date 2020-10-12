@@ -40,6 +40,16 @@ class LogRenderer {
             logger.on('message', () => this.printCI());
             logger.on('exit', () => this.stopCI());
         } else {
+            const isCliAvailable =
+                process.stdout.isTTY &&
+                process.stdin.setRawMode &&
+                process.stdout.cursorTo;
+
+            if (!isCliAvailable) {
+                console.log(chalk.red(Templates.CLI_MODE_NOT_TTY));
+                process.exit();
+            }
+
             logger.on('message', () => this.synchronizeScroll());
             logger.on('exit', () => this.stopCLI());
 
