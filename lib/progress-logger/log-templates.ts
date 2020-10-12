@@ -74,10 +74,10 @@ export const WRITE_FAILURE_TEMPLATE = (repository: string): string =>
     `[WARN] ${repository} failed to write results`;
 
 export const OVERFLOWING_ROWS_TOP = (overflowingRowCount: number): string =>
-    `[⬆ to see ${overflowingRowCount} lines above]`;
+    `[\u25B2 to see ${overflowingRowCount} lines above]`;
 
 export const OVERFLOWING_ROWS_BOTTOM = (overflowingRowCount: number): string =>
-    `[⬇ to see ${overflowingRowCount} lines below]`;
+    `[\u25BC to see ${overflowingRowCount} lines below]`;
 
 export const SCAN_FINISHED = (scannedRepositories: number): string =>
     `[DONE] Finished scan of ${scannedRepositories} repositories`;

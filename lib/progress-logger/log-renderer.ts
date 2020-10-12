@@ -290,7 +290,7 @@ class LogRenderer {
         if (this.scrollTop) {
             messageRows.splice(0, 1, {
                 content: Templates.OVERFLOWING_ROWS_TOP(this.scrollTop),
-                color: chalk.yellow,
+                color: chalk.yellow.bold,
             });
         }
 
@@ -299,7 +299,7 @@ class LogRenderer {
         if (overflowingMessages > 0) {
             messageRows.splice(-1, 1, {
                 content: Templates.OVERFLOWING_ROWS_BOTTOM(overflowingMessages),
-                color: chalk.yellow,
+                color: chalk.yellow.bold,
             });
         }
 
