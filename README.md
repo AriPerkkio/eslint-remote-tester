@@ -34,7 +34,12 @@ module.exports = {
     extensions: [],
 
     /** Optional pattern used to exclude paths */
-    pathIgnorePattern: "(node_modules|^\\.|test-results)",
+    pathIgnorePattern: `(${[
+        'node_modules',
+        '\\/\\.', // Any file or directory starting with dot, e.g. ".git"
+        'test-results',
+        'docs',
+    ].join('|')})`,
 
     /** Rules used to filter out results. Use empty array when ESLint crashes are the only interest */
     rulesUnderTesting: [],
@@ -65,65 +70,5 @@ Run `yarn lint:remote`. Results are written into `./results` folder.
 
 ### Configuration
 
-```js
-// eslint-remote-tester.config.js
-module.exports = {
-    repositories: [
-        'ant-design/ant-design',
-        'AriPerkkio/js-framework-playground',
-        'oldboyxx/jira_clone',
-        'mui-org/material-ui',
-        'reach/reach-ui',
-        'react-bootstrap/react-bootstrap',
-        'StreakYC/react-smooth-collapse',
-        'react-spring/react-spring',
-        'AriPerkkio/scrpr',
-        'AriPerkkio/state-mgmt-examples',
-        'AriPerkkio/suspense-examples',
-        'withspectrum/spectrum',
-        'codesandbox/codesandbox-client',
-        'Automattic/wp-calypso',
-        'vercel/next-site',
-        'artsy/force',
-        'reactjs/reactjs.org',
-        'zesty-io/accounts-ui',
-        'zesty-io/design-system',
-        'segmentio/evergreen',
-        'segmentio/ui-box',
-    ],
-
-    extensions: ['js', 'jsx', 'ts', 'tsx'],
-
-    pathIgnorePattern: "(node_modules|^\\.|test-results)",
-
-    rulesUnderTesting: ['react/no-unstable-nested-components'],
-
-    resultParser: undefined,
-
-    concurrentTasks: 5,
-
-    eslintrc: {
-        root: true,
-        env: {
-            es6: true,
-        },
-        parserOptions: {
-            ecmaVersion: 2020,
-            sourceType: 'module',
-            ecmaFeatures: {
-                jsx: true,
-            },
-        },
-        settings: {
-            react: {
-                version: '16.13.1',
-            },
-        },
-        plugins: ['react'],
-        extends: ['plugin:react/all'],
-        rules: {
-            'react/no-unstable-nested-components': ['error'],
-        },
-    },
-};
-```
+- [react configuration with +150 repositories](eslint-remote-tester.react.config.js)
+- [small regression for eslint:recommended](eslint-remote-tester.config.js)
