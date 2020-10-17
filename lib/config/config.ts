@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 import { workerData, isMainThread } from 'worker_threads';
 
 import constructAndValidateConfiguration from './validator';
@@ -45,15 +46,15 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
         defaultCreated = true;
     }
 
-    const errors = [
-        `Missing configuratin file ${CONFIGURATION_FILE}.`,
-        defaultCreated &&
-            `Default configuration file created: ${DEFAULT_CONFIGURATION_FILE}`,
-    ]
-        .filter(Boolean)
-        .join('\n');
-
-    throw new Error(errors); // Configuration file was not found
+    console.log(chalk.red(`Missing configuratin file ${CONFIGURATION_FILE}.`));
+    if (defaultCreated) {
+        console.log(
+            chalk.green(
+                `Default configuration file created: ${DEFAULT_CONFIGURATION_FILE}`
+            )
+        );
+    }
+    process.exit();
 }
 
 const config: Config = require(path.resolve(CONFIGURATION_FILE));

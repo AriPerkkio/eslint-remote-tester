@@ -31,15 +31,10 @@ module.exports = {
                 },
             },
         ],
+        'no-process-exit': 'off',
         'prettier/prettier': 'error',
     },
     overrides: [
-        {
-            files: ['log-renderer.ts'],
-            rules: {
-                'no-process-exit': 'off'
-            }
-        },
         {
             files: ['config.ts', 'integration-tests/*.ts'],
             rules: {
