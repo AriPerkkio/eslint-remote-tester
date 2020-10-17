@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 import { Config, ResultParser } from './types';
 
 const RESULT_PARSERS: ResultParser[] = ['plaintext', 'markdown'];
@@ -78,11 +80,12 @@ export default function constructAndValidateConfiguration(
     }
 
     if (errors.length) {
-        const configurationValidationErrors = `Configuration validation errors: ${errors.join(
-            '\n'
-        )}\n`;
-
-        throw new Error(configurationValidationErrors);
+        console.log(
+            chalk.red(
+                `Configuration validation errors: \n- ${errors.join('\n- ')}`
+            )
+        );
+        process.exit();
     }
 
     return config;
