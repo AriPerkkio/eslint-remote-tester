@@ -6,7 +6,7 @@ import { workerData, isMainThread } from 'worker_threads';
 import constructAndValidateConfiguration from './validator';
 import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
 import { Config } from './types';
-import { WorkerData } from '../engine/types';
+import { WorkerData } from '@engine/types';
 
 const DEFAULT_CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
 const CLI_ARGS_CONFIG = ['-c', '--config'];

@@ -5,7 +5,7 @@ import {
     CACHE_LOCATION,
     RepositoryClientOptions,
 } from './repository-client';
-import config from '../config';
+import config from '@config';
 
 export interface SourceFile {
     content: string;

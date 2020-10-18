@@ -1,9 +1,9 @@
 import { parentPort, workerData } from 'worker_threads';
 import { ESLint, Linter } from 'eslint';
 
-import config from '../config';
-import { getFiles } from '../file-client';
 import { LintMessage, WorkerData } from './types';
+import config from '@config';
+import { getFiles } from '@file-client';
 
 export type WorkerMessage =
     | { type: 'START' }

@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 
-import config from '../config';
 import * as Templates from './log-templates';
 import { LogMessage, Task, Listeners, Listener } from './types';
+import config from '@config';
 
 const CI_KEEP_ALIVE_INTERVAL = 5 * 60 * 1000;
 const execute = (method: Listener) => method();

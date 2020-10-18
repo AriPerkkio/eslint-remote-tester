@@ -2,11 +2,13 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   roots: ['test'],
-  testPathIgnorePatterns: ["test/integration"],
+  testPathIgnorePatterns: ['test/integration'],
   verbose: true,
   setupFilesAfterEnv: ['./test/jest.setup.ts'],
-  moduleDirectories: [
-    'node_modules',
-    require('./tsconfig.json').compilerOptions.baseUrl,
-  ],
+  moduleNameMapper: {
+    '^@config(.*)$': '<rootDir>/lib/config$1',
+    "^@engine(.*)$": '<rootDir>/lib/engine$1',
+    "^@file-client(.*)$": '<rootDir>/lib/file-client$1',
+    "^@progress-logger(.*)$": '<rootDir>/lib/progress-logger$1'
+  }
 };

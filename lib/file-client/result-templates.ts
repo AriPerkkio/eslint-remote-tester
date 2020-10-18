@@ -1,5 +1,5 @@
-import { ResultParser } from '../config/types';
-import { LintMessage } from '../engine/types';
+import { ResultParser } from '@config/types';
+import { LintMessage } from '@engine/types';
 
 interface ResultTemplateOptions {
     rule: LintMessage['ruleId'];

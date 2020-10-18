@@ -1,13 +1,13 @@
 import fs from 'fs';
 import { isMainThread } from 'worker_threads';
 
-import config from '../config';
 import { CACHE_LOCATION, URL } from './repository-client';
 import {
     RESULT_PARSER_TO_TEMPLATE,
     RESULT_PARSER_TO_EXTENSION,
 } from './result-templates';
-import { LintMessage } from '../engine/types';
+import config from '@config';
+import { LintMessage } from '@engine/types';
 
 const RESULTS: string[] = [];
 const RESULTS_LOCATION = './eslint-remote-tester-results';

@@ -16,13 +16,7 @@ module.exports = {
     ],
     rules: {
         '@typescript-eslint/no-explicit-any': 'off',
-        'node/no-missing-import': [
-            'error',
-            {
-                tryExtensions: ['.ts', '.d.ts'],
-                resolvePaths: [__dirname + '/lib'],
-            },
-        ],
+        'node/no-missing-import': ['off'], // Path alias not supported
         'node/shebang': [
             'error',
             {

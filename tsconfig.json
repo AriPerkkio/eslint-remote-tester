@@ -9,7 +9,15 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
-        "baseUrl": "./lib"
+        "baseUrl": ".",
+        "paths": {
+            "@config": ["lib/config"],
+            "@config/*": ["lib/config/*"],
+            "@engine": ["lib/engine"],
+            "@engine/*": ["lib/engine/*"],
+            "@file-client": ["lib/file-client"],
+            "@progress-logger": ["lib/progress-logger"]
+        }
     },
     "include": ["lib", "test"]
 }

@@ -1,6 +1,6 @@
 import { getConsoleLogCalls } from './utils';
-import validator from 'config/validator';
-import { Config } from 'config/types';
+import validator from '@config/validator';
+import { Config } from '@config/types';
 
 const DEFAULT_CONFIGURATION: Config = {
     repositories: ['test-repo'],

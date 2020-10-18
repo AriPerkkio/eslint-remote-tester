@@ -2,7 +2,7 @@ import { Worker, isMainThread } from 'worker_threads';
 
 import workerTask, { WorkerMessage, createErrorMessage } from './worker-task';
 import { LintMessage } from './types';
-import { resolveConfigurationLocation } from '../config';
+import { resolveConfigurationLocation } from '@config';
 
 if (!isMainThread) {
     workerTask();

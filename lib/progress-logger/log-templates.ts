@@ -1,6 +1,6 @@
-import config from '../config';
 import { Task } from './types';
-import { CACHE_LOCATION } from '../file-client';
+import config from '@config';
+import { CACHE_LOCATION } from '@file-client';
 
 export const TASK_TEMPLATE = (task: Task): string => {
     switch (task.step) {

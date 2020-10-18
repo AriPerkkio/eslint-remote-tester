@@ -4,8 +4,8 @@ import readline from 'readline';
 import logger from './progress-logger';
 import diffLogs from './log-diff';
 import * as Templates from './log-templates';
-import config from '../config';
-import { getResults } from '../file-client';
+import config from '@config';
+import { getResults } from '@file-client';
 
 const REFRESH_INTERVAL_MS = 200;
 const KEY_DOWN_TIMER_MS = 200;

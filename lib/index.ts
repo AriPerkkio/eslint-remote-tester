@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import engine, { WorkerMessage } from './engine';
-import config from './config';
-import logger from './progress-logger';
-import { writeResults, clearResults } from './file-client';
+import engine, { WorkerMessage } from '@engine';
+import config from '@config';
+import logger from '@progress-logger';
+import { writeResults, clearResults } from '@file-client';
 
 /**
  * Entrypoint of the application.
