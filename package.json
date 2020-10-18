@@ -20,7 +20,7 @@
         "start:ci": "CI=true yarn start",
         "start:memory-limit-crash": "NODE_OPTIONS=--max_old_space_size=10 node dist",
         "test": "jest",
-        "test:integration": "jest --config ./integration-tests/jest.config.integration.js",
+        "test:integration": "jest --config jest.config.integration.js",
         "lint:react": "node dist --config eslint-remote-tester.react.config.js"
     },
     "repository": {

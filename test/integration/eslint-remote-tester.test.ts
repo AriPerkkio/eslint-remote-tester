@@ -1,9 +1,9 @@
-import { setConfig, CI_CONFIGURATION_LOCATION } from './utils';
+import { setConfig, CI_CONFIGURATION_LOCATION } from '../utils';
 
 describe('eslint-remote-tester', () => {
     describe('CLI', () => {
         test("doesn't crash", async () => {
-            const { __handleForTests } = require('../dist/index');
+            const { __handleForTests } = require('../../dist/index');
             await __handleForTests;
         });
 
@@ -18,7 +18,7 @@ describe('eslint-remote-tester', () => {
         });
 
         test("doesn't crash", async () => {
-            const { __handleForTests } = require('../dist/index');
+            const { __handleForTests } = require('../../dist/index');
             await __handleForTests;
         });
 

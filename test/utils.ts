@@ -1,7 +1,7 @@
 const CLI_CONFIGURATION_LOCATION =
-    'integration-tests/eslint-remote-tester.integration.cli.config.js';
+    'test/integration/eslint-remote-tester.integration.cli.config.js';
 export const CI_CONFIGURATION_LOCATION =
-    'integration-tests/eslint-remote-tester.integration.ci.config.js';
+    'test/integration/eslint-remote-tester.integration.ci.config.js';
 
 /**
  * Replace config from argv's with given location
@@ -32,4 +32,13 @@ export async function waitFor(predicate: () => boolean): Promise<void> {
 
         checkForPredicate();
     });
+}
+
+/**
+ * Get call arguments of `console.log`
+ */
+export function getConsoleLogCalls(): string[] {
+    const calls: string[][] = (console.log as jest.Mock).mock.calls;
+
+    return calls.map(argumentArray => argumentArray[0]);
 }
