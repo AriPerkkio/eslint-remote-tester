@@ -8,7 +8,7 @@ import { writeResults, clearResults } from './file-client';
 /**
  * Entrypoint of the application.
  * Runs ESLint to given repositories and filters out only the rules being under testing.
- * Results are written to ./results directory.
+ * Results are written to ./eslint-remote-tester-results directory.
  */
 async function main() {
     const pool = config.repositories.map(repo => () => scanRepo(repo));

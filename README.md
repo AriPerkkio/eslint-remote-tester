@@ -59,7 +59,7 @@ module.exports = {
 ```
 
 ### Execution
-Run `yarn lint:remote`. Results are written into `./results` folder.
+Run `yarn lint:remote`. Results are written into `./eslint-remote-tester-results` folder.
 
 ## Example
 
