@@ -10,7 +10,7 @@ import config from '@config';
 import { LintMessage } from '@engine/types';
 
 const RESULTS: string[] = [];
-const RESULTS_LOCATION = './eslint-remote-tester-results';
+export const RESULTS_LOCATION = './eslint-remote-tester-results';
 const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
 const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
 

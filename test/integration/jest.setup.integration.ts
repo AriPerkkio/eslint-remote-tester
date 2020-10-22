@@ -1,7 +1,15 @@
-import { waitFor, setConfig } from '../utils';
+import fs from 'fs';
+
+import {
+    waitFor,
+    INTEGRATION_REPO_OWNER,
+    INTEGRATION_REPO_NAME,
+    getExitCalls,
+} from '../utils';
+import { CACHE_LOCATION } from '@file-client';
 
 // Extend timeout due to actual git clone
-jest.setTimeout(10000);
+jest.setTimeout(5000);
 
 const isWatchMode = process.argv.find(arg => arg === '--watch');
 
@@ -9,15 +17,16 @@ beforeAll(() => {
     if (isWatchMode) {
         require('child_process').execSync('yarn build');
     }
+});
 
-    setConfig();
+beforeEach(() => {
+    const repositoryCache = `${CACHE_LOCATION}/${INTEGRATION_REPO_OWNER}/${INTEGRATION_REPO_NAME}`;
+
+    if (fs.existsSync(repositoryCache)) {
+        fs.rmdirSync(repositoryCache, { recursive: true });
+    }
 });
 
 afterEach(async () => {
-    await waitFor(() =>
-        [
-            ...(process.stdout.write as jest.Mock).mock.calls,
-            ...(console.log as jest.Mock).mock.calls,
-        ].some(call => /Finished/.test(call))
-    );
+    await waitFor(() => getExitCalls().length > 0);
 });

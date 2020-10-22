@@ -1,5 +1,5 @@
 const actualConsole = console;
-const mockedConsole: Console = { ...console, log: jest.fn() };
+const mockedConsole: Console = { ...console, log: jest.fn(), clear: jest.fn() };
 const actualProcess = process;
 const mockedProcess: NodeJS.Process = {
     ...actualProcess,

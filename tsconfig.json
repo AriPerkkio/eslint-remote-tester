@@ -16,6 +16,7 @@
             "@engine": ["lib/engine"],
             "@engine/*": ["lib/engine/*"],
             "@file-client": ["lib/file-client"],
+            "@file-client/*": ["lib/file-client/*"],
             "@progress-logger": ["lib/progress-logger"]
         }
     },
