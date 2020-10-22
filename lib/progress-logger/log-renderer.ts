@@ -108,7 +108,9 @@ class LogRenderer {
         const results = getResults();
 
         const formattedResults =
-            results.length > 0 ? results.join('\n') : 'No errors';
+            results.length > 0
+                ? `Results:\n${results.join('\n')}`
+                : 'No errors';
 
         console.log(formattedResults);
         process.exit();
