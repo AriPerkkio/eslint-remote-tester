@@ -15,9 +15,9 @@
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc --project tsconfig.prod.json",
-        "postbuild": "tscpaths -p tsconfig.prod.json -s ./lib -o ./dist",
-        "watch": "tsc --watch --project tsconfig.prod.json",
-        "start": "nodemon --watch dist dist/index.js",
+        "postbuild": "tscpaths --project tsconfig.prod.json --src ./lib --out ./dist",
+        "watch": "yarn build --watch",
+        "start": "nodemon --watch dist --no-stdin --exec \"yarn postbuild && node ./dist\"",
         "start:ci": "CI=true yarn start",
         "start:memory-limit-crash": "NODE_OPTIONS=--max_old_space_size=10 node dist",
         "test": "jest",
