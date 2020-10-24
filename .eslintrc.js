@@ -11,7 +11,7 @@ module.exports = {
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'plugin:node/recommended-module',
+        'plugin:node/recommended',
         'prettier/@typescript-eslint',
     ],
     rules: {
@@ -21,16 +21,17 @@ module.exports = {
             'error',
             {
                 convertPath: {
-                    'lib/*.ts': ['^lib/(.+?)\\.ts$', 'dist/$1.js']
+                    'lib/*.ts': ['^lib/(.+?)\\.ts$', 'dist/$1.js'],
                 },
             },
         ],
         'no-process-exit': 'off',
         'prettier/prettier': 'error',
+        'node/no-unsupported-features/es-syntax': 'off',
     },
     overrides: [
         {
-            files: ['config.ts', 'test/**/*.ts'],
+            files: ['*config*', 'test/**/*.ts'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',
             },
@@ -38,8 +39,8 @@ module.exports = {
         {
             files: ['*.test.ts'],
             rules: {
-                '@typescript-eslint/no-non-null-assertion': 'off'
-            }
-        }
+                '@typescript-eslint/no-non-null-assertion': 'off',
+            },
+        },
     ],
 };

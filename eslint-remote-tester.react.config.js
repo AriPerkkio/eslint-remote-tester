@@ -165,7 +165,7 @@ module.exports = {
         'firefox-devtools/debugger',
         'mattermost/mattermost-webapp',
         'gaearon/overreacted.io',
-        'dnote/dnote'
+        'dnote/dnote',
     ],
 
     /** Extensions of files under scanning */
@@ -191,7 +191,7 @@ module.exports = {
         'chunk\\.js',
         'react-dom\\.development\\.js',
         'vendor\\.min\\.js',
-        'jquery-3\\.4\\.1\\.min\\.js'
+        'jquery-3\\.4\\.1\\.min\\.js',
     ].join('|')})`,
 
     /** Rules used to filter out results */
@@ -229,4 +229,4 @@ module.exports = {
 
     /** Optional boolean flag used to set CI mode. Ignored when process.env.CI is set. */
     CI: false,
-}
+};
