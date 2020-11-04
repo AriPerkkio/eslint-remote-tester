@@ -8,6 +8,8 @@ import {
 } from '../utils';
 import { RESULTS_LOCATION, CACHE_LOCATION } from '@file-client';
 
+const RESULTS_FILE = `${INTEGRATION_REPO_OWNER}_${INTEGRATION_REPO_NAME}.md`;
+
 describe('CLI', () => {
     beforeEach(async () => {
         await runProductionBuild();
@@ -17,12 +19,12 @@ describe('CLI', () => {
         const files = fs.readdirSync(RESULTS_LOCATION);
 
         expect(files).toHaveLength(1);
-        expect(files[0]).toMatch(`${INTEGRATION_REPO_NAME}.md`);
+        expect(files[0]).toMatch(RESULTS_FILE);
     });
 
     test("validates repository's files", () => {
         const results = fs.readFileSync(
-            `${RESULTS_LOCATION}/${INTEGRATION_REPO_NAME}.md`,
+            `${RESULTS_LOCATION}/${RESULTS_FILE}`,
             'utf8'
         );
 
@@ -92,7 +94,7 @@ describe('CLI', () => {
 
     test('excludes files matching exclude pattern', () => {
         const results = fs.readFileSync(
-            `${RESULTS_LOCATION}/${INTEGRATION_REPO_NAME}.md`,
+            `${RESULTS_LOCATION}/${RESULTS_FILE}`,
             'utf8'
         );
 

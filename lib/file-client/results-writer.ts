@@ -71,13 +71,17 @@ export function writeResults(results: LintMessage[], repository: string): void {
     if (!results.length) {
         return;
     }
-    const [, repositoryName] = repository.split('/');
+
+    // Construct result file name, e.g. mui-org_material-ui.md
+    const repositoryOwnerAndName = repository.split('/').join('_');
+    const fileName = `${repositoryOwnerAndName}${RESULT_EXTENSION}`;
+
     const formattedResults = formatResults(results, repository);
     RESULTS.push(formattedResults);
 
     if (!config.CI) {
         fs.writeFileSync(
-            `${RESULTS_LOCATION}/${repositoryName}${RESULT_EXTENSION}`,
+            `${RESULTS_LOCATION}/${fileName}`,
             formattedResults,
             'utf8'
         );
