@@ -1,8 +1,8 @@
-import { Chalk } from 'chalk';
+import { ForegroundColor } from 'chalk';
 
 export interface Task {
     step?: 'START' | 'CLONE' | 'PULL' | 'READ' | 'LINT';
-    color?: Chalk;
+    color?: typeof ForegroundColor;
     repository: string;
     fileCount?: number;
     currentFileIndex?: number;
@@ -11,7 +11,7 @@ export interface Task {
 
 export interface LogMessage {
     content: string;
-    color?: Chalk;
+    color?: typeof ForegroundColor;
 }
 
 export interface LogUpdate {
@@ -21,11 +21,19 @@ export interface LogUpdate {
     wholeRow?: boolean;
 }
 
-export type Listener = () => void;
+// prettier-ignore
+export type Listener<Key = ListenerType> =
+    Key extends 'message' ? (message: LogMessage) => void :
+    Key extends 'task' ? (task: Task, done?: boolean) => void :
+    Key extends 'exit' ? () => void :
+    Key extends 'ciKeepAlive' ? (message: string) => void :
+    never;
 
 export interface Listeners {
-    exit: Listener[];
-    message: Listener[];
-    taskStart: Listener[];
-    taskEnd: Listener[];
+    exit: Listener<'exit'>[];
+    message: Listener<'message'>[];
+    task: Listener<'task'>[];
+    ciKeepAlive: Listener<'ciKeepAlive'>[];
 }
+
+export type ListenerType = keyof Listeners;

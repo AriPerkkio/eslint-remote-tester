@@ -9,6 +9,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
+        "jsx": "react",
         "baseUrl": ".",
         "paths": {
             "@config": ["lib/config"],
@@ -17,7 +18,10 @@
             "@engine/*": ["lib/engine/*"],
             "@file-client": ["lib/file-client"],
             "@file-client/*": ["lib/file-client/*"],
-            "@progress-logger": ["lib/progress-logger"]
+            "@progress-logger": ["lib/progress-logger"],
+            "@progress-logger/*": ["lib/progress-logger/*"],
+            "@ui": ["lib/ui"],
+            "@ui/*": ["lib/ui/*"]
         }
     },
     "include": ["lib", "test"]

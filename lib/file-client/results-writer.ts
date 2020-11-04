@@ -85,5 +85,5 @@ export function writeResults(results: LintMessage[], repository: string): void {
 }
 
 export function getResults(): string[] {
-    return RESULTS;
+    return RESULTS.length > 0 ? RESULTS : ['No errors'];
 }

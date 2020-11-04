@@ -34,7 +34,7 @@ export const REPOSITORIES_STATUS_TEMPLATE = (
     `Repositories (${scannedRepositories}/${config.repositories.length})`;
 
 export const CI_STATUS_TEMPLATE = (scannedRepositories: number): string =>
-    `[INFO] ${REPOSITORIES_STATUS_TEMPLATE(scannedRepositories)}`;
+    `[INFO] ${REPOSITORIES_STATUS_TEMPLATE(scannedRepositories)}\n`;
 
 export const LINT_END_TEMPLATE = (
     repository: string,
@@ -81,13 +81,3 @@ export const OVERFLOWING_ROWS_BOTTOM = (overflowingRowCount: number): string =>
 
 export const SCAN_FINISHED = (scannedRepositories: number): string =>
     `[DONE] Finished scan of ${scannedRepositories} repositories`;
-
-export const CLI_MODE_NOT_TTY = `Detected non-TTY environment.
-CLI mode should be ran in TTY only.
-If you are seeing this on windows + git-bash/cygwin, try running the npm command with winpty:
-$ winpty npm.cmd run <command>
-
-If winpty is unavailable you can try executing without npm:
-$ node ./node_modules/eslint-remote-tester/dist/index.js
-
-If you saw this after piping the output (npm run lint:remote | less) you might want to set CI mode on`;
