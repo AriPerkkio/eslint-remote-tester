@@ -15,7 +15,6 @@ module.exports = {
         'withspectrum/spectrum',
         'codesandbox/codesandbox-client',
         'Automattic/wp-calypso',
-        'vercel/next-site',
         'artsy/force',
         'reactjs/reactjs.org',
         'zesty-io/accounts-ui',
@@ -227,6 +226,6 @@ module.exports = {
         },
     },
 
-    /** Optional boolean flag used to set CI mode. Ignored when process.env.CI is set. */
+    /** Optional boolean flag used to set CI mode. process.env.CI is used when not set. */
     CI: false,
 };

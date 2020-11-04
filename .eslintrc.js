@@ -5,9 +5,23 @@ module.exports = {
         node: true,
     },
     parser: '@typescript-eslint/parser',
-    plugins: ['node', '@typescript-eslint', 'prettier'],
+    parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        ecmaFeatures: {
+            jsx: true,
+        },
+    },
+    settings: {
+        react: {
+            version: 'detect',
+        },
+    },
+    plugins: ['node', 'react', 'react-hooks', '@typescript-eslint', 'prettier'],
     extends: [
         'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
@@ -28,6 +42,7 @@ module.exports = {
         'no-process-exit': 'off',
         'prettier/prettier': 'error',
         'node/no-unsupported-features/es-syntax': 'off',
+        'react/prop-types': ['error', { ignore: ['children'] }], // Already covered by React.FC
     },
     overrides: [
         {

@@ -1,25 +1,25 @@
 import fs from 'fs';
+
 import {
-    getConsoleLogCalls,
     runProductionBuild,
-    setConfig,
-    CI_CONFIGURATION_LOCATION,
     INTEGRATION_REPO_OWNER,
     INTEGRATION_REPO_NAME,
+    getStdoutWriteCalls,
 } from '../utils';
 import { CACHE_LOCATION } from '@file-client';
 
 describe('CI mode', () => {
     beforeEach(async () => {
-        setConfig(CI_CONFIGURATION_LOCATION);
         await runProductionBuild();
     });
 
     test("validates repository's files", () => {
-        const finalLogCall = getConsoleLogCalls().pop();
+        const writes = getStdoutWriteCalls();
+        const finalLog = writes.find(write => /Results:/.test(write));
 
-        expect(finalLogCall).toMatchInlineSnapshot(`
-            "Results:
+        expect(finalLog).toMatchInlineSnapshot(`
+            "
+            Results:
             Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: no-undef
             Message: 'bar' is not defined.
@@ -72,12 +72,14 @@ describe('CI mode', () => {
             if (foo === -0) {
               // prevent no-empty
             }
+
             "
         `);
     });
 
     test('excludes files matching exclude pattern', () => {
-        const finalLog = getConsoleLogCalls().pop();
+        const writes = getStdoutWriteCalls();
+        const finalLog = writes.find(write => /Results:/.test(write));
 
         expect(finalLog).not.toMatch('expected-to-be-excluded');
     });
@@ -92,7 +94,7 @@ describe('CI mode', () => {
             lintStartMessage,
             lintDoneMessage,
             scanDoneMessage,
-        ] = getConsoleLogCalls();
+        ] = getStdoutWriteCalls().filter(call => /\[[A-Z]*\]/.test(call));
 
         expect(startMessage).toMatch(`[STARTING] ${repository}`);
         expect(cloneMessage).toMatch(`[CLONING] ${repository}`);
@@ -107,14 +109,15 @@ describe('CI mode', () => {
     test('repositories are cached', async () => {
         const cachedRepository = `${CACHE_LOCATION}/${INTEGRATION_REPO_OWNER}/${INTEGRATION_REPO_NAME}`;
 
-        const [, cloneMessage] = getConsoleLogCalls();
-        expect(cloneMessage).toMatch('[CLONING]');
+        const writes = getStdoutWriteCalls();
+        expect(writes.some(call => /CLONING/.test(call))).toBe(true);
         expect(fs.existsSync(cachedRepository)).toBe(true);
 
         await runProductionBuild();
 
-        const [, pullMessage] = getConsoleLogCalls();
-        expect(pullMessage).toMatch('[PULLING]');
+        const secondRunWrites = getStdoutWriteCalls();
+        expect(secondRunWrites.some(call => /CLONING/.test(call))).toBe(false);
+        expect(secondRunWrites.some(call => /PULLING/.test(call))).toBe(true);
         expect(fs.existsSync(cachedRepository)).toBe(true);
     });
 });

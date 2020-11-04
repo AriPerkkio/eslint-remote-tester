@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import engine, { WorkerMessage } from '@engine';
+import { renderApplication } from '@ui';
 import config from '@config';
-import logger from '@progress-logger';
+import engine, { WorkerMessage } from '@engine';
 import { writeResults, clearResults } from '@file-client';
+import logger from '@progress-logger';
 
 /**
  * Entrypoint of the application.
@@ -24,6 +25,9 @@ async function main() {
 
     // Clear possible earlier results / initialize results folder
     clearResults();
+
+    // Render application to stdout
+    renderApplication();
 
     // Start x amount of task runners parallel until we are out of repositories to scan
     await Promise.all(

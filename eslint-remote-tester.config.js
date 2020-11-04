@@ -13,7 +13,6 @@ module.exports = {
         'ant-design/ant-design',
         'mui-org/material-ui',
         'withspectrum/spectrum',
-        'vercel/next-site',
         'artsy/force',
         'reactjs/reactjs.org',
         'zesty-io/accounts-ui',

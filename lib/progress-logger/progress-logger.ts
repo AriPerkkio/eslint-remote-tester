@@ -1,14 +1,12 @@
-import chalk from 'chalk';
-
 import * as Templates from './log-templates';
-import { LogMessage, Task, Listeners, Listener } from './types';
+import { LogMessage, Task, Listeners, Listener, ListenerType } from './types';
 import config from '@config';
 
-const CI_KEEP_ALIVE_INTERVAL = 5 * 60 * 1000;
-const execute = (method: Listener) => method();
+const CI_KEEP_ALIVE_INTERVAL_MS = 15 * 1000;
 
 /**
- * Logger for updating the terminal with current status
+ * Logger for holding state of current progress
+ * - Exposes different logs via `on` subscribe method
  */
 class ProgressLogger {
     /** Messages printed as a list under tasks */
@@ -23,9 +21,9 @@ class ProgressLogger {
     /** Event listeners */
     listeners: Listeners = {
         exit: [],
-        taskStart: [],
-        taskEnd: [],
         message: [],
+        task: [],
+        ciKeepAlive: [],
     };
 
     /** Interval of CI status messages. Used to avoid CIs timeouting. */
@@ -35,24 +33,38 @@ class ProgressLogger {
         if (config.CI) {
             this.ciKeepAliveIntervalHandle = setInterval(() => {
                 this.onCiStatus();
-            }, CI_KEEP_ALIVE_INTERVAL);
+            }, CI_KEEP_ALIVE_INTERVAL_MS);
         }
     }
 
     /**
      * Subscribe on logger's events
      */
-    on(event: keyof Listeners, listener: Listener) {
-        switch (event) {
-            case 'message':
-                return this.listeners.message.push(listener);
+    on<T = ListenerType>(event: T & ListenerType, listener: Listener<T>) {
+        const eventListeners = this.listeners[event];
 
-            case 'taskEnd':
-                return this.listeners.taskEnd.push(listener);
-
-            case 'exit':
-                return this.listeners.exit.push(listener);
+        if (eventListeners) {
+            eventListeners.push(listener as any);
         }
+
+        return this;
+    }
+
+    /**
+     * Unsubscribe from logger's events
+     */
+    off<T = ListenerType>(event: T & ListenerType, listener: Listener<T>) {
+        const eventListeners = this.listeners[event];
+
+        if (eventListeners) {
+            const index = eventListeners.indexOf(listener as any);
+
+            if (index !== -1) {
+                eventListeners.splice(index, 1);
+            }
+        }
+
+        return this;
     }
 
     /**
@@ -60,7 +72,7 @@ class ProgressLogger {
      */
     addNewMessage(message: LogMessage) {
         this.messages.push(message);
-        this.listeners.message.forEach(execute);
+        this.listeners.message.forEach(listener => listener(message));
     }
 
     /**
@@ -69,7 +81,7 @@ class ProgressLogger {
     onAllRepositoriesScanned() {
         this.addNewMessage({
             content: Templates.SCAN_FINISHED(this.scannedRepositories),
-            color: chalk.green,
+            color: 'green',
         });
 
         // Stop CI messages
@@ -77,7 +89,7 @@ class ProgressLogger {
             clearInterval(this.ciKeepAliveIntervalHandle);
         }
 
-        this.listeners.exit.forEach(execute);
+        this.listeners.exit.forEach(listener => listener());
     }
 
     /**
@@ -87,7 +99,7 @@ class ProgressLogger {
         const taskExists = this.tasks.find(
             task => task.repository === repository
         );
-        let ciMessage;
+        let updatedTask: Task;
 
         if (taskExists) {
             this.tasks = this.tasks.map(task => {
@@ -95,24 +107,15 @@ class ProgressLogger {
                     return task;
                 }
 
-                const updatedTask = { ...task, ...updates };
-                if (task.step !== updates.step) {
-                    ciMessage = Templates.TASK_TEMPLATE(updatedTask);
-                }
-
+                updatedTask = { ...task, ...updates };
                 return updatedTask;
             });
         } else {
-            const task = { repository, ...updates };
-            this.tasks.push(task);
-
-            ciMessage = Templates.TASK_TEMPLATE(task);
+            updatedTask = { repository, ...updates };
+            this.tasks.push(updatedTask);
         }
 
-        // Keep CI updated of new tasks and their step changes
-        if (config.CI && ciMessage) {
-            this.addNewMessage({ content: ciMessage, color: updates.color });
-        }
+        this.listeners.task.forEach(listener => listener(updatedTask));
     }
 
     /**
@@ -144,10 +147,8 @@ class ProgressLogger {
     onTaskStart(repository: string) {
         this.updateTask(repository, {
             step: 'START',
-            color: chalk.yellow,
+            color: 'yellow',
         });
-
-        this.listeners.taskStart.forEach(execute);
     }
 
     /**
@@ -158,7 +159,7 @@ class ProgressLogger {
             fileCount,
             currentFileIndex: 0,
             step: 'LINT',
-            color: chalk.yellow,
+            color: 'yellow',
         });
     }
 
@@ -167,14 +168,17 @@ class ProgressLogger {
      */
     onLintEnd(repository: string, resultCount: number) {
         this.scannedRepositories++;
-        this.tasks = this.tasks.filter(task => task.repository !== repository);
-
         this.addNewMessage({
             content: Templates.LINT_END_TEMPLATE(repository, resultCount),
-            color: resultCount > 0 ? chalk.red : chalk.green,
+            color: resultCount > 0 ? 'red' : 'green',
         });
 
-        this.listeners.taskEnd.forEach(execute);
+        const task = this.tasks.find(task => task.repository === repository);
+
+        if (task) {
+            this.tasks = this.tasks.filter(t => t !== task);
+            this.listeners.task.forEach(listener => listener(task, true));
+        }
     }
 
     /**
@@ -184,7 +188,7 @@ class ProgressLogger {
         this.updateTask(repository, {
             currentFileIndex,
             step: 'LINT',
-            color: chalk.green,
+            color: 'green',
         });
     }
 
@@ -197,7 +201,7 @@ class ProgressLogger {
         if (isNewWarning) {
             this.addNewMessage({
                 content: Templates.LINT_SLOW_TEMPLATE(lintTime, file),
-                color: chalk.yellow,
+                color: 'yellow',
             });
         }
     }
@@ -214,7 +218,7 @@ class ProgressLogger {
                     repository,
                     erroneousRule
                 ),
-                color: chalk.yellow,
+                color: 'yellow',
             });
         }
     }
@@ -231,7 +235,7 @@ class ProgressLogger {
                     repository,
                     errorCode
                 ),
-                color: chalk.yellow,
+                color: 'yellow',
             });
         }
     }
@@ -242,7 +246,7 @@ class ProgressLogger {
     onCloneFailure(repository: string) {
         this.addNewMessage({
             content: Templates.CLONE_FAILURE_TEMPLATE(repository),
-            color: chalk.yellow,
+            color: 'yellow',
         });
     }
 
@@ -252,7 +256,7 @@ class ProgressLogger {
     onPullFailure(repository: string) {
         this.addNewMessage({
             content: Templates.PULL_FAILURE_TEMPLATE(repository),
-            color: chalk.yellow,
+            color: 'yellow',
         });
     }
 
@@ -262,7 +266,7 @@ class ProgressLogger {
     onReadFailure(repository: string) {
         this.addNewMessage({
             content: Templates.READ_FAILURE_TEMPLATE(repository),
-            color: chalk.yellow,
+            color: 'yellow',
         });
     }
 
@@ -272,7 +276,7 @@ class ProgressLogger {
     onWriteFailure(repository: string) {
         this.addNewMessage({
             content: Templates.WRITE_FAILURE_TEMPLATE(repository),
-            color: chalk.yellow,
+            color: 'yellow',
         });
     }
 
@@ -280,31 +284,30 @@ class ProgressLogger {
      * Log start of cloning of given repository
      */
     onRepositoryClone(repository: string) {
-        this.updateTask(repository, { step: 'CLONE', color: chalk.yellow });
+        this.updateTask(repository, { step: 'CLONE', color: 'yellow' });
     }
 
     /**
      * Log start of pulling of given repository
      */
     onRepositoryPull(repository: string) {
-        this.updateTask(repository, { step: 'PULL', color: chalk.yellow });
+        this.updateTask(repository, { step: 'PULL', color: 'yellow' });
     }
 
     /**
      * Log start of cloning of given repository
      */
     onRepositoryRead(repository: string) {
-        this.updateTask(repository, { step: 'READ', color: chalk.yellow });
+        this.updateTask(repository, { step: 'READ', color: 'yellow' });
     }
 
     /**
      * Log status of scanning to CI
      */
     onCiStatus() {
-        this.addNewMessage({
-            content: Templates.CI_STATUS_TEMPLATE(this.scannedRepositories),
-            color: chalk.yellow,
-        });
+        const message = Templates.CI_STATUS_TEMPLATE(this.scannedRepositories);
+
+        this.listeners.ciKeepAlive.forEach(listener => listener(message));
     }
 }
 

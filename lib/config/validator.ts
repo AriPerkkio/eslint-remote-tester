@@ -57,11 +57,8 @@ export default function constructAndValidateConfiguration(
     if (CI != null && typeof CI !== 'boolean') {
         errors.push(`CI (${CI}) should be a boolean.`);
     } else {
-        // Resolve CI from environment variables, if found. Fallback to configuration file.
-        config.CI =
-            process.env.CI == null || process.env.CI == 'null'
-                ? CI
-                : process.env.CI === 'true';
+        // Resolve CI from configuration file, if found. Fallback to environment variables.
+        config.CI = CI == null ? process.env.CI === 'true' : CI;
     }
 
     if (resultParser && !RESULT_PARSERS.includes(resultParser)) {
