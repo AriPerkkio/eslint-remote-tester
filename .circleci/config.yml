@@ -20,5 +20,3 @@ jobs:
             - run:
                 name: Integration test
                 command: yarn test:integration
-                environment:
-                  CI: 'null'

@@ -55,7 +55,7 @@ module.exports = {
     /** ESLint configuration */
     eslintrc: {},
 
-    /** Optional boolean flag used to set CI mode. Ignored when process.env.CI is set. */
+    /** Optional boolean flag used to set CI mode. process.env.CI is used when not set. */
     CI: false,
 }
 ```
