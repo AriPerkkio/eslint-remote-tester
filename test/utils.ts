@@ -1,7 +1,5 @@
-const CLI_CONFIGURATION_LOCATION =
-    'test/integration/eslint-remote-tester.integration.cli.config.js';
-export const CI_CONFIGURATION_LOCATION =
-    'test/integration/eslint-remote-tester.integration.ci.config.js';
+export const INTEGRARION_CONFIGURATION_LOCATION =
+    'test/integration/eslint-remote-tester.integration.config.js';
 export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
 export const INTEGRATION_REPO_NAME =
     'eslint-remote-tester-integration-test-target';
@@ -10,27 +8,32 @@ export const INTEGRATION_REPO_NAME =
  * Import the actual production build and run it
  */
 export async function runProductionBuild(): Promise<void> {
-    // Clear possible previous runs results
-    resetConsoleLogCalls();
-    resetStdoutMethodCalls();
-    resetExitCalls();
-    jest.resetModules();
+    try {
+        // Clear possible previous runs results
+        resetStdoutMethodCalls();
+        resetExitCalls();
+        jest.resetModules();
 
-    const { __handleForTests } = require('../dist/index');
-    return __handleForTests;
+        const { __handleForTests } = require('../dist/index');
+        await __handleForTests;
+
+        return waitFor(() => getExitCalls().length > 0);
+    } catch (e) {
+        console.error(e.message);
+        process.exit();
+    }
 }
 
 /**
- * Replace config from argv's with given location
+ * Replace config from argv's with integration config's location
  */
-export function setConfig(configLocation?: string): void {
+export function setConfig(): void {
     const configIndex = process.argv.findIndex(a => a === '--config');
-    const config = configLocation || CLI_CONFIGURATION_LOCATION;
 
     if (configIndex !== -1) {
-        process.argv[configIndex + 1] = config;
+        process.argv[configIndex + 1] = INTEGRARION_CONFIGURATION_LOCATION;
     } else {
-        process.argv.push('--config', config);
+        process.argv.push('--config', INTEGRARION_CONFIGURATION_LOCATION);
     }
 }
 

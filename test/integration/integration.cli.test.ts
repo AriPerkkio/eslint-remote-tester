@@ -1,10 +1,10 @@
 import fs from 'fs';
+
 import {
     INTEGRATION_REPO_NAME,
     runProductionBuild,
     INTEGRATION_REPO_OWNER,
     getStdoutWriteCalls,
-    getConsoleLogCalls,
 } from '../utils';
 import { RESULTS_LOCATION, CACHE_LOCATION } from '@file-client';
 
@@ -13,8 +13,9 @@ describe('CLI', () => {
         await runProductionBuild();
     });
 
-    test('creates results file', async () => {
+    test('creates results file', () => {
         const files = fs.readdirSync(RESULTS_LOCATION);
+
         expect(files).toHaveLength(1);
         expect(files[0]).toMatch(`${INTEGRATION_REPO_NAME}.md`);
     });
@@ -99,17 +100,19 @@ describe('CLI', () => {
     });
 
     // TODO testing this is really tricky with current setup
-    // - process.stdout.write is called on intervals -> How to replace interval with direct calls
-    // - process.stdout.write is called with partial updates (log-diff.ts) -> How to validate partial rows
+    // - process.stdout.write is called on intervals
+    // - Replace interval with direct calls
     test.todo('progress is displayed on terminal');
 
     test('final log is logged on terminal', () => {
-        const finalLog = getConsoleLogCalls().pop();
+        const writes = getStdoutWriteCalls();
+        const finalLog = writes.find(write => /Full log:/.test(write));
 
         expect(finalLog).toMatchInlineSnapshot(`
-            "Full log:
+            "[33mFull log:[39m
             [31m[DONE] AriPerkkio/eslint-remote-tester-integration-test-target 4 errors[39m
-            [32m[DONE] Finished scan of 1 repositories[39m"
+            [32m[DONE] Finished scan of 1 repositories[39m
+            "
         `);
     });
 
