@@ -42,9 +42,14 @@ module.exports = {
         'no-process-exit': 'off',
         'prettier/prettier': 'error',
         'node/no-unsupported-features/es-syntax': 'off',
-        'react/prop-types': ['error', { ignore: ['children'] }], // Already covered by React.FC
     },
     overrides: [
+        {
+            files: ['*.tsx'],
+            rules: {
+                'react/prop-types': ['off'], // Covered by React.FC
+            },
+        },
         {
             files: ['*config*', 'test/**/*.ts'],
             rules: {

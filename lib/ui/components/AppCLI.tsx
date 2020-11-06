@@ -1,4 +1,5 @@
 import React from 'react';
+import { Newline, Text } from 'ink';
 
 import Status from './Status';
 import Tasks from './Tasks';
@@ -11,7 +12,7 @@ import useOnHorizontalResize from '../hooks/useOnHorizontalResize';
 /**
  * Application for CLIs
  */
-export default function AppCLI(): JSX.Element {
+const AppCLI: React.FC<{ isTTY: boolean }> = ({ isTTY }) => {
     const done = useOnExit();
 
     // Clear screen completely on horizontal resize
@@ -22,11 +23,24 @@ export default function AppCLI(): JSX.Element {
         return <FinalLog />;
     }
 
+    // Scrollbox can only be rendered in TTY
+    const wrapper = isTTY ? MessagesScrollBox : undefined;
+
     return (
         <>
+            {!isTTY && (
+                <Text color='red'>
+                    Terminal is not detected as TTY. Scrollbox is disabled.
+                    <Newline />
+                </Text>
+            )}
+
             <Status />
             <Tasks />
-            <Messages wrapper={MessagesScrollBox} />
+            {!isTTY && <Text>{/* Spacer */}</Text>}
+            <Messages wrapper={wrapper} />
         </>
     );
-}
+};
+
+export default AppCLI;
