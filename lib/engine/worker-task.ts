@@ -74,7 +74,7 @@ function mergeMessagesWithSource(
     }
 
     const sourceLines = result.source ? result.source.split('\n') : [];
-    const sourceLinesPadding = Math.abs(SOURCE_WINDOW_SIZE / 2);
+    const sourceLinesPadding = Math.floor(SOURCE_WINDOW_SIZE / 2);
 
     return [
         ...all,
