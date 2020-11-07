@@ -3,7 +3,7 @@ import { ESLint, Linter } from 'eslint';
 
 import { LintMessage, WorkerData } from './types';
 import config from '@config';
-import { getFiles } from '@file-client';
+import { getFiles, SourceFile } from '@file-client';
 
 export type WorkerMessage =
     | { type: 'START' }
@@ -22,6 +22,10 @@ export type WorkerMessage =
 
 // Regex used to attempt parsing out rule which caused linter to crash
 const RULE_REGEXP = /rules\/(.*?)\.js/;
+
+// Regex used to attempt parsing out line which caused linter to crash
+const LINE_REGEX = /while linting <text>:(([0-9]+)?)/;
+
 const SOURCE_WINDOW_SIZE = 10;
 const MAX_LINT_TIME_SECONDS = 5;
 
@@ -29,12 +33,12 @@ const MAX_LINT_TIME_SECONDS = 5;
  * Create error message for LintMessage results
  */
 export function createErrorMessage(
-    error: Omit<LintMessage, 'column' | 'line' | 'severity'>
+    error: Omit<LintMessage, 'column' | 'line' | 'severity'> & { line?: number }
 ): LintMessage {
     return {
+        line: 0,
         ...error,
         column: 0,
-        line: 0,
         severity: 0,
     };
 }
@@ -94,6 +98,45 @@ function mergeMessagesWithSource(
     ];
 }
 
+/**
+ * Parse error stack for erroneous lines and construct `LintMessage` with
+ * source code.
+ */
+function parseErrorStack(error: Error, file: SourceFile): LintMessage {
+    const { content, path } = file;
+
+    const stack = error.stack || '';
+    const ruleMatch = stack.match(RULE_REGEXP) || [];
+    const ruleId = ruleMatch.pop() || null;
+
+    const lineMatch = stack.match(LINE_REGEX) || [];
+    const line = parseInt(lineMatch.pop() || '0');
+
+    const sourceLines = [];
+
+    // Include erroneous line to source when line was successfully parsed from the stack
+    if (line > 0) {
+        const sourceLinesPadding = Math.floor(SOURCE_WINDOW_SIZE / 2);
+        const lines = content.split('\n');
+
+        sourceLines.push(
+            ...lines.slice(
+                Math.max(0, line - sourceLinesPadding),
+                line + sourceLinesPadding
+            )
+        );
+    }
+
+    return createErrorMessage({
+        path,
+        line,
+        ruleId,
+        source: sourceLines.join('\n'),
+        error: error.stack,
+        message: error.message,
+    });
+}
+
 // Wrapper used to enfore WorkerMessage type to parentPort.postMessage calls
 const postMessage = (message: WorkerMessage) => {
     if (parentPort) {
@@ -150,19 +193,14 @@ export default async function workerTask(): Promise<void> {
             );
         } catch (error) {
             // Catch crashing linter
-            const stack = error.stack || '';
-            const ruleMatch = stack.match(RULE_REGEXP) || [];
-            const ruleId = ruleMatch.pop();
+            const crashError = parseErrorStack(error, file);
 
-            results.push(
-                createErrorMessage({
-                    path,
-                    message: error.message,
-                    source: error.stack,
-                    ruleId,
-                })
-            );
-            postMessage({ type: 'LINTER_CRASH', payload: ruleId });
+            results.push(crashError);
+            postMessage({
+                type: 'LINTER_CRASH',
+                payload: crashError.ruleId || '',
+            });
+
             continue;
         }
 

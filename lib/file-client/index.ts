@@ -1,4 +1,4 @@
-export { getFiles } from './file-client';
+export { getFiles, SourceFile } from './file-client';
 export {
     writeResults,
     getResults,

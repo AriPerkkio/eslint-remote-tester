@@ -25,6 +25,7 @@ describe('CI mode', () => {
             Message: 'bar' is not defined.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
+
             var foo = bar;
 
             if (foo) {
@@ -36,6 +37,7 @@ describe('CI mode', () => {
             Message: Empty block statement.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4
+
             var foo = bar;
 
             if (foo) {
@@ -50,6 +52,7 @@ describe('CI mode', () => {
             Message: Expected to return a value in getter 'name'.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7
+
             if (foo) {
             }
 
@@ -65,6 +68,7 @@ describe('CI mode', () => {
             Message: Do not use the '===' operator to compare against -0.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
+
             };
             p.getName();
 

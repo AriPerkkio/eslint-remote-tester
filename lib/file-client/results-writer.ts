@@ -46,6 +46,7 @@ const RESULT_TEMPLATE_CLI = (result: LintMessage) => {
         link: `${URL}/${project}/${repository}${postfix}`,
         extension,
         source: result.source,
+        error: result.error,
     });
 };
 
