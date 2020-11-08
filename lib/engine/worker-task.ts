@@ -23,6 +23,7 @@ export type WorkerMessage =
 
 // Regex used to attempt parsing out rule which caused linter to crash
 const RULE_REGEXP = /rules\/(.*?)\.js/;
+const UNKNOWN_RULE_ID = 'unable-to-parse-rule-id';
 
 // Regex used to attempt parsing out line which caused linter to crash
 const LINE_REGEX = /while linting <text>:(([0-9]+)?)/;
@@ -108,7 +109,7 @@ function parseErrorStack(error: Error, file: SourceFile): LintMessage {
 
     const stack = error.stack || '';
     const ruleMatch = stack.match(RULE_REGEXP) || [];
-    const ruleId = ruleMatch.pop() || null;
+    const ruleId = ruleMatch.pop() || UNKNOWN_RULE_ID;
 
     const lineMatch = stack.match(LINE_REGEX) || [];
     const line = parseInt(lineMatch.pop() || '0');
