@@ -14,5 +14,9 @@ module.exports = {
     eslintrc: {
         root: true,
         extends: ['eslint:recommended'],
+        plugins: ['eslint-plugin-local-rules'],
+        rules: {
+            'local-rules/some-unstable-rule': 'error',
+        },
     },
 };

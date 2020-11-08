@@ -5,6 +5,7 @@ import {
     INTEGRATION_REPO_OWNER,
     INTEGRATION_REPO_NAME,
     getStdoutWriteCalls,
+    sanitizeStackTrace,
 } from '../utils';
 import { CACHE_LOCATION } from '@file-client';
 
@@ -17,10 +18,34 @@ describe('CI mode', () => {
         const writes = getStdoutWriteCalls();
         const finalLog = writes.find(write => /Results:/.test(write));
 
-        expect(finalLog).toMatchInlineSnapshot(`
+        expect(sanitizeStackTrace(finalLog)).toMatchInlineSnapshot(`
             "
             Results:
             Repository: AriPerkkio/eslint-remote-tester-integration-test-target
+            Rule: unable-to-parse-rule-id
+            Message: Cannot read property 'someAttribute' of undefined
+            Occurred while linting <text>:2
+            Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+            Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
+
+            // Identifier.name = attributeForCrashing
+            window.attributeForCrashing();
+
+
+            Error:
+            TypeError: Cannot read property 'someAttribute' of undefined
+            Occurred while linting <text>:2
+                at Identifier (<removed>/eslint-local-rules.js:21:56)
+                at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
+                at Array.forEach (<anonymous>)
+                at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
+                at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:254:26)
+                at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:283:22)
+                at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:297:14)
+                at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
+                at <removed>/node_modules/eslint/lib/linter/linter.js:952:32
+                at Array.forEach (<anonymous>)
+
             Rule: no-undef
             Message: 'bar' is not defined.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
@@ -96,6 +121,7 @@ describe('CI mode', () => {
             cloneMessage,
             readMessage,
             lintStartMessage,
+            lintCrashMessage,
             lintDoneMessage,
             scanDoneMessage,
         ] = getStdoutWriteCalls().filter(call => /\[[A-Z]*\]/.test(call));
@@ -103,8 +129,9 @@ describe('CI mode', () => {
         expect(startMessage).toMatch(`[STARTING] ${repository}`);
         expect(cloneMessage).toMatch(`[CLONING] ${repository}`);
         expect(readMessage).toMatch(`[READING] ${repository}`);
-        expect(lintStartMessage).toMatch(`[LINTING] ${repository} - 1 files`);
-        expect(lintDoneMessage).toMatch(`[DONE] ${repository} 4 errors`);
+        expect(lintStartMessage).toMatch(`[LINTING] ${repository} - 2 files`);
+        expect(lintCrashMessage).toMatch(`[WARN] ${repository} crashed`);
+        expect(lintDoneMessage).toMatch(`[DONE] ${repository} 5 errors`);
         expect(scanDoneMessage).toMatch(
             `[DONE] Finished scan of 1 repositories`
         );

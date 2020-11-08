@@ -104,3 +104,13 @@ export function getExitCalls(): string[] {
 export function resetExitCalls(): void {
     ((process.exit as any) as jest.Mock).mockClear();
 }
+
+/**
+ * Sanitize possible stack traces for sensitive paths
+ * - Removes absolute root path from stack traces, e.g.
+ *   `/home/username/path/to/project/...` -> `<removed>/...`
+ * - Guarantees identical stack traces between environments
+ */
+export function sanitizeStackTrace(message?: string): string {
+    return (message || '').replace(new RegExp(process.cwd(), 'g'), '<removed>');
+}
