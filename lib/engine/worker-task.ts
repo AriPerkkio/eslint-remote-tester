@@ -197,6 +197,7 @@ export default async function workerTask(): Promise<void> {
             const crashError = parseErrorStack(error, file);
 
             results.push(crashError);
+            postMessage({ type: 'FILE_LINT_END', payload: index + 1 });
             postMessage({
                 type: 'LINTER_CRASH',
                 payload: crashError.ruleId || '',
