@@ -87,6 +87,13 @@ async function scanRepo(repository: string) {
 
                 case 'READ_FAILURE':
                     return logger.onReadFailure(repository);
+
+                // Since debugging worker threads is not possible on VS code
+                // this message type is used for debugging.
+                // Simply call postMessage({ type: 'DEBUG', payload: ... }) on
+                // worker thread and place breakpoint here
+                case 'DEBUG':
+                    return;
             }
         }
     );

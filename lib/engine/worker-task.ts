@@ -18,7 +18,8 @@ export type WorkerMessage =
     | { type: 'WORKER_ERROR'; payload?: string }
     | { type: 'READ_FAILURE' }
     | { type: 'CLONE_FAILURE' }
-    | { type: 'PULL_FAILURE' };
+    | { type: 'PULL_FAILURE' }
+    | { type: 'DEBUG'; payload: any };
 
 // Regex used to attempt parsing out rule which caused linter to crash
 const RULE_REGEXP = /rules\/(.*?)\.js/;
