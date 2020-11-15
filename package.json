@@ -23,8 +23,7 @@
         "test": "jest",
         "test:integration": "yarn test:integration:ci && yarn test:integration:cli",
         "test:integration:ci": "CI=true FORCE_COLOR=true jest --config jest.config.integration.js --runInBand integration.ci.test.ts",
-        "test:integration:cli": "CI=false FORCE_COLOR=true jest --config jest.config.integration.js --runInBand integration.cli.test.ts",
-        "lint:react": "node dist --config eslint-remote-tester.react.config.js"
+        "test:integration:cli": "CI=false FORCE_COLOR=true jest --config jest.config.integration.js --runInBand integration.cli.test.ts"
     },
     "repository": {
         "type": "git",
