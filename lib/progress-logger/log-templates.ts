@@ -2,6 +2,9 @@ import { Task } from './types';
 import config from '@config';
 import { CACHE_LOCATION } from '@file-client';
 
+// Regexp for converting `[INFO][LINTING] reponame` to `[INFO/LINTING] reponame`
+const CI_TEMPLATE_TASK_REGEXP = /\]\[/;
+
 export const TASK_TEMPLATE = (task: Task): string => {
     switch (task.step) {
         case 'START':
@@ -33,8 +36,14 @@ export const REPOSITORIES_STATUS_TEMPLATE = (
 ): string =>
     `Repositories (${scannedRepositories}/${config.repositories.length})`;
 
-export const CI_STATUS_TEMPLATE = (scannedRepositories: number): string =>
-    `[INFO] ${REPOSITORIES_STATUS_TEMPLATE(scannedRepositories)}\n`;
+export const CI_STATUS_TEMPLATE = (
+    scannedRepositories: number,
+    tasks: Task[]
+): string => `[INFO/STATUS] ${REPOSITORIES_STATUS_TEMPLATE(scannedRepositories)}
+${tasks.map(task => CI_TASK_TEMPLATE(task)).join('\n')}\n`;
+
+const CI_TASK_TEMPLATE = (task: Task): string =>
+    `[INFO]${TASK_TEMPLATE(task)}`.replace(CI_TEMPLATE_TASK_REGEXP, '/');
 
 export const LINT_END_TEMPLATE = (
     repository: string,

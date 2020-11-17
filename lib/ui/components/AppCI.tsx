@@ -1,17 +1,10 @@
 import React, { useLayoutEffect } from 'react';
 import { useStdout } from 'ink';
-import chalk from 'chalk';
 
 import Results from './Results';
 import { useOnExit } from '../hooks';
-import ProgressLogger, { TASK_TEMPLATE } from '@progress-logger';
+import ProgressLogger, { resolveColor, TASK_TEMPLATE } from '@progress-logger';
 import { LogMessage, Task } from '@progress-logger/types';
-
-const DEFAULT_COLOR = (text: string) => text;
-
-function resolveColor(taskOrMessage: Task | LogMessage) {
-    return (taskOrMessage.color && chalk[taskOrMessage.color]) || DEFAULT_COLOR;
-}
 
 /**
  * Application for CIs

@@ -1,8 +1,20 @@
+import chalk from 'chalk';
+
 import * as Templates from './log-templates';
 import { LogMessage, Task, Listeners, Listener, ListenerType } from './types';
 import config from '@config';
 
-const CI_KEEP_ALIVE_INTERVAL_MS = 15 * 1000;
+const CI_KEEP_ALIVE_INTERVAL_MS = 4.5 * 60 * 1000;
+const DEFAULT_COLOR = (text: string) => text;
+
+/**
+ * Resolve color for message or task
+ */
+export function resolveColor(
+    taskOrMessage: Task | LogMessage
+): typeof DEFAULT_COLOR {
+    return (taskOrMessage.color && chalk[taskOrMessage.color]) || DEFAULT_COLOR;
+}
 
 /**
  * Logger for holding state of current progress
@@ -305,7 +317,10 @@ class ProgressLogger {
      * Log status of scanning to CI
      */
     onCiStatus() {
-        const message = Templates.CI_STATUS_TEMPLATE(this.scannedRepositories);
+        const message = Templates.CI_STATUS_TEMPLATE(
+            this.scannedRepositories,
+            this.tasks
+        );
 
         this.listeners.ciKeepAlive.forEach(listener => listener(message));
     }
