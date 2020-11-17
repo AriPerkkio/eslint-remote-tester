@@ -18,4 +18,8 @@ module.exports = `(${[
     'react-dom\\.development\\.js',
     'vendor\\.min\\.js',
     'jquery-3\\.4\\.1\\.min\\.js',
+
+    'reach/reach-ui/packages/combobox/examples/cities\\.ts',
+    'test262-main\\.ts',
+    'sample_vis\\.test\\.mocks\\.ts',
 ].join('|')})`;
