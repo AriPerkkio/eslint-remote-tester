@@ -15,11 +15,18 @@ module.exports = `(${[
     'react-solitaire/lib/index\\.js',
     'babel\\.js',
     'chunk\\.js',
+    'bundle\\.js',
     'react-dom\\.development\\.js',
     'vendor\\.min\\.js',
-    'jquery-3\\.4\\.1\\.min\\.js',
 
+    '\\.min\\.js', // Any *.min.js
+
+    'Khan/perseus/lib',
+    'glortho/react-keydown/example/public',
     'reach/reach-ui/packages/combobox/examples/cities\\.ts',
+    'reach/reach-ui/website/src/components/cities\\.js',
+    'reach/reach-ui/website/static/router/static',
+    'Automattic/wp-calypso/client/components/phone-input/data\\.js',
     'test262-main\\.ts',
     'sample_vis\\.test\\.mocks\\.ts',
 ].join('|')})`;
