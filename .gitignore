@@ -1,4 +1,5 @@
 node_modules
+log
 
 # Exclude all from VSCode
 .vscode/**
@@ -9,3 +10,6 @@ node_modules
 .cache-eslint-remote-tester
 eslint-remote-tester-results
 dist
+
+# CI
+ci/yarn.lock

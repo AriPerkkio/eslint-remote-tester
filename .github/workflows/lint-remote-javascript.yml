@@ -1,6 +1,10 @@
 name: Lint remote javascript
 
-on: [workflow_dispatch]
+on:
+  schedule:
+    # Every thursday at 00:00
+    - cron: '0 0 * * THU'
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -14,9 +18,9 @@ jobs:
         node-version: 12.11
     - run: yarn install
     - run: yarn build
-    - run: yarn install
-      working-directory: ./configs
+    - run: yarn install --no-lockfile
+      working-directory: ./ci
     - run: yarn lint:javascript
-      working-directory: ./configs
+      working-directory: ./ci
       env:
         CI: true

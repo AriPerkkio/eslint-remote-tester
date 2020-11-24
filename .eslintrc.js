@@ -51,6 +51,12 @@ module.exports = {
             },
         },
         {
+            files: ['ci/*'],
+            rules: {
+                'node/no-unpublished-require': 'off',
+            },
+        },
+        {
             files: ['*config*', 'test/**/*.ts'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',

@@ -1,5 +1,5 @@
-const repositories = require('./repositories.json');
-const pathIgnorePattern = require('./pathIgnorePattern');
+const repositories = require('../configs/repositories.json');
+const pathIgnorePattern = require('../configs/pathIgnorePattern');
 
 module.exports = {
     /** Repositories to scan */
@@ -11,7 +11,7 @@ module.exports = {
     /** Optional pattern used to exclude paths */
     pathIgnorePattern,
 
-    /** Rules used to filter out results */
+    /** Rules used to filter out results. Empty for crash results only. */
     rulesUnderTesting: [],
 
     /** Optional syntax for the result parser. Valid values are plaintext, markdown. Defaults to markdown on CLI, plaintext on CI */
