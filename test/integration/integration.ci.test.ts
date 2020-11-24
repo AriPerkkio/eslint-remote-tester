@@ -151,4 +151,8 @@ describe('CI mode', () => {
         expect(secondRunWrites.some(call => /PULLING/.test(call))).toBe(true);
         expect(fs.existsSync(cachedRepository)).toBe(true);
     });
+
+    test('exits process with error code', async () => {
+        expect(process.exit).toHaveBeenCalledWith(1);
+    });
 });

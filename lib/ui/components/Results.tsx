@@ -5,6 +5,7 @@ import { getResults } from '@file-client';
 import { useExitAfterRender } from '../hooks';
 
 const START_MESSAGE = '\nResults:';
+const NO_ERRORS = ['No errors'];
 
 /**
  * Results of the scan
@@ -13,7 +14,11 @@ const START_MESSAGE = '\nResults:';
 export default function Results(): JSX.Element {
     useExitAfterRender();
 
-    const items: string[] = [START_MESSAGE, ...getResults()];
+    const results = getResults();
+    const items: string[] = [
+        START_MESSAGE,
+        ...(results.length > 0 ? results : NO_ERRORS),
+    ];
 
     return (
         <Static items={items}>
