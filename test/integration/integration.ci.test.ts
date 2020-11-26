@@ -46,6 +46,7 @@ describe('CI mode', () => {
                 at <removed>/node_modules/eslint/lib/linter/linter.js:952:32
                 at Array.forEach (<anonymous>)
 
+            Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: no-undef
             Message: 'bar' is not defined.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
@@ -58,6 +59,7 @@ describe('CI mode', () => {
 
             var p = {
 
+            Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: no-empty
             Message: Empty block statement.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
@@ -73,6 +75,7 @@ describe('CI mode', () => {
                     // no returns.
                 }
 
+            Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: getter-return
             Message: Expected to return a value in getter 'name'.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
@@ -89,6 +92,7 @@ describe('CI mode', () => {
             p.getName();
 
 
+            Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: no-compare-neg-zero
             Message: Do not use the '===' operator to compare against -0.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js

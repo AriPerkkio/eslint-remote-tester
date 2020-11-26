@@ -1,7 +1,9 @@
 import { ResultParser } from '@config/types';
 import { LintMessage } from '@engine/types';
 
-interface ResultTemplateOptions {
+export interface ResultTemplateOptions {
+    repository: string;
+    repositoryOwner: string;
     rule: LintMessage['ruleId'];
     message: LintMessage['message'];
     path: string;
@@ -37,6 +39,10 @@ ${options.error ?
 `\`\`\`
 ${options.error}
 \`\`\`` : ''}`;
+
+// prettier-ignore
+export const RESULTS_TEMPLATE_CI_BASE = (options: ResultTemplateOptions): string =>
+`Repository: ${options.repositoryOwner}/${options.repository}`;
 
 export const RESULT_PARSER_TO_TEMPLATE: Record<
     ResultParser,

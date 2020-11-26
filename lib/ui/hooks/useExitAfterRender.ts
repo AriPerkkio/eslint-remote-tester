@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import { useApp } from 'ink';
 
-import { getResults } from '@file-client';
+import { ResultsStore } from '@file-client';
 
 /**
  * Hook for exiting application and process after one final re-render
@@ -16,7 +16,8 @@ export function useExitAfterRender(): void {
 
     useLayoutEffect(() => {
         if (hasRendered) {
-            const exitCode = getResults().length > 0 ? 1 : undefined;
+            const results = ResultsStore.getResults();
+            const exitCode = results.length > 0 ? 1 : undefined;
 
             exit();
             process.exit(exitCode);
