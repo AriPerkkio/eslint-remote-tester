@@ -1,6 +1,7 @@
 import { ResultParser } from '@config/types';
 import { LintMessage } from '@engine/types';
 
+// Note that this is part of public API
 export interface ResultTemplateOptions {
     repository: string;
     repositoryOwner: string;

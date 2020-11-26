@@ -1,5 +1,7 @@
 import { Linter } from 'eslint';
 
+import { ResultTemplateOptions } from '@file-client/result-templates';
+
 export type ResultParser = 'plaintext' | 'markdown';
 
 /** Contents of the `eslint-remote-tester.config.js` */
@@ -12,4 +14,5 @@ export interface Config {
     concurrentTasks: number;
     eslintrc: Linter.Config;
     CI: boolean;
+    onComplete?: (results: ResultTemplateOptions[]) => Promise<void> | void;
 }

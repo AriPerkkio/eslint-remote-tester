@@ -1,8 +1,12 @@
+import { ResultTemplateOptions } from '@file-client/result-templates';
+
 export const INTEGRARION_CONFIGURATION_LOCATION =
     'test/integration/eslint-remote-tester.integration.config.js';
 export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
 export const INTEGRATION_REPO_NAME =
     'eslint-remote-tester-integration-test-target';
+
+declare const global: { onComplete: jest.Mock };
 
 /**
  * Import the actual production build and run it
@@ -12,6 +16,7 @@ export async function runProductionBuild(): Promise<void> {
         // Clear possible previous runs results
         resetStdoutMethodCalls();
         resetExitCalls();
+        resetOnCompleteCalls();
         jest.resetModules();
 
         const { __handleForTests } = require('../dist/index');
@@ -103,6 +108,22 @@ export function getExitCalls(): string[] {
  */
 export function resetExitCalls(): void {
     ((process.exit as any) as jest.Mock).mockClear();
+}
+
+/**
+ * Get call arguments of `global.onComplete`
+ */
+export function getOnCompleteCalls(): ResultTemplateOptions[][] {
+    const calls: ResultTemplateOptions[][][] = global.onComplete.mock.calls;
+
+    return calls.map(argumentArray => argumentArray[0]);
+}
+
+/**
+ * Reset captured calls of `global.onComplete`
+ */
+export function resetOnCompleteCalls(): void {
+    global.onComplete.mockClear();
 }
 
 /**

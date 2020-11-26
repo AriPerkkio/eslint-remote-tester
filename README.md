@@ -57,6 +57,26 @@ module.exports = {
 
     /** Optional boolean flag used to set CI mode. process.env.CI is used when not set. */
     CI: false,
+
+    /**
+     * Optional callback invoked once scan is complete.
+     *
+     * @param {{
+     *     repository: string,
+     *     repositoryOwner: string,
+     *     rule: string,
+     *     message: string,
+     *     path: string,
+     *     link: string,
+     *     extension: string,
+     *     source: string,
+     *     error: (string|undefined),
+     * }[]} results Results of the scan, if any
+     * @returns {Promise<void>|void}
+     */
+    onComplete: async function onComplete(results) {
+        // Extend the process with custom features, e.g. send results to email, create issues to Github...
+    },
 }
 ```
 

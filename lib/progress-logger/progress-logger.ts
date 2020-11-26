@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import * as Templates from './log-templates';
 import { LogMessage, Task, Listeners, Listener, ListenerType } from './types';
 import config from '@config';
+import { ResultsStore } from '@file-client';
 
 const CI_KEEP_ALIVE_INTERVAL_MS = 4.5 * 60 * 1000;
 const DEFAULT_COLOR = (text: string) => text;
@@ -101,7 +102,35 @@ class ProgressLogger {
             clearInterval(this.ciKeepAliveIntervalHandle);
         }
 
-        this.listeners.exit.forEach(listener => listener());
+        const onError = (error: Error) =>
+            console.error(
+                [
+                    `Error occured while calling onComplete callback`,
+                    error.stack,
+                ].join('\n')
+            );
+        const notifyListeners = () =>
+            this.listeners.exit.forEach(listener => listener());
+
+        let exitPromise = Promise.resolve();
+
+        if (config.onComplete) {
+            const results = ResultsStore.getResults();
+            try {
+                const onCompletePromise = config.onComplete(results);
+
+                if (onCompletePromise instanceof Promise) {
+                    exitPromise = onCompletePromise;
+                }
+            } catch (e) {
+                onError(e);
+            }
+        }
+
+        exitPromise.then(notifyListeners).catch(error => {
+            onError(error);
+            notifyListeners();
+        });
     }
 
     /**

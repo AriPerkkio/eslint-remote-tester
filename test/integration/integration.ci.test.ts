@@ -6,6 +6,7 @@ import {
     INTEGRATION_REPO_NAME,
     getStdoutWriteCalls,
     sanitizeStackTrace,
+    getOnCompleteCalls,
 } from '../utils';
 import { CACHE_LOCATION } from '@file-client';
 
@@ -158,5 +159,35 @@ describe('CI mode', () => {
 
     test('exits process with error code', async () => {
         expect(process.exit).toHaveBeenCalledWith(1);
+    });
+
+    test('calls onComplete hook with the results', async () => {
+        const [onCompleteCalls] = getOnCompleteCalls();
+        const [result] = onCompleteCalls;
+
+        expect(result.extension).toBe('js');
+        expect(result.link).toBe(
+            `https://github.com/${INTEGRATION_REPO_OWNER}/${INTEGRATION_REPO_NAME}/blob/HEAD/expected-to-crash-linter.js#L2`
+        );
+        expect(result.rule).toBe('unable-to-parse-rule-id');
+        expect(result.message).toBe(
+            "Cannot read property 'someAttribute' of undefined\nOccurred while linting <text>:2"
+        );
+        expect(result.path).toBe(
+            `${INTEGRATION_REPO_OWNER}/${INTEGRATION_REPO_NAME}/expected-to-crash-linter.js`
+        );
+        expect(result.error).toBeTruthy();
+
+        // Each result should have attributes defined
+        onCompleteCalls.forEach(result => {
+            expect(result.repository).toBeTruthy();
+            expect(result.repositoryOwner).toBeTruthy();
+            expect(result.rule).toBeTruthy();
+            expect(result.message).toBeTruthy();
+            expect(result.path).toBeTruthy();
+            expect(result.link).toBeTruthy();
+            expect(result.extension).toBeTruthy();
+            expect(result.source).toBeTruthy();
+        });
     });
 });

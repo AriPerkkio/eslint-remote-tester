@@ -19,6 +19,7 @@ export default function constructAndValidateConfiguration(
         concurrentTasks,
         eslintrc,
         CI,
+        onComplete,
     } = configToValidate;
 
     const config = { ...configToValidate };
@@ -77,6 +78,10 @@ export default function constructAndValidateConfiguration(
         errors.push(`concurrentTasks (${concurrentTasks}) should be a number.`);
     } else if (concurrentTasks == null) {
         config.concurrentTasks = DEFAULT_CONCURRENT_TASKS;
+    }
+
+    if (onComplete && typeof onComplete !== 'function') {
+        errors.push(`onComplete (${onComplete}) should be a function`);
     }
 
     if (errors.length) {

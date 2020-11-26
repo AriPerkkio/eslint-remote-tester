@@ -19,4 +19,7 @@ module.exports = {
             'local-rules/some-unstable-rule': 'error',
         },
     },
+    onComplete: function onComplete(results) {
+        global.onComplete(results);
+    },
 };

@@ -28,4 +28,22 @@ module.exports = {
         },
         extends: ['eslint:recommended'],
     },
+
+    /**
+     * Optional callback invoked once scan is complete.
+     *
+     * @param {{
+     *     repository: string,
+     *     repositoryOwner: string,
+     *     rule: string,
+     *     message: string,
+     *     path: string,
+     *     link: string,
+     *     extension: string,
+     *     source: string,
+     *     error: (string|undefined),
+     * }[]} results Results of the scan, if any
+     * @returns {Promise<void>|void}
+     */
+    onComplete: undefined,
 };
