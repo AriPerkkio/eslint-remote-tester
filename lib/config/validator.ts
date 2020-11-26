@@ -85,7 +85,7 @@ export default function constructAndValidateConfiguration(
                 `Configuration validation errors: \n- ${errors.join('\n- ')}`
             )
         );
-        process.exit();
+        process.exit(1);
     }
 
     return config;
