@@ -52,6 +52,9 @@ export const CONFIGURATION_FILE_TEMPLATE =
     /** Optional boolean flag used to set CI mode. process.env.CI is used when not set. */
     CI: false,
 
+    /** Optional boolean flag used to enable caching of cloned repositories. For CI's it's ideal to disable caching. Defauls to true. */
+    cache: true,
+
     /**
      * Optional callback invoked once scan is complete.
      *

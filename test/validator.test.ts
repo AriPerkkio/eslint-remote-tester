@@ -11,6 +11,7 @@ const DEFAULT_CONFIGURATION: Config = {
     concurrentTasks: undefined as any,
     eslintrc: {},
     CI: undefined as any,
+    cache: undefined as any,
 };
 
 describe('Config validator', () => {

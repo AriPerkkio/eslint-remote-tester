@@ -49,3 +49,16 @@ export async function cloneRepository({
         }
     }
 }
+
+/**
+ * Remove repository from the cache
+ */
+export async function removeCachedRepository(
+    repository: string
+): Promise<void> {
+    const repoLocation = `${CACHE_LOCATION}/${repository}`;
+
+    if (fs.existsSync(repoLocation)) {
+        fs.rmdirSync(repoLocation, { recursive: true });
+    }
+}

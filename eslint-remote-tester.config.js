@@ -29,6 +29,8 @@ module.exports = {
         extends: ['eslint:recommended'],
     },
 
+    cache: true,
+
     /**
      * Optional callback invoked once scan is complete.
      *

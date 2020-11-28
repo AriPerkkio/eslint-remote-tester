@@ -19,6 +19,7 @@ export default function constructAndValidateConfiguration(
         concurrentTasks,
         eslintrc,
         CI,
+        cache,
         onComplete,
     } = configToValidate;
 
@@ -60,6 +61,12 @@ export default function constructAndValidateConfiguration(
     } else {
         // Resolve CI from configuration file, if found. Fallback to environment variables.
         config.CI = CI == null ? process.env.CI === 'true' : CI;
+    }
+
+    if (cache != null && typeof cache !== 'boolean') {
+        errors.push(`cache (${cache}) should be a boolean.`);
+    } else if (cache == null) {
+        config.cache = true;
     }
 
     if (resultParser && !RESULT_PARSERS.includes(resultParser)) {

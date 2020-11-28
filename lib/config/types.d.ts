@@ -14,5 +14,6 @@ export interface Config {
     concurrentTasks: number;
     eslintrc: Linter.Config;
     CI: boolean;
+    cache: boolean;
     onComplete?: (results: ResultTemplateOptions[]) => Promise<void> | void;
 }

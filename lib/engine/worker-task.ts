@@ -3,7 +3,7 @@ import { ESLint, Linter } from 'eslint';
 
 import { LintMessage, WorkerData } from './types';
 import config from '@config';
-import { getFiles, SourceFile } from '@file-client';
+import { getFiles, removeCachedRepository, SourceFile } from '@file-client';
 
 export type WorkerMessage =
     | { type: 'START' }
@@ -214,6 +214,10 @@ export default async function workerTask(): Promise<void> {
 
         results.push(...messages);
         postMessage({ type: 'FILE_LINT_END', payload: index + 1 });
+    }
+
+    if (!config.cache) {
+        await removeCachedRepository(repository);
     }
 
     postMessage({ type: 'LINT_END', payload: results });
