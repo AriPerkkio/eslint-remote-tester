@@ -94,3 +94,7 @@ Run `yarn lint:remote`. Results are written into `./eslint-remote-tester-results
 
 - [react configuration with +150 repositories](eslint-remote-tester.react.config.js)
 - [small regression for eslint:recommended](eslint-remote-tester.config.js)
+
+### Repositories
+
+Target repositories can easily be found using [libraries.io](https://libraries.io/). They provide [an API for querying repositories](https://libraries.io/api#project-dependent-repositories) which depend on certain project.
