@@ -6,6 +6,7 @@ const RESULT_PARSERS: ResultParser[] = ['plaintext', 'markdown'];
 const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
 const DEFAULT_CONCURRENT_TASKS = 5;
+const DEFAULT_MAX_FILE_SIZE_BYTES = 2000000;
 
 export default function constructAndValidateConfiguration(
     configToValidate: Config
@@ -14,6 +15,7 @@ export default function constructAndValidateConfiguration(
         repositories,
         extensions,
         pathIgnorePattern,
+        maxFileSizeBytes,
         rulesUnderTesting,
         resultParser,
         concurrentTasks,
@@ -54,6 +56,14 @@ export default function constructAndValidateConfiguration(
                 `pathIgnorePattern (${pathIgnorePattern}) is not valid regex: ${e.message}`
             );
         }
+    }
+
+    if (maxFileSizeBytes != null && typeof maxFileSizeBytes !== 'number') {
+        errors.push(
+            `maxFileSizeBytes (${maxFileSizeBytes}) should be a number.`
+        );
+    } else if (maxFileSizeBytes == null) {
+        config.maxFileSizeBytes = DEFAULT_MAX_FILE_SIZE_BYTES;
     }
 
     if (CI != null && typeof CI !== 'boolean') {

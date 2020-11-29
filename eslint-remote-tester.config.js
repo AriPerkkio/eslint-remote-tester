@@ -8,6 +8,8 @@ module.exports = {
 
     pathIgnorePattern,
 
+    maxFileSizeBytes: undefined,
+
     rulesUnderTesting: [],
 
     resultParser: undefined,

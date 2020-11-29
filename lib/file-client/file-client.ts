@@ -32,6 +32,13 @@ function isDirectoryIgnored(directory: string) {
 }
 
 /**
+ * Check whether given file is ignored based on its size
+ */
+function isFileIgnored(filePath: string) {
+    return fs.statSync(filePath).size > config.maxFileSizeBytes;
+}
+
+/**
  * Construct flat file tree recursively from given directory
  */
 function constructTreeFromDir(dir: string): string[] {
@@ -78,6 +85,7 @@ export async function getFiles({
 
         return paths
             .filter(path => config.extensions.some(ext => path.endsWith(ext)))
+            .filter(path => !isFileIgnored(path))
             .map(path => ({
                 path,
                 content: fs.readFileSync(path, 'utf8'),

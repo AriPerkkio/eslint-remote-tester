@@ -16,6 +16,9 @@ export const CONFIGURATION_FILE_TEMPLATE =
         'docs',
     ].join('|')})\`,
 
+    /** Optional max file size (bytes) used to exclude bigger files. Defaults to 2 megabytes. */
+    maxFileSizeBytes: 2000000,
+
     /** Rules used to filter out results */
     rulesUnderTesting: ['react/no-direct-mutation-state'],
 
@@ -52,7 +55,7 @@ export const CONFIGURATION_FILE_TEMPLATE =
     /** Optional boolean flag used to set CI mode. process.env.CI is used when not set. */
     CI: false,
 
-    /** Optional boolean flag used to enable caching of cloned repositories. For CI's it's ideal to disable caching. Defauls to true. */
+    /** Optional boolean flag used to enable caching of cloned repositories. For CIs it's ideal to disable caching. Defauls to true. */
     cache: true,
 
     /**

@@ -6,6 +6,7 @@ const DEFAULT_CONFIGURATION: Config = {
     repositories: ['test-repo'],
     extensions: ['.ts', '.tsx'],
     pathIgnorePattern: undefined,
+    maxFileSizeBytes: undefined as any,
     rulesUnderTesting: [],
     resultParser: 'plaintext',
     concurrentTasks: undefined as any,

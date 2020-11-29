@@ -43,6 +43,9 @@ module.exports = {
         'docs',
     ].join('|')})`,
 
+    /** Optional max file size used to exclude bigger files. Defaults to 2 megabytes. */
+    maxFileSizeBytes: 2000000,
+
     /** Rules used to filter out results. Use empty array when ESLint crashes are the only interest */
     rulesUnderTesting: [],
 

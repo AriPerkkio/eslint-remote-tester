@@ -9,6 +9,7 @@ export interface Config {
     repositories: string[];
     extensions: string[];
     pathIgnorePattern?: RegExp;
+    maxFileSizeBytes: number;
     rulesUnderTesting: string[];
     resultParser: ResultParser;
     concurrentTasks: number;
