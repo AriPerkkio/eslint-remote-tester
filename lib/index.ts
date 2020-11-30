@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { renderApplication } from '@ui';
-import config from '@config';
+import config, { validateEslintrcRules } from '@config';
 import engine, { WorkerMessage } from '@engine';
 import { writeResults, clearResults } from '@file-client';
 import logger from '@progress-logger';
@@ -22,6 +22,9 @@ async function main() {
             return execute();
         }
     }
+
+    // Validate given ESLint rules
+    await validateEslintrcRules(config);
 
     // Clear possible earlier results / initialize results folder
     clearResults();

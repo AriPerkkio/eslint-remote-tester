@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { ESLint } from 'eslint';
 
 import { Config, ResultParser } from './types';
 
@@ -7,6 +8,8 @@ const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
 const DEFAULT_CONCURRENT_TASKS = 5;
 const DEFAULT_MAX_FILE_SIZE_BYTES = 2000000;
+
+const UNKNOWN_RULE_REGEXP = /^Definition for rule (.*) was not found.$/;
 
 export default function constructAndValidateConfiguration(
     configToValidate: Config
@@ -111,4 +114,40 @@ export default function constructAndValidateConfiguration(
     }
 
     return config;
+}
+
+/**
+ * Validate given rules of `config.eslintrc.rules`
+ * - When unknown rules are defined, or known ones are mispelled they are not
+ *   reported during linting. We need to specifically look for them.
+ * - Separate method from `constructAndValidateConfiguration` due to async
+ *   implementation of `linter.lintText`
+ */
+export async function validateEslintrcRules(config: Config): Promise<void> {
+    const linter = new ESLint({
+        useEslintrc: false,
+        overrideConfig: config.eslintrc,
+    });
+
+    const results = await linter.lintText('');
+    const errors = [];
+
+    for (const result of results) {
+        for (const resultMessage of result.messages) {
+            if (UNKNOWN_RULE_REGEXP.test(resultMessage.message)) {
+                errors.push(resultMessage.message);
+            }
+        }
+    }
+
+    if (errors.length) {
+        console.log(
+            chalk.red(
+                `Configuration validation errors at eslintrc.rules: \n- ${errors.join(
+                    '\n- '
+                )}`
+            )
+        );
+        process.exit(1);
+    }
 }
