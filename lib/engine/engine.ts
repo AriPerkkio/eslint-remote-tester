@@ -26,6 +26,8 @@ function scanRepository(
                 repository,
                 configurationLocation: resolveConfigurationLocation(),
             },
+            // Prevent git from prompting password. Instead just fail repository cloning.
+            env: { GIT_TERMINAL_PROMPT: '0' },
         });
 
         worker.on('message', (message: WorkerMessage) => {
