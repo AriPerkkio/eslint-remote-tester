@@ -1,9 +1,6 @@
 module.exports = `(${[
     'node_modules',
     '\\/\\.', // Any file or directory starting with dot, e.g. ".git"
-    'test-results',
-    'tests',
-    'docs',
     '/dist/',
     '/build/',
 
@@ -18,7 +15,6 @@ module.exports = `(${[
     'bundle\\.js',
     'react-dom\\.development\\.js',
     'vendor\\.min\\.js',
-
     '\\.min\\.js', // Any *.min.js
 
     'Khan/perseus/lib',
