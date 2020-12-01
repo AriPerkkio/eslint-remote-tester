@@ -12,6 +12,9 @@ export interface RepositoryClientOptions {
 export const URL = 'https://github.com';
 export const CACHE_LOCATION = './.cache-eslint-remote-tester';
 
+// Clone only latest history of the main branch
+const CLONE_OPTS = { '--depth': 1 } as const;
+
 // Create cache if missing
 if (!fs.existsSync(CACHE_LOCATION)) {
     fs.mkdirSync(CACHE_LOCATION);
@@ -34,7 +37,11 @@ export async function cloneRepository({
 
         try {
             const git = simpleGit();
-            await git.clone(`${URL}/${repository}.git`, repoLocation);
+            await git.clone(
+                `${URL}/${repository}.git`,
+                repoLocation,
+                CLONE_OPTS
+            );
         } catch (e) {
             onCloneFailure();
         }
