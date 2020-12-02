@@ -14,13 +14,6 @@ export interface LogMessage {
     color?: typeof ForegroundColor;
 }
 
-export interface LogUpdate {
-    characters: string;
-    x: number;
-    y: number;
-    wholeRow?: boolean;
-}
-
 // prettier-ignore
 export type Listener<Key = ListenerType> =
     Key extends 'message' ? (message: LogMessage) => void :
