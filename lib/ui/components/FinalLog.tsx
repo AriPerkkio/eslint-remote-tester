@@ -5,7 +5,7 @@ import ProgressLogger from '@progress-logger';
 import { LogMessage } from '@progress-logger/types';
 import { useExitAfterRender } from '../hooks';
 
-const START_MESSAGE: LogMessage = {
+const START_MESSAGE: Omit<LogMessage, 'level'> = {
     content: 'Full log:',
     color: 'yellow',
 };

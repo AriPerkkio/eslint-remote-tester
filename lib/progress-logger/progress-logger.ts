@@ -95,6 +95,7 @@ class ProgressLogger {
         this.addNewMessage({
             content: Templates.SCAN_FINISHED(this.scannedRepositories),
             color: 'green',
+            level: 'verbose',
         });
 
         // Stop CI messages
@@ -208,10 +209,13 @@ class ProgressLogger {
      * Log end of linting of given repository
      */
     onLintEnd(repository: string, resultCount: number) {
+        const hasErrors = resultCount > 0;
+
         this.scannedRepositories++;
         this.addNewMessage({
             content: Templates.LINT_END_TEMPLATE(repository, resultCount),
-            color: resultCount > 0 ? 'red' : 'green',
+            color: hasErrors ? 'red' : 'green',
+            level: hasErrors ? 'error' : 'verbose',
         });
 
         const task = this.tasks.find(task => task.repository === repository);
@@ -243,6 +247,7 @@ class ProgressLogger {
             this.addNewMessage({
                 content: Templates.LINT_SLOW_TEMPLATE(lintTime, file),
                 color: 'yellow',
+                level: 'warn',
             });
         }
     }
@@ -260,6 +265,7 @@ class ProgressLogger {
                     erroneousRule
                 ),
                 color: 'yellow',
+                level: 'warn',
             });
         }
     }
@@ -277,6 +283,7 @@ class ProgressLogger {
                     errorCode
                 ),
                 color: 'yellow',
+                level: 'warn',
             });
         }
     }
@@ -288,6 +295,7 @@ class ProgressLogger {
         this.addNewMessage({
             content: Templates.CLONE_FAILURE_TEMPLATE(repository),
             color: 'yellow',
+            level: 'warn',
         });
     }
 
@@ -298,6 +306,7 @@ class ProgressLogger {
         this.addNewMessage({
             content: Templates.PULL_FAILURE_TEMPLATE(repository),
             color: 'yellow',
+            level: 'warn',
         });
     }
 
@@ -308,6 +317,7 @@ class ProgressLogger {
         this.addNewMessage({
             content: Templates.READ_FAILURE_TEMPLATE(repository),
             color: 'yellow',
+            level: 'warn',
         });
     }
 
@@ -318,6 +328,7 @@ class ProgressLogger {
         this.addNewMessage({
             content: Templates.WRITE_FAILURE_TEMPLATE(repository),
             color: 'yellow',
+            level: 'warn',
         });
     }
 

@@ -12,6 +12,7 @@ export interface Task {
 export interface LogMessage {
     content: string;
     color?: typeof ForegroundColor;
+    level: 'verbose' | 'warn' | 'error';
 }
 
 // prettier-ignore
