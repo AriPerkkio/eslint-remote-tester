@@ -292,7 +292,7 @@ class ProgressLogger {
     }
 
     /**
-     * Log warning about linter crashing
+     * Log error about linter crashing
      */
     onLinterCrash(repository: string, erroneousRule: string) {
         const isNewWarning = this.addWarningToTask(repository, erroneousRule);
@@ -303,14 +303,14 @@ class ProgressLogger {
                     repository,
                     erroneousRule
                 ),
-                color: 'yellow',
-                level: 'warn',
+                color: 'red',
+                level: 'error',
             });
         }
     }
 
     /**
-     * Log warning about worker crashing
+     * Log error about worker crashing
      */
     onWorkerCrash(repository: string, errorCode?: string) {
         const isNewWarning = this.addWarningToTask(repository, 'worker-crash');
@@ -321,53 +321,53 @@ class ProgressLogger {
                     repository,
                     errorCode
                 ),
-                color: 'yellow',
-                level: 'warn',
+                color: 'red',
+                level: 'error',
             });
         }
     }
 
     /**
-     * Log warning about clone failure
+     * Log error about clone failure
      */
     onCloneFailure(repository: string) {
         this.addNewMessage({
             content: Templates.CLONE_FAILURE_TEMPLATE(repository),
-            color: 'yellow',
-            level: 'warn',
+            color: 'red',
+            level: 'error',
         });
     }
 
     /**
-     * Log warning about pull failure
+     * Log error about pull failure
      */
     onPullFailure(repository: string) {
         this.addNewMessage({
             content: Templates.PULL_FAILURE_TEMPLATE(repository),
-            color: 'yellow',
-            level: 'warn',
+            color: 'red',
+            level: 'error',
         });
     }
 
     /**
-     * Log warning about filesystem read failure
+     * Log error about filesystem read failure
      */
     onReadFailure(repository: string) {
         this.addNewMessage({
             content: Templates.READ_FAILURE_TEMPLATE(repository),
-            color: 'yellow',
-            level: 'warn',
+            color: 'red',
+            level: 'error',
         });
     }
 
     /**
-     * Log warning about result writing failure
+     * Log error about result writing failure
      */
     onWriteFailure(repository: string) {
         this.addNewMessage({
             content: Templates.WRITE_FAILURE_TEMPLATE(repository),
-            color: 'yellow',
-            level: 'warn',
+            color: 'red',
+            level: 'error',
         });
     }
 

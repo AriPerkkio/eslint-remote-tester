@@ -135,8 +135,8 @@ describe('CI mode', () => {
         expect(cloneMessage).toMatch(`[CLONING] ${repository}`);
         expect(readMessage).toMatch(`[READING] ${repository}`);
         expect(lintStartMessage).toMatch(`[LINTING] ${repository} - 2 files`);
-        expect(lintCrashMessage).toMatch(`[WARN] ${repository} crashed`);
-        expect(lintDoneMessage).toMatch(`[DONE] ${repository} 5 errors`);
+        expect(lintCrashMessage).toMatch(`[ERROR] ${repository} crashed`);
+        expect(lintDoneMessage).toMatch(`[ERROR] ${repository} 5 errors`);
         expect(scanDoneMessage).toMatch(
             `[DONE] Finished scan of 1 repositories`
         );

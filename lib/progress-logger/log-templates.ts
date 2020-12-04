@@ -48,7 +48,10 @@ const CI_TASK_TEMPLATE = (task: Task): string =>
 export const LINT_END_TEMPLATE = (
     repository: string,
     errorCount: number
-): string => `[DONE] ${repository} ${errorCount} errors`;
+): string =>
+    errorCount > 0
+        ? `[ERROR] ${repository} ${errorCount} errors`
+        : `[SUCCESS] ${repository}`;
 
 export const LINT_SLOW_TEMPLATE = (lintTime: number, file: string): string => {
     const path = file.replace(`${CACHE_LOCATION}/`, '').split('/');
@@ -60,27 +63,27 @@ export const LINT_SLOW_TEMPLATE = (lintTime: number, file: string): string => {
 export const LINT_FAILURE_TEMPLATE = (
     repository: string,
     rule?: string
-): string => `[WARN] ${repository} crashed${rule ? `: ${rule}` : ''}`;
+): string => `[ERROR] ${repository} crashed${rule ? `: ${rule}` : ''}`;
 
 export const WORKER_FAILURE_TEMPLATE = (
     repository: string,
     errorCode?: string
 ): string =>
-    `[WARN] Worker crashed on ${repository}${
+    `[ERROR] Worker crashed on ${repository}${
         errorCode ? ` (${errorCode})` : ''
     }`;
 
 export const PULL_FAILURE_TEMPLATE = (repository: string): string =>
-    `[WARN] ${repository} failed to pull`;
+    `[ERROR] ${repository} failed to pull`;
 
 export const CLONE_FAILURE_TEMPLATE = (repository: string): string =>
-    `[WARN] ${repository} failed to clone`;
+    `[ERROR] ${repository} failed to clone`;
 
 export const READ_FAILURE_TEMPLATE = (repository: string): string =>
-    `[WARN] ${repository} failed to read files`;
+    `[ERROR] ${repository} failed to read files`;
 
 export const WRITE_FAILURE_TEMPLATE = (repository: string): string =>
-    `[WARN] ${repository} failed to write results`;
+    `[ERROR] ${repository} failed to write results`;
 
 export const OVERFLOWING_ROWS_TOP = (overflowingRowCount: number): string =>
     `[\u25B2 to see ${overflowingRowCount} lines above]`;
