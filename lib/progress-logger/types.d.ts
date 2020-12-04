@@ -1,5 +1,7 @@
 import { ForegroundColor } from 'chalk';
 
+import { LogLevel } from '@config/types';
+
 export interface Task {
     step?: 'START' | 'CLONE' | 'PULL' | 'READ' | 'LINT';
     color?: typeof ForegroundColor;
@@ -12,7 +14,7 @@ export interface Task {
 export interface LogMessage {
     content: string;
     color?: typeof ForegroundColor;
-    level: 'verbose' | 'warn' | 'error';
+    level: LogLevel;
 }
 
 // prettier-ignore

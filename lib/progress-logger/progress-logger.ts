@@ -18,21 +18,48 @@ export function resolveColor(
 }
 
 /**
+ * Check whether log is filtered out by `config.logLevel`
+ */
+function isLogVisible(log: LogMessage): boolean {
+    switch (config.logLevel) {
+        case 'verbose':
+            return true;
+
+        case 'warn':
+            return ['warn', 'error'].includes(log.level);
+
+        case 'error':
+            return log.level === 'error';
+
+        default:
+            return false;
+    }
+}
+
+/**
+ * Check whether task is filtered out by `config.logLevel`
+ * - Tasks are considered as "logs" on CI only. CLI mode displays only active ones.
+ */
+function isTasksVisible(): boolean {
+    return config.CI === false || config.logLevel === 'verbose';
+}
+
+/**
  * Logger for holding state of current progress
  * - Exposes different logs via `on` subscribe method
  */
 class ProgressLogger {
     /** Messages printed as a list under tasks */
-    messages: LogMessage[] = [];
+    private messages: LogMessage[] = [];
 
     /** Messages of the task runners */
-    tasks: Task[] = [];
+    private tasks: Task[] = [];
 
     /** Count of finished repositories */
     scannedRepositories = 0;
 
     /** Event listeners */
-    listeners: Listeners = {
+    private listeners: Listeners = {
         exit: [],
         message: [],
         task: [],
@@ -40,7 +67,7 @@ class ProgressLogger {
     };
 
     /** Interval of CI status messages. Used to avoid CIs timeouting. */
-    ciKeepAliveIntervalHandle: NodeJS.Timeout | null = null;
+    private ciKeepAliveIntervalHandle: NodeJS.Timeout | null = null;
 
     constructor() {
         if (config.CI) {
@@ -85,7 +112,14 @@ class ProgressLogger {
      */
     addNewMessage(message: LogMessage) {
         this.messages.push(message);
-        this.listeners.message.forEach(listener => listener(message));
+
+        if (isLogVisible(message)) {
+            this.listeners.message.forEach(listener => listener(message));
+        }
+    }
+
+    getMessages(): LogMessage[] {
+        return this.messages.filter(message => isLogVisible(message));
     }
 
     /**
@@ -157,7 +191,9 @@ class ProgressLogger {
             this.tasks.push(updatedTask);
         }
 
-        this.listeners.task.forEach(listener => listener(updatedTask));
+        if (isTasksVisible()) {
+            this.listeners.task.forEach(listener => listener(updatedTask));
+        }
     }
 
     /**
@@ -222,7 +258,10 @@ class ProgressLogger {
 
         if (task) {
             this.tasks = this.tasks.filter(t => t !== task);
-            this.listeners.task.forEach(listener => listener(task, true));
+
+            if (isTasksVisible()) {
+                this.listeners.task.forEach(listener => listener(task, true));
+            }
         }
     }
 
@@ -355,6 +394,7 @@ class ProgressLogger {
 
     /**
      * Log status of scanning to CI
+     * - These are used to avoid CI timeouts
      */
     onCiStatus() {
         const message = Templates.CI_STATUS_TEMPLATE(
@@ -362,6 +402,7 @@ class ProgressLogger {
             this.tasks
         );
 
+        // Note that these are never excluded from CI - no matter what `config.logLevel` value is
         this.listeners.ciKeepAlive.forEach(listener => listener(message));
     }
 }
