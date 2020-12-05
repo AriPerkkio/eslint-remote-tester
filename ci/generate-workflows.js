@@ -12,7 +12,12 @@ const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
 name: Lint ${plugin}
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual triggers
+  workflow_run:
+    workflows:
+      - Run all plugin workflows
+    types:
+      - completed
   schedule:
     # Every thursday at ${generateHours(index)}:00
     - cron: '0 ${generateHours(index)} * * THU'

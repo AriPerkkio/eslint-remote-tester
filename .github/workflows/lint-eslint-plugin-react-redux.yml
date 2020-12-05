@@ -2,7 +2,12 @@
 name: Lint eslint-plugin-react-redux
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual triggers
+  workflow_run:
+    workflows:
+      - Run all plugin workflows
+    types:
+      - completed
   schedule:
     # Every thursday at 09:00
     - cron: '0 09 * * THU'

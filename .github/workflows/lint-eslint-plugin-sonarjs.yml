@@ -2,7 +2,12 @@
 name: Lint eslint-plugin-sonarjs
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual triggers
+  workflow_run:
+    workflows:
+      - Run all plugin workflows
+    types:
+      - completed
   schedule:
     # Every thursday at 10:00
     - cron: '0 10 * * THU'

@@ -2,7 +2,12 @@
 name: Lint eslint-plugin-react-hooks
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual triggers
+  workflow_run:
+    workflows:
+      - Run all plugin workflows
+    types:
+      - completed
   schedule:
     # Every thursday at 08:00
     - cron: '0 08 * * THU'
