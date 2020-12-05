@@ -138,8 +138,8 @@ describe('CLI', () => {
 
         expect(finalLog).toMatchInlineSnapshot(`
             "[33mFull log:[39m
-            [33m[WARN] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id[39m
-            [31m[DONE] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors[39m
+            [31m[ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id[39m
+            [31m[ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors[39m
             [32m[DONE] Finished scan of 1 repositories[39m
             "
         `);

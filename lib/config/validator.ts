@@ -1,11 +1,14 @@
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 
-import { Config, ResultParser } from './types';
+import { Config, ResultParser, LogLevel } from './types';
 
 const RESULT_PARSERS: ResultParser[] = ['plaintext', 'markdown'];
+const LOG_LEVELS: LogLevel[] = ['verbose', 'warn', 'error'];
+
 const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
+const DEFAULT_LOG_LEVEL: LogLevel = 'verbose';
 const DEFAULT_CONCURRENT_TASKS = 5;
 const DEFAULT_MAX_FILE_SIZE_BYTES = 2000000;
 
@@ -24,6 +27,7 @@ export default function constructAndValidateConfiguration(
         concurrentTasks,
         eslintrc,
         CI,
+        logLevel,
         cache,
         onComplete,
     } = configToValidate;
@@ -74,6 +78,16 @@ export default function constructAndValidateConfiguration(
     } else {
         // Resolve CI from configuration file, if found. Fallback to environment variables.
         config.CI = CI == null ? process.env.CI === 'true' : CI;
+    }
+
+    if (logLevel && !LOG_LEVELS.includes(logLevel)) {
+        errors.push(
+            `logLevel (${logLevel}) is not valid value. Known values are ${LOG_LEVELS.join(
+                ', '
+            )}`
+        );
+    } else if (!logLevel) {
+        config.logLevel = DEFAULT_LOG_LEVEL;
     }
 
     if (cache != null && typeof cache !== 'boolean') {

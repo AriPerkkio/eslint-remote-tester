@@ -13,6 +13,7 @@ const DEFAULT_CONFIGURATION: Config = {
     eslintrc: {},
     CI: undefined as any,
     cache: undefined as any,
+    logLevel: undefined as any,
 };
 
 describe('Config validator', () => {
