@@ -1,10 +1,17 @@
 import chalk from 'chalk';
 import { ESLint } from 'eslint';
 
-import { Config, ResultParser, LogLevel } from './types';
+import {
+    Config,
+    ConfigToValidate,
+    LogLevel,
+    LogLevels,
+    ResultParser,
+    ResultParsers,
+} from './types';
 
-const RESULT_PARSERS: ResultParser[] = ['plaintext', 'markdown'];
-const LOG_LEVELS: LogLevel[] = ['verbose', 'warn', 'error'];
+const RESULT_PARSERS: typeof ResultParsers = ['plaintext', 'markdown'];
+const LOG_LEVELS: typeof LogLevels = ['verbose', 'warn', 'error'];
 
 const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
@@ -15,7 +22,7 @@ const DEFAULT_MAX_FILE_SIZE_BYTES = 2000000;
 const UNKNOWN_RULE_REGEXP = /^Definition for rule (.*) was not found.$/;
 
 export default function constructAndValidateConfiguration(
-    configToValidate: Config
+    configToValidate: ConfigToValidate
 ): Config {
     const {
         repositories,
@@ -127,7 +134,7 @@ export default function constructAndValidateConfiguration(
         process.exit(1);
     }
 
-    return config;
+    return config as Config;
 }
 
 /**

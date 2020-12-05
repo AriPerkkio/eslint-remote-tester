@@ -1,19 +1,19 @@
 import { getConsoleLogCalls } from './utils';
 import validator from '@config/validator';
-import { Config } from '@config/types';
+import { ConfigToValidate } from '@config/types';
 
-const DEFAULT_CONFIGURATION: Config = {
+const DEFAULT_CONFIGURATION: ConfigToValidate = {
     repositories: ['test-repo'],
     extensions: ['.ts', '.tsx'],
     pathIgnorePattern: undefined,
-    maxFileSizeBytes: undefined as any,
+    maxFileSizeBytes: undefined,
     rulesUnderTesting: [],
     resultParser: 'plaintext',
-    concurrentTasks: undefined as any,
+    concurrentTasks: undefined,
     eslintrc: {},
-    CI: undefined as any,
-    cache: undefined as any,
-    logLevel: undefined as any,
+    CI: undefined,
+    cache: undefined,
+    logLevel: undefined,
 };
 
 describe('Config validator', () => {

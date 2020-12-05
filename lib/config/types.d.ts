@@ -2,8 +2,11 @@ import { Linter } from 'eslint';
 
 import { ResultTemplateOptions } from '@file-client/result-templates';
 
-export type ResultParser = 'plaintext' | 'markdown';
-export type LogLevel = 'verbose' | 'warn' | 'error';
+export const ResultParsers: ['plaintext', 'markdown'];
+export type ResultParser = typeof ResultParsers[number];
+
+export const LogLevels: ['verbose', 'warn', 'error'];
+export type LogLevel = typeof LogLevels[number];
 
 /** Contents of the `eslint-remote-tester.config.js` */
 export interface Config {
@@ -20,3 +23,10 @@ export interface Config {
     cache: boolean;
     onComplete?: (results: ResultTemplateOptions[]) => Promise<void> | void;
 }
+
+type AllKeysOptional<T extends { [K: string]: any }> = {
+    [K in keyof T]?: T[K];
+};
+
+/** Config before validation */
+export type ConfigToValidate = AllKeysOptional<Config>;
