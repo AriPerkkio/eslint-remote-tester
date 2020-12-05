@@ -1,16 +1,15 @@
-name: Lint remote typescript
+# This file is auto-generated. See ci/generate-workflows.js
+name: Lint eslint-plugin-jest-dom
 
 on:
-  schedule:
-    # Every thursday at 00:00
-    - cron: '0 0 * * THU'
   workflow_dispatch:
+  schedule:
+    # Every thursday at 03:00
+    - cron: '0 03 * * THU'
 
 jobs:
   lint:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -20,7 +19,7 @@ jobs:
     - run: yarn build
     - run: yarn install --no-lockfile
       working-directory: ./ci
-    - run: yarn lint:typescript
+    - run: "yarn lint --config ./plugin-configs/eslint-plugin-jest-dom.config.js"
       working-directory: ./ci
       env:
         CI: true

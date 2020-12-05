@@ -57,7 +57,7 @@ module.exports = {
             },
         },
         {
-            files: ['*config*', 'test/**/*.ts'],
+            files: ['*config*', 'test/**/*.ts', '*.js'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',
             },

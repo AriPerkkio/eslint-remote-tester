@@ -1,16 +1,15 @@
-name: Lint remote javascript
+# This file is auto-generated. See ci/generate-workflows.js
+name: Lint eslint-plugin-node
 
 on:
-  schedule:
-    # Every thursday at 00:00
-    - cron: '0 0 * * THU'
   workflow_dispatch:
+  schedule:
+    # Every thursday at 06:00
+    - cron: '0 06 * * THU'
 
 jobs:
   lint:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -20,7 +19,7 @@ jobs:
     - run: yarn build
     - run: yarn install --no-lockfile
       working-directory: ./ci
-    - run: yarn lint:javascript
+    - run: "yarn lint --config ./plugin-configs/eslint-plugin-node.config.js"
       working-directory: ./ci
       env:
         CI: true

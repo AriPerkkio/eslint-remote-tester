@@ -1,0 +1,25 @@
+# This file is auto-generated. See ci/generate-workflows.js
+name: Lint typescript-eslint-eslint-plugin
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every thursday at 00:00
+    - cron: '0 00 * * THU'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.11
+    - run: yarn install
+    - run: yarn build
+    - run: yarn install --no-lockfile
+      working-directory: ./ci
+    - run: "yarn lint --config ./plugin-configs/typescript-eslint-eslint-plugin.config.js"
+      working-directory: ./ci
+      env:
+        CI: true

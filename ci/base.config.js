@@ -6,7 +6,7 @@ module.exports = {
     repositories,
 
     /** Extensions of files under scanning */
-    extensions: ['js', 'jsx'],
+    extensions: ['js', 'jsx', 'ts', 'tsx'],
 
     /** Optional pattern used to exclude paths */
     pathIgnorePattern,
@@ -20,6 +20,10 @@ module.exports = {
     /** Maximum amount of tasks ran concurrently */
     concurrentTasks: 3,
 
+    logLevel: 'warn',
+
+    cache: process.env.CI === undefined || process.env.CI === 'false',
+
     /** ESLint configuration */
     eslintrc: {
         root: true,
@@ -27,6 +31,7 @@ module.exports = {
             es6: true,
             node: true,
         },
+        parser: '@typescript-eslint/parser',
         parserOptions: {
             ecmaVersion: 2020,
             sourceType: 'module',
@@ -42,36 +47,5 @@ module.exports = {
                 version: 26,
             },
         },
-        plugins: [
-            'cypress',
-            'jest-dom',
-            'jest',
-            'jsx-a11y',
-            'mocha',
-            'node',
-            'prettier',
-            'react-hooks',
-            'react-redux',
-            'react',
-            'sonarjs',
-            'testing-library',
-            'unicorn',
-        ],
-        extends: [
-            'eslint:all',
-            'plugin:cypress/recommended',
-            'plugin:jest-dom/recommended',
-            'plugin:jest/all',
-            'plugin:jsx-a11y/recommended',
-            'plugin:mocha/recommended',
-            'plugin:node/recommended',
-            'plugin:prettier/recommended',
-            'plugin:react-hooks/recommended',
-            'plugin:react-redux/recommended',
-            'plugin:react/all',
-            'plugin:sonarjs/recommended',
-            'plugin:testing-library/react',
-            'plugin:unicorn/recommended',
-        ],
     },
 };

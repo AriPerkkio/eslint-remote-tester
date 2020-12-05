@@ -6,29 +6,25 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "lint:javascript": "node ../dist --config ./eslint-remote-tester.javascript.config.js",
-        "lint:typescript": "node ../dist --config ./eslint-remote-tester.typescript.config.js"
+        "lint": "node ../dist"
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^4.8.1",
-        "@typescript-eslint/parser": "^4.8.1",
-        "eslint": "^7.13.0",
-        "eslint-config-prettier": "^6.15.0",
-        "eslint-plugin-cypress": "^2.11.2",
-        "eslint-plugin-jest": "^24.1.3",
-        "eslint-plugin-jest-dom": "^3.2.4",
-        "eslint-plugin-jsx-a11y": "^6.4.1",
-        "eslint-plugin-local-rules": "^0.1.1",
-        "eslint-plugin-mocha": "^8.0.0",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-prettier": "^3.1.4",
-        "eslint-plugin-react": "^7.21.5",
-        "eslint-plugin-react-hooks": "^4.2.0",
-        "eslint-plugin-react-redux": "^3.3.0",
-        "eslint-plugin-sonarjs": "^0.5.0",
-        "eslint-plugin-testing-library": "^3.10.0",
-        "eslint-plugin-unicorn": "^23.0.0",
+        "@typescript-eslint/eslint-plugin": "^4",
+        "@typescript-eslint/parser": "^4",
+        "eslint": "^7",
+        "eslint-plugin-cypress": "^2",
+        "eslint-plugin-jest": "^24",
+        "eslint-plugin-jest-dom": "^3",
+        "eslint-plugin-jsx-a11y": "^6",
+        "eslint-plugin-mocha": "^8",
+        "eslint-plugin-node": "^11",
+        "eslint-plugin-react": "^7",
+        "eslint-plugin-react-hooks": "^4",
+        "eslint-plugin-react-redux": "^3",
+        "eslint-plugin-sonarjs": "^0.5",
+        "eslint-plugin-testing-library": "^3",
+        "eslint-plugin-unicorn": "^23",
         "react": "16.13.1",
-        "typescript": "^4.0.5"
+        "typescript": "^4"
     }
 }
