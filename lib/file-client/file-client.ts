@@ -48,9 +48,18 @@ function constructTreeFromDir(dir: string): string[] {
             const currentPath = `${dir}/${fileOrDir}`;
             if (isDirectoryIgnored(currentPath)) return;
 
-            return fs.lstatSync(currentPath).isDirectory()
-                ? constructTreeFromDir(currentPath)
-                : currentPath;
+            const fileStats = fs.lstatSync(currentPath);
+
+            if (fileStats.isDirectory()) {
+                return constructTreeFromDir(currentPath);
+            }
+
+            if (fileStats.isFile()) {
+                return currentPath;
+            }
+
+            // Ignore non-files and non-directories, e.g. symlinks
+            return false;
         })
         .filter(Boolean)
         .reduce<string[]>(
