@@ -25,6 +25,9 @@ function isLogVisible(log: LogMessage): boolean {
         case 'verbose':
             return true;
 
+        case 'info':
+            return ['info', 'warn', 'error'].includes(log.level);
+
         case 'warn':
             return ['warn', 'error'].includes(log.level);
 
@@ -397,13 +400,14 @@ class ProgressLogger {
      * - These are used to avoid CI timeouts
      */
     onCiStatus() {
-        const message = Templates.CI_STATUS_TEMPLATE(
-            this.scannedRepositories,
-            this.tasks
-        );
+        if (['verbose', 'info'].includes(config.logLevel)) {
+            const message = Templates.CI_STATUS_TEMPLATE(
+                this.scannedRepositories,
+                this.tasks
+            );
 
-        // Note that these are never excluded from CI - no matter what `config.logLevel` value is
-        this.listeners.ciKeepAlive.forEach(listener => listener(message));
+            this.listeners.ciKeepAlive.forEach(listener => listener(message));
+        }
     }
 }
 

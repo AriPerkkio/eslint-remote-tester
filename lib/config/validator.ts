@@ -11,7 +11,7 @@ import {
 } from './types';
 
 const RESULT_PARSERS: typeof ResultParsers = ['plaintext', 'markdown'];
-const LOG_LEVELS: typeof LogLevels = ['verbose', 'warn', 'error'];
+const LOG_LEVELS: typeof LogLevels = ['verbose', 'info', 'warn', 'error'];
 
 const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';

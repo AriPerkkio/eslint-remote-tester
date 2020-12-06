@@ -61,7 +61,7 @@ module.exports = {
     /** Optional boolean flag used to set CI mode. process.env.CI is used when not set. */
     CI: false,
 
-    /** Optional setting for log level. Valid values are verbose, warn, error. Defaults to verbose. */
+    /** Optional setting for log level. Valid values are verbose, info, warn, error. Defaults to verbose. */
     logLevel: 'verbose',
 
     /** Optional boolean flag used to enable caching of cloned repositories. For CIs it's ideal to disable caching. Defauls to true. */

@@ -5,7 +5,7 @@ import { ResultTemplateOptions } from '@file-client/result-templates';
 export const ResultParsers: ['plaintext', 'markdown'];
 export type ResultParser = typeof ResultParsers[number];
 
-export const LogLevels: ['verbose', 'warn', 'error'];
+export const LogLevels: ['verbose', 'info', 'warn', 'error'];
 export type LogLevel = typeof LogLevels[number];
 
 /** Contents of the `eslint-remote-tester.config.js` */
