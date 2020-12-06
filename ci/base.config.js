@@ -20,7 +20,7 @@ module.exports = {
     /** Maximum amount of tasks ran concurrently */
     concurrentTasks: 3,
 
-    logLevel: 'warn',
+    logLevel: 'info',
 
     cache: false,
 
