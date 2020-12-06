@@ -22,7 +22,7 @@ module.exports = {
 
     logLevel: 'warn',
 
-    cache: process.env.CI === undefined || process.env.CI === 'false',
+    cache: false,
 
     /** ESLint configuration */
     eslintrc: {
