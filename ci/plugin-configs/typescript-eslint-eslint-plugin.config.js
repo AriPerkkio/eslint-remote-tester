@@ -4,7 +4,7 @@ module.exports = {
     ...baseConfig,
     eslintrc: {
         ...baseConfig.eslintrc,
-        plugin: ['@typescript-eslint'],
+        plugins: ['@typescript-eslint'],
         extends: ['plugin:@typescript-eslint/all'],
         rules: {
             // Disable all rules which require type information since adding
