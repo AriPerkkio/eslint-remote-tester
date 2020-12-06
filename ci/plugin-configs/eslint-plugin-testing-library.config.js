@@ -1,4 +1,9 @@
+const baseConfig = require('../base.config');
+
 module.exports = {
-    ...require('../base.config'),
-    extends: ['plugin:testing-library/react'],
+    ...baseConfig,
+    eslintrc: {
+        ...baseConfig.eslintrc,
+        extends: ['plugin:testing-library/react'],
+    },
 };

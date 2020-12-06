@@ -1,4 +1,9 @@
+const baseConfig = require('../base.config');
+
 module.exports = {
-    ...require('../base.config'),
-    extends: ['plugin:jsx-a11y/recommended'],
+    ...baseConfig,
+    eslintrc: {
+        ...baseConfig.eslintrc,
+        extends: ['plugin:jsx-a11y/recommended'],
+    },
 };

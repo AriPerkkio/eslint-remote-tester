@@ -1,4 +1,9 @@
+const baseConfig = require('../base.config');
+
 module.exports = {
-    ...require('../base.config'),
-    extends: ['plugin:jest-dom/all'],
+    ...baseConfig,
+    eslintrc: {
+        ...baseConfig.eslintrc,
+        extends: ['plugin:jest-dom/all'],
+    },
 };

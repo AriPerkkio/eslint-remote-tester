@@ -1,4 +1,9 @@
+const baseConfig = require('../base.config');
+
 module.exports = {
-    ...require('../base.config'),
-    extends: ['eslint:all'],
+    ...baseConfig,
+    eslintrc: {
+        ...baseConfig.eslintrc,
+        extends: ['eslint:all'],
+    },
 };

@@ -1,10 +1,15 @@
+const baseConfig = require('../base.config');
+
 module.exports = {
-    ...require('../base.config'),
-    plugins: ['cypress'],
-    extends: ['plugin:cypress/recommended'],
-    rules: {
-        'cypress/no-force': 'error',
-        'cypress/assertion-before-screenshot': 'error',
-        'cypress/require-data-selectors': 'error',
+    ...baseConfig,
+    eslintrc: {
+        ...baseConfig.eslintrc,
+        plugins: ['cypress'],
+        extends: ['plugin:cypress/recommended'],
+        rules: {
+            'cypress/no-force': 'error',
+            'cypress/assertion-before-screenshot': 'error',
+            'cypress/require-data-selectors': 'error',
+        },
     },
 };
