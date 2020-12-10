@@ -37,10 +37,19 @@ export default function constructAndValidateConfiguration(
         logLevel,
         cache,
         onComplete,
+        ...unknownKeys
     } = configToValidate;
 
     const config = { ...configToValidate };
     const errors: string[] = [];
+
+    // Validate no unknown options were given
+    const unsupportedOptions = Object.keys(unknownKeys);
+    if (unsupportedOptions.length) {
+        errors.push(
+            `Options [${unsupportedOptions.join(', ')}] are not supported`
+        );
+    }
 
     // Required fields
     if (!repositories || !repositories.length) {
