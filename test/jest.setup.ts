@@ -1,27 +1,43 @@
 const actualLog = console.log;
 const mockedLog = jest.fn();
 
+declare const global: typeof globalThis & { onComplete: jest.Mock };
+declare const console: { log: jest.Mock };
+declare const process: {
+    stdout: { write: jest.Mock; rows: number; columns: number };
+    exit: jest.Mock;
+};
+
 const actualExit = process.exit;
 const actualWrite = process.stdout.write;
 const mockedExit = (jest.fn() as any) as typeof actualExit;
 const mockedWrite = jest.fn();
 
-(global as any).onComplete = jest.fn();
+global.onComplete = jest.fn();
 
-beforeEach(() => {
-    global.console.log = mockedLog;
-    global.process.exit = mockedExit;
-    global.process.stdout.write = mockedWrite;
+global.beforeAll(() => {
+    console.log = mockedLog;
+    process.exit = mockedExit;
+    process.stdout.write = mockedWrite;
 
     // Prevent word wrap
-    global.process.stdout.columns = 9999;
+    process.stdout.columns = 9999;
 
     // Prevent ink from erasing the screen
-    global.process.stdout.rows = 9999;
+    process.stdout.rows = 9999;
 });
 
-afterEach(() => {
-    global.console.log = actualLog;
-    global.process.exit = actualExit;
-    global.process.stdout.write = actualWrite;
+global.afterAll(() => {
+    console.log = actualLog;
+    process.exit = actualExit;
+    process.stdout.write = actualWrite;
 });
+
+global.beforeEach(() => {
+    process.stdout.write.mockClear();
+    console.log.mockClear();
+    process.exit.mockClear();
+    global.onComplete.mockClear();
+});
+
+export {};

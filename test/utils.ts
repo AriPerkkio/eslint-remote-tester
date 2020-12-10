@@ -6,27 +6,25 @@ export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
 export const INTEGRATION_REPO_NAME =
     'eslint-remote-tester-integration-test-target';
 
-declare const global: { onComplete: jest.Mock };
+declare const global: typeof globalThis & { onComplete: jest.Mock };
+declare const console: { log: jest.Mock };
+declare const process: {
+    stdout: { write: jest.Mock; rows: number; columns: number };
+    exit: jest.Mock;
+    argv: string[];
+    cwd: () => string;
+};
 
 /**
  * Import the actual production build and run it
  */
 export async function runProductionBuild(): Promise<void> {
-    try {
-        // Clear possible previous runs results
-        resetStdoutMethodCalls();
-        resetExitCalls();
-        resetOnCompleteCalls();
-        jest.resetModules();
+    jest.resetModules();
 
-        const { __handleForTests } = require('../dist/index');
-        await __handleForTests;
+    const { __handleForTests } = require('../dist/index');
+    await __handleForTests;
 
-        return waitFor(() => getExitCalls().length > 0);
-    } catch (e) {
-        console.error(e.message);
-        process.exit();
-    }
+    return waitFor(() => getExitCalls().length > 0);
 }
 
 /**
@@ -66,48 +64,29 @@ export async function waitFor(predicate: () => boolean): Promise<void> {
  * Get call arguments of `console.log`
  */
 export function getConsoleLogCalls(): string[] {
-    const calls: string[][] = (console.log as jest.Mock).mock.calls;
+    const calls: string[][] = console.log.mock.calls;
+    console.log.mockClear();
 
     return calls.map(argumentArray => argumentArray[0]);
-}
-
-/**
- * Reset captured calls of `console.log`
- */
-export function resetConsoleLogCalls(): void {
-    (console.log as jest.Mock).mockClear();
 }
 
 /**
  * Get call arguments of `process.stdout.write`
  */
 export function getStdoutWriteCalls(): string[] {
-    const calls: string[][] = (process.stdout.write as jest.Mock).mock.calls;
+    const calls: string[][] = process.stdout.write.mock.calls;
+    process.stdout.write.mockClear();
 
     return calls.map(argumentArray => argumentArray[0]);
-}
-
-/**
- * Reset captured calls of `process.stdout.write`
- */
-export function resetStdoutMethodCalls(): void {
-    (process.stdout.write as jest.Mock).mockClear();
 }
 
 /**
  * Get call arguments of `process.exit`
  */
 export function getExitCalls(): string[] {
-    const calls: string[][] = ((process.exit as any) as jest.Mock).mock.calls;
+    const calls: string[][] = process.exit.mock.calls;
 
     return calls.map(argumentArray => argumentArray[0]);
-}
-
-/**
- * Reset captured calls of `process.exit`
- */
-export function resetExitCalls(): void {
-    ((process.exit as any) as jest.Mock).mockClear();
 }
 
 /**
@@ -115,15 +94,9 @@ export function resetExitCalls(): void {
  */
 export function getOnCompleteCalls(): ResultTemplateOptions[][] {
     const calls: ResultTemplateOptions[][][] = global.onComplete.mock.calls;
+    global.onComplete.mockClear();
 
     return calls.map(argumentArray => argumentArray[0]);
-}
-
-/**
- * Reset captured calls of `global.onComplete`
- */
-export function resetOnCompleteCalls(): void {
-    global.onComplete.mockClear();
 }
 
 /**
