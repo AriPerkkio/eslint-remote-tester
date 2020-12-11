@@ -9,8 +9,8 @@ on:
     types:
       - completed
   schedule:
-    # Every thursday at 07:00
-    - cron: '0 07 * * THU'
+    # Every thursday at 08:00
+    - cron: '0 08 * * THU'
 
 jobs:
   lint:

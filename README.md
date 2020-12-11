@@ -1,6 +1,7 @@
 # eslint-remote-tester
 
 ![eslint-plugin-cypress](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-cypress/badge.svg)
+![eslint-plugin-import](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-import/badge.svg)
 ![eslint-plugin-jest](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-jest/badge.svg)
 ![eslint-plugin-jest-dom](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-jest-dom/badge.svg)
 ![eslint-plugin-jsx-a11y](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-jsx-a11y/badge.svg)

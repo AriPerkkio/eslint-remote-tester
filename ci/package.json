@@ -14,6 +14,7 @@
         "@typescript-eslint/parser": "^4",
         "eslint": "^7",
         "eslint-plugin-cypress": "^2",
+        "eslint-plugin-import": "^2",
         "eslint-plugin-jest": "^24",
         "eslint-plugin-jest-dom": "^3",
         "eslint-plugin-jsx-a11y": "^6",
