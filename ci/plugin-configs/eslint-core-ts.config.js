@@ -4,8 +4,10 @@ module.exports = {
     ...baseConfig,
     eslintrc: {
         ...baseConfig.eslintrc,
-        extensions: ['js', 'jsx'],
-        parser: undefined,
         extends: ['eslint:all'],
+        rules: {
+            // Crashes with typescript: "enum A { 'B' = 'C' }"
+            'no-unused-vars': 'off',
+        },
     },
 };

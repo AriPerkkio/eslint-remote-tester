@@ -2,29 +2,14 @@ const repositories = require('../configs/repositories.json');
 const pathIgnorePattern = require('../configs/pathIgnorePattern');
 
 module.exports = {
-    /** Repositories to scan */
-    repositories,
-
-    /** Extensions of files under scanning */
+    repositories: process.env.CI ? repositories : [repositories[0]],
     extensions: ['js', 'jsx', 'ts', 'tsx'],
-
-    /** Optional pattern used to exclude paths */
     pathIgnorePattern,
-
-    /** Rules used to filter out results. Empty for crash results only. */
     rulesUnderTesting: [],
-
-    /** Optional syntax for the result parser. Valid values are plaintext, markdown. Defaults to markdown on CLI, plaintext on CI */
-    resultParser: undefined,
-
-    /** Maximum amount of tasks ran concurrently */
+    resultParser: 'markdown',
     concurrentTasks: 3,
-
     logLevel: 'info',
-
     cache: false,
-
-    /** ESLint configuration */
     eslintrc: {
         root: true,
         env: {

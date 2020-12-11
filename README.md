@@ -1,5 +1,21 @@
 # eslint-remote-tester
 
+![eslint-plugin-cypress](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-cypress/badge.svg)
+![eslint-plugin-jest](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-jest/badge.svg)
+![eslint-plugin-jest-dom](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-jest-dom/badge.svg)
+![eslint-plugin-jsx-a11y](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-jsx-a11y/badge.svg)
+![eslint-plugin-mocha](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-mocha/badge.svg)
+![eslint-plugin-node](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-node/badge.svg)
+![eslint-plugin-react](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-react/badge.svg)
+![eslint-plugin-react-hooks](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-react-hooks/badge.svg)
+![eslint-plugin-react-redux](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-react-redux/badge.svg)
+![eslint-plugin-sonarjs](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-sonarjs/badge.svg)
+![eslint-plugin-testing-library](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-testing-library/badge.svg)
+![eslint-plugin-unicorn](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-plugin-unicorn/badge.svg)
+![typescript-eslint-eslint-plugin](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20typescript-eslint-eslint-plugin/badge.svg)
+![eslint-core](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-core/badge.svg)
+![eslint-core-ts](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20eslint-core-ts/badge.svg)
+
 `eslint-remote-tester` is a CLI tool for testing given [ESlint](https://github.com/eslint/eslint) rules against multiple repositories at once. It's designed to be used when validating regression of new rules. It can be used to spot whether a new rule flags false positives or crashes ESLint completely. CIs can be configured to verify regression of large set of rules so that possible null pointers or any unexpected errors are caught immediately.
 
 <p align="center">

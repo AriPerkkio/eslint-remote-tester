@@ -1,7 +1,12 @@
 const baseConfig = require('../base.config');
 
+// Ignore flow repositories - crashes keyword-spacing
+const FLOW_REPOSITORIES = ['react-cosmos/react-cosmos-classic'];
+
 module.exports = {
     ...baseConfig,
+    repository: baseConfig.filter(r => !FLOW_REPOSITORIES.includes(r)),
+
     eslintrc: {
         ...baseConfig.eslintrc,
         plugins: ['@typescript-eslint'],

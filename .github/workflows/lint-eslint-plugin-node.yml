@@ -1,5 +1,5 @@
 # This file is auto-generated. See ci/generate-workflows.js
-name: Lint eslint-plugin-node
+name: eslint-plugin-node
 
 on:
   workflow_dispatch: # Manual triggers
@@ -9,8 +9,8 @@ on:
     types:
       - completed
   schedule:
-    # Every thursday at 06:00
-    - cron: '0 06 * * THU'
+    # Every thursday at 05:00
+    - cron: '0 05 * * THU'
 
 jobs:
   lint:
@@ -22,7 +22,11 @@ jobs:
         node-version: 12.11
     - run: yarn install
     - run: yarn build
-    - run: yarn install --no-lockfile
+    - run: yarn install
+      working-directory: ./ci
+    - run: "yarn list | grep eslint"
+      working-directory: ./ci
+    - run: "yarn log --config ./plugin-configs/eslint-plugin-node.config.js"
       working-directory: ./ci
     - run: "yarn lint --config ./plugin-configs/eslint-plugin-node.config.js"
       working-directory: ./ci

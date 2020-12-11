@@ -6,7 +6,8 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "lint": "node ../dist"
+        "lint": "node ../dist",
+        "log": "node ./log-config.js"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4",

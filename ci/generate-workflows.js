@@ -5,11 +5,13 @@ const WORKFLOW_DIR = '../.github/workflows';
 const WORKFLOW_PREFIX = 'lint-';
 const WORKFLOW_PATH = plugin =>
     `${WORKFLOW_DIR}/${WORKFLOW_PREFIX}${plugin}.yml`;
+const WORKFLOW_BADGE = plugin =>
+    `![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20${plugin}/badge.svg)`;
 
 // prettier-ignore
 const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
 `# This file is auto-generated. See ci/generate-workflows.js
-name: Lint ${plugin}
+name: ${plugin}
 
 on:
   workflow_dispatch: # Manual triggers
@@ -32,7 +34,11 @@ jobs:
         node-version: 12.11
     - run: yarn install
     - run: yarn build
-    - run: yarn install --no-lockfile
+    - run: yarn install
+      working-directory: ./ci
+    - run: "yarn list | grep eslint"
+      working-directory: ./ci
+    - run: "yarn log --config ./plugin-configs/${plugin}.config.js"
       working-directory: ./ci
     - run: "yarn lint --config ./plugin-configs/${plugin}.config.js"
       working-directory: ./ci
@@ -89,14 +95,23 @@ function generateWorkflows(plugins) {
     });
 }
 
+function printBadgeMarkdown(plugins) {
+    const markdown = plugins.map(WORKFLOW_BADGE);
+
+    console.log(`\nMarkdown: \n${markdown.join('\n')}`);
+}
+
 const dependencies = Object.keys(require('./package.json').devDependencies);
 const plugins = dependencies
     .filter(dep => /eslint-plugin/.test(dep))
-    .map(formatPluginName);
+    .map(formatPluginName)
+    .sort();
 
 // ESLint core rules, eslint:all
 plugins.push('eslint-core');
+plugins.push('eslint-core-ts');
 
 validateConfigsExist(plugins);
 cleanPreviousWorkflow(plugins);
 generateWorkflows(plugins);
+printBadgeMarkdown(plugins);
