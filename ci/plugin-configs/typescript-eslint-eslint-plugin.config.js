@@ -5,7 +5,9 @@ const FLOW_REPOSITORIES = ['react-cosmos/react-cosmos-classic'];
 
 module.exports = {
     ...baseConfig,
-    repository: baseConfig.filter(r => !FLOW_REPOSITORIES.includes(r)),
+    repositories: baseConfig.repositories.filter(
+        r => !FLOW_REPOSITORIES.includes(r)
+    ),
 
     eslintrc: {
         ...baseConfig.eslintrc,
