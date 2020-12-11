@@ -6,7 +6,7 @@ const WORKFLOW_PREFIX = 'lint-';
 const WORKFLOW_PATH = plugin =>
     `${WORKFLOW_DIR}/${WORKFLOW_PREFIX}${plugin}.yml`;
 const WORKFLOW_BADGE = plugin =>
-    `![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/Lint%20${plugin}/badge.svg)`;
+    `![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/${plugin}/badge.svg)`;
 
 // prettier-ignore
 const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
