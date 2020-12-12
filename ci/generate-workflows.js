@@ -34,6 +34,7 @@ jobs:
         node-version: 12.11
     - run: yarn install
     - run: yarn build
+    - run: rm -rf ./node_modules
     - run: yarn install
       working-directory: ./ci
     - run: "yarn list | grep eslint"

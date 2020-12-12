@@ -6,7 +6,7 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "lint": "node ../dist",
+        "lint": "eslint-remote-tester",
         "log": "node ./log-config.js"
     },
     "devDependencies": {
@@ -26,6 +26,7 @@
         "eslint-plugin-sonarjs": "^0.5",
         "eslint-plugin-testing-library": "^3",
         "eslint-plugin-unicorn": "^23",
+        "eslint-remote-tester": "../",
         "react": "16.13.1",
         "typescript": "^4"
     }
