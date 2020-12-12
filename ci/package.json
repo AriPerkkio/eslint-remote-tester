@@ -13,6 +13,7 @@
         "@typescript-eslint/eslint-plugin": "^4",
         "@typescript-eslint/parser": "^4",
         "eslint": "^7",
+        "eslint-config-airbnb": "^18",
         "eslint-plugin-cypress": "^2",
         "eslint-plugin-import": "^2",
         "eslint-plugin-jest": "^24",

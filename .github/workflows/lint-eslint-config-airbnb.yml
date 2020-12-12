@@ -1,5 +1,5 @@
 # This file is auto-generated. See ci/generate-workflows.js
-name: eslint-plugin-unicorn
+name: eslint-config-airbnb
 
 on:
   workflow_dispatch: # Manual triggers
@@ -9,8 +9,8 @@ on:
     types:
       - completed
   schedule:
-    # Every thursday at 13:00
-    - cron: '0 13 * * THU'
+    # Every thursday at 00:00
+    - cron: '0 00 * * THU'
 
 jobs:
   lint:
@@ -27,9 +27,9 @@ jobs:
       working-directory: ./ci
     - run: "yarn list | grep eslint"
       working-directory: ./ci
-    - run: "yarn log --config ./plugin-configs/eslint-plugin-unicorn.config.js"
+    - run: "yarn log --config ./plugin-configs/eslint-config-airbnb.config.js"
       working-directory: ./ci
-    - run: "yarn lint --config ./plugin-configs/eslint-plugin-unicorn.config.js"
+    - run: "yarn lint --config ./plugin-configs/eslint-config-airbnb.config.js"
       working-directory: ./ci
       env:
         CI: true

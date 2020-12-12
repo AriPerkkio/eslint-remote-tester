@@ -1,3 +1,8 @@
+/**
+ * eslint-configs and eslint-plugins are handled the same way here.
+ * Both are called plugins in this context.
+ */
+
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -118,7 +123,7 @@ function testPlugins(plugins) {
 
 const dependencies = Object.keys(require('./package.json').devDependencies);
 const plugins = dependencies
-    .filter(dep => /eslint-plugin/.test(dep))
+    .filter(dep => /eslint-(plugin|config)/.test(dep))
     .map(formatPluginName)
     .sort();
 

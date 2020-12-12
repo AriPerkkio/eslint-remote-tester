@@ -1,5 +1,6 @@
 # eslint-remote-tester
 
+![eslint-config-airbnb](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-config-airbnb/badge.svg)
 ![eslint-plugin-cypress](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-cypress/badge.svg)
 ![eslint-plugin-import](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-import/badge.svg)
 ![eslint-plugin-jest](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-jest/badge.svg)
