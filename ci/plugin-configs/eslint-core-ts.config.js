@@ -8,6 +8,9 @@ module.exports = {
         rules: {
             // Crashes with typescript: "enum A { 'B' = 'C' }"
             'no-unused-vars': 'off',
+
+            // Crashes with flow: "declare export default A"
+            'keyword-spacing': 'off',
         },
     },
 };
