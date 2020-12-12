@@ -8,8 +8,9 @@ module.exports = {
     rulesUnderTesting: [],
     resultParser: 'markdown',
     concurrentTasks: 3,
-    logLevel: 'info',
-    cache: false,
+    logLevel: process.env.CI ? 'info' : 'verbose',
+    cache: process.env.CI ? false : true,
+    CI: true,
     eslintrc: {
         root: true,
         env: {

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { execSync } = require('child_process');
 
 const CONFIG_PATH = plugin => `./plugin-configs/${plugin}.config.js`;
 const WORKFLOW_DIR = '../.github/workflows';
@@ -7,6 +8,8 @@ const WORKFLOW_PATH = plugin =>
     `${WORKFLOW_DIR}/${WORKFLOW_PREFIX}${plugin}.yml`;
 const WORKFLOW_BADGE = plugin =>
     `![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/${plugin}/badge.svg)`;
+const LINT_COMMAND = plugin =>
+    `yarn lint --config ./plugin-configs/${plugin}.config.js`;
 
 // prettier-ignore
 const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
@@ -41,7 +44,7 @@ jobs:
       working-directory: ./ci
     - run: "yarn log --config ./plugin-configs/${plugin}.config.js"
       working-directory: ./ci
-    - run: "yarn lint --config ./plugin-configs/${plugin}.config.js"
+    - run: "${LINT_COMMAND(plugin)}"
       working-directory: ./ci
       env:
         CI: true
@@ -102,6 +105,12 @@ function printBadgeMarkdown(plugins) {
     console.log(`\nMarkdown: \n${markdown.join('\n')}`);
 }
 
+function testPlugins(plugins) {
+    plugins.forEach(plugin => {
+        execSync(LINT_COMMAND(plugin), { stdio: 'inherit' });
+    });
+}
+
 const dependencies = Object.keys(require('./package.json').devDependencies);
 const plugins = dependencies
     .filter(dep => /eslint-plugin/.test(dep))
@@ -113,6 +122,7 @@ plugins.push('eslint-core');
 plugins.push('eslint-core-ts');
 
 validateConfigsExist(plugins);
+testPlugins(plugins);
 cleanPreviousWorkflow(plugins);
 generateWorkflows(plugins);
 printBadgeMarkdown(plugins);
