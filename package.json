@@ -16,6 +16,7 @@
         "prebuild": "rimraf dist",
         "build": "tsc --project tsconfig.prod.json",
         "postbuild": "tscpaths --project tsconfig.prod.json --src ./lib --out ./dist",
+        "generate:workflows": "node ./ci/generate-workflows.js",
         "watch": "nodemon --watch lib --ext ts,tsx --exec \"yarn build\"",
         "start": "nodemon --watch dist --no-stdin dist",
         "start:ci": "CI=true yarn start",

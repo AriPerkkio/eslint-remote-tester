@@ -1,8 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 const { execSync } = require('child_process');
 
-const CONFIG_PATH = plugin => `./plugin-configs/${plugin}.config.js`;
-const WORKFLOW_DIR = '../.github/workflows';
+const CONFIG_PATH = plugin =>
+    path.resolve(`${__dirname}/plugin-configs/${plugin}.config.js`);
+const WORKFLOW_DIR = path.resolve(`${__dirname}/../.github/workflows`);
 const WORKFLOW_PREFIX = 'lint-';
 const WORKFLOW_PATH = plugin =>
     `${WORKFLOW_DIR}/${WORKFLOW_PREFIX}${plugin}.yml`;
@@ -107,7 +109,10 @@ function printBadgeMarkdown(plugins) {
 
 function testPlugins(plugins) {
     plugins.forEach(plugin => {
-        execSync(LINT_COMMAND(plugin), { stdio: 'inherit' });
+        execSync(LINT_COMMAND(plugin), {
+            stdio: 'inherit',
+            cwd: path.resolve(__dirname),
+        });
     });
 }
 
