@@ -3,7 +3,7 @@ import validator from '@config/validator';
 import { ConfigToValidate } from '@config/types';
 
 const DEFAULT_CONFIGURATION: ConfigToValidate = {
-    repositories: ['test-repo'],
+    repositories: ['test-repo', 'test-repo-2'],
     extensions: ['.ts', '.tsx'],
     pathIgnorePattern: undefined,
     maxFileSizeBytes: undefined,
@@ -17,6 +17,13 @@ const DEFAULT_CONFIGURATION: ConfigToValidate = {
 };
 
 describe('Config validator', () => {
+    test('valid configuration is accepted', () => {
+        validator(DEFAULT_CONFIGURATION);
+
+        const validationErrors = getConsoleLogCalls();
+        expect(validationErrors.join(',')).toBeFalsy();
+    });
+
     test('repositories are required', () => {
         const config = { ...DEFAULT_CONFIGURATION, repositories: undefined! };
         validator(config);
@@ -24,6 +31,25 @@ describe('Config validator', () => {
         const [validationError] = getConsoleLogCalls();
         expect(validationError).toMatch('Configuration validation errors:');
         expect(validationError).toMatch('- Missing repositories.');
+    });
+
+    test('duplicate repositories are unsupported', () => {
+        const repositories = [
+            'duplicate-1',
+            'valid',
+            'duplicate-1',
+            'duplicate-2',
+            'valid-2',
+            'duplicate-2',
+        ];
+        const config = { ...DEFAULT_CONFIGURATION, repositories };
+        validator(config);
+
+        const [validationError] = getConsoleLogCalls();
+        expect(validationError).toMatch('Configuration validation errors:');
+        expect(validationError).toMatch(
+            '- repositories contains duplicate entries: [duplicate-1, duplicate-2]'
+        );
     });
 
     test('additional options are unsupported', () => {

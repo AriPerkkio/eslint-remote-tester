@@ -54,6 +54,18 @@ export default function constructAndValidateConfiguration(
     // Required fields
     if (!repositories || !repositories.length) {
         errors.push(`Missing repositories.`);
+    } else {
+        const duplicateRepositories = repositories.filter(
+            (item, index, array) => array.indexOf(item) !== index
+        );
+
+        if (duplicateRepositories.length) {
+            errors.push(
+                `repositories contains duplicate entries: [${duplicateRepositories.join(
+                    ', '
+                )}]`
+            );
+        }
     }
 
     if (!extensions || !extensions.length) {
