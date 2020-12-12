@@ -4,6 +4,10 @@ module.exports = {
     ...baseConfig,
     eslintrc: {
         ...baseConfig.eslintrc,
-        extends: ['plugin:import/errors', 'plugin:import/warnings'],
+        extends: [
+            'plugin:import/errors',
+            'plugin:import/warnings',
+            'plugin:import/typescript',
+        ],
     },
 };
