@@ -25,4 +25,5 @@ module.exports = `(${[
     'Automattic/wp-calypso/client/components/phone-input/data\\.js',
     'test262-main\\.ts',
     'sample_vis\\.test\\.mocks\\.ts',
+    'flow-typed',
 ].join('|')})`;
