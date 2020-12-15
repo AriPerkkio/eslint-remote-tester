@@ -12,5 +12,10 @@ libraries-io.json
 eslint-remote-tester-results
 dist
 
+# Repository query script
+.query-cache
+.repositories-public-cache
+.repositories-raw-cache
+
 # CI
 ci/yarn.lock

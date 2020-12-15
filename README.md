@@ -124,4 +124,4 @@ Run `yarn lint:remote`. Results are written into `./eslint-remote-tester-results
 
 ### Repositories
 
-Target repositories can easily be found using [libraries.io](https://libraries.io/). They provide [an API for querying repositories](https://libraries.io/api#project-dependent-repositories) which depend on certain project.
+Target repositories can easily be found using [libraries.io](https://libraries.io/). They provide [an API for querying repositories](https://libraries.io/api#project-dependent-repositories) which depend on certain project. Example usage at [repository-query-script](configs/repository-query-script/fetch-libraries.js).
