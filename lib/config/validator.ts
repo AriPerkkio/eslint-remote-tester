@@ -18,6 +18,7 @@ const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
 const DEFAULT_LOG_LEVEL: LogLevel = 'verbose';
 const DEFAULT_CONCURRENT_TASKS = 5;
 const DEFAULT_MAX_FILE_SIZE_BYTES = 2000000;
+const DEFAULT_TIME_LIMIT_SECONDS = 5.5 * 60 * 60;
 
 const UNKNOWN_RULE_REGEXP = /^Definition for rule (.*) was not found.$/;
 
@@ -36,6 +37,7 @@ export default function constructAndValidateConfiguration(
         CI,
         logLevel,
         cache,
+        timeLimit,
         onComplete,
         ...unknownKeys
     } = configToValidate;
@@ -140,6 +142,12 @@ export default function constructAndValidateConfiguration(
         errors.push(`concurrentTasks (${concurrentTasks}) should be a number.`);
     } else if (concurrentTasks == null) {
         config.concurrentTasks = DEFAULT_CONCURRENT_TASKS;
+    }
+
+    if (timeLimit != null && typeof timeLimit !== 'number') {
+        errors.push(`timeLimit (${timeLimit}) should be a number.`);
+    } else if (timeLimit == null) {
+        config.timeLimit = DEFAULT_TIME_LIMIT_SECONDS;
     }
 
     if (onComplete && typeof onComplete !== 'function') {

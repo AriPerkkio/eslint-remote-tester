@@ -2,7 +2,7 @@
 
 import { renderApplication } from '@ui';
 import config, { validateEslintrcRules } from '@config';
-import engine, { WorkerMessage } from '@engine';
+import engine from '@engine';
 import { writeResults, clearResults } from '@file-client';
 import logger from '@progress-logger';
 
@@ -17,7 +17,7 @@ async function main() {
     async function execute(): Promise<void> {
         const task = pool.shift();
 
-        if (task) {
+        if (task && !logger.isTimeout()) {
             await task();
             return execute();
         }
@@ -49,7 +49,7 @@ async function main() {
 async function scanRepo(repository: string) {
     const results = await engine.scanRepository(
         repository,
-        (message: WorkerMessage) => {
+        function onMessage(message) {
             switch (message.type) {
                 case 'START':
                     return logger.onTaskStart(repository);
@@ -98,6 +98,19 @@ async function scanRepo(repository: string) {
                 case 'DEBUG':
                     return;
             }
+        },
+        // On scan timeout terminate all on-going workers
+        function workerCallback(worker) {
+            function onTimeout() {
+                // This will start the termination asynchronously. It is enough
+                // for timeout use case and doesn't require awaiting for finishing.
+                worker.terminate();
+            }
+            logger.on('timeout', onTimeout);
+
+            return function cleanup() {
+                logger.off('timeout', onTimeout);
+            };
         }
     );
 

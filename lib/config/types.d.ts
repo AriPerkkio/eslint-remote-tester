@@ -21,6 +21,7 @@ export interface Config {
     CI: boolean;
     logLevel: LogLevel;
     cache: boolean;
+    timeLimit: number;
     onComplete?: (results: ResultTemplateOptions[]) => Promise<void> | void;
 }
 

@@ -67,9 +67,16 @@ class ProgressLogger {
         message: [],
         task: [],
         ciKeepAlive: [],
+        timeout: [],
     };
 
-    /** Interval of CI status messages. Used to avoid CIs timeouting. */
+    /** Indicates whether scan has reached time limit set by `config.timeLimit` */
+    private hasTimedout = false;
+
+    /** Handle of scan timeout. Used to interrupt scan once time limit has been reached. */
+    private scanTimeoutHandle: NodeJS.Timeout | null = null;
+
+    /** Interval of CI status messages. Used to avoid CIs timeouting due to silent stdout. */
     private ciKeepAliveIntervalHandle: NodeJS.Timeout | null = null;
 
     constructor() {
@@ -78,6 +85,10 @@ class ProgressLogger {
                 this.onCiStatus();
             }, CI_KEEP_ALIVE_INTERVAL_MS);
         }
+
+        this.scanTimeoutHandle = setTimeout(() => {
+            this.onScanTimeout();
+        }, config.timeLimit * 1000);
     }
 
     /**
@@ -121,8 +132,18 @@ class ProgressLogger {
         }
     }
 
+    /**
+     * Get current log messages
+     */
     getMessages(): LogMessage[] {
         return this.messages.filter(message => isLogVisible(message));
+    }
+
+    /**
+     * Check whether scan has timed out
+     */
+    isTimeout(): boolean {
+        return this.hasTimedout;
     }
 
     /**
@@ -135,9 +156,12 @@ class ProgressLogger {
             level: 'verbose',
         });
 
-        // Stop CI messages
         if (this.ciKeepAliveIntervalHandle !== null) {
             clearInterval(this.ciKeepAliveIntervalHandle);
+        }
+
+        if (this.scanTimeoutHandle !== null) {
+            clearTimeout(this.scanTimeoutHandle);
         }
 
         const onError = (error: Error) =>
@@ -408,6 +432,19 @@ class ProgressLogger {
 
             this.listeners.ciKeepAlive.forEach(listener => listener(message));
         }
+    }
+
+    /**
+     * Log notification about reaching scan time limit and notify listeners
+     */
+    private onScanTimeout() {
+        this.addNewMessage({
+            content: Templates.SCAN_TIMELIMIT_REACHED(config.timeLimit),
+            level: 'info',
+            color: 'yellow',
+        });
+        this.hasTimedout = true;
+        this.listeners.timeout.forEach(listener => listener());
     }
 }
 

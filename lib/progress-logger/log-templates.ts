@@ -5,6 +5,23 @@ import { CACHE_LOCATION } from '@file-client';
 // Regexp for converting `[INFO][LINTING] reponame` to `[INFO/LINTING] reponame`
 const CI_TEMPLATE_TASK_REGEXP = /\]\[/;
 
+/**
+ * Format seconds into display format, e.g. 36092 -> 10h 1m 32s
+ */
+function formatSeconds(timeSeconds: number): string {
+    const hours = Math.floor(timeSeconds / 3600);
+    const minutes = Math.floor((timeSeconds % 3600) / 60);
+    const seconds = Math.floor(timeSeconds % 60);
+
+    return [
+        hours && `${hours}h`,
+        minutes && `${minutes}m`,
+        seconds && `${seconds}s`,
+    ]
+        .filter(Boolean)
+        .join(' ');
+}
+
 export const TASK_TEMPLATE = (task: Task): string => {
     switch (task.step) {
         case 'START':
@@ -90,6 +107,9 @@ export const OVERFLOWING_ROWS_TOP = (overflowingRowCount: number): string =>
 
 export const OVERFLOWING_ROWS_BOTTOM = (overflowingRowCount: number): string =>
     `[\u25BC to see ${overflowingRowCount} lines below]`;
+
+export const SCAN_TIMELIMIT_REACHED = (timeSeconds: number): string =>
+    `[DONE] Reached scan time limit ${formatSeconds(timeSeconds)}`;
 
 export const SCAN_FINISHED = (scannedRepositories: number): string =>
     `[DONE] Finished scan of ${scannedRepositories} repositories`;

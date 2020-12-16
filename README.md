@@ -85,6 +85,9 @@ module.exports = {
     /** Optional boolean flag used to enable caching of cloned repositories. For CIs it's ideal to disable caching. Defauls to true. */
     cache: true,
 
+    /** Optional time limit in seconds for the scan. Scan is interrupted after reaching the limit. Defaults to 5 hours 30 minutes. */
+    timeLimit: 5.5 * 60 * 60, // 5 hours 30 minutes
+
     /**
      * Optional callback invoked once scan is complete.
      *
@@ -124,4 +127,4 @@ Run `yarn lint:remote`. Results are written into `./eslint-remote-tester-results
 
 ### Repositories
 
-Target repositories can easily be found using [libraries.io](https://libraries.io/). They provide [an API for querying repositories](https://libraries.io/api#project-dependent-repositories) which depend on certain project.
+Target repositories can easily be found using [libraries.io](https://libraries.io/). They provide [an API for querying repositories](https://libraries.io/api#project-dependent-repositories) which depend on certain project. Example usage at [repository-query-script](configs/repository-query-script/fetch-libraries.js).
