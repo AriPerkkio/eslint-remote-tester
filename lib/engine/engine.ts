@@ -4,6 +4,10 @@ import workerTask, { WorkerMessage, createErrorMessage } from './worker-task';
 import { LintMessage } from './types';
 import { resolveConfigurationLocation } from '@config';
 
+type WorkerCallback<T> = (worker: Worker) => T;
+type CleanupCallback = () => void;
+type EffectCallback = WorkerCallback<CleanupCallback>;
+
 if (!isMainThread) {
     workerTask();
 }
@@ -14,7 +18,8 @@ if (!isMainThread) {
  */
 function scanRepository(
     repository: string,
-    onMessage: (message: WorkerMessage) => void
+    onMessage: (message: WorkerMessage) => void,
+    workerCallback: EffectCallback
 ): Promise<LintMessage[]> {
     return new Promise(resolve => {
         // Notify about worker starting. It can take a while to get worker starting up
@@ -36,6 +41,8 @@ function scanRepository(
                 CI: process.env.CI,
             },
         });
+
+        const cleanup = workerCallback(worker);
 
         worker.on('message', (message: WorkerMessage) => {
             switch (message.type) {
@@ -63,15 +70,20 @@ function scanRepository(
         });
 
         worker.on('exit', code => {
-            if (code !== 0) {
-                resolve([
-                    createErrorMessage({
-                        message: `Worker exited with code ${code}`,
-                        path: repository,
-                        ruleId: '',
-                    }),
-                ]);
+            cleanup();
+
+            // 0 = success, 1 = termination
+            if (code === 0 || code === 1) {
+                return resolve([]);
             }
+
+            resolve([
+                createErrorMessage({
+                    message: `Worker exited with code ${code}`,
+                    path: repository,
+                    ruleId: '',
+                }),
+            ]);
         });
     });
 }

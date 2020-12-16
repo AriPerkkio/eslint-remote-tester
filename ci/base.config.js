@@ -17,6 +17,7 @@ module.exports = {
     concurrentTasks: 3,
     logLevel: process.env.CI ? 'info' : 'verbose',
     cache: process.env.CI ? false : true,
+    timeLimit: 5.9 * 60 * 60,
     CI: true,
     eslintrc: {
         root: true,

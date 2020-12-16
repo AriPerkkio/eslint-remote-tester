@@ -23,6 +23,7 @@ export type Listener<Key = ListenerType> =
     Key extends 'task' ? (task: Task, done?: boolean) => void :
     Key extends 'exit' ? () => void :
     Key extends 'ciKeepAlive' ? (message: string) => void :
+    Key extends 'timeout' ? () => void :
     never;
 
 export interface Listeners {
@@ -30,6 +31,7 @@ export interface Listeners {
     message: Listener<'message'>[];
     task: Listener<'task'>[];
     ciKeepAlive: Listener<'ciKeepAlive'>[];
+    timeout: Listener<'timeout'>[];
 }
 
 export type ListenerType = keyof Listeners;
