@@ -55,6 +55,7 @@ jobs:
       working-directory: ./ci
       env:
         CI: true
+        NODE_OPTIONS: --max_old_space_size=5120
 `;
 
 function generateHours(index) {
