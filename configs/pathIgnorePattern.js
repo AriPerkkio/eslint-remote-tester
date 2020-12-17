@@ -16,6 +16,7 @@ module.exports = `(${[
     'react-dom\\.development\\.js',
     'vendor\\.min\\.js',
     '\\.min\\.js', // Any *.min.js
+    '/public/',
 
     'Khan/perseus/lib',
     'glortho/react-keydown/example/public',
