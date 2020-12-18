@@ -44,6 +44,7 @@ module.exports = {
             '@typescript-eslint/no-throw-literal': 'off',
             '@typescript-eslint/require-await': 'off',
             '@typescript-eslint/return-await': 'off',
+            '@typescript-eslint/non-nullable-type-assertion-style': 'off',
         },
     },
 };
