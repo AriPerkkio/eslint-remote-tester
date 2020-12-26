@@ -42,6 +42,12 @@ module.exports = {
         'no-process-exit': 'off',
         'prettier/prettier': 'error',
         'node/no-unsupported-features/es-syntax': 'off',
+        'node/no-missing-require': [
+            'error',
+            {
+                tryExtensions: ['.js', '.ts', '.tsx'],
+            },
+        ],
     },
     overrides: [
         {

@@ -1,4 +1,4 @@
-import { getConsoleLogCalls } from './utils';
+import { getConsoleLogCalls } from '../utils';
 import validator from '@config/validator';
 import { ConfigToValidate } from '@config/types';
 

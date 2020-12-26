@@ -25,6 +25,7 @@
 </p>
 
 ## Installation
+
 ```sh
 # In your project directory
 $ yarn add --dev eslint-remote-tester
@@ -36,15 +37,20 @@ $ yarn add --dev eslint
 The underlying git integration is done via [simple-git](https://github.com/steveukx/git-js). It requires git to be installed and [that it can be called using the command `git`.](https://github.com/steveukx/git-js#dependencies)
 
 ## Configuration
+
 ### package.json
+
 Add new script to your `package.json` file.
+
 ```json
 "scripts": {
     "lint:remote": "eslint-remote-tester",
 ```
 
 ### eslint-remote-tester.config.js
+
 Create new configuration file `eslint-remote-tester.config.js` in the root of your project. This is used as configuration file by default. Use `-c` or `--config` argument for custom configuration file, e.g. `--config path/custom.config.js`.
+
 ```js
 module.exports = {
     /** Repositories to scan */
@@ -107,23 +113,24 @@ module.exports = {
     onComplete: async function onComplete(results) {
         // Extend the process with custom features, e.g. send results to email, create issues to Github...
     },
-}
+};
 ```
 
 ### Execution
+
 Run `yarn lint:remote`. Results are written into `./eslint-remote-tester-results` folder.
 
 ## Example
 
 ### Results:
 
-* [markdown](docs/results-markdown.md)
-* [plaintext](docs/results-plaintext)
+-   [markdown](docs/results-markdown.md)
+-   [plaintext](docs/results-plaintext)
 
 ### Configuration
 
-- [react configuration with +150 repositories](eslint-remote-tester.react.config.js)
-- [small regression for eslint:recommended](eslint-remote-tester.config.js)
+-   [react configuration with +150 repositories](eslint-remote-tester.react.config.js)
+-   [small regression for eslint:recommended](eslint-remote-tester.config.js)
 
 ### Repositories
 
