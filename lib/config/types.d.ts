@@ -2,13 +2,17 @@ import { Linter } from 'eslint';
 
 import { ResultTemplateOptions } from '@file-client/result-templates';
 
+type AllKeysOptional<T extends { [K: string]: any }> = {
+    [K in keyof T]?: T[K];
+};
+
 export const ResultParsers: ['plaintext', 'markdown'];
 export type ResultParser = typeof ResultParsers[number];
 
 export const LogLevels: ['verbose', 'info', 'warn', 'error'];
 export type LogLevel = typeof LogLevels[number];
 
-/** Contents of the `eslint-remote-tester.config.js` */
+/** Internal config typings after defaults have been set */
 export interface Config {
     repositories: string[];
     extensions: string[];
@@ -25,9 +29,20 @@ export interface Config {
     onComplete?: (results: ResultTemplateOptions[]) => Promise<void> | void;
 }
 
-type AllKeysOptional<T extends { [K: string]: any }> = {
-    [K in keyof T]?: T[K];
-};
+type RequiredFields = Pick<Config, 'repositories' | 'extensions' | 'eslintrc'>;
+type OptionalFields = AllKeysOptional<
+    Pick<
+        Config,
+        Exclude<keyof Config, keyof RequiredFields | 'pathIgnorePattern'>
+    >
+> &
+    // Internally a RegExp, publicly string
+    AllKeysOptional<{
+        pathIgnorePattern: string | Config['pathIgnorePattern'];
+    }>;
+
+/** Config matching public API */
+export type ConfigWithOptionals = RequiredFields & OptionalFields;
 
 /** Config before validation */
-export type ConfigToValidate = AllKeysOptional<Config>;
+export type ConfigToValidate = AllKeysOptional<ConfigWithOptionals>;

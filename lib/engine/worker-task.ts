@@ -147,11 +147,6 @@ const postMessage = (message: WorkerMessage) => {
     throw new Error(`parentPort unavailable, message: (${message})`);
 };
 
-const linter = new ESLint({
-    useEslintrc: false,
-    overrideConfig: config.eslintrc,
-});
-
 /**
  * Task for worker threads:
  * - Expects workerData to contain array of repositories as strings
@@ -161,6 +156,11 @@ const linter = new ESLint({
  * - Keep progress-logger up-to-date of status via onMessage
  */
 export default async function workerTask(): Promise<void> {
+    const linter = new ESLint({
+        useEslintrc: false,
+        overrideConfig: config.eslintrc,
+    });
+
     const { repository } = workerData as WorkerData;
 
     const files = await getFiles({

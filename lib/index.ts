@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { renderApplication } from '@ui';
-import config, { validateEslintrcRules } from '@config';
+import config, { validateConfig } from '@config';
 import engine from '@engine';
 import { writeResults, clearResults } from '@file-client';
 import logger from '@progress-logger';
@@ -23,13 +23,11 @@ async function main() {
         }
     }
 
-    // Validate given ESLint rules
-    await validateEslintrcRules(config);
+    await validateConfig(config);
 
     // Clear possible earlier results / initialize results folder
     clearResults();
 
-    // Render application to stdout
     renderApplication();
 
     // Start x amount of task runners parallel until we are out of repositories to scan

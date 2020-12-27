@@ -1,3 +1,4 @@
+import config, { validateConfig } from '@config';
 import { renderApplication } from '@ui';
 
 jest.mock('@config');
@@ -11,7 +12,10 @@ describe('entrypoint', () => {
         await require('../../lib/index').__handleForTests;
     });
 
-    test.todo('configuration is validated');
+    test('configuration is validated', () => {
+        expect(validateConfig).toHaveBeenCalledWith(config);
+        expect(validateConfig).toHaveBeenCalledTimes(1);
+    });
 
     test('application is rendered', () => {
         expect(renderApplication).toHaveBeenCalledTimes(1);

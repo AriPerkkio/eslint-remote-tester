@@ -70,7 +70,7 @@ module.exports = {
     /** Optional max file size used to exclude bigger files. Defaults to 2 megabytes. */
     maxFileSizeBytes: 2000000,
 
-    /** Rules used to filter out results. Use empty array when ESLint crashes are the only interest */
+    /** Optional array of rules used to filter out results. Use undefined or empty array when ESLint crashes are the only interest */
     rulesUnderTesting: [],
 
     /** Optional syntax for the result parser. Valid values are plaintext, markdown. Defaults to markdown on CLI, plaintext on CI */
