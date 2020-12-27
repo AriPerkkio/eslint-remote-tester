@@ -3,7 +3,7 @@ module.exports = {
     extensions: ['.js'],
     pathIgnorePattern: '(expected-to-be-excluded)',
     rulesUnderTesting: [
-        'no-reachable',
+        'no-unreachable',
         'no-undef',
         'no-empty',
         'getter-return',

@@ -19,7 +19,7 @@ export const CONFIGURATION_FILE_TEMPLATE =
     /** Optional max file size (bytes) used to exclude bigger files. Defaults to 2 megabytes. */
     maxFileSizeBytes: 2000000,
 
-    /** Rules used to filter out results */
+    /** Optional array of rules used to filter out results. Use undefined or empty array when ESLint crashes are the only interest */
     rulesUnderTesting: ['react/no-direct-mutation-state'],
 
     /** Optional syntax for the result parser. Valid values are plaintext, markdown. Defaults to markdown on CLI, plaintext on CI */

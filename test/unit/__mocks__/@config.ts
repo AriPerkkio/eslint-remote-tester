@@ -4,4 +4,4 @@ export default {
     logLevel: 'warn',
 };
 
-export const validateEslintrcRules = jest.fn().mockResolvedValue(undefined);
+export const validateConfig = jest.fn().mockResolvedValue(undefined);

@@ -3,9 +3,8 @@ import path from 'path';
 import chalk from 'chalk';
 import { workerData, isMainThread } from 'worker_threads';
 
-import constructAndValidateConfiguration from './validator';
+import { getConfigWithDefaults } from './validator';
 import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
-import { Config } from './types';
 import { WorkerData } from '@engine/types';
 
 const DEFAULT_CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
@@ -57,6 +56,7 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
     process.exit();
 }
 
-const config: Config = require(path.resolve(CONFIGURATION_FILE));
+const configFileContents = require(path.resolve(CONFIGURATION_FILE));
+const config = getConfigWithDefaults(configFileContents);
 
-export default constructAndValidateConfiguration(config);
+export default config;

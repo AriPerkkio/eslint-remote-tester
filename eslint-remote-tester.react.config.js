@@ -193,7 +193,7 @@ module.exports = {
         'jquery-3\\.4\\.1\\.min\\.js',
     ].join('|')})`,
 
-    /** Rules used to filter out results */
+    /** Optional array of rules used to filter out results. Use undefined or empty array when ESLint crashes are the only interest */
     rulesUnderTesting: ['react/no-unstable-nested-components'],
 
     /** Optional syntax for the result parser. Valid values are plaintext, markdown. Defaults to markdown on CLI, plaintext on CI */

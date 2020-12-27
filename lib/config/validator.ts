@@ -4,6 +4,7 @@ import { ESLint } from 'eslint';
 import {
     Config,
     ConfigToValidate,
+    ConfigWithOptionals,
     LogLevel,
     LogLevels,
     ResultParser,
@@ -19,12 +20,64 @@ const DEFAULT_LOG_LEVEL: LogLevel = 'verbose';
 const DEFAULT_CONCURRENT_TASKS = 5;
 const DEFAULT_MAX_FILE_SIZE_BYTES = 2000000;
 const DEFAULT_TIME_LIMIT_SECONDS = 5.5 * 60 * 60;
+const DEFAULT_CI = process.env.CI === 'true';
+const DEFAULT_CACHE = true;
 
 const UNKNOWN_RULE_REGEXP = /^Definition for rule (.*) was not found.$/;
 
-export default function constructAndValidateConfiguration(
+/**
+ * Validate array of strings:
+ * 1. Object is required
+ * 2. Object is array
+ * 3. Object contains only strings
+ * 4. Object contains no duplicates
+ */
+function validateStringArray(
+    name: keyof Config,
+    array: string[] | undefined
+): string | undefined {
+    if (!array || !array.length) {
+        return `Missing ${name}.`;
+    } else if (!Array.isArray(array)) {
+        return `${name} should be an array.`;
+    } else if (!array.every(item => typeof item === 'string')) {
+        return `${name} should contain only strings`;
+    } else {
+        const duplicateItems = array.filter(
+            (item, index, items) => items.indexOf(item) !== index
+        );
+
+        if (duplicateItems.length) {
+            return `${name} contains duplicate entries: [${duplicateItems.join(
+                ', '
+            )}]`;
+        }
+    }
+}
+
+/**
+ * Validate optional positive number:
+ * 1. Value is optional
+ * 2. Type is number
+ * 3. Value is positive
+ */
+function validateOptionalPositiveNumber(
+    name: keyof Config,
+    value: number | undefined
+) {
+    if (value != null && typeof value !== 'number') {
+        return `${name} (${value}) should be a number.`;
+    } else if (value != null && value <= 0) {
+        return `${name} (${value}) should be a positive number.`;
+    }
+}
+
+/**
+ * Validate given configuration
+ */
+export default async function validate(
     configToValidate: ConfigToValidate
-): Config {
+): Promise<void> {
     const {
         repositories,
         extensions,
@@ -42,8 +95,7 @@ export default function constructAndValidateConfiguration(
         ...unknownKeys
     } = configToValidate;
 
-    const config = { ...configToValidate };
-    const errors: string[] = [];
+    const errors: (string | undefined)[] = [];
 
     // Validate no unknown options were given
     const unsupportedOptions = Object.keys(unknownKeys);
@@ -54,40 +106,39 @@ export default function constructAndValidateConfiguration(
     }
 
     // Required fields
-    if (!repositories || !repositories.length) {
-        errors.push(`Missing repositories.`);
-    } else {
-        const duplicateRepositories = repositories.filter(
-            (item, index, array) => array.indexOf(item) !== index
-        );
+    errors.push(validateStringArray('repositories', repositories));
 
-        if (duplicateRepositories.length) {
-            errors.push(
-                `repositories contains duplicate entries: [${duplicateRepositories.join(
-                    ', '
-                )}]`
-            );
+    errors.push(validateStringArray('extensions', extensions));
+
+    if (!eslintrc || Object.keys(eslintrc).length === 0) {
+        errors.push(`Missing eslintrc.`);
+    } else {
+        try {
+            // This will throw when eslintrc is invalid
+            const linter = new ESLint({
+                useEslintrc: false,
+                overrideConfig: eslintrc,
+            });
+
+            errors.push(await validateEslintRules(linter));
+        } catch (e) {
+            errors.push(`eslintrc: ${e.message}`);
         }
     }
 
-    if (!extensions || !extensions.length) {
-        errors.push(`Missing extensions.`);
-    }
-
-    if (!rulesUnderTesting) {
-        errors.push(`Missing rulesUnderTesting.`);
-    } else if (!Array.isArray(rulesUnderTesting)) {
-        errors.push(`Config rulesUnderTesting should be an array.`);
-    }
-
-    if (!eslintrc) {
-        errors.push(`Missing eslintrc.`);
-    }
-
     // Optional fields
+
+    // TODO nice-to-have: Validate rules match eslintrc config
+    // https://eslint.org/docs/developer-guide/nodejs-api#lintergetrules
+    if (rulesUnderTesting && rulesUnderTesting.length) {
+        errors.push(
+            validateStringArray('rulesUnderTesting', rulesUnderTesting)
+        );
+    }
+
     if (pathIgnorePattern) {
         try {
-            config.pathIgnorePattern = new RegExp(pathIgnorePattern);
+            new RegExp(pathIgnorePattern);
         } catch (e) {
             errors.push(
                 `pathIgnorePattern (${pathIgnorePattern}) is not valid regex: ${e.message}`
@@ -95,19 +146,12 @@ export default function constructAndValidateConfiguration(
         }
     }
 
-    if (maxFileSizeBytes != null && typeof maxFileSizeBytes !== 'number') {
-        errors.push(
-            `maxFileSizeBytes (${maxFileSizeBytes}) should be a number.`
-        );
-    } else if (maxFileSizeBytes == null) {
-        config.maxFileSizeBytes = DEFAULT_MAX_FILE_SIZE_BYTES;
-    }
+    errors.push(
+        validateOptionalPositiveNumber('maxFileSizeBytes', maxFileSizeBytes)
+    );
 
     if (CI != null && typeof CI !== 'boolean') {
         errors.push(`CI (${CI}) should be a boolean.`);
-    } else {
-        // Resolve CI from configuration file, if found. Fallback to environment variables.
-        config.CI = CI == null ? process.env.CI === 'true' : CI;
     }
 
     if (logLevel && !LOG_LEVELS.includes(logLevel)) {
@@ -116,14 +160,10 @@ export default function constructAndValidateConfiguration(
                 ', '
             )}`
         );
-    } else if (!logLevel) {
-        config.logLevel = DEFAULT_LOG_LEVEL;
     }
 
     if (cache != null && typeof cache !== 'boolean') {
         errors.push(`cache (${cache}) should be a boolean.`);
-    } else if (cache == null) {
-        config.cache = true;
     }
 
     if (resultParser && !RESULT_PARSERS.includes(resultParser)) {
@@ -132,53 +172,77 @@ export default function constructAndValidateConfiguration(
                 ', '
             )}`
         );
-    } else if (!resultParser) {
-        config.resultParser = config.CI
-            ? DEFAULT_RESULT_PARSER_CI
-            : DEFAULT_RESULT_PARSER_CLI;
     }
 
-    if (concurrentTasks && typeof concurrentTasks !== 'number') {
-        errors.push(`concurrentTasks (${concurrentTasks}) should be a number.`);
-    } else if (concurrentTasks == null) {
-        config.concurrentTasks = DEFAULT_CONCURRENT_TASKS;
-    }
+    errors.push(
+        validateOptionalPositiveNumber('concurrentTasks', concurrentTasks)
+    );
 
-    if (timeLimit != null && typeof timeLimit !== 'number') {
-        errors.push(`timeLimit (${timeLimit}) should be a number.`);
-    } else if (timeLimit == null) {
-        config.timeLimit = DEFAULT_TIME_LIMIT_SECONDS;
-    }
+    errors.push(validateOptionalPositiveNumber('timeLimit', timeLimit));
 
     if (onComplete && typeof onComplete !== 'function') {
         errors.push(`onComplete (${onComplete}) should be a function`);
     }
 
-    if (errors.length) {
+    const validationErrors = errors.filter(Boolean).join('\n- ');
+    if (validationErrors.length) {
         console.log(
-            chalk.red(
-                `Configuration validation errors: \n- ${errors.join('\n- ')}`
-            )
+            chalk.red`Configuration validation errors: \n- ${validationErrors}`
         );
         process.exit(1);
     }
+}
 
-    return config as Config;
+/**
+ * Get configuration with default values on optional fields
+ */
+export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
+    const CI = config.CI != null ? config.CI : DEFAULT_CI;
+
+    let pathIgnorePattern = undefined;
+    if (config.pathIgnorePattern) {
+        try {
+            pathIgnorePattern = new RegExp(config.pathIgnorePattern);
+        } catch (_) {
+            // Faulty patterns are validated separately by validateConfig
+        }
+    }
+
+    return {
+        ...config,
+
+        rulesUnderTesting: config.rulesUnderTesting || [],
+
+        pathIgnorePattern,
+
+        maxFileSizeBytes:
+            config.maxFileSizeBytes || DEFAULT_MAX_FILE_SIZE_BYTES,
+
+        CI,
+
+        logLevel: config.logLevel || DEFAULT_LOG_LEVEL,
+
+        cache: config.cache != null ? config.cache : DEFAULT_CACHE,
+
+        resultParser:
+            config.resultParser || CI
+                ? DEFAULT_RESULT_PARSER_CI
+                : DEFAULT_RESULT_PARSER_CLI,
+
+        concurrentTasks: config.concurrentTasks || DEFAULT_CONCURRENT_TASKS,
+
+        timeLimit: config.timeLimit || DEFAULT_TIME_LIMIT_SECONDS,
+    };
 }
 
 /**
  * Validate given rules of `config.eslintrc.rules`
  * - When unknown rules are defined, or known ones are mispelled they are not
  *   reported during linting. We need to specifically look for them.
- * - Separate method from `constructAndValidateConfiguration` due to async
- *   implementation of `linter.lintText`
  */
-export async function validateEslintrcRules(config: Config): Promise<void> {
-    const linter = new ESLint({
-        useEslintrc: false,
-        overrideConfig: config.eslintrc,
-    });
-
+async function validateEslintRules(
+    linter: ESLint
+): Promise<string | undefined> {
     const results = await linter.lintText('');
     const errors = [];
 
@@ -191,13 +255,8 @@ export async function validateEslintrcRules(config: Config): Promise<void> {
     }
 
     if (errors.length) {
-        console.log(
-            chalk.red(
-                `Configuration validation errors at eslintrc.rules: \n- ${errors.join(
-                    '\n- '
-                )}`
-            )
-        );
-        process.exit(1);
+        return `Configuration validation errors at eslintrc.rules: \n  - ${errors.join(
+            '\n  - '
+        )}`;
     }
 }

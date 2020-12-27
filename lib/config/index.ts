@@ -1,2 +1,2 @@
 export { default, resolveConfigurationLocation } from './config';
-export { validateEslintrcRules } from './validator';
+export { default as validateConfig } from './validator';
