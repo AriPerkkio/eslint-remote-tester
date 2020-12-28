@@ -225,9 +225,8 @@ export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
         cache: config.cache != null ? config.cache : DEFAULT_CACHE,
 
         resultParser:
-            config.resultParser || CI
-                ? DEFAULT_RESULT_PARSER_CI
-                : DEFAULT_RESULT_PARSER_CLI,
+            config.resultParser ||
+            (CI ? DEFAULT_RESULT_PARSER_CI : DEFAULT_RESULT_PARSER_CLI),
 
         concurrentTasks: config.concurrentTasks || DEFAULT_CONCURRENT_TASKS,
 

@@ -67,6 +67,18 @@ describe('config', () => {
         expect(config.CI).toBe(process.env.CI === 'true');
     });
 
+    test('resultParser option is used when provided', () => {
+        mockConfig.mockReturnValue({
+            ...DEFAULT_CONFIGURATION,
+            CI: true,
+            resultParser: 'markdown',
+        });
+        const config = getConfig();
+
+        // Should use value from configuration, not default value resolved by CI flag
+        expect(config.resultParser).toBe('markdown');
+    });
+
     test('pathIgnorePattern is constructed into RegExp', () => {
         mockConfig.mockReturnValue({
             ...DEFAULT_CONFIGURATION,
