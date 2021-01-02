@@ -1,20 +1,62 @@
-export default {
-    isTimeout: jest.fn().mockReturnValue(false),
-    onAllRepositoriesScanned: jest.fn(),
-    onTaskStart: jest.fn(),
-    onRepositoryRead: jest.fn(),
-    onRepositoryClone: jest.fn(),
-    onRepositoryPull: jest.fn(),
-    onLintStart: jest.fn(),
-    onFileLintEnd: jest.fn(),
-    onFileLintSlow: jest.fn(),
-    onLinterCrash: jest.fn(),
-    onWorkerCrash: jest.fn(),
-    onCloneFailure: jest.fn(),
-    onPullFailure: jest.fn(),
-    onReadFailure: jest.fn(),
-    on: jest.fn(),
-    off: jest.fn(),
-    onWriteFailure: jest.fn(),
-    onLintEnd: jest.fn(),
+import {
+    Listeners,
+    ListenerType,
+    LogMessage,
+    Task,
+} from '@progress-logger/types';
+
+class MockLogger {
+    isTimeout = jest.fn().mockReturnValue(false);
+    onAllRepositoriesScanned = jest.fn();
+    onTaskStart = jest.fn();
+    onRepositoryRead = jest.fn();
+    onRepositoryClone = jest.fn();
+    onRepositoryPull = jest.fn();
+    onLintStart = jest.fn();
+    onFileLintEnd = jest.fn();
+    onFileLintSlow = jest.fn();
+    onLinterCrash = jest.fn();
+    onWorkerCrash = jest.fn();
+    onCloneFailure = jest.fn();
+    onPullFailure = jest.fn();
+    onReadFailure = jest.fn();
+    off = jest.fn();
+    onWriteFailure = jest.fn();
+    onLintEnd = jest.fn();
+
+    on = jest.fn().mockImplementation((event: ListenerType, listener) => {
+        const mockListener = this.mockListeners[event];
+        mockListener && mockListener.push(listener);
+    });
+
+    mockListeners: Listeners = {
+        exit: [],
+        message: [],
+        task: [],
+        ciKeepAlive: [],
+        timeout: [],
+    };
+    resetMockListeners = () => {
+        this.mockListeners = {
+            exit: [],
+            message: [],
+            task: [],
+            ciKeepAlive: [],
+            timeout: [],
+        };
+    };
+
+    mockTask = (task: Task, done?: boolean) =>
+        this.mockListeners.task.forEach(listener => listener(task, done));
+
+    mockMessage = (message: LogMessage) =>
+        this.mockListeners.message.forEach(listener => listener(message));
+}
+
+module.exports = {
+    __esModule: true,
+    ...jest.requireActual('@progress-logger'),
+    default: new MockLogger(),
 };
+
+export type MockLoggerType = MockLogger;

@@ -1,18 +1,21 @@
-const actualLog = console.log;
-const mockedLog = jest.fn();
-
-declare const global: typeof globalThis & { onComplete: jest.Mock };
+declare const global: typeof globalThis & {
+    onComplete: jest.Mock;
+    consolelog: any;
+};
 declare const console: { log: jest.Mock };
 declare const process: {
     stdout: { write: jest.Mock; rows: number; columns: number };
     exit: jest.Mock;
 };
 
+const actualLog = console.log;
+const mockedLog = jest.fn();
 const actualExit = process.exit;
 const actualWrite = process.stdout.write;
-const mockedExit = (jest.fn() as any) as typeof actualExit;
+const mockedExit = jest.fn();
 const mockedWrite = jest.fn();
 
+global.consolelog = (msg: string) => actualWrite(`\n${msg}\n\n`);
 global.onComplete = jest.fn();
 
 global.beforeAll(() => {

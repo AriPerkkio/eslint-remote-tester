@@ -7,6 +7,8 @@ import {
     ResultParser,
 } from '@config/types';
 
+jest.unmock('@config');
+
 const DEFAULT_CONFIGURATION: ConfigWithOptionals = {
     repositories: ['test-repo', 'test-repot-2'],
     extensions: ['ts', 'tsx'],

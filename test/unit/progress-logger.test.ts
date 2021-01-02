@@ -1,9 +1,8 @@
 import ProgressLogger from '@progress-logger';
 import { LogMessage } from '@progress-logger/types';
-import config from '@config';
 
-jest.mock('@config');
-jest.mock('@file-client');
+const config = jest.fn().mockReturnValue({ logLevel: 'verbose' });
+jest.mock('@config', () => config());
 
 function getLogger(): typeof ProgressLogger {
     jest.resetModules();
@@ -24,7 +23,7 @@ describe('progress-logger', () => {
     });
 
     test('messages are filterd by config.logLevel', () => {
-        expect(config.logLevel).toBe('warn');
+        config.mockReturnValueOnce({ logLevel: 'warn' });
 
         const onMessage = jest.fn();
         const message: LogMessage = { content: 'A', level: 'info' };

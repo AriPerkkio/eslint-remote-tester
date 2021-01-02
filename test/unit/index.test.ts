@@ -1,12 +1,6 @@
 import config, { validateConfig } from '@config';
 import { renderApplication } from '@ui';
 
-jest.mock('@config');
-jest.mock('@ui');
-jest.mock('@engine');
-jest.mock('@file-client');
-jest.mock('@progress-logger');
-
 describe('entrypoint', () => {
     beforeEach(async () => {
         await require('../../lib/index').__handleForTests;
