@@ -174,8 +174,13 @@ class ProgressLogger {
         const notifyListeners = () =>
             this.listeners.exit.forEach(listener => listener());
 
+        // Default promise to use if config.onComplete is not defined, or it
+        // is a synchronous method.
         let exitPromise = Promise.resolve();
 
+        // Execute possible onComplete before notifying exit-listeners.
+        // It's essential to not crash whole application if user provided
+        // onComplete callback throws error. Log the error and move on.
         if (config.onComplete) {
             const results = ResultsStore.getResults();
             try {
