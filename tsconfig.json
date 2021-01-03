@@ -21,7 +21,8 @@
             "@progress-logger": ["lib/progress-logger"],
             "@progress-logger/*": ["lib/progress-logger/*"],
             "@ui": ["lib/ui"],
-            "@ui/*": ["lib/ui/*"]
+            "@ui/*": ["lib/ui/*"],
+            "__mocks__/*": ["test/unit/__mocks__/*"]
         }
     },
     "include": ["lib", "test"]

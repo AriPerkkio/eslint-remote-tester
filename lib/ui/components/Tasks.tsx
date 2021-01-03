@@ -6,7 +6,7 @@ import { Task } from '@progress-logger/types';
 
 // 200ms provides smooth enough experience without throttling worst terminals.
 // Modern terminals could handle updates real-time but let's support olders ones too.
-const REFRESH_INTERVAL_MS = 200;
+export const REFRESH_INTERVAL_MS = 200;
 
 /**
  * Currently active tasks of the scan

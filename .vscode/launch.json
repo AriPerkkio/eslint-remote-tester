@@ -38,6 +38,22 @@
             "port": 9229
         },
         {
+            "name": "Debug current unit test",
+            "type": "node",
+            "request": "launch",
+            "autoAttachChildProcesses": true,
+            "runtimeArgs": [
+                "--inspect-brk",
+                "${workspaceRoot}/node_modules/.bin/jest",
+                "--runInBand",
+                "--watchAll",
+                "${file}"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "port": 9229
+        },
+        {
             "name": "Debug CI integration tests",
             "type": "node",
             "request": "launch",

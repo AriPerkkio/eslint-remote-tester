@@ -1,11 +1,5 @@
 import { ResultTemplateOptions } from '@file-client/result-templates';
 
-export const INTEGRARION_CONFIGURATION_LOCATION =
-    'test/integration/eslint-remote-tester.integration.config.js';
-export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
-export const INTEGRATION_REPO_NAME =
-    'eslint-remote-tester-integration-test-target';
-
 declare const global: typeof globalThis & { onComplete: jest.Mock };
 declare const console: { log: jest.Mock };
 declare const process: {
@@ -14,6 +8,12 @@ declare const process: {
     argv: string[];
     cwd: () => string;
 };
+
+export const INTEGRARION_CONFIGURATION_LOCATION =
+    'test/integration/eslint-remote-tester.integration.config.js';
+export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
+export const INTEGRATION_REPO_NAME =
+    'eslint-remote-tester-integration-test-target';
 
 /**
  * Import the actual production build and run it
