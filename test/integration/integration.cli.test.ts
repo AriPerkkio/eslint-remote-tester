@@ -32,15 +32,17 @@ describe('CLI', () => {
 
         expect(sanitizeStackTrace(results)).toMatchInlineSnapshot(`
             "## Rule: unable-to-parse-rule-id
-            - Message: \`Cannot read property 'someAttribute' of undefined
-            Occurred while linting <text>:2\`
-            - Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
-            - [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
+
+            -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <text>:2\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
+
             \`\`\`js
             // Identifier.name = attributeForCrashing
             window.attributeForCrashing();
 
             \`\`\`
+
             \`\`\`
             TypeError: Cannot read property 'someAttribute' of undefined
             Occurred while linting <text>:2
@@ -55,10 +57,13 @@ describe('CLI', () => {
                 at <removed>/node_modules/eslint/lib/linter/linter.js:952:32
                 at Array.forEach (<anonymous>)
             \`\`\`
+
             ## Rule: no-undef
-            - Message: \`'bar' is not defined.\`
-            - Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-            - [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1)
+
+            -   Message: \`'bar' is not defined.\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1)
+
             \`\`\`js
             var foo = bar;
 
@@ -69,9 +74,11 @@ describe('CLI', () => {
             \`\`\`
 
             ## Rule: no-empty
-            - Message: \`Empty block statement.\`
-            - Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-            - [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4)
+
+            -   Message: \`Empty block statement.\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4)
+
             \`\`\`js
             var foo = bar;
 
@@ -85,9 +92,11 @@ describe('CLI', () => {
             \`\`\`
 
             ## Rule: getter-return
-            - Message: \`Expected to return a value in getter 'name'.\`
-            - Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-            - [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7)
+
+            -   Message: \`Expected to return a value in getter 'name'.\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7)
+
             \`\`\`js
             if (foo) {
             }
@@ -102,9 +111,11 @@ describe('CLI', () => {
             \`\`\`
 
             ## Rule: no-compare-neg-zero
-            - Message: \`Do not use the '===' operator to compare against -0.\`
-            - Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-            - [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
+
+            -   Message: \`Do not use the '===' operator to compare against -0.\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
+
             \`\`\`js
             };
             p.getName();

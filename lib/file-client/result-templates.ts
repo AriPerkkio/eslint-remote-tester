@@ -1,6 +1,8 @@
 import { ResultParser } from '@config/types';
 import { LintMessage } from '@engine/types';
 
+const NEW_LINE_REGEX = /\n/g;
+
 // Note that this is part of public API
 export interface ResultTemplateOptions {
     repository: string;
@@ -30,16 +32,19 @@ ${options.error}
 // prettier-ignore
 const RESULT_TEMPLATE_MARKDOWN = (options: ResultTemplateOptions): string =>
 `## Rule: ${options.rule}
-- Message: \`${options.message}\`
-- Path: \`${options.path}\`
-- [Link](${options.link})
+
+-   Message: \`${options.message.replace(NEW_LINE_REGEX, ' ')}\`
+-   Path: \`${options.path}\`
+-   [Link](${options.link})
+
 \`\`\`${options.extension || ''}
 ${options.source || ''}
 \`\`\`
-${options.error ?
-`\`\`\`
+${options.error ? `
+\`\`\`
 ${options.error}
-\`\`\`` : ''}`;
+\`\`\`
+` : ''}`;
 
 // prettier-ignore
 export const RESULTS_TEMPLATE_CI_BASE = (options: ResultTemplateOptions): string =>
