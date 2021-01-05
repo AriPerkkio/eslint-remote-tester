@@ -9,8 +9,6 @@ module.exports = {
         'getter-return',
         'no-compare-neg-zero',
     ],
-    resultParser: undefined,
-    concurrentTasks: undefined,
     eslintrc: {
         root: true,
         extends: ['eslint:recommended'],
@@ -18,8 +16,5 @@ module.exports = {
         rules: {
             'local-rules/some-unstable-rule': 'error',
         },
-    },
-    onComplete: function onComplete(results) {
-        global.onComplete(results);
     },
 };
