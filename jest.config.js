@@ -1,10 +1,9 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    roots: ['test'],
-    testPathIgnorePatterns: ['test/integration'],
     verbose: true,
-    setupFilesAfterEnv: ['./test/jest.setup.ts'],
+    roots: ['test/unit'],
+    setupFilesAfterEnv: ['./test/unit/jest.setup.unit.ts'],
     moduleNameMapper: {
         '^@config(.*)$': '<rootDir>/lib/config$1',
         '^@engine(.*)$': '<rootDir>/lib/engine$1',
