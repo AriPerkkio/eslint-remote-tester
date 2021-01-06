@@ -10,6 +10,6 @@ module.exports = {
         '^@file-client(.*)$': '<rootDir>/lib/file-client$1',
         '^@progress-logger(.*)$': '<rootDir>/lib/progress-logger$1',
         '^@ui(.*)$': '<rootDir>/lib/ui$1',
-        '^__mocks__(.*)$': '<rootDir>/__mocks__$1',
+        '^__mocks__/(.*)$': '<rootDir>/test/unit/__mocks__/$1',
     },
 };
