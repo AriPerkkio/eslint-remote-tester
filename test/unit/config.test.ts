@@ -45,6 +45,7 @@ describe('config', () => {
         expect(config.maxFileSizeBytes).toBe(2e6);
         expect(config.timeLimit).toBe(5.5 * 60 * 60);
         expect(config.pathIgnorePattern).toBe(undefined);
+        expect(config.cache).toBe(true);
         expect(config.onComplete).toBe(undefined);
     });
 
@@ -59,6 +60,7 @@ describe('config', () => {
         expect(config.maxFileSizeBytes).toBe(2e6);
         expect(config.timeLimit).toBe(5.5 * 60 * 60);
         expect(config.pathIgnorePattern).toBe(undefined);
+        expect(config.cache).toBe(true);
         expect(config.onComplete).toBe(undefined);
     });
 
