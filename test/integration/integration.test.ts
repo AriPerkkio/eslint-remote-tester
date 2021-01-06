@@ -559,4 +559,31 @@ describe('integration', () => {
             [TEST-ON-COMPLETE-END]"
         `);
     });
+
+    test('erroneous onComplete does not crash application', async () => {
+        const { output, exitCode } = await runProductionBuild({
+            CI: true,
+            rulesUnderTesting: [],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:recommended'],
+            },
+            onComplete: function onComplete(results) {
+                // @ts-ignore
+                results.some.nonexisting.field;
+            },
+        });
+
+        const errorLog = output.splice(
+            output.findIndex(r => /onComplete/.test(r)),
+            2
+        );
+
+        expect(errorLog.join('\n')).toMatchInlineSnapshot(`
+            "Error: Error occured while calling onComplete callback
+            TypeError: Cannot read property 'field' of undefined"
+        `);
+        expect(exitCode).toBe(0);
+        expect(output.pop()).toMatch(/Results:/);
+    });
 });
