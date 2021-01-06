@@ -1,5 +1,6 @@
 import config, { validateConfig } from '@config';
 import { renderApplication } from '@ui';
+import { prepareResultsDirectory } from '@file-client';
 
 describe('entrypoint', () => {
     beforeEach(async () => {
@@ -15,7 +16,10 @@ describe('entrypoint', () => {
         expect(renderApplication).toHaveBeenCalledTimes(1);
     });
 
-    test.todo('previous results are cleared');
+    test('results directory is prepared', () => {
+        expect(prepareResultsDirectory).toHaveBeenCalledTimes(1);
+    });
+
     test.todo('repositories are scanned in sets of config.concurrentTasks');
     test.todo('scanning is interrupted once logger indicates timeout');
     test.todo('scan completion is logged');
