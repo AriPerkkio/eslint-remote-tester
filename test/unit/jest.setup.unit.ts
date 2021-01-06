@@ -1,3 +1,5 @@
+import { restoreMockConfig } from '__mocks__/@config';
+
 declare const console: { log: jest.Mock };
 declare const process: { exit: jest.Mock };
 
@@ -22,6 +24,7 @@ global.afterAll(() => {
 });
 
 global.beforeEach(() => {
+    restoreMockConfig();
     process.exit.mockClear();
     console.log.mockClear();
 });
