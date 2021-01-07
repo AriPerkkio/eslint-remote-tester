@@ -19,7 +19,7 @@ const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
  * Initialize results folder
  * - Should be ran once from the main thread
  */
-export function clearResults(): void {
+export function prepareResultsDirectory(): void {
     if (isMainThread) {
         if (fs.existsSync(RESULTS_LOCATION)) {
             fs.rmdirSync(RESULTS_LOCATION, { recursive: true });

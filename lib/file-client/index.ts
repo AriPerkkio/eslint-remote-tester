@@ -1,7 +1,7 @@
 export { getFiles, SourceFile } from './file-client';
 export {
     writeResults,
-    clearResults,
+    prepareResultsDirectory,
     RESULTS_LOCATION,
     RESULT_TEMPLATE,
 } from './results-writer';
