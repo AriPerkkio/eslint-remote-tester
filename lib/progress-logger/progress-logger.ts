@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 
 import * as Templates from './log-templates';
+import exitHandler from './exit-handler';
 import { LogMessage, Task, Listeners, Listener, ListenerType } from './types';
 import config from '@config';
-import { ResultsStore } from '@file-client';
 
 const CI_KEEP_ALIVE_INTERVAL_MS = 4.5 * 60 * 1000;
 const DEFAULT_COLOR = (text: string) => text;
@@ -164,40 +164,17 @@ class ProgressLogger {
             clearTimeout(this.scanTimeoutHandle);
         }
 
-        const onError = (error: Error) =>
-            console.error(
-                [
-                    `Error occured while calling onComplete callback`,
-                    error.stack,
-                ].join('\n')
-            );
         const notifyListeners = () =>
             this.listeners.exit.forEach(listener => listener());
 
-        // Default promise to use if config.onComplete is not defined, or it
-        // is a synchronous method.
-        let exitPromise = Promise.resolve();
-
-        // Execute possible onComplete before notifying exit-listeners.
-        // It's essential to not crash whole application if user provided
-        // onComplete callback throws error. Log the error and move on.
-        if (config.onComplete) {
-            const results = ResultsStore.getResults();
-            try {
-                const onCompletePromise = config.onComplete(results);
-
-                if (onCompletePromise instanceof Promise) {
-                    exitPromise = onCompletePromise;
-                }
-            } catch (e) {
-                onError(e);
-            }
-        }
-
-        exitPromise.then(notifyListeners).catch(error => {
-            onError(error);
-            notifyListeners();
-        });
+        // Erroneous exit handler should not crash whole application.
+        // Log the error and move on.
+        exitHandler()
+            .then(notifyListeners)
+            .catch(error => {
+                console.error(error);
+                notifyListeners();
+            });
     }
 
     /**
