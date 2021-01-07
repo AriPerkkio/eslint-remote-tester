@@ -3,7 +3,7 @@
 import { renderApplication } from '@ui';
 import config, { validateConfig } from '@config';
 import engine from '@engine';
-import { writeResults, clearResults } from '@file-client';
+import { prepareResultsDirectory, writeResults } from '@file-client';
 import logger from '@progress-logger';
 
 /**
@@ -24,10 +24,7 @@ async function main() {
     }
 
     await validateConfig(config);
-
-    // Clear possible earlier results / initialize results folder
-    clearResults();
-
+    prepareResultsDirectory();
     renderApplication();
 
     // Start x amount of task runners parallel until we are out of repositories to scan
