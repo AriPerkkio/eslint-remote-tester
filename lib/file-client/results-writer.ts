@@ -2,7 +2,12 @@ import fs from 'fs';
 import { isMainThread } from 'worker_threads';
 
 import ResultsStore from './results-store';
-import { CACHE_LOCATION, RESULTS_LOCATION, URL } from './file-constants';
+import {
+    CACHE_LOCATION,
+    RESULTS_COMPARE_LOCATION,
+    RESULTS_LOCATION,
+    URL,
+} from './file-constants';
 import {
     RESULT_PARSER_TO_TEMPLATE,
     RESULT_PARSER_TO_EXTENSION,
@@ -15,7 +20,7 @@ export const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
 const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
 
 /**
- * Initialize results folder
+ * Initialize results and comparison directories
  * - Should be ran once from the main thread
  */
 export function prepareResultsDirectory(): void {
@@ -25,6 +30,7 @@ export function prepareResultsDirectory(): void {
         }
 
         fs.mkdirSync(RESULTS_LOCATION);
+        fs.mkdirSync(RESULTS_COMPARE_LOCATION);
     }
 }
 

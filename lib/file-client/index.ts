@@ -4,7 +4,11 @@ export {
     prepareResultsDirectory,
     RESULT_TEMPLATE,
 } from './results-writer';
-export { CACHE_LOCATION, RESULTS_LOCATION } from './file-constants';
+export {
+    CACHE_LOCATION,
+    RESULTS_LOCATION,
+    RESULTS_COMPARE_DIR,
+} from './file-constants';
 export { removeCachedRepository } from './repository-client';
 export { default as ResultsStore } from './results-store';
 export { RESULTS_TEMPLATE_CI_BASE } from './result-templates';
