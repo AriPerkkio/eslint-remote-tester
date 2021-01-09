@@ -1,6 +1,8 @@
 import fs from 'fs';
 import simpleGit from 'simple-git';
 
+import { CACHE_LOCATION, URL } from './file-constants';
+
 export interface RepositoryClientOptions {
     repository: string;
     onClone: () => void;
@@ -8,9 +10,6 @@ export interface RepositoryClientOptions {
     onPull: () => void;
     onPullFailure: () => void;
 }
-
-export const URL = 'https://github.com';
-export const CACHE_LOCATION = './.cache-eslint-remote-tester';
 
 // Clone only latest history of the main branch
 const CLONE_OPTS = { '--depth': 1 } as const;

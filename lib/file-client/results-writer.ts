@@ -2,7 +2,7 @@ import fs from 'fs';
 import { isMainThread } from 'worker_threads';
 
 import ResultsStore from './results-store';
-import { CACHE_LOCATION, URL } from './repository-client';
+import { CACHE_LOCATION, RESULTS_LOCATION, URL } from './file-constants';
 import {
     RESULT_PARSER_TO_TEMPLATE,
     RESULT_PARSER_TO_EXTENSION,
@@ -11,7 +11,6 @@ import {
 import config from '@config';
 import { LintMessage } from '@engine/types';
 
-export const RESULTS_LOCATION = './eslint-remote-tester-results';
 export const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
 const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
 
