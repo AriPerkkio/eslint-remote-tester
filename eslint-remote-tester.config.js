@@ -33,6 +33,8 @@ module.exports = {
 
     cache: true,
 
+    compare: false,
+
     /**
      * Optional callback invoked once scan is complete.
      *

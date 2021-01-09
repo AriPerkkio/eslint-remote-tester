@@ -22,6 +22,7 @@ const DEFAULT_MAX_FILE_SIZE_BYTES = 2000000;
 const DEFAULT_TIME_LIMIT_SECONDS = 5.5 * 60 * 60;
 const DEFAULT_CI = process.env.CI === 'true';
 const DEFAULT_CACHE = true;
+const DEFAULT_COMPARE = false;
 
 const UNKNOWN_RULE_REGEXP = /^Definition for rule (.*) was not found.$/;
 
@@ -91,6 +92,7 @@ export default async function validate(
         logLevel,
         cache,
         timeLimit,
+        compare,
         onComplete,
         ...unknownKeys
     } = configToValidate;
@@ -180,6 +182,10 @@ export default async function validate(
 
     errors.push(validateOptionalPositiveNumber('timeLimit', timeLimit));
 
+    if (compare != null && typeof compare !== 'boolean') {
+        errors.push(`compare (${compare}) should be a boolean.`);
+    }
+
     if (onComplete && typeof onComplete !== 'function') {
         errors.push(`onComplete (${onComplete}) should be a function`);
     }
@@ -231,6 +237,8 @@ export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
         concurrentTasks: config.concurrentTasks || DEFAULT_CONCURRENT_TASKS,
 
         timeLimit: config.timeLimit || DEFAULT_TIME_LIMIT_SECONDS,
+
+        compare: config.compare != null ? config.compare : DEFAULT_COMPARE,
     };
 }
 
