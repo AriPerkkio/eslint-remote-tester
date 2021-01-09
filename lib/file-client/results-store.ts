@@ -1,12 +1,12 @@
-import { ResultTemplateOptions } from './result-templates';
+import { Result } from './result-templates';
 
 /**
  * A single source for the scan's results
  */
 class ResultsStore {
-    private results: ResultTemplateOptions[] = [];
+    private results: Result[] = [];
 
-    addResults(...results: ResultTemplateOptions[]) {
+    addResults(...results: Result[]) {
         this.results.push(...results);
     }
 

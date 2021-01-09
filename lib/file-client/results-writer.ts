@@ -6,7 +6,7 @@ import { CACHE_LOCATION, RESULTS_LOCATION, URL } from './file-constants';
 import {
     RESULT_PARSER_TO_TEMPLATE,
     RESULT_PARSER_TO_EXTENSION,
-    ResultTemplateOptions,
+    Result,
 } from './result-templates';
 import config from '@config';
 import { LintMessage } from '@engine/types';
@@ -28,7 +28,7 @@ export function prepareResultsDirectory(): void {
     }
 }
 
-function parseMessages(messages: LintMessage[]): ResultTemplateOptions[] {
+function parseMessages(messages: LintMessage[]): Result[] {
     return messages.map(result => {
         const path = result.path.replace(`${CACHE_LOCATION}/`, '');
         const extension = path.split('.').pop();

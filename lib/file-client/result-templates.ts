@@ -4,7 +4,7 @@ import { LintMessage } from '@engine/types';
 const NEW_LINE_REGEX = /\n/g;
 
 // Note that this is part of public API
-export interface ResultTemplateOptions {
+export interface Result {
     repository: string;
     repositoryOwner: string;
     rule: LintMessage['ruleId'];
@@ -17,42 +17,42 @@ export interface ResultTemplateOptions {
 }
 
 // prettier-ignore
-const RESULT_TEMPLATE_PLAINTEXT = (options: ResultTemplateOptions): string =>
-`Rule: ${options.rule}
-Message: ${options.message}
-Path: ${options.path}
-Link: ${options.link}
+const RESULT_TEMPLATE_PLAINTEXT = (result: Result): string =>
+`Rule: ${result.rule}
+Message: ${result.message}
+Path: ${result.path}
+Link: ${result.link}
 
-${options.source}
-${options.error ? `
+${result.source}
+${result.error ? `
 Error:
-${options.error}
+${result.error}
 ` : ''}`;
 
 // prettier-ignore
-const RESULT_TEMPLATE_MARKDOWN = (options: ResultTemplateOptions): string =>
-`## Rule: ${options.rule}
+const RESULT_TEMPLATE_MARKDOWN = (result: Result): string =>
+`## Rule: ${result.rule}
 
--   Message: \`${options.message.replace(NEW_LINE_REGEX, ' ')}\`
--   Path: \`${options.path}\`
--   [Link](${options.link})
+-   Message: \`${result.message.replace(NEW_LINE_REGEX, ' ')}\`
+-   Path: \`${result.path}\`
+-   [Link](${result.link})
 
-\`\`\`${options.extension || ''}
-${options.source || ''}
+\`\`\`${result.extension || ''}
+${result.source || ''}
 \`\`\`
-${options.error ? `
+${result.error ? `
 \`\`\`
-${options.error}
+${result.error}
 \`\`\`
 ` : ''}`;
 
 // prettier-ignore
-export const RESULTS_TEMPLATE_CI_BASE = (options: ResultTemplateOptions): string =>
-`Repository: ${options.repositoryOwner}/${options.repository}`;
+export const RESULTS_TEMPLATE_CI_BASE = (result: Result): string =>
+`Repository: ${result.repositoryOwner}/${result.repository}`;
 
 export const RESULT_PARSER_TO_TEMPLATE: Record<
     ResultParser,
-    (options: ResultTemplateOptions) => string
+    (result: Result) => string
 > = {
     plaintext: RESULT_TEMPLATE_PLAINTEXT,
     markdown: RESULT_TEMPLATE_MARKDOWN,
