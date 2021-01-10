@@ -1,11 +1,12 @@
 import fs from 'fs';
 
 import {
+    getResults,
+    getComparisonResults,
     runProductionBuild,
     INTEGRATION_REPO_OWNER,
     INTEGRATION_REPO_NAME,
     REPOSITORY_CACHE,
-    getResults,
 } from '../utils';
 
 describe('integration', () => {
@@ -585,5 +586,100 @@ describe('integration', () => {
         `);
         expect(exitCode).toBe(0);
         expect(output.pop()).toMatch(/Results:/);
+    });
+
+    test('comparison results are generated', async () => {
+        await runProductionBuild({
+            compare: true,
+            CI: false,
+            rulesUnderTesting: [
+                'no-compare-neg-zero', // Used in initial scan, not in second
+                // 'no-undef', // Used in second scan, not in first
+                'no-empty', // Used in both scans
+            ],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:all'],
+            },
+        });
+
+        await runProductionBuild({
+            compare: true,
+            CI: false,
+            rulesUnderTesting: [
+                // 'no-compare-neg-zero', // Used in initial scan, not in second
+                'no-undef', // Used in second scan, not in first
+                'no-empty', // Used in both scans
+            ],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:all'],
+            },
+        });
+
+        // Remaining errors should be visible in results but not in comparison
+        expect(getResults()).toMatch(/no-empty/);
+
+        const comparisonResults = getComparisonResults();
+        const snapshot = [
+            '[ADDED]',
+            comparisonResults.added,
+            '[ADDED]',
+            '[REMOVED]',
+            comparisonResults.removed,
+            '[REMOVED]',
+        ].join('\n');
+
+        expect(snapshot).toMatchInlineSnapshot(`
+            "[ADDED]
+            # Added:
+            ## Rule: no-undef
+
+            -   Message: \`'window' is not defined.\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2)
+
+            \`\`\`js
+            // Identifier.name = attributeForCrashing
+            window.attributeForCrashing();
+
+            \`\`\`
+
+            ## Rule: no-undef
+
+            -   Message: \`'bar' is not defined.\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1)
+
+            \`\`\`js
+            var foo = bar;
+
+            if (foo) {
+            }
+
+            var p = {
+            \`\`\`
+
+            [ADDED]
+            [REMOVED]
+            # Removed:
+            ## Rule: no-compare-neg-zero
+
+            -   Message: \`Do not use the '===' operator to compare against -0.\`
+            -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+            -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
+
+            \`\`\`js
+            };
+            p.getName();
+
+
+            if (foo === -0) {
+              // prevent no-empty
+            }
+            \`\`\`
+
+            [REMOVED]"
+        `);
     });
 });

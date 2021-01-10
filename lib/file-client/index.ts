@@ -4,10 +4,13 @@ export {
     prepareResultsDirectory,
     RESULT_TEMPLATE,
 } from './results-writer';
+export { compareResults, writeComparisonResults } from './result-comparator';
 export {
     CACHE_LOCATION,
     RESULTS_LOCATION,
     RESULTS_COMPARE_DIR,
+    RESULTS_COMPARE_LOCATION,
+    RESULTS_COMPARISON_CACHE_LOCATION,
 } from './file-constants';
 export { removeCachedRepository } from './repository-client';
 export { default as ResultsStore } from './results-store';

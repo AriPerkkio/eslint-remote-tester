@@ -2,8 +2,13 @@ import fs from 'fs';
 import { spawn } from 'node-pty';
 import stripAnsi from 'strip-ansi';
 
+import {
+    CACHE_LOCATION,
+    RESULTS_LOCATION,
+    RESULTS_COMPARE_LOCATION,
+} from '@file-client';
+import { ComparisonTypes } from '@file-client/result-templates';
 import { Config, ConfigToValidate } from '@config/types';
-import { CACHE_LOCATION, RESULTS_LOCATION } from '@file-client';
 
 declare const console: { log: jest.Mock };
 
@@ -144,4 +149,27 @@ export function getResults(ext: '.md' | '' = '.md'): string {
     }
 
     return sanitizeStackTrace(fs.readFileSync(filename, 'utf8'));
+}
+
+/**
+ * Get comparison results from file system
+ */
+export function getComparisonResults(
+    ext: '.md' | '' = '.md'
+): Record<typeof ComparisonTypes[number], string> {
+    return ComparisonTypes.reduce(
+        (results, type) => {
+            const filename = `${RESULTS_COMPARE_LOCATION}/${type}${ext}`;
+
+            if (!fs.existsSync(filename)) {
+                return results;
+            }
+
+            return {
+                ...results,
+                [type]: sanitizeStackTrace(fs.readFileSync(filename, 'utf8')),
+            };
+        },
+        { added: '', removed: '' }
+    );
 }
