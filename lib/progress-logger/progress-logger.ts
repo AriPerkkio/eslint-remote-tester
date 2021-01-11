@@ -170,7 +170,10 @@ class ProgressLogger {
         // Erroneous exit handler should not crash whole application.
         // Log the error and move on.
         exitHandler()
-            .then(notifyListeners)
+            .then(messages => {
+                messages.forEach(message => this.addNewMessage(message));
+                notifyListeners();
+            })
             .catch(error => {
                 console.error(error);
                 notifyListeners();

@@ -588,7 +588,7 @@ describe('integration', () => {
         expect(output.pop()).toMatch(/Results:/);
     });
 
-    test('comparison results are generated', async () => {
+    test('comparison results are written to file system on CLI mode', async () => {
         await runProductionBuild({
             compare: true,
             CI: false,
@@ -603,7 +603,7 @@ describe('integration', () => {
             },
         });
 
-        await runProductionBuild({
+        const { output } = await runProductionBuild({
             compare: true,
             CI: false,
             rulesUnderTesting: [
@@ -616,6 +616,10 @@ describe('integration', () => {
                 extends: ['eslint:all'],
             },
         });
+
+        expect(output.find(row => /comparison/.test(row))).toMatch(
+            '[DONE] Result comparison: Added 2. Removed 1.'
+        );
 
         // Remaining errors should be visible in results but not in comparison
         expect(getResults()).toMatch(/no-empty/);
@@ -680,6 +684,83 @@ describe('integration', () => {
             \`\`\`
 
             [REMOVED]"
+        `);
+    });
+
+    test('comparison results are rendered on CI mode', async () => {
+        await runProductionBuild({
+            compare: true,
+            CI: true,
+            rulesUnderTesting: [
+                'no-compare-neg-zero', // Used in initial scan, not in second
+                // 'no-undef', // Used in second scan, not in first
+                'no-empty', // Used in both scans
+            ],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:all'],
+            },
+        });
+
+        const { output } = await runProductionBuild({
+            compare: true,
+            CI: true,
+            rulesUnderTesting: [
+                // 'no-compare-neg-zero', // Used in initial scan, not in second
+                'no-undef', // Used in second scan, not in first
+                'no-empty', // Used in both scans
+            ],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:all'],
+            },
+        });
+
+        // Remaining errors should be visible in results but not in comparison
+        const [results, comparisonResults] = output.reverse();
+        expect(results).toMatch(/no-empty/);
+
+        expect(comparisonResults).toMatchInlineSnapshot(`
+            "Comparison results:
+            Added:
+            Rule: no-undef
+            Message: 'window' is not defined.
+            Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+            Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2
+
+            // Identifier.name = attributeForCrashing
+            window.attributeForCrashing();
+
+
+            Rule: no-undef
+            Message: 'bar' is not defined.
+            Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+            Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
+
+            var foo = bar;
+
+            if (foo) {
+            }
+
+            var p = {
+
+
+            Removed:
+            Rule: no-compare-neg-zero
+            Message: Do not use the '===' operator to compare against -0.
+            Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+            Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
+
+            };
+            p.getName();
+
+
+            if (foo === -0) {
+              // prevent no-empty
+            }
+
+
+            "
         `);
     });
 });

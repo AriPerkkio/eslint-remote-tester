@@ -64,12 +64,12 @@ export const RESULTS_TEMPLATE_CI_BASE = (result: Result): string =>
 // prettier-ignore
 const COMPARISON_RESULTS_TEMPLATE_PLAINTEXT = (type: ComparisonType, results: Result[]): string =>
 `${upperCaseFirstLetter(type)}:
-${results.map(RESULT_TEMPLATE_PLAINTEXT).join('\n')}`;
+${results.length ? results.map(RESULT_TEMPLATE_PLAINTEXT).join('\n'): 'No changes'}`;
 
 // prettier-ignore
 const COMPARISON_RESULTS_TEMPLATE_MARKDOWN = (type: ComparisonType, results: Result[]): string =>
 `# ${upperCaseFirstLetter(type)}:
-${results.map(RESULT_TEMPLATE_MARKDOWN).join('\n')}`;
+${results.length ? results.map(RESULT_TEMPLATE_MARKDOWN).join('\n'): 'No changes'}`;
 
 export const RESULT_PARSER_TO_TEMPLATE: Record<
     ResultParser,

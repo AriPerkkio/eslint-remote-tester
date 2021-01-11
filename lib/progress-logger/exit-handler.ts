@@ -4,11 +4,14 @@ import {
     compareResults,
     writeComparisonResults,
 } from '@file-client';
+import { RESULT_COMPARISON_FINISHED } from './log-templates';
+import { LogMessage } from './types';
 
 /**
  * Callback invoked once scan is complete and application is about to exit
  */
-export default async function onExit(): Promise<void> {
+export default async function onExit(): Promise<LogMessage[]> {
+    const messages: LogMessage[] = [];
     const results = ResultsStore.getResults();
     const errors = [];
 
@@ -16,6 +19,15 @@ export default async function onExit(): Promise<void> {
         try {
             const comparisonResults = compareResults(results);
             ResultsStore.setComparisonResults(comparisonResults);
+
+            messages.push({
+                content: RESULT_COMPARISON_FINISHED(
+                    comparisonResults.added.length,
+                    comparisonResults.removed.length
+                ),
+                color: 'green',
+                level: 'verbose',
+            });
 
             writeComparisonResults(comparisonResults, results);
         } catch (e) {
@@ -40,4 +52,6 @@ export default async function onExit(): Promise<void> {
     if (errors.length) {
         throw new Error(errors.filter(Boolean).join('\n'));
     }
+
+    return messages;
 }

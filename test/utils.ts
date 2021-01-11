@@ -18,6 +18,7 @@ export const INTEGRATION_REPO_NAME =
 export const REPOSITORY_CACHE = `${CACHE_LOCATION}/${INTEGRATION_REPO_OWNER}/${INTEGRATION_REPO_NAME}`;
 
 const LAST_RENDER_PATTERN = /(Results|Full log)[\s|\S]*/;
+const COMPARISON_RESULTS_PATTERN = /(Comparison results:[\s|\S]*)Results/;
 const ON_COMPLETE_PATTERN = /("onComplete": )"([\s|\S]*)"/;
 const ESCAPED_NEWLINE_PATTERN = /\\n/g;
 
@@ -120,10 +121,12 @@ function parsePtyOutput(output: string[]): string[] {
     // Discard first and last line, these may contain "debugger attached" messages
     const textOutput = output.slice(1, output.length - 1).join('');
 
+    const [, comparisonResults] =
+        textOutput.match(COMPARISON_RESULTS_PATTERN) || [];
     const [results] = textOutput.match(LAST_RENDER_PATTERN) || [];
     const logs = textOutput.replace(results, '').split('\r\n').filter(Boolean);
 
-    return logs.concat(results);
+    return logs.concat(...[comparisonResults, results].filter(Boolean));
 }
 
 /**

@@ -13,6 +13,10 @@ import {
 } from './result-templates';
 import config from '@config';
 
+export const RESULT_COMPARISON_TEMPLATE =
+    RESULT_PARSER_TO_COMPARE_TEMPLATE[config.resultParser];
+const EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
+
 /**
  * Compare two sets of `Result`s and get diff of changes
  * - `added`: results which were present in previous scan but not in the current
@@ -73,9 +77,6 @@ function updateCache(currentScanResults: Result[]): void {
 }
 
 function writeComparisons(comparisonResults: ComparisonResults): void {
-    const TEMPLATE = RESULT_PARSER_TO_COMPARE_TEMPLATE[config.resultParser];
-    const EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
-
     // Directory should always be available but let's handle condition where
     // user intentionally removes it during scan.
     if (!fs.existsSync(RESULTS_COMPARE_LOCATION)) {
@@ -87,7 +88,7 @@ function writeComparisons(comparisonResults: ComparisonResults): void {
 
         if (results.length) {
             const filename = `${type}${EXTENSION}`;
-            const content = TEMPLATE(type, results);
+            const content = RESULT_COMPARISON_TEMPLATE(type, results);
 
             fs.writeFileSync(
                 `${RESULTS_COMPARE_LOCATION}/${filename}`,

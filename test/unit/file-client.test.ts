@@ -12,7 +12,6 @@ import {
     Result,
     RESULT_PARSER_TO_COMPARE_TEMPLATE,
 } from '@file-client/result-templates';
-import { mockConfig } from '__mocks__/@config';
 import { getComparisonResults } from '../utils';
 
 jest.unmock('@file-client');
@@ -217,10 +216,6 @@ describe('file-client', () => {
     });
 
     describe('writeComparisonResults', () => {
-        beforeEach(() => {
-            mockConfig.mockReturnValue({ resultParser: 'markdown' });
-        });
-
         test('writes comparison results to file system', () => {
             const template = RESULT_PARSER_TO_COMPARE_TEMPLATE.markdown;
 
