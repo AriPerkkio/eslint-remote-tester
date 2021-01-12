@@ -81,9 +81,14 @@ export const CONFIGURATION_FILE_TEMPLATE =
      *     source: string,
      *     error: (string|undefined),
      * }[]} results Results of the scan, if any
+     *
+     * @param {{
+     *     added: {}[],
+     *     removed: {}[]
+     * }} comparisonResults Comparison results of the scan, if any
      * @returns {Promise<void>|void}
      */
-    onComplete: async function onComplete(results) {
-
+    onComplete: async function onComplete(results, comparisonResults) {
+        // Extend the process with custom features, e.g. send results to email, create issues to Github...
     },
 }`;

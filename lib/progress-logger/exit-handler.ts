@@ -4,6 +4,7 @@ import {
     compareResults,
     writeComparisonResults,
 } from '@file-client';
+import { ComparisonResults } from '@file-client/result-templates';
 import { RESULT_COMPARISON_FINISHED } from './log-templates';
 import { LogMessage } from './types';
 
@@ -12,12 +13,14 @@ import { LogMessage } from './types';
  */
 export default async function onExit(): Promise<LogMessage[]> {
     const messages: LogMessage[] = [];
-    const results = ResultsStore.getResults();
     const errors = [];
+
+    const results = ResultsStore.getResults();
+    let comparisonResults: ComparisonResults | null = null;
 
     if (config.compare) {
         try {
-            const comparisonResults = compareResults(results);
+            comparisonResults = compareResults(results);
             ResultsStore.setComparisonResults(comparisonResults);
 
             messages.push({
@@ -38,7 +41,10 @@ export default async function onExit(): Promise<LogMessage[]> {
 
     if (config.onComplete) {
         try {
-            const onCompletePromise = config.onComplete(results);
+            const onCompletePromise = config.onComplete(
+                results,
+                comparisonResults
+            );
 
             if (onCompletePromise instanceof Promise) {
                 await onCompletePromise;

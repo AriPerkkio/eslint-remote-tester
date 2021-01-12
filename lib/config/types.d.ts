@@ -1,6 +1,6 @@
 import { Linter } from 'eslint';
 
-import { Result } from '@file-client/result-templates';
+import { ComparisonResults, Result } from '@file-client/result-templates';
 
 type AllKeysOptional<T extends { [K: string]: any }> = {
     [K in keyof T]?: T[K];
@@ -27,7 +27,10 @@ export interface Config {
     cache: boolean;
     timeLimit: number;
     compare: boolean;
-    onComplete?: (results: Result[]) => Promise<void> | void;
+    onComplete?: (
+        results: Result[],
+        comparisonResults: ComparisonResults | null
+    ) => Promise<void> | void;
 }
 
 type RequiredFields = Pick<Config, 'repositories' | 'extensions' | 'eslintrc'>;

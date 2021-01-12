@@ -763,4 +763,182 @@ describe('integration', () => {
             "
         `);
     });
+
+    test('calls onComplete hook with the comparison results', async () => {
+        await runProductionBuild({
+            compare: true,
+            CI: true,
+            rulesUnderTesting: [
+                'no-compare-neg-zero', // Used in initial scan, not in second
+                // 'no-undef', // Used in second scan, not in first
+                'no-empty', // Used in both scans
+            ],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:all'],
+            },
+        });
+
+        const { output } = await runProductionBuild({
+            compare: true,
+            CI: true,
+            rulesUnderTesting: [
+                // 'no-compare-neg-zero', // Used in initial scan, not in second
+                'no-undef', // Used in second scan, not in first
+                'no-empty', // Used in both scans
+            ],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:all'],
+            },
+            onComplete: function onComplete(_, comparisonResults) {
+                console.log('[TEST-ON-COMPLETE-START]');
+
+                for (const type of ['added', 'removed']) {
+                    console.log(`[${type.toUpperCase()}]`);
+                    // @ts-ignore
+                    comparisonResults[type].forEach(result => {
+                        Object.entries(result).forEach(([key, value]) => {
+                            const block = `[${key.toUpperCase()}]`;
+
+                            console.log('.');
+                            console.log(block);
+                            console.log(value);
+                            console.log(block);
+                        });
+                    });
+                    console.log(`[${type.toUpperCase()}]`);
+                }
+
+                console.log('[TEST-ON-COMPLETE-END]');
+            },
+        });
+
+        const [onCompleteCall] = output
+            .join('\n')
+            .match(
+                /\[TEST-ON-COMPLETE-START\]([\s|\S]*)\[TEST-ON-COMPLETE-END\]/
+            )!;
+
+        expect(onCompleteCall).toMatchInlineSnapshot(`
+            "[TEST-ON-COMPLETE-START]
+            [ADDED]
+            .
+            [REPOSITORY]
+            eslint-remote-tester-integration-test-target
+            [REPOSITORY]
+            .
+            [REPOSITORYOWNER]
+            AriPerkkio
+            [REPOSITORYOWNER]
+            .
+            [RULE]
+            no-undef
+            [RULE]
+            .
+            [MESSAGE]
+            'window' is not defined.
+            [MESSAGE]
+            .
+            [PATH]
+            AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+            [PATH]
+            .
+            [LINK]
+            https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2
+            [LINK]
+            .
+            [EXTENSION]
+            js
+            [EXTENSION]
+            .
+            [SOURCE]
+            // Identifier.name = attributeForCrashing
+            window.attributeForCrashing();
+            [SOURCE]
+            .
+            [ERROR]
+            undefined
+            [ERROR]
+            .
+            [REPOSITORY]
+            eslint-remote-tester-integration-test-target
+            [REPOSITORY]
+            .
+            [REPOSITORYOWNER]
+            AriPerkkio
+            [REPOSITORYOWNER]
+            .
+            [RULE]
+            no-undef
+            [RULE]
+            .
+            [MESSAGE]
+            'bar' is not defined.
+            [MESSAGE]
+            .
+            [PATH]
+            AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+            [PATH]
+            .
+            [LINK]
+            https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
+            [LINK]
+            .
+            [EXTENSION]
+            js
+            [EXTENSION]
+            .
+            [SOURCE]
+            var foo = bar;
+            if (foo) {
+            }
+            var p = {
+            [SOURCE]
+            .
+            [ERROR]
+            undefined
+            [ERROR]
+            [ADDED]
+            [REMOVED]
+            .
+            [REPOSITORY]
+            eslint-remote-tester-integration-test-target
+            [REPOSITORY]
+            .
+            [REPOSITORYOWNER]
+            AriPerkkio
+            [REPOSITORYOWNER]
+            .
+            [RULE]
+            no-compare-neg-zero
+            [RULE]
+            .
+            [MESSAGE]
+            Do not use the '===' operator to compare against -0.
+            [MESSAGE]
+            .
+            [PATH]
+            AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+            [PATH]
+            .
+            [LINK]
+            https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
+            [LINK]
+            .
+            [EXTENSION]
+            js
+            [EXTENSION]
+            .
+            [SOURCE]
+            };
+            p.getName();
+            if (foo === -0) {
+              // prevent no-empty
+            }
+            [SOURCE]
+            [REMOVED]
+            [TEST-ON-COMPLETE-END]"
+        `);
+    });
 });

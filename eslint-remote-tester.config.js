@@ -49,6 +49,11 @@ module.exports = {
      *     source: string,
      *     error: (string|undefined),
      * }[]} results Results of the scan, if any
+     *
+     * @param {{
+     *     added: {}[],
+     *     removed: {}[]
+     * }} comparisonResults Comparison results of the scan, if any
      * @returns {Promise<void>|void}
      */
     onComplete: undefined,
