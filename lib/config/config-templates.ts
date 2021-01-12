@@ -67,6 +67,9 @@ export const CONFIGURATION_FILE_TEMPLATE =
     /** Optional boolean flag used to enable result comparison. Defaults to false. */
     compare: false,
 
+    /** Optional boolean flag used to enable result comparison reference updating. Used only when compare is enable. Defaults to true. */
+    updateComparisonReference: true,
+
     /**
      * Optional callback invoked once scan is complete.
      *

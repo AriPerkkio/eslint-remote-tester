@@ -27,6 +27,7 @@ export interface Config {
     cache: boolean;
     timeLimit: number;
     compare: boolean;
+    updateComparisonReference: boolean;
     onComplete?: (
         results: Result[],
         comparisonResults: ComparisonResults | null

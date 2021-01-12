@@ -35,6 +35,8 @@ module.exports = {
 
     compare: false,
 
+    updateComparisonReference: true,
+
     /**
      * Optional callback invoked once scan is complete.
      *

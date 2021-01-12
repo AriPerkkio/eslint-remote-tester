@@ -23,6 +23,7 @@ const DEFAULT_TIME_LIMIT_SECONDS = 5.5 * 60 * 60;
 const DEFAULT_CI = process.env.CI === 'true';
 const DEFAULT_CACHE = true;
 const DEFAULT_COMPARE = false;
+const DEFAULT_UPDATE_COMPARISON_REFERENCE = true;
 
 const UNKNOWN_RULE_REGEXP = /^Definition for rule (.*) was not found.$/;
 
@@ -74,6 +75,20 @@ function validateOptionalPositiveNumber(
 }
 
 /**
+ * Validate optional boolean:
+ * 1. Value is optional
+ * 2. Type is boolean
+ */
+function validateOptionalBoolean(
+    name: keyof Config,
+    value: boolean | undefined
+) {
+    if (value != null && typeof value !== 'boolean') {
+        return `${name} (${value}) should be a boolean.`;
+    }
+}
+
+/**
  * Validate given configuration
  */
 export default async function validate(
@@ -93,6 +108,7 @@ export default async function validate(
         cache,
         timeLimit,
         compare,
+        updateComparisonReference,
         onComplete,
         ...unknownKeys
     } = configToValidate;
@@ -152,9 +168,7 @@ export default async function validate(
         validateOptionalPositiveNumber('maxFileSizeBytes', maxFileSizeBytes)
     );
 
-    if (CI != null && typeof CI !== 'boolean') {
-        errors.push(`CI (${CI}) should be a boolean.`);
-    }
+    errors.push(validateOptionalBoolean('CI', CI));
 
     if (logLevel && !LOG_LEVELS.includes(logLevel)) {
         errors.push(
@@ -164,9 +178,7 @@ export default async function validate(
         );
     }
 
-    if (cache != null && typeof cache !== 'boolean') {
-        errors.push(`cache (${cache}) should be a boolean.`);
-    }
+    errors.push(validateOptionalBoolean('cache', cache));
 
     if (resultParser && !RESULT_PARSERS.includes(resultParser)) {
         errors.push(
@@ -182,9 +194,13 @@ export default async function validate(
 
     errors.push(validateOptionalPositiveNumber('timeLimit', timeLimit));
 
-    if (compare != null && typeof compare !== 'boolean') {
-        errors.push(`compare (${compare}) should be a boolean.`);
-    }
+    errors.push(validateOptionalBoolean('compare', compare));
+    errors.push(
+        validateOptionalBoolean(
+            'updateComparisonReference',
+            updateComparisonReference
+        )
+    );
 
     if (onComplete && typeof onComplete !== 'function') {
         errors.push(`onComplete (${onComplete}) should be a function`);
@@ -239,6 +255,11 @@ export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
         timeLimit: config.timeLimit || DEFAULT_TIME_LIMIT_SECONDS,
 
         compare: config.compare != null ? config.compare : DEFAULT_COMPARE,
+
+        updateComparisonReference:
+            config.updateComparisonReference != null
+                ? config.updateComparisonReference
+                : DEFAULT_UPDATE_COMPARISON_REFERENCE,
     };
 }
 

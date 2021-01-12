@@ -94,6 +94,9 @@ module.exports = {
     /** Optional boolean flag used to enable result comparison. Defaults to false. */
     compare: false,
 
+    /** Optional boolean flag used to enable result comparison reference updating. Used only when compare is enable. Defaults to true. */
+    updateComparisonReference: true,
+
     /** Optional time limit in seconds for the scan. Scan is interrupted after reaching the limit. Defaults to 5 hours 30 minutes. */
     timeLimit: 5.5 * 60 * 60, // 5 hours 30 minutes
 
