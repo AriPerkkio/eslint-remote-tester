@@ -687,6 +687,45 @@ describe('integration', () => {
         `);
     });
 
+    test('comparison result reference updating can be disabled', async () => {
+        await runProductionBuild({
+            compare: true,
+            CI: false,
+            rulesUnderTesting: [
+                'no-compare-neg-zero', // Used in initial scan, not in second
+                // 'no-undef', // Used in second scan, not in first
+                'no-empty', // Used in both scans
+            ],
+            eslintrc: {
+                root: true,
+                extends: ['eslint:all'],
+            },
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const _ of [1, 2]) {
+            const { output } = await runProductionBuild({
+                updateComparisonReference: false,
+                compare: true,
+                CI: false,
+                rulesUnderTesting: [
+                    // 'no-compare-neg-zero', // Used in initial scan, not in second
+                    'no-undef', // Used in second scan, not in first
+                    'no-empty', // Used in both scans
+                ],
+                eslintrc: {
+                    root: true,
+                    extends: ['eslint:all'],
+                },
+            });
+
+            // Comparison results should not change between runs
+            expect(output.find(row => /comparison/.test(row))).toMatch(
+                '[DONE] Result comparison: Added 2. Removed 1.'
+            );
+        }
+    });
+
     test('comparison results are rendered on CI mode', async () => {
         await runProductionBuild({
             compare: true,

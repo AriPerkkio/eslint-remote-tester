@@ -12,6 +12,7 @@ import {
     Result,
     RESULT_PARSER_TO_COMPARE_TEMPLATE,
 } from '@file-client/result-templates';
+import { mockConfig } from '__mocks__/@config';
 import { getComparisonResults } from '../utils';
 
 jest.unmock('@file-client');
@@ -22,6 +23,8 @@ const MOCK_COMPARISON_FILES = ['added.md', 'removed.md'];
 const createResultsDirectory = () => fs.mkdirSync(RESULTS_LOCATION);
 const readResultsDirectory = () => fs.readdirSync(RESULTS_LOCATION);
 const resultsDirectoryExists = () => fs.existsSync(RESULTS_LOCATION);
+const comparisonCacheExists = () =>
+    fs.existsSync(RESULTS_COMPARISON_CACHE_LOCATION);
 const createComparisonDirectory = () =>
     fs.mkdirSync(`${RESULTS_LOCATION}/${RESULTS_COMPARE_DIR}`);
 const readComparisonDirectory = () =>
@@ -55,7 +58,7 @@ function createComparisonCache(...results: Result[]): void {
 }
 
 function removeComparisonCache(): void {
-    if (fs.existsSync(RESULTS_COMPARISON_CACHE_LOCATION)) {
+    if (comparisonCacheExists()) {
         fs.unlinkSync(RESULTS_COMPARISON_CACHE_LOCATION);
     }
 }
@@ -234,13 +237,25 @@ describe('file-client', () => {
             );
         });
 
-        test('updates comparison cache on file system', () => {
+        test('updates comparison cache on file system when updateComparisonReference is enabled', () => {
+            mockConfig.mockReturnValue({ updateComparisonReference: true });
             removeComparisonCache();
             const results = [generateResult('1'), generateResult('2')];
 
             writeComparisonResults({ added: [], removed: [] }, results);
 
+            expect(comparisonCacheExists()).toBe(true);
             expect(readComparisonCache()).toEqual(results);
+        });
+
+        test('updates comparison cache on file system when updateComparisonReference is disabled', () => {
+            mockConfig.mockReturnValue({ updateComparisonReference: false });
+            removeComparisonCache();
+            const results = [generateResult('1'), generateResult('2')];
+
+            writeComparisonResults({ added: [], removed: [] }, results);
+
+            expect(comparisonCacheExists()).toBe(false);
         });
 
         test('does not crash if results compare location is not found', () => {

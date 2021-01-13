@@ -52,7 +52,10 @@ export function writeComparisonResults(
     currentScanResults: Result[]
 ): void {
     writeComparisons(comparisonResults);
-    updateCache(currentScanResults);
+
+    if (config.updateComparisonReference) {
+        updateCache(currentScanResults);
+    }
 }
 
 function readCache(): Result[] {
