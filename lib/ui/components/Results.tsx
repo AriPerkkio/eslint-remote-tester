@@ -1,5 +1,5 @@
 import React from 'react';
-import { Static, Text } from 'ink';
+import { Static, Text, Box } from 'ink';
 
 import {
     ResultsStore,
@@ -12,6 +12,10 @@ import { useExitAfterRender } from '../hooks';
 
 const START_MESSAGE = '\nResults:';
 const NO_ERRORS = ['No errors'];
+
+// This is used to override ink's text wrapping. Especially on Github CI the max
+// line width is not really the terminals width. The CI will handle text wrapping.
+const LINE_WIDTH = 500;
 
 function formatComparisonResults(
     comparisonResults: ComparisonResults | null
@@ -52,7 +56,11 @@ export default function Results(): JSX.Element {
 
     return (
         <Static items={items}>
-            {(result, index) => <Text key={index}>{result}</Text>}
+            {(result, index) => (
+                <Box width={LINE_WIDTH} key={index}>
+                    <Text>{result}</Text>
+                </Box>
+            )}
         </Static>
     );
 }
