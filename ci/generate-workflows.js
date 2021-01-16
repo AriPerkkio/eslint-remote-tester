@@ -13,8 +13,12 @@ const WORKFLOW_DIR = path.resolve(`${__dirname}/../.github/workflows`);
 const WORKFLOW_PREFIX = 'lint-';
 const WORKFLOW_PATH = plugin =>
     `${WORKFLOW_DIR}/${WORKFLOW_PREFIX}${plugin}.yml`;
+const WORKFLOW_LINK = plugin =>
+    `https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3A${plugin}`;
 const WORKFLOW_BADGE = plugin =>
-    `![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/${plugin}/badge.svg)`;
+    `[![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/${plugin}/badge.svg)](${WORKFLOW_LINK(
+        plugin
+    )})`;
 const LINT_COMMAND = plugin =>
     `yarn lint --config ./plugin-configs/${plugin}.config.js`;
 
