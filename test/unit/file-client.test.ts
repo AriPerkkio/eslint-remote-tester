@@ -248,7 +248,7 @@ describe('file-client', () => {
             expect(readComparisonCache()).toEqual(results);
         });
 
-        test('updates comparison cache on file system when updateComparisonReference is disabled', () => {
+        test('does not update comparison cache when updateComparisonReference is disabled', () => {
             mockConfig.mockReturnValue({ updateComparisonReference: false });
             removeComparisonCache();
             const results = [generateResult('1'), generateResult('2')];
