@@ -1,10 +1,7 @@
 import fs from 'fs';
 
-import {
-    cloneRepository,
-    CACHE_LOCATION,
-    RepositoryClientOptions,
-} from './repository-client';
+import { CACHE_LOCATION } from './file-constants';
+import { cloneRepository, RepositoryClientOptions } from './repository-client';
 import config from '@config';
 
 export interface SourceFile {

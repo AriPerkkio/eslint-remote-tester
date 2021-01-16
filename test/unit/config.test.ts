@@ -22,6 +22,8 @@ const DEFAULT_CONFIGURATION: ConfigWithOptionals = {
     cache: undefined,
     logLevel: undefined,
     timeLimit: undefined,
+    compare: undefined,
+    updateComparisonReference: undefined,
     onComplete: undefined,
 };
 
@@ -46,6 +48,8 @@ describe('config', () => {
         expect(config.timeLimit).toBe(5.5 * 60 * 60);
         expect(config.pathIgnorePattern).toBe(undefined);
         expect(config.cache).toBe(true);
+        expect(config.compare).toBe(false);
+        expect(config.updateComparisonReference).toBe(true);
         expect(config.onComplete).toBe(undefined);
     });
 
@@ -61,6 +65,8 @@ describe('config', () => {
         expect(config.timeLimit).toBe(5.5 * 60 * 60);
         expect(config.pathIgnorePattern).toBe(undefined);
         expect(config.cache).toBe(true);
+        expect(config.compare).toBe(false);
+        expect(config.updateComparisonReference).toBe(true);
         expect(config.onComplete).toBe(undefined);
     });
 
@@ -285,6 +291,34 @@ describe('validateConfig', () => {
             await validateConfig({
                 ...DEFAULT_CONFIGURATION,
                 timeLimit: 1,
+            });
+        });
+
+        test('compare is optional', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                compare: undefined,
+            });
+        });
+
+        test('compare accepts boolean', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                compare: true,
+            });
+        });
+
+        test('updateComparisonReference is optional', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                updateComparisonReference: undefined,
+            });
+        });
+
+        test('updateComparisonReference accepts boolean', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                updateComparisonReference: true,
             });
         });
 
@@ -632,6 +666,30 @@ describe('validateConfig', () => {
             const [validationError] = getConsoleLogCalls();
             expect(validationError).toMatch(
                 'timeLimit (-2) should be a positive number.'
+            );
+        });
+
+        test('compare requires boolean', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                compare: 'text' as any,
+            });
+
+            const [validationError] = getConsoleLogCalls();
+            expect(validationError).toMatch(
+                'compare (text) should be a boolean.'
+            );
+        });
+
+        test('updateComparisonReference requires boolean', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                updateComparisonReference: 'text' as any,
+            });
+
+            const [validationError] = getConsoleLogCalls();
+            expect(validationError).toMatch(
+                'updateComparisonReference (text) should be a boolean.'
             );
         });
 

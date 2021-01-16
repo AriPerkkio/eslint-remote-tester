@@ -1,16 +1,50 @@
 import config from '@config';
-import { ResultsStore } from '@file-client';
+import {
+    ResultsStore,
+    compareResults,
+    writeComparisonResults,
+} from '@file-client';
+import { ComparisonResults } from '@file-client/result-templates';
+import { RESULT_COMPARISON_FINISHED } from './log-templates';
+import { LogMessage } from './types';
 
 /**
  * Callback invoked once scan is complete and application is about to exit
  */
-export default async function onExit(): Promise<void> {
+export default async function onExit(): Promise<LogMessage[]> {
+    const messages: LogMessage[] = [];
     const errors = [];
 
-    if (config.onComplete) {
-        const results = ResultsStore.getResults();
+    const results = ResultsStore.getResults();
+    let comparisonResults: ComparisonResults | null = null;
+
+    if (config.compare) {
         try {
-            const onCompletePromise = config.onComplete(results);
+            comparisonResults = compareResults(results);
+            ResultsStore.setComparisonResults(comparisonResults);
+
+            messages.push({
+                content: RESULT_COMPARISON_FINISHED(
+                    comparisonResults.added.length,
+                    comparisonResults.removed.length
+                ),
+                color: 'green',
+                level: 'verbose',
+            });
+
+            writeComparisonResults(comparisonResults, results);
+        } catch (e) {
+            errors.push('Error occured while generating comparison results');
+            errors.push(e.stack);
+        }
+    }
+
+    if (config.onComplete) {
+        try {
+            const onCompletePromise = config.onComplete(
+                results,
+                comparisonResults
+            );
 
             if (onCompletePromise instanceof Promise) {
                 await onCompletePromise;
@@ -24,4 +58,6 @@ export default async function onExit(): Promise<void> {
     if (errors.length) {
         throw new Error(errors.filter(Boolean).join('\n'));
     }
+
+    return messages;
 }

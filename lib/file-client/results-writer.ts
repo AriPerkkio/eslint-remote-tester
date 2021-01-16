@@ -2,21 +2,25 @@ import fs from 'fs';
 import { isMainThread } from 'worker_threads';
 
 import ResultsStore from './results-store';
-import { CACHE_LOCATION, URL } from './repository-client';
+import {
+    CACHE_LOCATION,
+    RESULTS_COMPARE_LOCATION,
+    RESULTS_LOCATION,
+    URL,
+} from './file-constants';
 import {
     RESULT_PARSER_TO_TEMPLATE,
     RESULT_PARSER_TO_EXTENSION,
-    ResultTemplateOptions,
+    Result,
 } from './result-templates';
 import config from '@config';
 import { LintMessage } from '@engine/types';
 
-export const RESULTS_LOCATION = './eslint-remote-tester-results';
 export const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
 const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
 
 /**
- * Initialize results folder
+ * Initialize results and comparison directories
  * - Should be ran once from the main thread
  */
 export function prepareResultsDirectory(): void {
@@ -26,10 +30,11 @@ export function prepareResultsDirectory(): void {
         }
 
         fs.mkdirSync(RESULTS_LOCATION);
+        fs.mkdirSync(RESULTS_COMPARE_LOCATION);
     }
 }
 
-function parseMessages(messages: LintMessage[]): ResultTemplateOptions[] {
+function parseMessages(messages: LintMessage[]): Result[] {
     return messages.map(result => {
         const path = result.path.replace(`${CACHE_LOCATION}/`, '');
         const extension = path.split('.').pop();

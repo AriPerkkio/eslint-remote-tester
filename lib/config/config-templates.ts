@@ -58,11 +58,17 @@ export const CONFIGURATION_FILE_TEMPLATE =
     /** Optional setting for log level. Valid values are verbose, info, warn, error. Defaults to verbose. */
     logLevel: 'verbose',
 
-    /** Optional boolean flag used to enable caching of cloned repositories. For CIs it's ideal to disable caching. Defauls to true. */
+    /** Optional boolean flag used to enable caching of cloned repositories. For CIs it's ideal to disable caching. Defaults to true. */
     cache: true,
 
     /** Optional time limit in seconds for the scan. Scan is interrupted after reaching the limit. Defaults to 5 hours 30 minutes. */
     timeLimit: 5.5 * 60 * 60, // 5 hours 30 minutes
+
+    /** Optional boolean flag used to enable result comparison. Defaults to false. */
+    compare: false,
+
+    /** Optional boolean flag used to enable result comparison reference updating. Used only when compare is enable. Defaults to true. */
+    updateComparisonReference: true,
 
     /**
      * Optional callback invoked once scan is complete.
@@ -78,9 +84,14 @@ export const CONFIGURATION_FILE_TEMPLATE =
      *     source: string,
      *     error: (string|undefined),
      * }[]} results Results of the scan, if any
+     *
+     * @param {{
+     *     added: {}[],
+     *     removed: {}[]
+     * }} comparisonResults Comparison results of the scan, if any
      * @returns {Promise<void>|void}
      */
-    onComplete: async function onComplete(results) {
-
+    onComplete: async function onComplete(results, comparisonResults) {
+        // Extend the process with custom features, e.g. send results to email, create issues to Github...
     },
 }`;

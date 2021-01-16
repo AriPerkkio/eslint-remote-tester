@@ -4,7 +4,7 @@ import { LintMessage } from '@engine/types';
 const NEW_LINE_REGEX = /\n/g;
 
 // Note that this is part of public API
-export interface ResultTemplateOptions {
+export interface Result {
     repository: string;
     repositoryOwner: string;
     rule: LintMessage['ruleId'];
@@ -16,49 +16,84 @@ export interface ResultTemplateOptions {
     error?: LintMessage['error'];
 }
 
-// prettier-ignore
-const RESULT_TEMPLATE_PLAINTEXT = (options: ResultTemplateOptions): string =>
-`Rule: ${options.rule}
-Message: ${options.message}
-Path: ${options.path}
-Link: ${options.link}
+export interface ComparisonResults {
+    /** New results compared to previous scan */
+    added: Result[];
 
-${options.source}
-${options.error ? `
+    /** Removed results compared to previous scan */
+    removed: Result[];
+}
+
+type ComparisonType = keyof ComparisonResults;
+export const ComparisonTypes: ComparisonType[] = ['added', 'removed'];
+
+// prettier-ignore
+const RESULT_TEMPLATE_PLAINTEXT = (result: Result): string =>
+`Rule: ${result.rule}
+Message: ${result.message}
+Path: ${result.path}
+Link: ${result.link}
+
+${result.source}
+${result.error ? `
 Error:
-${options.error}
+${result.error}
 ` : ''}`;
 
 // prettier-ignore
-const RESULT_TEMPLATE_MARKDOWN = (options: ResultTemplateOptions): string =>
-`## Rule: ${options.rule}
+const RESULT_TEMPLATE_MARKDOWN = (result: Result): string =>
+`## Rule: ${result.rule}
 
--   Message: \`${options.message.replace(NEW_LINE_REGEX, ' ')}\`
--   Path: \`${options.path}\`
--   [Link](${options.link})
+-   Message: \`${result.message.replace(NEW_LINE_REGEX, ' ')}\`
+-   Path: \`${result.path}\`
+-   [Link](${result.link})
 
-\`\`\`${options.extension || ''}
-${options.source || ''}
+\`\`\`${result.extension || ''}
+${result.source || ''}
 \`\`\`
-${options.error ? `
+${result.error ? `
 \`\`\`
-${options.error}
+${result.error}
 \`\`\`
 ` : ''}`;
 
 // prettier-ignore
-export const RESULTS_TEMPLATE_CI_BASE = (options: ResultTemplateOptions): string =>
-`Repository: ${options.repositoryOwner}/${options.repository}`;
+export const RESULTS_TEMPLATE_CI_BASE = (result: Result): string =>
+`Repository: ${result.repositoryOwner}/${result.repository}`;
+
+// prettier-ignore
+const COMPARISON_RESULTS_TEMPLATE_PLAINTEXT = (type: ComparisonType, results: Result[]): string =>
+`${upperCaseFirstLetter(type)}:
+${results.length ? results.map(RESULT_TEMPLATE_PLAINTEXT).join('\n'): 'No changes'}`;
+
+// prettier-ignore
+const COMPARISON_RESULTS_TEMPLATE_MARKDOWN = (type: ComparisonType, results: Result[]): string =>
+`# ${upperCaseFirstLetter(type)}:
+${results.length ? results.map(RESULT_TEMPLATE_MARKDOWN).join('\n'): 'No changes'}`;
 
 export const RESULT_PARSER_TO_TEMPLATE: Record<
     ResultParser,
-    (options: ResultTemplateOptions) => string
+    (result: Result) => string
 > = {
     plaintext: RESULT_TEMPLATE_PLAINTEXT,
     markdown: RESULT_TEMPLATE_MARKDOWN,
+} as const;
+
+export const RESULT_PARSER_TO_COMPARE_TEMPLATE: Record<
+    ResultParser,
+    (type: ComparisonType, results: Result[]) => string
+> = {
+    plaintext: COMPARISON_RESULTS_TEMPLATE_PLAINTEXT,
+    markdown: COMPARISON_RESULTS_TEMPLATE_MARKDOWN,
 } as const;
 
 export const RESULT_PARSER_TO_EXTENSION: Record<ResultParser, string> = {
     plaintext: '',
     markdown: '.md',
 } as const;
+
+function upperCaseFirstLetter(text: string) {
+    const [firstLetter, ...letters] = text;
+
+    return [firstLetter.toUpperCase(), ...letters].join('');
+}

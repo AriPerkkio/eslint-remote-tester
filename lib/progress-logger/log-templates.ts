@@ -108,6 +108,11 @@ export const OVERFLOWING_ROWS_TOP = (overflowingRowCount: number): string =>
 export const OVERFLOWING_ROWS_BOTTOM = (overflowingRowCount: number): string =>
     `[\u25BC to see ${overflowingRowCount} lines below]`;
 
+export const RESULT_COMPARISON_FINISHED = (
+    added: number,
+    removed: number
+): string => `[DONE] Result comparison: Added ${added}. Removed ${removed}.`;
+
 export const SCAN_TIMELIMIT_REACHED = (timeSeconds: number): string =>
     `[DONE] Reached scan time limit ${formatSeconds(timeSeconds)}`;
 
