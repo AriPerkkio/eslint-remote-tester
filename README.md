@@ -147,9 +147,7 @@ Plugin projects can set their CI to run `eslint-remote-tester` on comparison mod
 The CI will compare ESLint reports between the `master` and PR branches, and report all new and removed reports.
 This way the reviewers can easily see whether PR actually fixed the issue and if it introduced new bugs.
 
-Follow these steps to setup CI for comparing changes in PRs:
-
-1. TODO
+Projects using GitHub CIs can utilize [actions/eslint-remote-tester-compare-action](https://github.com/AriPerkkio/eslint-remote-tester-compare-action) for setting up PR comparisons.
 
 ### Plugin maintainer making sure all existing rules do not crash
 
