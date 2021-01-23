@@ -6,13 +6,10 @@ import {
     ConfigToValidate,
     ConfigWithOptionals,
     LogLevel,
-    LogLevels,
+    LogLevels as LOG_LEVELS,
     ResultParser,
-    ResultParsers,
+    ResultParsers as RESULT_PARSERS,
 } from './types';
-
-const RESULT_PARSERS: typeof ResultParsers = ['plaintext', 'markdown'];
-const LOG_LEVELS: typeof LogLevels = ['verbose', 'info', 'warn', 'error'];
 
 const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
