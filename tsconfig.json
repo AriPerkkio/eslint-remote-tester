@@ -9,6 +9,7 @@
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "jsx": "react",
+        "declaration": true,
         "baseUrl": ".",
         "paths": {
             "@config": ["lib/config"],

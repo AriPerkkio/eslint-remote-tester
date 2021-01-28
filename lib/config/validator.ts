@@ -89,7 +89,8 @@ function validateOptionalBoolean(
  * Validate given configuration
  */
 export default async function validate(
-    configToValidate: ConfigToValidate
+    configToValidate: ConfigToValidate,
+    exitWhenError = true
 ): Promise<void> {
     const {
         repositories,
@@ -205,10 +206,14 @@ export default async function validate(
 
     const validationErrors = errors.filter(Boolean).join('\n- ');
     if (validationErrors.length) {
-        console.log(
-            chalk.red`Configuration validation errors: \n- ${validationErrors}`
-        );
-        process.exit(1);
+        const errorMessage = `Configuration validation errors:\n- ${validationErrors}`;
+        console.log(chalk.red(errorMessage));
+
+        if (exitWhenError) {
+            process.exit(1);
+        } else {
+            throw new Error(errorMessage);
+        }
     }
 }
 
