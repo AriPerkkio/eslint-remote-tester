@@ -27,6 +27,12 @@ export interface ComparisonResults {
 type ComparisonType = keyof ComparisonResults;
 export const ComparisonTypes: ComparisonType[] = ['added', 'removed'];
 
+export type ResultTemplate = (result: Result) => string;
+export type ComparisonResultTemplate = (
+    type: ComparisonType,
+    results: Result[]
+) => string;
+
 // prettier-ignore
 const RESULT_TEMPLATE_PLAINTEXT = (result: Result): string =>
 `Rule: ${result.rule}
@@ -71,17 +77,14 @@ const COMPARISON_RESULTS_TEMPLATE_MARKDOWN = (type: ComparisonType, results: Res
 `# ${upperCaseFirstLetter(type)}:
 ${results.length ? results.map(RESULT_TEMPLATE_MARKDOWN).join('\n'): 'No changes'}`;
 
-export const RESULT_PARSER_TO_TEMPLATE: Record<
-    ResultParser,
-    (result: Result) => string
-> = {
+export const RESULT_PARSER_TO_TEMPLATE: Record<ResultParser, ResultTemplate> = {
     plaintext: RESULT_TEMPLATE_PLAINTEXT,
     markdown: RESULT_TEMPLATE_MARKDOWN,
 } as const;
 
 export const RESULT_PARSER_TO_COMPARE_TEMPLATE: Record<
     ResultParser,
-    (type: ComparisonType, results: Result[]) => string
+    ComparisonResultTemplate
 > = {
     plaintext: COMPARISON_RESULTS_TEMPLATE_PLAINTEXT,
     markdown: COMPARISON_RESULTS_TEMPLATE_MARKDOWN,

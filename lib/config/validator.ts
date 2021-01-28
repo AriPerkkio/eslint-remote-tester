@@ -6,13 +6,10 @@ import {
     ConfigToValidate,
     ConfigWithOptionals,
     LogLevel,
-    LogLevels,
+    LogLevels as LOG_LEVELS,
     ResultParser,
-    ResultParsers,
+    ResultParsers as RESULT_PARSERS,
 } from './types';
-
-const RESULT_PARSERS: typeof ResultParsers = ['plaintext', 'markdown'];
-const LOG_LEVELS: typeof LogLevels = ['verbose', 'info', 'warn', 'error'];
 
 const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';
@@ -92,7 +89,8 @@ function validateOptionalBoolean(
  * Validate given configuration
  */
 export default async function validate(
-    configToValidate: ConfigToValidate
+    configToValidate: ConfigToValidate,
+    exitWhenError = true
 ): Promise<void> {
     const {
         repositories,
@@ -208,10 +206,14 @@ export default async function validate(
 
     const validationErrors = errors.filter(Boolean).join('\n- ');
     if (validationErrors.length) {
-        console.log(
-            chalk.red`Configuration validation errors: \n- ${validationErrors}`
-        );
-        process.exit(1);
+        const errorMessage = `Configuration validation errors:\n- ${validationErrors}`;
+        console.log(chalk.red(errorMessage));
+
+        if (exitWhenError) {
+            process.exit(1);
+        } else {
+            throw new Error(errorMessage);
+        }
     }
 }
 

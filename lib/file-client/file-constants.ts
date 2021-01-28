@@ -11,7 +11,7 @@ export const RESULTS_COMPARE_DIR = 'comparison-results';
 export const RESULTS_COMPARE_LOCATION = `${RESULTS_LOCATION}/${RESULTS_COMPARE_DIR}`;
 
 /** Cache JSON for previous scan results */
-const RESULT_COMPARISON_CACHE = '.comparison-cache.json';
+export const RESULT_COMPARISON_CACHE = '.comparison-cache.json';
 
 /** Location for result comparison cache */
 export const RESULTS_COMPARISON_CACHE_LOCATION = `${CACHE_LOCATION}/${RESULT_COMPARISON_CACHE}`;

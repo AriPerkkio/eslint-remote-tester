@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "strict": true,
-        "sourceMap": true,
         "module": "commonjs",
         "target": "es6",
         "outDir": "dist",
@@ -10,6 +9,7 @@
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "jsx": "react",
+        "declaration": true,
         "baseUrl": ".",
         "paths": {
             "@config": ["lib/config"],

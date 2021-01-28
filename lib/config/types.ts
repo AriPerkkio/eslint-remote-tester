@@ -6,10 +6,10 @@ type AllKeysOptional<T extends { [K: string]: any }> = {
     [K in keyof T]?: T[K];
 };
 
-export const ResultParsers: ['plaintext', 'markdown'];
+export const ResultParsers = ['plaintext', 'markdown'] as const;
 export type ResultParser = typeof ResultParsers[number];
 
-export const LogLevels: ['verbose', 'info', 'warn', 'error'];
+export const LogLevels = ['verbose', 'info', 'warn', 'error'] as const;
 export type LogLevel = typeof LogLevels[number];
 
 /** Internal config typings after defaults have been set */
