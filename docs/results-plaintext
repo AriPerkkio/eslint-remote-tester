@@ -3,51 +3,61 @@ Message: Declare this component outside parent component "NestedGrid" or memoize
 Path: mui-org/material-ui/docs/src/pages/components/grid/NestedGrid.js
 Link: https://github.com/mui-org/material-ui/blob/HEAD/docs/src/pages/components/grid/NestedGrid.js#L20-L34
 
-export default function NestedGrid() {
-  const classes = useStyles();
+  18 |   const classes = useStyles();
+  19 |
+> 20 |   function FormRow() {
+     |   ^^^^^^^^^^^^^^^^^^^^
+> 21 |     return (
+     | ^^^^^^^^^^^^
+> 22 |       <React.Fragment>
+     | ^^^^^^^^^^^^
+> 23 |         <Grid item xs={4}>
+     | ^^^^^^^^^^^^
+> 24 |           <Paper className={classes.paper}>item</Paper>
+     | ^^^^^^^^^^^^
+> 25 |         </Grid>
+     | ^^^^^^^^^^^^
+> 26 |         <Grid item xs={4}>
+     | ^^^^^^^^^^^^
+> 27 |           <Paper className={classes.paper}>item</Paper>
+     | ^^^^^^^^^^^^
+> 28 |         </Grid>
+     | ^^^^^^^^^^^^
+> 29 |         <Grid item xs={4}>
+     | ^^^^^^^^^^^^
+> 30 |           <Paper className={classes.paper}>item</Paper>
+     | ^^^^^^^^^^^^
+> 31 |         </Grid>
+     | ^^^^^^^^^^^^
+> 32 |       </React.Fragment>
+     | ^^^^^^^^^^^^
+> 33 |     );
+     | ^^^^^^^^^^^^
+> 34 |   }
+     | ^^^^
+  35 |
+  36 |   return (
+  37 |     <div className={classes.root}>
 
-  function FormRow() {
-    return (
-      <React.Fragment>
-        <Grid item xs={4}>
-          <Paper className={classes.paper}>item</Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper className={classes.paper}>item</Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper className={classes.paper}>item</Paper>
-        </Grid>
-      </React.Fragment>
-    );
-  }
+Rule: jsx-no-constructed-context-values
+Message: Cannot read property 'set' of undefined
+Occurred while linting <text>:69
+Path: mlaursen/react-md/packages/alert/src/MessageQueue.tsx
+Link: https://github.com/mlaursen/react-md/blob/HEAD/packages/alert/src/MessageQueue.tsx#L69
 
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={1}>
-        <Grid container item xs={12} spacing={3}>
+  67 |
+  68 |   return (
+> 69 |     <AddMessageContext.Provider value={addMessage as AddMessage<Message>}>
+  70 |       <MessageQueueActionsContext.Provider value={actions}>
+  71 |         <MessageVisibilityContext.Provider value={visible}>
+  72 |           <MessageQueueContext.Provider value={queue}>
 
-Rule: no-reference-type-as-default-prop
-Message: Cannot read property 'type' of null
-Occurred while linting <text>:5
-Path: uber/baseweb/documentation-site/examples/block/basic.tsx
-Link: https://github.com/uber/baseweb/blob/HEAD/documentation-site/examples/block/basic.tsx#L5
-
-// @flow
-import React from 'react';
-import {Block} from 'baseui/block';
-
-export default function() {
-  return (
-    <React.Fragment>
-      <Block>first element</Block>
-      <Block paddingTop="100px">
-        padding top applied to this element
-
-TypeError: Cannot read property 'type' of null
-Occurred while linting <text>:7
-    at isReactComponentName (/<removed>/eslint-plugin-react/lib/rules/no-reference-type-as-default-prop.js:24:15)
-    at FunctionDeclaration (/<removed>/eslint-plugin-react/lib/rules/no-reference-type-as-default-prop.js:115:12)
+Error:
+TypeError: Cannot read property 'set' of undefined
+Occurred while linting <text>:69
+    at isConstruction (/<removed>/eslint-remote-tester/node_modules/eslint-plugin-react/lib/rules/jsx-no-constructed-context-values.js:25:41)
+    at isConstruction (/<removed>/eslint-remote-tester/node_modules/eslint-plugin-react/lib/rules/jsx-no-constructed-context-values.js:113:14)
+    at JSXOpeningElement (/<removed>/eslint-remote-tester/node_modules/eslint-plugin-react/lib/rules/jsx-no-constructed-context-values.js:179:31)
     at /<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/safe-emitter.js:45:58
     at Array.forEach (<anonymous>)
     at Object.emit (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
@@ -55,51 +65,17 @@ Occurred while linting <text>:7
     at NodeEventGenerator.applySelectors (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/node-event-generator.js:283:22)
     at NodeEventGenerator.enterNode (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/node-event-generator.js:297:14)
     at CodePathAnalyzer.enterNode (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-    at /<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/linter.js:952:32
 
-Rule: jsx-handler-names
-Message: Cannot read property 'object' of undefined
-Occurred while linting <text>:15
-Path: mui-org/material-ui/docs/src/modules/components/AdGuest.js
-Link: https://github.com/mui-org/material-ui/blob/HEAD/docs/src/modules/components/AdGuest.js#L15
-
-    return null;
-  }
-
-  return (
-    <Portal
-      container={() => {
-        const description = document.querySelector('.description');
-
-        if (ad.portal.element === description) {
-          description.classList.add('ad');
-        } else {
-
-TypeError: Cannot read property 'object' of undefined
-Occurred while linting <text>:15
-    at JSXAttribute (/<removed>/eslint-plugin-react/lib/rules/jsx-handler-names.js:112:52)
-    at /<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/safe-emitter.js:45:58
-    at Array.forEach (<anonymous>)
-    at Object.emit (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
-    at NodeEventGenerator.applySelector (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/node-event-generator.js:254:26)
-    at NodeEventGenerator.applySelectors (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/node-event-generator.js:283:22)
-    at NodeEventGenerator.enterNode (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/node-event-generator.js:297:14)
-    at CodePathAnalyzer.enterNode (/<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-    at /<removed>/eslint-remote-tester/node_modules/eslint/lib/linter/linter.js:952:32
-    at Array.forEach (<anonymous>)
 
 Rule: react/jsx-handler-names
 Message: Handler function for onClick prop key must be a camelCase name beginning with 'handle' only
-Path: mui-org/material-ui/docs/src/pages/components/accordion/ActionsInAccordionSummary.js
-Link: https://github.com/mui-org/material-ui/blob/HEAD/docs/src/pages/components/accordion/ActionsInAccordionSummary.js#L31-L31
+Path: mui-org/material-ui/docs/src/pages/components/menus/MenuPopupState.js
+Link: https://github.com/mui-org/material-ui/blob/HEAD/docs/src/pages/components/menus/MenuPopupState.js#L17-L17
 
-          id="additional-actions1-header"
-        >
-          <FormControlLabel
-            aria-label="Acknowledge"
-            onClick={(event) => event.stopPropagation()}
-            onFocus={(event) => event.stopPropagation()}
-            control={<Checkbox />}
-            label="I acknowledge that I should stop the click event propagation"
-          />
-        </AccordionSummary>
+  15 |           <Menu {...bindMenu(popupState)}>
+  16 |             <MenuItem onClick={popupState.close}>Cake</MenuItem>
+> 17 |             <MenuItem onClick={popupState.close}>Death</MenuItem>
+     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  18 |           </Menu>
+  19 |         </React.Fragment>
+  20 |       )}

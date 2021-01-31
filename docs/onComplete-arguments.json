@@ -4,21 +4,21 @@
             "repository": "jira_clone",
             "repositoryOwner": "oldboyxx",
             "rule": "no-empty-function",
-            "message": "Unexpected empty arrow function 'onChange'.",
-            "path": "oldboyxx/jira_clone/client/src/shared/components/Textarea/index.jsx",
-            "link": "https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Textarea/index.jsx#L20-L20",
+            "message": "Unexpected empty arrow function 'onClick'.",
+            "path": "oldboyxx/jira_clone/client/src/shared/components/Button/index.jsx",
+            "link": "https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Button/index.jsx#L28-L28",
             "extension": "jsx",
-            "source": "  className: undefined,\n  invalid: false,\n  minRows: 2,\n  value: undefined,\n  onChange: () => {},\n};\n\nconst Textarea = forwardRef(({ className, invalid, onChange, ...textareaProps }, ref) => (\n  <StyledTextarea className={className} invalid={invalid}>\n    <TextareaAutoSize"
+            "source": "  26 |   disabled: false,\n  27 |   isWorking: false,\n> 28 |   onClick: () => {},\n     |                  ^^\n  29 | };\n  30 | \n  31 | const Button = forwardRef("
         },
         {
-            "repository": "reach-ui",
-            "repositoryOwner": "reach",
+            "repository": "jira_clone",
+            "repositoryOwner": "oldboyxx",
             "rule": "no-empty-function",
-            "message": "Unexpected empty arrow function.",
-            "path": "reach/reach-ui/packages/combobox/examples/token-input.example.js",
-            "link": "https://github.com/reach/reach-ui/blob/HEAD/packages/combobox/examples/token-input.example.js#L144-L144",
-            "extension": "js",
-            "source": "  );\n}\n\nfunction ExampleTokenbox({ onSelect, ...props }) {\n  const handleSelect = () => {};\n  return (\n    <Combobox\n      onSelect={wrapEvent(onSelect, handleSelect)}\n      aria-label=\"choose a city\"\n      {...props}"
+            "message": "Unexpected empty arrow function 'onChange'.",
+            "path": "oldboyxx/jira_clone/client/src/shared/components/Input/index.jsx",
+            "link": "https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Input/index.jsx#L21-L21",
+            "extension": "jsx",
+            "source": "  19 |   invalid: false,\n  20 |   filter: undefined,\n> 21 |   onChange: () => {},\n     |                   ^^\n  22 | };\n  23 | \n  24 | const Input = forwardRef(({ icon, className, filter, onChange, ...inputProps }, ref) => {"
         }
     ],
     "comparisonResults": {
@@ -31,17 +31,17 @@
                 "path": "oldboyxx/jira_clone/client/src/shared/components/Button/index.jsx",
                 "link": "https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Button/index.jsx#L28-L28",
                 "extension": "jsx",
-                "source": "  icon: undefined,\n  iconSize: 18,\n  disabled: false,\n  isWorking: false,\n  onClick: () => {},\n};\n\nconst Button = forwardRef(\n  ({ children, variant, icon, iconSize, disabled, isWorking, onClick, ...buttonProps }, ref) => {\n    const handleClick = () => {"
+                "source": "  26 |   disabled: false,\n  27 |   isWorking: false,\n> 28 |   onClick: () => {},\n     |                  ^^\n  29 | };\n  30 | \n  31 | const Button = forwardRef("
             },
             {
-                "repository": "reach-ui",
-                "repositoryOwner": "reach",
+                "repository": "jira_clone",
+                "repositoryOwner": "oldboyxx",
                 "rule": "no-empty-function",
-                "message": "Unexpected empty arrow function.",
-                "path": "reach/reach-ui/website/src/components/Table.js",
-                "link": "https://github.com/reach/reach-ui/blob/HEAD/website/src/components/Table.js#L47-L47",
-                "extension": "js",
-                "source": "\nexport function Caption(props) {\n  const {\n    tableId,\n    setCaptionId = () => {},\n    captionId = props.id,\n  } = React.useContext(TableContext);\n  const generatedCaptionId = tableId ?? `caption-${tableId}`;\n  React.useEffect(() => {\n    setCaptionId(props.id || generatedCaptionId);"
+                "message": "Unexpected empty arrow function 'onChange'.",
+                "path": "oldboyxx/jira_clone/client/src/shared/components/Input/index.jsx",
+                "link": "https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Input/index.jsx#L21-L21",
+                "extension": "jsx",
+                "source": "  19 |   invalid: false,\n  20 |   filter: undefined,\n> 21 |   onChange: () => {},\n     |                   ^^\n  22 | };\n  23 | \n  24 | const Input = forwardRef(({ icon, className, filter, onChange, ...inputProps }, ref) => {"
             }
         ],
         "removed": [
@@ -53,27 +53,27 @@
                 "path": "AriPerkkio/js-framework-playground/packages/react/src/components/LoadButton.jsx",
                 "link": "https://github.com/AriPerkkio/js-framework-playground/blob/HEAD/packages/react/src/components/LoadButton.jsx#L4-L4",
                 "extension": "jsx",
-                "source": "import React, { useReducer } from 'react';\n\nconst LoadButton = ({ onUserLoad }) => {\n    const [userIndex, increaseUserIndex] = useReducer(s => s + 1, 1);\n    const [disabled, toggleDisabled] = useReducer(s => !s, false);\n\n    const onClick = () => {\n        toggleDisabled();\n        increaseUserIndex();"
+                "source": "  2 | \n  3 | const LoadButton = ({ onUserLoad }) => {\n> 4 |     const [userIndex, increaseUserIndex] = useReducer(s => s + 1, 1);\n    |                                                       ^\n  5 |     const [disabled, toggleDisabled] = useReducer(s => !s, false);\n  6 | \n  7 |     const onClick = () => {"
             },
             {
-                "repository": "jira_clone",
-                "repositoryOwner": "oldboyxx",
+                "repository": "js-framework-playground",
+                "repositoryOwner": "AriPerkkio",
                 "rule": "id-length",
-                "message": "Identifier name 'b' is too short (< 2).",
-                "path": "oldboyxx/jira_clone/client/src/Project/Board/Lists/List/index.jsx",
-                "link": "https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/Project/Board/Lists/List/index.jsx#L72-L72",
+                "message": "Identifier name 's' is too short (< 2).",
+                "path": "AriPerkkio/js-framework-playground/packages/react/src/components/LoadButton.jsx",
+                "link": "https://github.com/AriPerkkio/js-framework-playground/blob/HEAD/packages/react/src/components/LoadButton.jsx#L5-L5",
                 "extension": "jsx",
-                "source": "  return issues;\n};\n\nconst getSortedListIssues = (issues, status) =>\n  issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);\n\nconst formatIssuesCount = (allListIssues, filteredListIssues) => {\n  if (allListIssues.length !== filteredListIssues.length) {\n    return `${filteredListIssues.length} of ${allListIssues.length}`;\n  }"
+                "source": "  3 | const LoadButton = ({ onUserLoad }) => {\n  4 |     const [userIndex, increaseUserIndex] = useReducer(s => s + 1, 1);\n> 5 |     const [disabled, toggleDisabled] = useReducer(s => !s, false);\n    |                                                   ^\n  6 | \n  7 |     const onClick = () => {\n  8 |         toggleDisabled();"
             },
             {
-                "repository": "reach-ui",
-                "repositoryOwner": "reach",
+                "repository": "js-framework-playground",
+                "repositoryOwner": "AriPerkkio",
                 "rule": "id-length",
-                "message": "Identifier name 't' is too short (< 2).",
-                "path": "reach/reach-ui/packages/checkbox/examples/custom-group.example.js",
-                "link": "https://github.com/reach/reach-ui/blob/HEAD/packages/checkbox/examples/custom-group.example.js#L59-L59",
+                "message": "Identifier name 'h' is too short (< 2).",
+                "path": "AriPerkkio/js-framework-playground/packages/vue/src/main.js",
+                "link": "https://github.com/AriPerkkio/js-framework-playground/blob/HEAD/packages/vue/src/main.js#L7-L7",
                 "extension": "js",
-                "source": "        <SmileyCheckbox\n          id={`box-group-${name}`}\n          value={name}\n          checked={\n            Object.values(state.boxes).every((t) => t)\n              ? true\n              : Object.values(state.boxes).some((t) => t)\n              ? \"mixed\"\n              : false\n          }"
+                "source": "  5 | \n  6 | new Vue({\n> 7 |   render: h => h(App),\n    |           ^\n  8 | }).$mount('#app')\n  9 | "
             }
         ]
     }

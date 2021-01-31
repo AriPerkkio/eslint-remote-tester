@@ -1,5 +1,6 @@
 import { parentPort, workerData } from 'worker_threads';
 import { ESLint, Linter } from 'eslint';
+import { codeFrameColumns, SourceLocation } from '@babel/code-frame';
 
 import { LintMessage, WorkerData } from './types';
 import config from '@config';
@@ -28,7 +29,6 @@ const UNKNOWN_RULE_ID = 'unable-to-parse-rule-id';
 // Regex used to attempt parsing out line which caused linter to crash
 const LINE_REGEX = /while linting <text>:(([0-9]+)?)/;
 
-const SOURCE_WINDOW_SIZE = 10;
 const MAX_LINT_TIME_SECONDS = 5;
 
 /**
@@ -79,25 +79,33 @@ function mergeMessagesWithSource(
         return all;
     }
 
-    const sourceLines = result.source ? result.source.split('\n') : [];
-    const sourceLinesPadding = Math.floor(SOURCE_WINDOW_SIZE / 2);
-
     return [
         ...all,
         ...messages.map(message => ({
             ...message,
-            // Construct small snippet of the erroneous code block
-            source: sourceLines
-                .slice(
-                    Math.max(0, message.line - sourceLinesPadding),
-                    Math.min(
-                        sourceLines.length,
-                        sourceLinesPadding + (message.endLine || 0)
-                    )
-                )
-                .join('\n'),
+            source: constructCodeFrame(result.source, message),
         })),
     ];
+}
+
+/**
+ * Build code frame from ESLint result, if possible
+ */
+function constructCodeFrame(
+    source: ESLint.LintResult['source'],
+    message: Linter.LintMessage
+): Linter.LintMessage['source'] {
+    if (!source) return undefined;
+
+    const location: SourceLocation = {
+        start: { line: message.line, column: message.column },
+    };
+
+    if (message.endLine != null) {
+        location.end = { line: message.endLine, column: message.endColumn };
+    }
+
+    return codeFrameColumns(source, location);
 }
 
 /**
@@ -114,26 +122,15 @@ function parseErrorStack(error: Error, file: SourceFile): LintMessage {
     const lineMatch = stack.match(LINE_REGEX) || [];
     const line = parseInt(lineMatch.pop() || '0');
 
-    const sourceLines = [];
-
     // Include erroneous line to source when line was successfully parsed from the stack
-    if (line > 0) {
-        const sourceLinesPadding = Math.floor(SOURCE_WINDOW_SIZE / 2);
-        const lines = content.split('\n');
-
-        sourceLines.push(
-            ...lines.slice(
-                Math.max(0, line - sourceLinesPadding),
-                line + sourceLinesPadding
-            )
-        );
-    }
+    const source =
+        line > 0 ? codeFrameColumns(content, { start: { line } }) : undefined;
 
     return createErrorMessage({
         path,
         line,
         ruleId,
-        source: sourceLines.join('\n'),
+        source,
         error: error.stack,
         message: error.message,
     });
