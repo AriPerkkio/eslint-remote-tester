@@ -18,6 +18,8 @@
 [![eslint-core](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-core/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-core)
 [![eslint-core-ts](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-core-ts/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-core-ts)
 
+[![version](https://img.shields.io/npm/v/eslint-remote-tester?style=plastic)](https://www.npmjs.com/package/eslint-remote-tester)
+
 [Installation](#installation) | [Configuration](#configuration) | [How and when to use](#how-and-when-to-use) | [Examples](#Examples)
 
 `eslint-remote-tester` is a CLI tool for testing given [ESlint](https://github.com/eslint/eslint) rules against multiple repositories at once. It's designed to be used when validating regression of new rules. It can be used to spot whether a new rule flags false positives or crashes ESLint completely. CIs can be configured to verify regression of large set of rules so that possible null pointers or any unexpected errors are caught immediately.
