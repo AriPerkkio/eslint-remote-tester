@@ -18,7 +18,7 @@
 [![eslint-core](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-core/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-core)
 [![eslint-core-ts](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-core-ts/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-core-ts)
 
-[![version](https://img.shields.io/npm/v/eslint-remote-tester?style=plastic)](https://www.npmjs.com/package/eslint-remote-tester)
+[![version](https://img.shields.io/npm/v/eslint-remote-tester)](https://www.npmjs.com/package/eslint-remote-tester)
 
 [Installation](#installation) | [Configuration](#configuration) | [How and when to use](#how-and-when-to-use) | [Examples](#Examples)
 
