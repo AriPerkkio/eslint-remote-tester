@@ -7,16 +7,13 @@
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Button/index.jsx#L28-L28)
 
 ```jsx
-  icon: undefined,
-  iconSize: 18,
-  disabled: false,
-  isWorking: false,
-  onClick: () => {},
-};
-
-const Button = forwardRef(
-  ({ children, variant, icon, iconSize, disabled, isWorking, onClick, ...buttonProps }, ref) => {
-    const handleClick = () => {
+  26 |   disabled: false,
+  27 |   isWorking: false,
+> 28 |   onClick: () => {},
+     |                  ^^
+  29 | };
+  30 |
+  31 | const Button = forwardRef(
 ```
 
 ## Rule: no-empty-function
@@ -26,16 +23,13 @@ const Button = forwardRef(
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Input/index.jsx#L21-L21)
 
 ```jsx
-  value: undefined,
-  icon: undefined,
-  invalid: false,
-  filter: undefined,
-  onChange: () => {},
-};
-
-const Input = forwardRef(({ icon, className, filter, onChange, ...inputProps }, ref) => {
-  const handleChange = event => {
-    if (!filter || filter.test(event.target.value)) {
+  19 |   invalid: false,
+  20 |   filter: undefined,
+> 21 |   onChange: () => {},
+     |                   ^^
+  22 | };
+  23 |
+  24 | const Input = forwardRef(({ icon, className, filter, onChange, ...inputProps }, ref) => {
 ```
 
 ## Rule: no-empty-function
@@ -45,16 +39,13 @@ const Input = forwardRef(({ icon, className, filter, onChange, ...inputProps }, 
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Modal/index.jsx#L29-L29)
 
 ```jsx
-  variant: 'center',
-  width: 600,
-  withCloseIcon: true,
-  isOpen: undefined,
-  onClose: () => {},
-  renderLink: () => {},
-};
-
-const Modal = ({
-  className,
+  27 |   withCloseIcon: true,
+  28 |   isOpen: undefined,
+> 29 |   onClose: () => {},
+     |                  ^^
+  30 |   renderLink: () => {},
+  31 | };
+  32 |
 ```
 
 ## Rule: no-empty-function
@@ -64,16 +55,13 @@ const Modal = ({
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/Modal/index.jsx#L30-L30)
 
 ```jsx
-  width: 600,
-  withCloseIcon: true,
-  isOpen: undefined,
-  onClose: () => {},
-  renderLink: () => {},
-};
-
-const Modal = ({
-  className,
-  testid,
+  28 |   isOpen: undefined,
+  29 |   onClose: () => {},
+> 30 |   renderLink: () => {},
+     |                     ^^
+  31 | };
+  32 |
+  33 | const Modal = ({
 ```
 
 ## Rule: no-empty-function
@@ -83,16 +71,13 @@ const Modal = ({
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/TextEditor/index.jsx#L22-L22)
 
 ```jsx
-  className: undefined,
-  placeholder: undefined,
-  defaultValue: undefined,
-  value: undefined,
-  onChange: () => {},
-  getEditor: () => {},
-};
-
-const TextEditor = ({
-  className,
+  20 |   defaultValue: undefined,
+  21 |   value: undefined,
+> 22 |   onChange: () => {},
+     |                   ^^
+  23 |   getEditor: () => {},
+  24 | };
+  25 |
 ```
 
 ## Rule: no-empty-function
@@ -102,14 +87,11 @@ const TextEditor = ({
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/shared/components/TextEditor/index.jsx#L23-L23)
 
 ```jsx
-  placeholder: undefined,
-  defaultValue: undefined,
-  value: undefined,
-  onChange: () => {},
-  getEditor: () => {},
-};
-
-const TextEditor = ({
-  className,
-  placeholder,
+  21 |   value: undefined,
+  22 |   onChange: () => {},
+> 23 |   getEditor: () => {},
+     |                    ^^
+  24 | };
+  25 |
+  26 | const TextEditor = ({
 ```

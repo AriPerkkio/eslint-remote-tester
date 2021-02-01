@@ -23,9 +23,9 @@ describe('integration', () => {
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
 
-            // Identifier.name = attributeForCrashing
-            window.attributeForCrashing();
-
+              1 | // Identifier.name = attributeForCrashing
+            > 2 | window.attributeForCrashing();
+              3 |
 
             Error:
             TypeError: Cannot read property 'someAttribute' of undefined
@@ -47,12 +47,11 @@ describe('integration', () => {
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
 
-            var foo = bar;
-
-            if (foo) {
-            }
-
-            var p = {
+            > 1 | var foo = bar;
+                |           ^^^
+              2 |
+              3 | if (foo) {
+              4 | }
 
             Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: no-empty
@@ -60,15 +59,15 @@ describe('integration', () => {
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4
 
-            var foo = bar;
-
-            if (foo) {
-            }
-
-            var p = {
-                get name(){
-                    // no returns.
-                }
+              1 | var foo = bar;
+              2 |
+            > 3 | if (foo) {
+                |          ^
+            > 4 | }
+                | ^^
+              5 |
+              6 | var p = {
+              7 |     get name(){
 
             Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: getter-return
@@ -76,16 +75,13 @@ describe('integration', () => {
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7
 
-            if (foo) {
-            }
-
-            var p = {
-                get name(){
-                    // no returns.
-                }
-            };
-            p.getName();
-
+               5 |
+               6 | var p = {
+            >  7 |     get name(){
+                 |     ^^^^^^^^
+               8 |         // no returns.
+               9 |     }
+              10 | };
 
             Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: no-compare-neg-zero
@@ -93,13 +89,12 @@ describe('integration', () => {
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
 
-            };
-            p.getName();
-
-
-            if (foo === -0) {
-              // prevent no-empty
-            }
+              12 |
+              13 |
+            > 14 | if (foo === -0) {
+                 |     ^^^^^^^^^^
+              15 |   // prevent no-empty
+              16 | }
 
 
             "
@@ -118,9 +113,9 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
 
             \`\`\`js
-            // Identifier.name = attributeForCrashing
-            window.attributeForCrashing();
-
+              1 | // Identifier.name = attributeForCrashing
+            > 2 | window.attributeForCrashing();
+              3 | 
             \`\`\`
 
             \`\`\`
@@ -145,12 +140,11 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1)
 
             \`\`\`js
-            var foo = bar;
-
-            if (foo) {
-            }
-
-            var p = {
+            > 1 | var foo = bar;
+                |           ^^^
+              2 | 
+              3 | if (foo) {
+              4 | }
             \`\`\`
 
             ## Rule: no-empty
@@ -160,15 +154,15 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4)
 
             \`\`\`js
-            var foo = bar;
-
-            if (foo) {
-            }
-
-            var p = {
-                get name(){
-                    // no returns.
-                }
+              1 | var foo = bar;
+              2 | 
+            > 3 | if (foo) {
+                |          ^
+            > 4 | }
+                | ^^
+              5 | 
+              6 | var p = {
+              7 |     get name(){
             \`\`\`
 
             ## Rule: getter-return
@@ -178,16 +172,13 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7)
 
             \`\`\`js
-            if (foo) {
-            }
-
-            var p = {
-                get name(){
-                    // no returns.
-                }
-            };
-            p.getName();
-
+               5 | 
+               6 | var p = {
+            >  7 |     get name(){
+                 |     ^^^^^^^^
+               8 |         // no returns.
+               9 |     }
+              10 | };
             \`\`\`
 
             ## Rule: no-compare-neg-zero
@@ -197,13 +188,12 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
 
             \`\`\`js
-            };
-            p.getName();
-
-
-            if (foo === -0) {
-              // prevent no-empty
-            }
+              12 | 
+              13 | 
+            > 14 | if (foo === -0) {
+                 |     ^^^^^^^^^^
+              15 |   // prevent no-empty
+              16 | }
             \`\`\`
             "
         `);
@@ -375,8 +365,9 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            // Identifier.name = attributeForCrashing
-            window.attributeForCrashing();
+              1 | // Identifier.name = attributeForCrashing
+            > 2 | window.attributeForCrashing();
+              3 | 
             [SOURCE]
             .
             [ERROR]
@@ -423,10 +414,11 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            var foo = bar;
-            if (foo) {
-            }
-            var p = {
+            > 1 | var foo = bar;
+                |           ^^^
+              2 | 
+              3 | if (foo) {
+              4 | }
             [SOURCE]
             .
             [ERROR]
@@ -462,13 +454,15 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            var foo = bar;
-            if (foo) {
-            }
-            var p = {
-                get name(){
-                    // no returns.
-                }
+              1 | var foo = bar;
+              2 | 
+            > 3 | if (foo) {
+                |          ^
+            > 4 | }
+                | ^^
+              5 | 
+              6 | var p = {
+              7 |     get name(){
             [SOURCE]
             .
             [ERROR]
@@ -504,14 +498,13 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            if (foo) {
-            }
-            var p = {
-                get name(){
-                    // no returns.
-                }
-            };
-            p.getName();
+               5 | 
+               6 | var p = {
+            >  7 |     get name(){
+                 |     ^^^^^^^^
+               8 |         // no returns.
+               9 |     }
+              10 | };
             [SOURCE]
             .
             [ERROR]
@@ -547,11 +540,12 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            };
-            p.getName();
-            if (foo === -0) {
-              // prevent no-empty
-            }
+              12 | 
+              13 | 
+            > 14 | if (foo === -0) {
+                 |     ^^^^^^^^^^
+              15 |   // prevent no-empty
+              16 | }
             [SOURCE]
             .
             [ERROR]
@@ -644,9 +638,10 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2)
 
             \`\`\`js
-            // Identifier.name = attributeForCrashing
-            window.attributeForCrashing();
-
+              1 | // Identifier.name = attributeForCrashing
+            > 2 | window.attributeForCrashing();
+                | ^^^^^^
+              3 | 
             \`\`\`
 
             ## Rule: no-undef
@@ -656,12 +651,11 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1)
 
             \`\`\`js
-            var foo = bar;
-
-            if (foo) {
-            }
-
-            var p = {
+            > 1 | var foo = bar;
+                |           ^^^
+              2 | 
+              3 | if (foo) {
+              4 | }
             \`\`\`
 
             [ADDED]
@@ -674,13 +668,12 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
 
             \`\`\`js
-            };
-            p.getName();
-
-
-            if (foo === -0) {
-              // prevent no-empty
-            }
+              12 | 
+              13 | 
+            > 14 | if (foo === -0) {
+                 |     ^^^^^^^^^^
+              15 |   // prevent no-empty
+              16 | }
             \`\`\`
 
             [REMOVED]"
@@ -767,21 +760,21 @@ describe('integration', () => {
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2
 
-            // Identifier.name = attributeForCrashing
-            window.attributeForCrashing();
-
+              1 | // Identifier.name = attributeForCrashing
+            > 2 | window.attributeForCrashing();
+                | ^^^^^^
+              3 |
 
             Rule: no-undef
             Message: 'bar' is not defined.
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
 
-            var foo = bar;
-
-            if (foo) {
-            }
-
-            var p = {
+            > 1 | var foo = bar;
+                |           ^^^
+              2 |
+              3 | if (foo) {
+              4 | }
 
 
             Removed:
@@ -790,13 +783,12 @@ describe('integration', () => {
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
 
-            };
-            p.getName();
-
-
-            if (foo === -0) {
-              // prevent no-empty
-            }
+              12 |
+              13 |
+            > 14 | if (foo === -0) {
+                 |     ^^^^^^^^^^
+              15 |   // prevent no-empty
+              16 | }
 
 
             "
@@ -892,8 +884,10 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            // Identifier.name = attributeForCrashing
-            window.attributeForCrashing();
+              1 | // Identifier.name = attributeForCrashing
+            > 2 | window.attributeForCrashing();
+                | ^^^^^^
+              3 | 
             [SOURCE]
             .
             [ERROR]
@@ -929,10 +923,11 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            var foo = bar;
-            if (foo) {
-            }
-            var p = {
+            > 1 | var foo = bar;
+                |           ^^^
+              2 | 
+              3 | if (foo) {
+              4 | }
             [SOURCE]
             .
             [ERROR]
@@ -970,11 +965,12 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-            };
-            p.getName();
-            if (foo === -0) {
-              // prevent no-empty
-            }
+              12 | 
+              13 | 
+            > 14 | if (foo === -0) {
+                 |     ^^^^^^^^^^
+              15 |   // prevent no-empty
+              16 | }
             [SOURCE]
             [REMOVED]
             [TEST-ON-COMPLETE-END]"

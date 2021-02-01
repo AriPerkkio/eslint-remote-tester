@@ -33,6 +33,7 @@
     "homepage": "https://github.com/AriPerkkio/eslint-remote-tester",
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "dependencies": {
+        "@babel/code-frame": "^7.12.11",
         "chalk": "^4.1.0",
         "ink": "^3.0.8",
         "react": "^16.14.0",
@@ -41,6 +42,7 @@
     "devDependencies": {
         "@commitlint/cli": "^11.0.0",
         "@commitlint/config-conventional": "^11.0.0",
+        "@types/babel__code-frame": "^7.0.2",
         "@types/eslint": "^7.2.2",
         "@types/jest": "^26.0.15",
         "@types/node": "^14.10.1",

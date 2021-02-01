@@ -7,15 +7,13 @@
 -   [Link](https://github.com/AriPerkkio/js-framework-playground/blob/HEAD/packages/react/src/components/LoadButton.jsx#L4-L4)
 
 ```jsx
-import React, { useReducer } from 'react';
-
-const LoadButton = ({ onUserLoad }) => {
-    const [userIndex, increaseUserIndex] = useReducer(s => s + 1, 1);
-    const [disabled, toggleDisabled] = useReducer(s => !s, false);
-
-    const onClick = () => {
-        toggleDisabled();
-        increaseUserIndex();
+  2 |
+  3 | const LoadButton = ({ onUserLoad }) => {
+> 4 |     const [userIndex, increaseUserIndex] = useReducer(s => s + 1, 1);
+    |                                                       ^
+  5 |     const [disabled, toggleDisabled] = useReducer(s => !s, false);
+  6 |
+  7 |     const onClick = () => {
 ```
 
 ## Rule: id-length
@@ -25,16 +23,13 @@ const LoadButton = ({ onUserLoad }) => {
 -   [Link](https://github.com/AriPerkkio/js-framework-playground/blob/HEAD/packages/react/src/components/LoadButton.jsx#L5-L5)
 
 ```jsx
-import React, { useReducer } from 'react';
-
-const LoadButton = ({ onUserLoad }) => {
-    const [userIndex, increaseUserIndex] = useReducer(s => s + 1, 1);
-    const [disabled, toggleDisabled] = useReducer(s => !s, false);
-
-    const onClick = () => {
-        toggleDisabled();
-        increaseUserIndex();
-
+  3 | const LoadButton = ({ onUserLoad }) => {
+  4 |     const [userIndex, increaseUserIndex] = useReducer(s => s + 1, 1);
+> 5 |     const [disabled, toggleDisabled] = useReducer(s => !s, false);
+    |                                                   ^
+  6 |
+  7 |     const onClick = () => {
+  8 |         toggleDisabled();
 ```
 
 ## Rule: id-length
@@ -44,11 +39,12 @@ const LoadButton = ({ onUserLoad }) => {
 -   [Link](https://github.com/AriPerkkio/js-framework-playground/blob/HEAD/packages/vue/src/main.js#L7-L7)
 
 ```js
-Vue.config.productionTip = false;
-
-new Vue({
-    render: h => h(App),
-}).$mount('#app');
+  5 |
+  6 | new Vue({
+> 7 |   render: h => h(App),
+    |           ^
+  8 | }).$mount('#app')
+  9 |
 ```
 
 ## Rule: id-length
@@ -58,16 +54,13 @@ new Vue({
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/Project/Board/Lists/List/index.jsx#L72-L72)
 
 ```jsx
-  return issues;
-};
-
-const getSortedListIssues = (issues, status) =>
-  issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
-
-const formatIssuesCount = (allListIssues, filteredListIssues) => {
-  if (allListIssues.length !== filteredListIssues.length) {
-    return `${filteredListIssues.length} of ${allListIssues.length}`;
-  }
+  70 |
+  71 | const getSortedListIssues = (issues, status) =>
+> 72 |   issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
+     |                                                         ^
+  73 |
+  74 | const formatIssuesCount = (allListIssues, filteredListIssues) => {
+  75 |   if (allListIssues.length !== filteredListIssues.length) {
 ```
 
 ## Rule: id-length
@@ -77,16 +70,13 @@ const formatIssuesCount = (allListIssues, filteredListIssues) => {
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/Project/Board/Lists/List/index.jsx#L72-L72)
 
 ```jsx
-  return issues;
-};
-
-const getSortedListIssues = (issues, status) =>
-  issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
-
-const formatIssuesCount = (allListIssues, filteredListIssues) => {
-  if (allListIssues.length !== filteredListIssues.length) {
-    return `${filteredListIssues.length} of ${allListIssues.length}`;
-  }
+  70 |
+  71 | const getSortedListIssues = (issues, status) =>
+> 72 |   issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
+     |                                                            ^
+  73 |
+  74 | const formatIssuesCount = (allListIssues, filteredListIssues) => {
+  75 |   if (allListIssues.length !== filteredListIssues.length) {
 ```
 
 ## Rule: id-length
@@ -96,16 +86,13 @@ const formatIssuesCount = (allListIssues, filteredListIssues) => {
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/Project/Board/Lists/index.jsx#L93-L93)
 
 ```jsx
-  };
-};
-
-const getSortedListIssues = (issues, status) =>
-  issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
-
-ProjectBoardLists.propTypes = propTypes;
-
-export default ProjectBoardLists;
-
+  91 |
+  92 | const getSortedListIssues = (issues, status) =>
+> 93 |   issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
+     |                                                         ^
+  94 |
+  95 | ProjectBoardLists.propTypes = propTypes;
+  96 |
 ```
 
 ## Rule: id-length
@@ -115,14 +102,11 @@ export default ProjectBoardLists;
 -   [Link](https://github.com/oldboyxx/jira_clone/blob/HEAD/client/src/Project/Board/Lists/index.jsx#L93-L93)
 
 ```jsx
-  };
-};
-
-const getSortedListIssues = (issues, status) =>
-  issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
-
-ProjectBoardLists.propTypes = propTypes;
-
-export default ProjectBoardLists;
-
+  91 |
+  92 | const getSortedListIssues = (issues, status) =>
+> 93 |   issues.filter(issue => issue.status === status).sort((a, b) => a.listPosition - b.listPosition);
+     |                                                            ^
+  94 |
+  95 | ProjectBoardLists.propTypes = propTypes;
+  96 |
 ```
