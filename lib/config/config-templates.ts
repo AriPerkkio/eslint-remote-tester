@@ -10,7 +10,7 @@ export const CONFIGURATION_FILE_TEMPLATE =
     /** Optional pattern used to exclude paths */
     pathIgnorePattern: \`(\${[
         'node_modules',
-        '\\/\\.', // Any file or directory starting with dot, e.g. ".git"
+        '\\\\/\\\\.', // Any file or directory starting with dot, e.g. ".git"
         'test-results',
         'tests',
         'docs',
