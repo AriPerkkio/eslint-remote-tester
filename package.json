@@ -33,7 +33,7 @@
     "homepage": "https://github.com/AriPerkkio/eslint-remote-tester",
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "dependencies": {
-        "@babel/code-frame": "^7.12.11",
+        "@babel/code-frame": "^7.12.13",
         "chalk": "^4.1.0",
         "ink": "^3.0.8",
         "object-hash": "^2.1.1",
