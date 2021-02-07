@@ -313,6 +313,7 @@ describe('integration', () => {
 
                 results.forEach(result => {
                     Object.entries(result).forEach(([key, value]) => {
+                        if (key === '__internalHash') return;
                         const block = `[${key.toUpperCase()}]`;
 
                         console.log('.');
@@ -830,6 +831,7 @@ describe('integration', () => {
                     // @ts-ignore
                     comparisonResults[type].forEach(result => {
                         Object.entries(result).forEach(([key, value]) => {
+                            if (key === '__internalHash') return;
                             const block = `[${key.toUpperCase()}]`;
 
                             console.log('.');

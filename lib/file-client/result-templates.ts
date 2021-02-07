@@ -14,6 +14,7 @@ export interface Result {
     extension?: string;
     source: LintMessage['source'];
     error?: LintMessage['error'];
+    __internalHash: string & { readonly _: unique symbol };
 }
 
 export interface ComparisonResults {

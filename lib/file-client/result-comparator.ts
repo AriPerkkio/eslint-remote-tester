@@ -23,25 +23,27 @@ const EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
  * - `removed`: results which are present in current scan but not in the previous
  */
 export function compareResults(current: Result[]): ComparisonResults {
-    const added: Result[] = [];
-    const removed: Result[] = [];
-
     const previous = readCache();
-    const all = [...current, ...previous];
 
-    for (const result of all) {
-        const matcher = (r: Result) => equals(result, r);
-        const isInCurrent = current.find(matcher);
-        const isInPrevious = previous.find(matcher);
-
-        if (isInCurrent && !isInPrevious) {
-            added.push(result);
-        } else if (isInPrevious && !isInCurrent) {
-            removed.push(result);
-        }
+    if (previous.length === 0) {
+        // All results are new
+        return { added: current, removed: [] };
     }
 
-    return { added, removed };
+    // Using Map instead of arrays for comparison is faster: with ~500Mb JSON 20min vs 2s
+    const mapCurrent = initializeMap(current);
+    const mapPrevious = initializeMap(previous);
+
+    function generatePredicate(resultsMap: ReturnType<typeof initializeMap>) {
+        return function predicate(result: Result) {
+            return !resultsMap.has(result.__internalHash);
+        };
+    }
+
+    return {
+        added: current.filter(generatePredicate(mapPrevious)),
+        removed: previous.filter(generatePredicate(mapCurrent)),
+    };
 }
 
 /**
@@ -102,13 +104,17 @@ function writeComparisons(comparisonResults: ComparisonResults): void {
     }
 }
 
-function equals(a: Result, b: Result): boolean {
-    return (
-        // Link contains path, extension, repository and repositoryOwner
-        a.link === b.link &&
-        a.rule === b.rule &&
-        a.message === b.message &&
-        a.source === b.source &&
-        a.error === b.error
-    );
+/**
+ * Create map of `result._internalHash`'s
+ */
+function initializeMap(
+    results: Result[]
+): Map<Result['__internalHash'], boolean> {
+    const map = new Map<Result['__internalHash'], boolean>();
+
+    for (const key of results.map(c => c.__internalHash)) {
+        map.set(key, true);
+    }
+
+    return map;
 }
