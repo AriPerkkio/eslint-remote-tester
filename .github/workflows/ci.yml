@@ -25,3 +25,6 @@ jobs:
     - run: yarn test:integration
       env:
         CI: true
+    - run: yarn test:smoke
+      env:
+        CI: true

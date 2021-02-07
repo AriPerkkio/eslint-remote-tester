@@ -24,6 +24,7 @@
         "start:memory-limit-crash": "NODE_OPTIONS=--max_old_space_size=50 node dist",
         "test": "jest",
         "test:integration": "jest --config jest.config.integration.js --runInBand",
+        "test:smoke": "jest --config jest.config.smoke.js --runInBand",
         "validate": "yarn build && yarn test && yarn test:integration"
     },
     "repository": {
