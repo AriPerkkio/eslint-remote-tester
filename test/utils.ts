@@ -28,11 +28,12 @@ let idCounter = 0;
  * Create temporary configuration file for integration test
  */
 function createConfiguration(
-    options: ConfigToValidate
+    options: ConfigToValidate,
+    baseConfigPath = './integration/base.config.js'
 ): { name: string; cleanup: () => void } {
     const name = `./test/integration/integration.config-${idCounter++}.js`;
 
-    const baseConfig: Config = require('./integration/base.config.js');
+    const baseConfig: Config = require(baseConfigPath);
     const config = { ...baseConfig, ...options };
 
     // Passing function to config file is tricky
@@ -55,16 +56,18 @@ function createConfiguration(
  * Spawn terminal and run the actual production build on it
  */
 export async function runProductionBuild(
-    options: ConfigToValidate = {}
+    options: ConfigToValidate = {},
+    baseConfigPath?: string
 ): Promise<{ output: string[]; exitCode: number }> {
-    const { name, cleanup } = createConfiguration(options);
+    const { name, cleanup } = createConfiguration(options, baseConfigPath);
 
     return new Promise((resolve, reject) => {
         const ptyProcess = spawn('node', ['dist', '--config', name], {
             cwd: process.cwd(),
             encoding: 'utf8',
             cols: 999, // Prevent word wrap
-            rows: 999, // Prevent ink from erasing the screen
+            rows: 999, // Prevent ink from erasing the screen,
+            env: { ...process.env, NODE_OPTIONS: '--max_old_space_size=5120' },
         });
         const output: string[] = [];
         ptyProcess.onData(data =>

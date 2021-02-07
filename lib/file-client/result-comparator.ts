@@ -1,4 +1,5 @@
 import fs from 'fs';
+import * as JSONStream from 'JSONStream';
 
 import {
     RESULTS_COMPARISON_CACHE_LOCATION,
@@ -22,8 +23,10 @@ const EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
  * - `added`: results which were present in previous scan but not in the current
  * - `removed`: results which are present in current scan but not in the previous
  */
-export function compareResults(current: Result[]): ComparisonResults {
-    const previous = readCache();
+export async function compareResults(
+    current: Result[]
+): Promise<ComparisonResults> {
+    const previous = await readCache();
 
     if (previous.length === 0) {
         // All results are new
@@ -49,39 +52,62 @@ export function compareResults(current: Result[]): ComparisonResults {
 /**
  * Write comparison results to file system and update cache with current results
  */
-export function writeComparisonResults(
+export async function writeComparisonResults(
     comparisonResults: ComparisonResults,
     currentScanResults: Result[]
-): void {
-    writeComparisons(comparisonResults);
+): Promise<void> {
+    await writeComparisons(comparisonResults);
 
     if (config.updateComparisonReference) {
-        updateCache(currentScanResults);
+        await updateCache(currentScanResults);
     }
 }
 
-function readCache(): Result[] {
+async function readCache(): Promise<Result[]> {
     if (!fs.existsSync(RESULTS_COMPARISON_CACHE_LOCATION)) {
         return [];
     }
 
-    const cache = fs.readFileSync(RESULTS_COMPARISON_CACHE_LOCATION, 'utf8');
-    return JSON.parse(cache);
+    const results: Result[] = [];
+
+    await new Promise((resolve, reject) => {
+        fs.createReadStream(RESULTS_COMPARISON_CACHE_LOCATION, {
+            encoding: 'utf8',
+        })
+            .pipe(JSONStream.parse('*'))
+            .on('data', result => results.push(result))
+            .on('end', resolve)
+            .on('error', reject);
+    });
+
+    return results;
 }
 
-function updateCache(currentScanResults: Result[]): void {
+async function updateCache(currentScanResults: Result[]): Promise<void> {
     if (fs.existsSync(RESULTS_COMPARISON_CACHE_LOCATION)) {
         fs.unlinkSync(RESULTS_COMPARISON_CACHE_LOCATION);
     }
 
-    fs.writeFileSync(
-        RESULTS_COMPARISON_CACHE_LOCATION,
-        JSON.stringify(currentScanResults),
-        'utf8'
-    );
+    return new Promise((resolve, reject) => {
+        const stream = fs.createWriteStream(RESULTS_COMPARISON_CACHE_LOCATION);
+        const jstream = JSONStream.stringify()
+            .pipe(stream)
+            .on('finish', resolve)
+            .on('error', reject);
+
+        const copy = [...currentScanResults];
+        while (copy.length > 0) {
+            const chunk = copy.splice(0, 200);
+            jstream.write(JSON.stringify(chunk));
+        }
+        jstream.end();
+        stream.end();
+    });
 }
 
-function writeComparisons(comparisonResults: ComparisonResults): void {
+async function writeComparisons(
+    comparisonResults: ComparisonResults
+): Promise<void> {
     // Directory should always be available but let's handle condition where
     // user intentionally removes it during scan.
     if (!fs.existsSync(RESULTS_COMPARE_LOCATION)) {
@@ -89,18 +115,31 @@ function writeComparisons(comparisonResults: ComparisonResults): void {
     }
 
     for (const type of ComparisonTypes) {
-        const results = comparisonResults[type];
+        const results = [...comparisonResults[type]];
+        if (!results.length) continue;
 
-        if (results.length) {
-            const filename = `${type}${EXTENSION}`;
-            const content = RESULT_COMPARISON_TEMPLATE(type, results);
+        await new Promise((resolve, reject) => {
+            const stream = fs
+                .createWriteStream(
+                    `${RESULTS_COMPARE_LOCATION}/${type}${EXTENSION}`,
+                    { encoding: 'utf8' }
+                )
+                .on('finish', resolve)
+                .on('error', reject);
 
-            fs.writeFileSync(
-                `${RESULTS_COMPARE_LOCATION}/${filename}`,
-                content,
-                'utf8'
-            );
-        }
+            stream.write(RESULT_COMPARISON_TEMPLATE.header(type));
+            stream.write('\n');
+
+            while (results.length > 0) {
+                const chunk = results
+                    .splice(0, 200)
+                    .map(RESULT_COMPARISON_TEMPLATE.results)
+                    .join('\n');
+                stream.write(chunk);
+            }
+
+            stream.end();
+        });
     }
 }
 

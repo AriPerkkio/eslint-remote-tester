@@ -3,6 +3,7 @@
 import { renderApplication } from '@ui';
 import config, { validateConfig } from '@config';
 import engine from '@engine';
+import { LintMessage } from '@engine/types';
 import { prepareResultsDirectory, writeResults } from '@file-client';
 import logger from '@progress-logger';
 
@@ -42,7 +43,10 @@ async function main() {
  * free for logger updates
  */
 async function scanRepo(repository: string) {
-    const results = await engine.scanRepository(
+    // LintMessages are sent in chunks via message channel
+    const results: LintMessage[] = [];
+
+    await engine.scanRepository(
         repository,
         function onMessage(message) {
             switch (message.type) {
@@ -62,7 +66,11 @@ async function scanRepo(repository: string) {
                     return logger.onLintStart(repository, message.payload);
 
                 case 'FILE_LINT_END':
-                    return logger.onFileLintEnd(repository, message.payload);
+                    results.push(...message.payload.messages);
+                    return logger.onFileLintEnd(
+                        repository,
+                        message.payload.fileIndex
+                    );
 
                 case 'FILE_LINT_SLOW':
                     return logger.onFileLintSlow(
@@ -110,7 +118,7 @@ async function scanRepo(repository: string) {
     );
 
     try {
-        writeResults(results, repository);
+        await writeResults(results, repository);
     } catch (e) {
         logger.onWriteFailure(repository, e);
     }

@@ -7,8 +7,14 @@ describe('integration - compare action exports', () => {
         expect(actionExports.RESULT_PARSER_TO_COMPARE_TEMPLATE)
             .toMatchInlineSnapshot(`
             Object {
-              "markdown": [Function],
-              "plaintext": [Function],
+              "markdown": Object {
+                "header": [Function],
+                "results": [Function],
+              },
+              "plaintext": Object {
+                "header": [Function],
+                "results": [Function],
+              },
             }
         `);
     });

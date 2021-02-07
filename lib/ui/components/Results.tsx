@@ -25,9 +25,11 @@ function formatComparisonResults(
 
     return [
         '\nComparison results:',
-        RESULT_COMPARISON_TEMPLATE('added', added),
+        RESULT_COMPARISON_TEMPLATE.header('added'),
+        ...added.map(RESULT_COMPARISON_TEMPLATE.results),
         ' ', // Line break
-        RESULT_COMPARISON_TEMPLATE('removed', removed),
+        RESULT_COMPARISON_TEMPLATE.header('removed'),
+        ...removed.map(RESULT_COMPARISON_TEMPLATE.results),
     ];
 }
 

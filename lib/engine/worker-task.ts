@@ -12,8 +12,11 @@ export type WorkerMessage =
     | { type: 'CLONE' }
     | { type: 'PULL' }
     | { type: 'LINT_START'; payload: number }
-    | { type: 'LINT_END'; payload: LintMessage[] }
-    | { type: 'FILE_LINT_END'; payload: number }
+    | { type: 'LINT_END' }
+    | {
+          type: 'FILE_LINT_END';
+          payload: { messages: LintMessage[]; fileIndex: number };
+      }
     | { type: 'FILE_LINT_SLOW'; payload: { path: string; lintTime: number } }
     | { type: 'LINTER_CRASH'; payload: string }
     | { type: 'WORKER_ERROR'; payload?: string }
@@ -170,10 +173,10 @@ export default async function workerTask(): Promise<void> {
         onReadFailure: () => postMessage({ type: 'READ_FAILURE' }),
     });
 
-    const results: LintMessage[] = [];
     postMessage({ type: 'LINT_START', payload: files.length });
 
     for (const [index, file] of files.entries()) {
+        const fileIndex = index + 1;
         const { content, path } = file;
         let result: ESLint.LintResult[];
 
@@ -192,13 +195,15 @@ export default async function workerTask(): Promise<void> {
             );
         } catch (error) {
             // Catch crashing linter
-            const crashError = parseErrorStack(error, file);
+            const crashMessage = parseErrorStack(error, file);
 
-            results.push(crashError);
-            postMessage({ type: 'FILE_LINT_END', payload: index + 1 });
+            postMessage({
+                type: 'FILE_LINT_END',
+                payload: { messages: [crashMessage], fileIndex },
+            });
             postMessage({
                 type: 'LINTER_CRASH',
-                payload: crashError.ruleId || '',
+                payload: crashMessage.ruleId || '',
             });
 
             continue;
@@ -209,13 +214,15 @@ export default async function workerTask(): Promise<void> {
             .filter(Boolean)
             .map(message => ({ ...message, path }));
 
-        results.push(...messages);
-        postMessage({ type: 'FILE_LINT_END', payload: index + 1 });
+        postMessage({
+            type: 'FILE_LINT_END',
+            payload: { messages, fileIndex },
+        });
     }
 
     if (!config.cache) {
         await removeCachedRepository(repository);
     }
 
-    postMessage({ type: 'LINT_END', payload: results });
+    postMessage({ type: 'LINT_END' });
 }

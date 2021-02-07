@@ -30,7 +30,7 @@ describe('integration', () => {
             Error:
             TypeError: Cannot read property 'someAttribute' of undefined
             Occurred while linting <text>:2
-                at Identifier (<removed>/eslint-local-rules.js:21:56)
+                at Identifier (<removed>/eslint-local-rules.js:22:56)
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
                 at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
@@ -121,7 +121,7 @@ describe('integration', () => {
             \`\`\`
             TypeError: Cannot read property 'someAttribute' of undefined
             Occurred while linting <text>:2
-                at Identifier (<removed>/eslint-local-rules.js:21:56)
+                at Identifier (<removed>/eslint-local-rules.js:22:56)
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
                 at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
@@ -374,7 +374,7 @@ describe('integration', () => {
             [ERROR]
             TypeError: Cannot read property 'someAttribute' of undefined
             Occurred while linting <text>:2
-                at Identifier (<removed>/eslint-local-rules.js:21:56)
+                at Identifier (<removed>/eslint-local-rules.js:22:56)
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
                 at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)

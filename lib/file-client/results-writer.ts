@@ -71,10 +71,10 @@ function parseMessages(messages: LintMessage[]): Result[] {
 /**
  * Write results to file at `./eslint-remote-tester-results`
  */
-export function writeResults(
+export async function writeResults(
     messages: LintMessage[],
     repository: string
-): void {
+): Promise<void> {
     // Don't write empty files for completely valid results
     if (!messages.length) {
         return;
@@ -87,12 +87,21 @@ export function writeResults(
         // Construct result file name, e.g. mui-org_material-ui.md
         const repositoryOwnerAndName = repository.split('/').join('_');
         const fileName = `${repositoryOwnerAndName}${RESULT_EXTENSION}`;
-        const formattedResults = results.map(RESULT_TEMPLATE).join('\n');
 
-        fs.writeFileSync(
-            `${RESULTS_LOCATION}/${fileName}`,
-            formattedResults,
-            'utf8'
-        );
+        await new Promise((resolve, reject) => {
+            const stream = fs
+                .createWriteStream(`${RESULTS_LOCATION}/${fileName}`, {
+                    encoding: 'utf8',
+                })
+                .on('finish', resolve)
+                .on('error', reject);
+
+            while (results.length > 0) {
+                const chunk = results.splice(0, 200);
+                const formattedResults = chunk.map(RESULT_TEMPLATE).join('\n');
+                stream.write(formattedResults);
+            }
+            stream.end();
+        });
     }
 }

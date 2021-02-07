@@ -20,7 +20,7 @@ export default async function onExit(): Promise<LogMessage[]> {
 
     if (config.compare) {
         try {
-            comparisonResults = compareResults(results);
+            comparisonResults = await compareResults(results);
             ResultsStore.setComparisonResults(comparisonResults);
 
             messages.push({
@@ -32,7 +32,7 @@ export default async function onExit(): Promise<LogMessage[]> {
                 level: 'verbose',
             });
 
-            writeComparisonResults(comparisonResults, results);
+            await writeComparisonResults(comparisonResults, results);
         } catch (e) {
             errors.push('Error occured while generating comparison results');
             errors.push(e.stack);

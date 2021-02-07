@@ -47,7 +47,7 @@ function scanRepository(
         worker.on('message', (message: WorkerMessage) => {
             switch (message.type) {
                 case 'LINT_END':
-                    return resolve(message.payload);
+                    return resolve();
 
                 default:
                     return onMessage(message);
