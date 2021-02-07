@@ -118,7 +118,7 @@ async function scanRepo(repository: string) {
     );
 
     try {
-        writeResults(results, repository);
+        await writeResults(results, repository);
     } catch (e) {
         logger.onWriteFailure(repository, e);
     }
