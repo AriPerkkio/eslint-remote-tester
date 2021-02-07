@@ -112,7 +112,7 @@ async function scanRepo(repository: string) {
     try {
         writeResults(results, repository);
     } catch (e) {
-        logger.onWriteFailure(repository);
+        logger.onWriteFailure(repository, e);
     }
 
     logger.onLintEnd(repository, results.length);

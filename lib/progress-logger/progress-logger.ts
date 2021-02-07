@@ -375,9 +375,9 @@ class ProgressLogger {
     /**
      * Log error about result writing failure
      */
-    onWriteFailure(repository: string) {
+    onWriteFailure(repository: string, error: Error) {
         this.addNewMessage({
-            content: Templates.WRITE_FAILURE_TEMPLATE(repository),
+            content: Templates.WRITE_FAILURE_TEMPLATE(repository, error),
             color: 'red',
             level: 'error',
         });

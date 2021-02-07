@@ -99,8 +99,8 @@ export const CLONE_FAILURE_TEMPLATE = (repository: string): string =>
 export const READ_FAILURE_TEMPLATE = (repository: string): string =>
     `[ERROR] ${repository} failed to read files`;
 
-export const WRITE_FAILURE_TEMPLATE = (repository: string): string =>
-    `[ERROR] ${repository} failed to write results`;
+export const WRITE_FAILURE_TEMPLATE = (repository: string, e: Error): string =>
+    `[ERROR] ${repository} failed to write results: ${e.message}`;
 
 export const OVERFLOWING_ROWS_TOP = (overflowingRowCount: number): string =>
     `[\u25B2 to see ${overflowingRowCount} lines above]`;
