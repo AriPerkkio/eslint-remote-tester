@@ -74,6 +74,7 @@ function generateResult(prefix = '0'): Result {
         extension: `${prefix}-extension`,
         source: `${prefix}-source`,
         error: `${prefix}-error`,
+        __internalHash: `${prefix}-__internalHash` as Result['__internalHash'],
     };
 }
 
@@ -161,49 +162,15 @@ describe('file-client', () => {
             expect(results.added).toHaveLength(0);
         });
 
-        test('identifies changes in result.link', () => {
+        test('identifies changes in result.__internalHash', () => {
             const result = generateResult();
-            createComparisonCache({ ...result, link: '1' });
+            createComparisonCache({ ...result, __internalHash: '1' as any });
 
-            const results = compareResults([{ ...result, link: '2' }]);
+            const results = compareResults([
+                { ...result, __internalHash: '2' as any },
+            ]);
 
-            expect(results.added).toEqual([{ ...result, link: '2' }]);
-        });
-
-        test('identifies changes in result.rule', () => {
-            const result = generateResult();
-            createComparisonCache({ ...result, rule: '1' });
-
-            const results = compareResults([{ ...result, rule: '2' }]);
-
-            expect(results.added).toEqual([{ ...result, rule: '2' }]);
-        });
-
-        test('identifies changes in result.message', () => {
-            const result = generateResult();
-            createComparisonCache({ ...result, message: '1' });
-
-            const results = compareResults([{ ...result, message: '2' }]);
-
-            expect(results.added).toEqual([{ ...result, message: '2' }]);
-        });
-
-        test('identifies changes in result.source', () => {
-            const result = generateResult();
-            createComparisonCache({ ...result, source: '1' });
-
-            const results = compareResults([{ ...result, source: '2' }]);
-
-            expect(results.added).toEqual([{ ...result, source: '2' }]);
-        });
-
-        test('identifies changes in result.error', () => {
-            const result = generateResult();
-            createComparisonCache({ ...result, error: '1' });
-
-            const results = compareResults([{ ...result, error: '2' }]);
-
-            expect(results.added).toEqual([{ ...result, error: '2' }]);
+            expect(results.added).toEqual([{ ...result, __internalHash: '2' }]);
         });
 
         test('marks all results as "added" when previous results are not found', () => {

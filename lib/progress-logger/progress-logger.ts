@@ -375,9 +375,9 @@ class ProgressLogger {
     /**
      * Log error about result writing failure
      */
-    onWriteFailure(repository: string) {
+    onWriteFailure(repository: string, error: Error) {
         this.addNewMessage({
-            content: Templates.WRITE_FAILURE_TEMPLATE(repository),
+            content: Templates.WRITE_FAILURE_TEMPLATE(repository, error),
             color: 'red',
             level: 'error',
         });
@@ -430,6 +430,17 @@ class ProgressLogger {
         });
         this.hasTimedout = true;
         this.listeners.timeout.forEach(listener => listener());
+    }
+
+    /**
+     * Log debug message
+     */
+    onDebug(...messages: any[]) {
+        this.addNewMessage({
+            content: Templates.DEBUG_TEMPLATE(messages.join('\n')),
+            color: 'yellow',
+            level: 'verbose',
+        });
     }
 }
 

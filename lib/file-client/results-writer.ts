@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { isMainThread } from 'worker_threads';
+import objectHash from 'object-hash';
 
 import ResultsStore from './results-store';
 import {
@@ -46,7 +47,7 @@ function parseMessages(messages: LintMessage[]): Result[] {
         const filePath = pathParts.join('/') + lines;
         const postfix = filePath ? `/blob/HEAD/${filePath}` : '';
 
-        return {
+        const resultWithoutHash: Omit<Result, '__internalHash'> = {
             repository,
             repositoryOwner,
             rule: result.ruleId,
@@ -56,6 +57,13 @@ function parseMessages(messages: LintMessage[]): Result[] {
             extension,
             source: result.source,
             error: result.error,
+        };
+
+        return {
+            ...resultWithoutHash,
+            __internalHash: objectHash(
+                resultWithoutHash
+            ) as Result['__internalHash'],
         };
     });
 }

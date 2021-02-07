@@ -115,7 +115,7 @@ describe('integration', () => {
             \`\`\`js
               1 | // Identifier.name = attributeForCrashing
             > 2 | window.attributeForCrashing();
-              3 | 
+              3 |
             \`\`\`
 
             \`\`\`
@@ -142,7 +142,7 @@ describe('integration', () => {
             \`\`\`js
             > 1 | var foo = bar;
                 |           ^^^
-              2 | 
+              2 |
               3 | if (foo) {
               4 | }
             \`\`\`
@@ -155,12 +155,12 @@ describe('integration', () => {
 
             \`\`\`js
               1 | var foo = bar;
-              2 | 
+              2 |
             > 3 | if (foo) {
                 |          ^
             > 4 | }
                 | ^^
-              5 | 
+              5 |
               6 | var p = {
               7 |     get name(){
             \`\`\`
@@ -172,7 +172,7 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7)
 
             \`\`\`js
-               5 | 
+               5 |
                6 | var p = {
             >  7 |     get name(){
                  |     ^^^^^^^^
@@ -188,8 +188,8 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
 
             \`\`\`js
-              12 | 
-              13 | 
+              12 |
+              13 |
             > 14 | if (foo === -0) {
                  |     ^^^^^^^^^^
               15 |   // prevent no-empty
@@ -313,6 +313,7 @@ describe('integration', () => {
 
                 results.forEach(result => {
                     Object.entries(result).forEach(([key, value]) => {
+                        if (key === '__internalHash') return;
                         const block = `[${key.toUpperCase()}]`;
 
                         console.log('.');
@@ -367,7 +368,7 @@ describe('integration', () => {
             [SOURCE]
               1 | // Identifier.name = attributeForCrashing
             > 2 | window.attributeForCrashing();
-              3 | 
+              3 |
             [SOURCE]
             .
             [ERROR]
@@ -416,7 +417,7 @@ describe('integration', () => {
             [SOURCE]
             > 1 | var foo = bar;
                 |           ^^^
-              2 | 
+              2 |
               3 | if (foo) {
               4 | }
             [SOURCE]
@@ -455,12 +456,12 @@ describe('integration', () => {
             .
             [SOURCE]
               1 | var foo = bar;
-              2 | 
+              2 |
             > 3 | if (foo) {
                 |          ^
             > 4 | }
                 | ^^
-              5 | 
+              5 |
               6 | var p = {
               7 |     get name(){
             [SOURCE]
@@ -498,7 +499,7 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-               5 | 
+               5 |
                6 | var p = {
             >  7 |     get name(){
                  |     ^^^^^^^^
@@ -540,8 +541,8 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-              12 | 
-              13 | 
+              12 |
+              13 |
             > 14 | if (foo === -0) {
                  |     ^^^^^^^^^^
               15 |   // prevent no-empty
@@ -641,7 +642,7 @@ describe('integration', () => {
               1 | // Identifier.name = attributeForCrashing
             > 2 | window.attributeForCrashing();
                 | ^^^^^^
-              3 | 
+              3 |
             \`\`\`
 
             ## Rule: no-undef
@@ -653,7 +654,7 @@ describe('integration', () => {
             \`\`\`js
             > 1 | var foo = bar;
                 |           ^^^
-              2 | 
+              2 |
               3 | if (foo) {
               4 | }
             \`\`\`
@@ -668,8 +669,8 @@ describe('integration', () => {
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
 
             \`\`\`js
-              12 | 
-              13 | 
+              12 |
+              13 |
             > 14 | if (foo === -0) {
                  |     ^^^^^^^^^^
               15 |   // prevent no-empty
@@ -830,6 +831,7 @@ describe('integration', () => {
                     // @ts-ignore
                     comparisonResults[type].forEach(result => {
                         Object.entries(result).forEach(([key, value]) => {
+                            if (key === '__internalHash') return;
                             const block = `[${key.toUpperCase()}]`;
 
                             console.log('.');
@@ -887,7 +889,7 @@ describe('integration', () => {
               1 | // Identifier.name = attributeForCrashing
             > 2 | window.attributeForCrashing();
                 | ^^^^^^
-              3 | 
+              3 |
             [SOURCE]
             .
             [ERROR]
@@ -925,7 +927,7 @@ describe('integration', () => {
             [SOURCE]
             > 1 | var foo = bar;
                 |           ^^^
-              2 | 
+              2 |
               3 | if (foo) {
               4 | }
             [SOURCE]
@@ -965,8 +967,8 @@ describe('integration', () => {
             [EXTENSION]
             .
             [SOURCE]
-              12 | 
-              13 | 
+              12 |
+              13 |
             > 14 | if (foo === -0) {
                  |     ^^^^^^^^^^
               15 |   // prevent no-empty
