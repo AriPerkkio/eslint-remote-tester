@@ -198,9 +198,15 @@ describe('file-client', () => {
             writeComparisonResults(comparisonResults, results);
             const { added, removed } = getComparisonResults();
 
-            expect(added).toBe(template('added', comparisonResults.added));
+            expect(added).toBe(
+                `${template.header('added')}\n${comparisonResults.added
+                    .map(template.results)
+                    .join('\n')}`
+            );
             expect(removed).toBe(
-                template('removed', comparisonResults.removed)
+                `${template.header('removed')}\n${comparisonResults.removed
+                    .map(template.results)
+                    .join('\n')}`
             );
         });
 

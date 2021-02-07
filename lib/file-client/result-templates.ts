@@ -29,10 +29,10 @@ type ComparisonType = keyof ComparisonResults;
 export const ComparisonTypes: ComparisonType[] = ['added', 'removed'];
 
 export type ResultTemplate = (result: Result) => string;
-export type ComparisonResultTemplate = (
-    type: ComparisonType,
-    results: Result[]
-) => string;
+export type ComparisonResultTemplate = {
+    header: (type: ComparisonType) => string;
+    results: (result: Result) => string;
+};
 
 // prettier-ignore
 const RESULT_TEMPLATE_PLAINTEXT = (result: Result): string =>
@@ -68,27 +68,29 @@ ${result.error}
 export const RESULTS_TEMPLATE_CI_BASE = (result: Result): string =>
 `Repository: ${result.repositoryOwner}/${result.repository}`;
 
-// prettier-ignore
-const COMPARISON_RESULTS_TEMPLATE_PLAINTEXT = (type: ComparisonType, results: Result[]): string =>
-`${upperCaseFirstLetter(type)}:
-${results.length ? results.map(RESULT_TEMPLATE_PLAINTEXT).join('\n'): 'No changes'}`;
-
-// prettier-ignore
-const COMPARISON_RESULTS_TEMPLATE_MARKDOWN = (type: ComparisonType, results: Result[]): string =>
-`# ${upperCaseFirstLetter(type)}:
-${results.length ? results.map(RESULT_TEMPLATE_MARKDOWN).join('\n'): 'No changes'}`;
-
 export const RESULT_PARSER_TO_TEMPLATE: Record<ResultParser, ResultTemplate> = {
     plaintext: RESULT_TEMPLATE_PLAINTEXT,
     markdown: RESULT_TEMPLATE_MARKDOWN,
 } as const;
 
+const COMPARISON_RESULT_HEADER_PLAINTEXT = (type: ComparisonType) =>
+    `${upperCaseFirstLetter(type)}:`;
+
+const COMPARISON_RESULT_HEADER_MARKDOWN = (type: ComparisonType) =>
+    `# ${upperCaseFirstLetter(type)}:`;
+
 export const RESULT_PARSER_TO_COMPARE_TEMPLATE: Record<
     ResultParser,
     ComparisonResultTemplate
 > = {
-    plaintext: COMPARISON_RESULTS_TEMPLATE_PLAINTEXT,
-    markdown: COMPARISON_RESULTS_TEMPLATE_MARKDOWN,
+    plaintext: {
+        header: COMPARISON_RESULT_HEADER_PLAINTEXT,
+        results: RESULT_TEMPLATE_PLAINTEXT,
+    },
+    markdown: {
+        header: COMPARISON_RESULT_HEADER_MARKDOWN,
+        results: RESULT_TEMPLATE_MARKDOWN,
+    },
 } as const;
 
 export const RESULT_PARSER_TO_EXTENSION: Record<ResultParser, string> = {

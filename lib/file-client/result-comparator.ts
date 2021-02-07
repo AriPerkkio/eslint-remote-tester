@@ -93,7 +93,10 @@ function writeComparisons(comparisonResults: ComparisonResults): void {
 
         if (results.length) {
             const filename = `${type}${EXTENSION}`;
-            const content = RESULT_COMPARISON_TEMPLATE(type, results);
+            const content = [
+                RESULT_COMPARISON_TEMPLATE.header(type),
+                ...results.map(RESULT_COMPARISON_TEMPLATE.results),
+            ].join('\n');
 
             fs.writeFileSync(
                 `${RESULTS_COMPARE_LOCATION}/${filename}`,
