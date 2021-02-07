@@ -118,3 +118,6 @@ export const SCAN_TIMELIMIT_REACHED = (timeSeconds: number): string =>
 
 export const SCAN_FINISHED = (scannedRepositories: number): string =>
     `[DONE] Finished scan of ${scannedRepositories} repositories`;
+
+export const DEBUG_TEMPLATE = (message: string): string =>
+    `[DEBUG ${new Date().toTimeString().split(' ')[0]}] ${message}`;

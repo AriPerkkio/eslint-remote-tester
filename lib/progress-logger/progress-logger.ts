@@ -431,6 +431,17 @@ class ProgressLogger {
         this.hasTimedout = true;
         this.listeners.timeout.forEach(listener => listener());
     }
+
+    /**
+     * Log debug message
+     */
+    onDebug(...messages: any[]) {
+        this.addNewMessage({
+            content: Templates.DEBUG_TEMPLATE(messages.join('\n')),
+            color: 'yellow',
+            level: 'verbose',
+        });
+    }
 }
 
 export default new ProgressLogger();

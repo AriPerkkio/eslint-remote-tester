@@ -91,7 +91,7 @@ async function scanRepo(repository: string) {
                 // Simply call postMessage({ type: 'DEBUG', payload: ... }) on
                 // worker thread and place breakpoint here
                 case 'DEBUG':
-                    return;
+                    return logger.onDebug(message.payload);
             }
         },
         // On scan timeout terminate all on-going workers
