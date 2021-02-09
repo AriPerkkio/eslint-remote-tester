@@ -18,7 +18,9 @@ export interface Config {
     extensions: string[];
     pathIgnorePattern?: RegExp;
     maxFileSizeBytes: number;
-    rulesUnderTesting: string[];
+    rulesUnderTesting:
+        | string[]
+        | ((ruleId: string, options: { repository: string }) => boolean);
     resultParser: ResultParser;
     concurrentTasks: number;
     eslintrc: Linter.Config;

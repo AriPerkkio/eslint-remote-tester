@@ -68,27 +68,36 @@ async function executionTimeWarningWrapper<T>(
  * Picks out messages which are under testing and constructs a small snippet of
  * the erroneous code block
  */
-function mergeMessagesWithSource(
-    all: Linter.LintMessage[],
-    result: ESLint.LintResult
-): Linter.LintMessage[] {
-    const messages = result.messages.filter(
-        message =>
-            message.ruleId && config.rulesUnderTesting.includes(message.ruleId)
-    );
+function getMessageReducer(repository: string) {
+    function messageFilter(message: Linter.LintMessage) {
+        if (!message.ruleId) return false;
 
-    // Process only rules that are under testing
-    if (messages.length === 0) {
-        return all;
+        if (typeof config.rulesUnderTesting === 'function') {
+            return config.rulesUnderTesting(message.ruleId, { repository });
+        }
+
+        return config.rulesUnderTesting.includes(message.ruleId);
     }
 
-    return [
-        ...all,
-        ...messages.map(message => ({
-            ...message,
-            source: constructCodeFrame(result.source, message),
-        })),
-    ];
+    return function reducer(
+        all: Linter.LintMessage[],
+        result: ESLint.LintResult
+    ): Linter.LintMessage[] {
+        const messages = result.messages.filter(messageFilter);
+
+        // Process only rules that are under testing
+        if (messages.length === 0) {
+            return all;
+        }
+
+        return [
+            ...all,
+            ...messages.map(message => ({
+                ...message,
+                source: constructCodeFrame(result.source, message),
+            })),
+        ];
+    };
 }
 
 /**
@@ -162,6 +171,7 @@ export default async function workerTask(): Promise<void> {
     });
 
     const { repository } = workerData as WorkerData;
+    const messageReducer = getMessageReducer(repository);
 
     const files = await getFiles({
         repository,
@@ -210,7 +220,7 @@ export default async function workerTask(): Promise<void> {
         }
 
         const messages = result
-            .reduce(mergeMessagesWithSource, [])
+            .reduce(messageReducer, [])
             .filter(Boolean)
             .map(message => ({ ...message, path }));
 
