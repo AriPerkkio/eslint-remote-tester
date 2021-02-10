@@ -67,6 +67,13 @@ export async function runProductionBuild(
     const { name, cleanup } = createConfiguration(options, baseConfigPath);
 
     return new Promise((resolve, reject) => {
+        const debugLog = '/tmp/integration.test.debug.log';
+        if (fs.existsSync(debugLog)) fs.unlinkSync(debugLog);
+
+        const debugStream = fs.createWriteStream(debugLog, {
+            encoding: 'utf8',
+        });
+
         const ptyProcess = spawn('node', ['dist', '--config', name], {
             cwd: process.cwd(),
             encoding: 'utf8',
@@ -75,11 +82,13 @@ export async function runProductionBuild(
             env: { ...process.env, NODE_OPTIONS: '--max_old_space_size=5120' },
         });
         const output: string[] = [];
-        ptyProcess.onData(data =>
-            output.push(sanitizeStackTrace(stripAnsi(data)))
-        );
+        ptyProcess.onData(data => {
+            debugStream.write(stripAnsi(data));
+            output.push(sanitizeStackTrace(stripAnsi(data)));
+        });
 
         ptyProcess.onExit(({ exitCode }) => {
+            debugStream.end();
             cleanup();
 
             const parsedOutput = parsePtyOutput(output);
