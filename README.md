@@ -163,6 +163,25 @@ Typically the fastest plugins can test more than **10K repositories** in the 6 h
 
 Check [ci folder](ci/) for examples.
 
+### Configuration maintainer making sure all repositories follow the rules
+
+Configuration maintainers (`eslint-config-*)` can check all their repositories follow rules of the configuration.
+By using an all-inclusive filter in `rulesUnderConfiguration` all ESLint reports are picked, e.g. `rulesUnderConfiguration: () => true`.
+
+The arguments of filter callback can be used to exclude specific rules from specific repositories:
+
+```js
+rulesUnderTesting: function ruleFilter(ruleId, options) {
+    if (ruleId === 'node/no-process-env' && options.repository === 'username/my-cli-package') {
+        // my-cli-package is allowed to use process.env
+        return false;
+    }
+
+    // All other rules & repositories
+    return true;
+}
+```
+
 ## Examples
 
 ### Results:
