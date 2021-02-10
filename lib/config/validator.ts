@@ -146,10 +146,19 @@ export default async function validate(
 
     // TODO nice-to-have: Validate rules match eslintrc config
     // https://eslint.org/docs/developer-guide/nodejs-api#lintergetrules
-    if (rulesUnderTesting && rulesUnderTesting.length) {
-        errors.push(
-            validateStringArray('rulesUnderTesting', rulesUnderTesting)
-        );
+    if (rulesUnderTesting) {
+        if (Array.isArray(rulesUnderTesting)) {
+            // Empty rulesUnderTesting is valid
+            if (rulesUnderTesting.length) {
+                errors.push(
+                    validateStringArray('rulesUnderTesting', rulesUnderTesting)
+                );
+            }
+        } else if (typeof rulesUnderTesting !== 'function') {
+            errors.push(
+                `rulesUnderTesting should be either an array or function.`
+            );
+        }
     }
 
     if (pathIgnorePattern) {

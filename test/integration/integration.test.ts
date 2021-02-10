@@ -978,4 +978,86 @@ describe('integration', () => {
             [TEST-ON-COMPLETE-END]"
         `);
     });
+
+    test('enables all rules when rulesUnderTesting returns true', async () => {
+        await runProductionBuild({
+            CI: false,
+            rulesUnderTesting: () => true,
+            eslintrc: { root: true, extends: ['eslint:all'] },
+        });
+        const results = getResults();
+        const rules = results.match(/Rule: (\S)*/g) || [];
+
+        expect(rules.join('\n')).toMatchInlineSnapshot(`
+            "Rule: no-undef
+            Rule: no-var
+            Rule: no-implicit-globals
+            Rule: no-undef
+            Rule: no-empty
+            Rule: one-var
+            Rule: vars-on-top
+            Rule: no-var
+            Rule: no-implicit-globals
+            Rule: id-length
+            Rule: quote-props
+            Rule: getter-return
+            Rule: space-before-function-paren
+            Rule: strict
+            Rule: space-before-blocks
+            Rule: capitalized-comments
+            Rule: no-compare-neg-zero
+            Rule: no-magic-numbers
+            Rule: indent
+            Rule: capitalized-comments
+            Rule: eol-last"
+        `);
+    });
+
+    test('calls rulesUnderTesting filter with ruleId and repository', async () => {
+        const { output } = await runProductionBuild({
+            CI: false,
+            rulesUnderTesting: (ruleId, options) => {
+                const { parentPort } = require('worker_threads');
+
+                parentPort.postMessage({
+                    type: 'DEBUG',
+                    payload: `${ruleId} - ${options.repository}`,
+                });
+                return true;
+            },
+            eslintrc: { root: true, extends: ['eslint:all'] },
+        });
+
+        const finalLog = output.pop();
+        const withoutTimestamps = finalLog!.replace(/\[DEBUG (\S|:)*\]/g, '');
+
+        expect(withoutTimestamps).toMatchInlineSnapshot(`
+            "Full log:
+             no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-var - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-empty - AriPerkkio/eslint-remote-tester-integration-test-target
+             one-var - AriPerkkio/eslint-remote-tester-integration-test-target
+             vars-on-top - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-var - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
+             id-length - AriPerkkio/eslint-remote-tester-integration-test-target
+             quote-props - AriPerkkio/eslint-remote-tester-integration-test-target
+             getter-return - AriPerkkio/eslint-remote-tester-integration-test-target
+             space-before-function-paren - AriPerkkio/eslint-remote-tester-integration-test-target
+             strict - AriPerkkio/eslint-remote-tester-integration-test-target
+             space-before-blocks - AriPerkkio/eslint-remote-tester-integration-test-target
+             capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-compare-neg-zero - AriPerkkio/eslint-remote-tester-integration-test-target
+             no-magic-numbers - AriPerkkio/eslint-remote-tester-integration-test-target
+             indent - AriPerkkio/eslint-remote-tester-integration-test-target
+             capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
+             eol-last - AriPerkkio/eslint-remote-tester-integration-test-target
+            [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 21 errors
+            [DONE] Finished scan of 1 repositories
+
+            "
+        `);
+    });
 });

@@ -162,6 +162,12 @@ describe('validateConfig', () => {
                 rulesUnderTesting: undefined,
             });
         });
+        test('rulesUnderTesting accepts empty array', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                rulesUnderTesting: [],
+            });
+        });
 
         test('rulesUnderTesting accepts array with unique strings', async () => {
             await validateConfig({
@@ -174,6 +180,13 @@ describe('validateConfig', () => {
             await validateConfig({
                 ...DEFAULT_CONFIGURATION,
                 rulesUnderTesting: ['a'],
+            });
+        });
+
+        test('rulesUnderTesting accepts function', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                rulesUnderTesting: () => true,
             });
         });
 
@@ -481,7 +494,7 @@ describe('validateConfig', () => {
             );
         });
 
-        test('rulesUnderTesting requires an array', async () => {
+        test('rulesUnderTesting requires an array or function', async () => {
             const rulesUnderTesting: any = { length: 10 };
             await validateConfig({
                 ...DEFAULT_CONFIGURATION,
@@ -490,7 +503,7 @@ describe('validateConfig', () => {
 
             const [validationError] = getConsoleLogCalls();
             expect(validationError).toMatch(
-                'rulesUnderTesting should be an array.'
+                'rulesUnderTesting should be either an array or function.'
             );
         });
 
