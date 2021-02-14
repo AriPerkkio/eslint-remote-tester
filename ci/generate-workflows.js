@@ -19,8 +19,6 @@ const WORKFLOW_BADGE = plugin =>
     `[![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/${plugin}/badge.svg)](${WORKFLOW_LINK(
         plugin
     )})`;
-const LINT_COMMAND = plugin =>
-    `yarn lint --config ./plugin-configs/${plugin}.config.js`;
 
 // prettier-ignore
 const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
@@ -46,20 +44,21 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.11
-    - run: yarn install
-    - run: yarn build
-    - run: rm -rf ./node_modules
-    - run: yarn install
+    - run: |
+        yarn install
+        yarn build
+        rm -rf ./node_modules
+    - run: |
+        yarn install
+        yarn list | grep eslint
+        yarn log --config ./plugin-configs/${plugin}.config.js
       working-directory: ./ci
-    - run: "yarn list | grep eslint"
-      working-directory: ./ci
-    - run: "yarn log --config ./plugin-configs/${plugin}.config.js"
-      working-directory: ./ci
-    - run: "${LINT_COMMAND(plugin)}"
-      working-directory: ./ci
-      env:
-        CI: true
-        NODE_OPTIONS: --max_old_space_size=5120
+    - uses: AriPerkkio/eslint-remote-tester-run-action@master
+      with:
+        working-directory: ./ci
+        github-token: \${{ secrets.GITHUB_TOKEN }}
+        issue-title: "Weekly scheduled smoke test: ${plugin}"
+        eslint-remote-tester-config: plugin-configs/${plugin}.config.js
 `;
 
 function generateHours(index) {
@@ -119,7 +118,7 @@ function printBadgeMarkdown(plugins) {
 
 function testPlugins(plugins) {
     plugins.forEach(plugin => {
-        execSync(LINT_COMMAND(plugin), {
+        execSync(`yarn lint --config ./plugin-configs/${plugin}.config.js`, {
             stdio: 'inherit',
             cwd: path.resolve(__dirname),
         });
