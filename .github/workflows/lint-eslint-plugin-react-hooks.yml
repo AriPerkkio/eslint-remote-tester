@@ -20,17 +20,18 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 12.11
-    - run: yarn install
-    - run: yarn build
-    - run: rm -rf ./node_modules
-    - run: yarn install
+    - run: |
+        yarn install
+        yarn build
+        rm -rf ./node_modules
+    - run: |
+        yarn install
+        yarn list | grep eslint
+        yarn log --config ./plugin-configs/eslint-plugin-react-hooks.config.js
       working-directory: ./ci
-    - run: "yarn list | grep eslint"
-      working-directory: ./ci
-    - run: "yarn log --config ./plugin-configs/eslint-plugin-react-hooks.config.js"
-      working-directory: ./ci
-    - run: "yarn lint --config ./plugin-configs/eslint-plugin-react-hooks.config.js"
-      working-directory: ./ci
-      env:
-        CI: true
-        NODE_OPTIONS: --max_old_space_size=5120
+    - uses: AriPerkkio/eslint-remote-tester-run-action@master
+      with:
+        working-directory: ./ci
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-title: "Weekly scheduled smoke test: eslint-plugin-react-hooks"
+        eslint-remote-tester-config: plugin-configs/eslint-plugin-react-hooks.config.js
