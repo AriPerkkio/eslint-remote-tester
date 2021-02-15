@@ -20,7 +20,7 @@
 
 [![version](https://img.shields.io/npm/v/eslint-remote-tester)](https://www.npmjs.com/package/eslint-remote-tester)
 
-[Installation](#installation) | [Configuration](#configuration) | [How and when to use](#how-and-when-to-use) | [Examples](#Examples)
+[Installation](#installation) | [Configuration](#configuration) | [How and when to use](#how-and-when-to-use) | [Github CI Actions](#github-ci-actions) | [Examples](#Examples)
 
 `eslint-remote-tester` is a CLI tool for testing given [ESlint](https://github.com/eslint/eslint) rules against multiple repositories at once. It's designed to be used when validating regression of new rules. It can be used to spot whether a new rule flags false positives or crashes ESLint completely. CIs can be configured to verify regression of large set of rules so that possible null pointers or any unexpected errors are caught immediately.
 
@@ -149,7 +149,7 @@ Plugin projects can set their CI to run `eslint-remote-tester` on comparison mod
 The CI will compare ESLint reports between the `master` and PR branches, and report all new and removed reports.
 This way the reviewers can easily see whether PR actually fixed the issue and if it introduced new bugs.
 
-Projects using GitHub CIs can utilize [actions/eslint-remote-tester-compare-action](https://github.com/AriPerkkio/eslint-remote-tester-compare-action) for setting up PR comparisons.
+Projects using GitHub CIs can utilize [eslint-remote-tester-compare-action](https://github.com/marketplace/actions/eslint-remote-tester-pr-comparator) for setting up PR comparisons.
 
 ### Plugin maintainer making sure all existing rules do not crash
 
@@ -161,7 +161,7 @@ This can be done by setting `timeLimit` configuration. For Github CI the maximum
 This project is set to run 6 hour long weekly scheduled tests using some of the most well-known ESLint community plugins.
 Typically the fastest plugins can test more than **10K repositories** in the 6 hour time limit.
 
-Check [ci folder](ci/) for examples.
+Projects using GitHub CIs can utilize [eslint-remote-tester-run-action](https://github.com/marketplace/actions/eslint-remote-tester-runner) for setting up smoke tests.
 
 ### Configuration maintainer making sure all repositories follow the rules
 
@@ -181,6 +181,11 @@ rulesUnderTesting: function ruleFilter(ruleId, options) {
     return true;
 }
 ```
+
+## Github CI Actions
+
+-   [eslint-remote-tester-run-action](https://github.com/marketplace/actions/eslint-remote-tester-runner)
+-   [eslint-remote-tester-compare-action](https://github.com/marketplace/actions/eslint-remote-tester-pr-comparator)
 
 ## Examples
 
