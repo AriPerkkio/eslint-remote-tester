@@ -43,7 +43,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: 12.11
+        node-version: 14
     - run: |
         yarn install
         yarn build
@@ -53,7 +53,7 @@ jobs:
         yarn list | grep eslint
         yarn log --config ./plugin-configs/${plugin}.config.js
       working-directory: ./ci
-    - uses: AriPerkkio/eslint-remote-tester-run-action@master
+    - uses: AriPerkkio/eslint-remote-tester-run-action@v1
       with:
         working-directory: ./ci
         github-token: \${{ secrets.GITHUB_TOKEN }}
