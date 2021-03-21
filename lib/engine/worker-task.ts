@@ -168,6 +168,10 @@ export default async function workerTask(): Promise<void> {
     const linter = new ESLint({
         useEslintrc: false,
         overrideConfig: config.eslintrc,
+
+        // Only rules set in configuration are expected.
+        // Ignore all inline configurations found from target repositories.
+        allowInlineConfig: false,
     });
 
     const { repository } = workerData as WorkerData;
