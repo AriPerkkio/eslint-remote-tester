@@ -2,6 +2,7 @@ import fs from 'fs';
 import simpleGit from 'simple-git';
 
 import { CACHE_LOCATION, URL } from './file-constants';
+import config from '@config';
 
 export interface RepositoryClientOptions {
     repository: string;
@@ -45,6 +46,9 @@ export async function cloneRepository({
             onCloneFailure();
         }
     } else {
+        // Cached repositories should not be updated when in comparison mode
+        if (config.compare) return;
+
         onPull();
 
         try {
