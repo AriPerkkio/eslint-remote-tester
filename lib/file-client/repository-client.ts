@@ -13,6 +13,7 @@ export interface RepositoryClientOptions {
 
 // Clone only latest history of the main branch
 const CLONE_OPTS = { '--depth': 1 } as const;
+const CLONE_RETRY_TIMES = 5;
 
 // Create cache if missing
 if (!fs.existsSync(CACHE_LOCATION)) {
@@ -36,10 +37,10 @@ export async function cloneRepository({
 
         try {
             const git = simpleGit();
-            await git.clone(
-                `${URL}/${repository}.git`,
-                repoLocation,
-                CLONE_OPTS
+
+            // Clone operations are often unstable. Try cloning repository 5 times before giving up.
+            await retry(() =>
+                git.clone(`${URL}/${repository}.git`, repoLocation, CLONE_OPTS)
             );
         } catch (e) {
             onCloneFailure();
@@ -53,6 +54,21 @@ export async function cloneRepository({
         } catch (e) {
             onPullFailure();
         }
+    }
+}
+
+async function retry<T>(
+    method: () => Promise<T>,
+    times = CLONE_RETRY_TIMES
+): Promise<T> {
+    if (times === 0) {
+        throw new Error(`Methods failed after ${CLONE_RETRY_TIMES} times`);
+    }
+
+    try {
+        return await method();
+    } catch (e) {
+        return await retry(method, times - 1);
     }
 }
 
