@@ -41,6 +41,7 @@ module.exports = {
             '@typescript-eslint/unbound-method': 'off',
             '@typescript-eslint/dot-notation': 'off',
             '@typescript-eslint/no-implied-eval': 'off',
+            '@typescript-eslint/no-unsafe-argument': 'off',
             '@typescript-eslint/no-throw-literal': 'off',
             '@typescript-eslint/require-await': 'off',
             '@typescript-eslint/return-await': 'off',
