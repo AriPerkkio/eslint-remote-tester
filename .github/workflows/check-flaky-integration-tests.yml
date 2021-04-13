@@ -1,0 +1,36 @@
+name: Check for flaky integration tests
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+        registry-url: 'https://registry.npmjs.org'
+    - run: |
+        yarn install
+        yarn build
+    - name: Integration test 1
+      run: yarn test:integration
+    - name: Integration test 2
+      run: yarn test:integration
+    - name: Integration test 3
+      run: yarn test:integration
+    - name: Integration test 4
+      run: yarn test:integration
+    - name: Integration test 5
+      run: yarn test:integration
+    - name: Integration test 6
+      run: yarn test:integration
+    - name: Integration test 7
+      run: yarn test:integration
+    - name: Integration test 8
+      run: yarn test:integration
+    - name: Integration test 9
+      run: yarn test:integration
+    - name: Integration test 10
+      run: yarn test:integration
