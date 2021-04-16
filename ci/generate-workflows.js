@@ -56,7 +56,6 @@ jobs:
     - uses: AriPerkkio/eslint-remote-tester-run-action@v1
       with:
         working-directory: ./ci
-        github-token: \${{ secrets.GITHUB_TOKEN }}
         issue-title: "Weekly scheduled smoke test: ${plugin}"
         eslint-remote-tester-config: plugin-configs/${plugin}.config.js
 `;
