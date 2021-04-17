@@ -18,7 +18,7 @@ beforeEach(async () => {
 
 const specDone: Reporter['specDone'] = async result => {
     if (result.status === 'failed') {
-        const debugLog = '/tmp/integration.test.debug.log';
+        const debugLog = '/tmp/test.debug.log';
         if (!fs.existsSync(debugLog)) return console.error('Debug log missing');
 
         const logContent = fs.readFileSync(debugLog, 'utf8');
