@@ -67,7 +67,7 @@ export async function runProductionBuild(
     const { name, cleanup } = createConfiguration(options, baseConfigPath);
 
     return new Promise((resolve, reject) => {
-        const debugLog = '/tmp/integration.test.debug.log';
+        const debugLog = '/tmp/test.debug.log';
         if (fs.existsSync(debugLog)) fs.unlinkSync(debugLog);
 
         const debugStream = fs.createWriteStream(debugLog, {
