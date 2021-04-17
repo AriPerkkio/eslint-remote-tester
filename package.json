@@ -47,7 +47,7 @@
     },
     "devDependencies": {
         "@commitlint/cli": "^12.1.1",
-        "@commitlint/config-conventional": "^11.0.0",
+        "@commitlint/config-conventional": "^12.1.1",
         "@types/babel__code-frame": "^7.0.2",
         "@types/eslint": "^7.2.2",
         "@types/jest": "^26.0.15",
