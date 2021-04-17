@@ -3,28 +3,54 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-
+  build-and-lint:
     runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - run: |
+        yarn install
+        yarn build
+    - run: yarn lint
 
+  unit-test:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12.11, 14.x, 15.x]
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn install
-    - run: yarn build
+    - run: |
+        yarn install
+        yarn build
     - run: yarn test
-      env:
-        CI: true
+
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - run: |
+        yarn install
+        yarn build
     - run: yarn test:integration
-      env:
-        CI: true
+
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - run: |
+        yarn install
+        yarn build
     - run: yarn test:smoke
-      env:
-        CI: true
