@@ -24,6 +24,7 @@
         "start": "nodemon --watch dist --no-stdin dist",
         "start:ci": "CI=true yarn start",
         "start:memory-limit-crash": "NODE_OPTIONS=--max_old_space_size=50 node dist",
+        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx",
         "test": "jest",
         "test:integration": "jest --config jest.config.integration.js --runInBand",
         "test:smoke": "jest --config jest.config.smoke.js --runInBand",
