@@ -11,12 +11,10 @@ export type WorkerMessage =
     | { type: 'READ' }
     | { type: 'CLONE' }
     | { type: 'PULL' }
+    | { type: 'ON_RESULT'; payload: { messages: LintMessage[] } }
     | { type: 'LINT_START'; payload: number }
     | { type: 'LINT_END' }
-    | {
-          type: 'FILE_LINT_END';
-          payload: { messages: LintMessage[]; fileIndex: number };
-      }
+    | { type: 'FILE_LINT_END'; payload: { fileIndex: number } }
     | { type: 'FILE_LINT_SLOW'; payload: { path: string; lintTime: number } }
     | { type: 'LINTER_CRASH'; payload: string }
     | { type: 'WORKER_ERROR'; payload?: string }
@@ -212,8 +210,12 @@ export default async function workerTask(): Promise<void> {
             const crashMessage = parseErrorStack(error, file);
 
             postMessage({
+                type: 'ON_RESULT',
+                payload: { messages: [crashMessage] },
+            });
+            postMessage({
                 type: 'FILE_LINT_END',
-                payload: { messages: [crashMessage], fileIndex },
+                payload: { fileIndex },
             });
             postMessage({
                 type: 'LINTER_CRASH',
@@ -228,10 +230,8 @@ export default async function workerTask(): Promise<void> {
             .filter(Boolean)
             .map(message => ({ ...message, path }));
 
-        postMessage({
-            type: 'FILE_LINT_END',
-            payload: { messages, fileIndex },
-        });
+        postMessage({ type: 'ON_RESULT', payload: { messages } });
+        postMessage({ type: 'FILE_LINT_END', payload: { fileIndex } });
     }
 
     if (!config.cache) {
