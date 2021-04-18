@@ -62,11 +62,13 @@ async function scanRepo(repository: string) {
                 case 'PULL':
                     return logger.onRepositoryPull(repository);
 
+                case 'ON_RESULT':
+                    return results.push(...message.payload.messages);
+
                 case 'LINT_START':
                     return logger.onLintStart(repository, message.payload);
 
                 case 'FILE_LINT_END':
-                    results.push(...message.payload.messages);
                     return logger.onFileLintEnd(
                         repository,
                         message.payload.fileIndex

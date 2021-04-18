@@ -1,7 +1,6 @@
 import { Worker, isMainThread } from 'worker_threads';
 
 import workerTask, { WorkerMessage, createErrorMessage } from './worker-task';
-import { LintMessage } from './types';
 import { resolveConfigurationLocation } from '@config';
 
 type WorkerCallback<T> = (worker: Worker) => T;
@@ -20,7 +19,7 @@ function scanRepository(
     repository: string,
     onMessage: (message: WorkerMessage) => void,
     workerCallback: EffectCallback
-): Promise<LintMessage[]> {
+): Promise<void> {
     return new Promise(resolve => {
         // Notify about worker starting. It can take a while to get worker starting up
         // Prevents showing blank screen between worker start and repository reading
@@ -55,18 +54,19 @@ function scanRepository(
         });
 
         worker.on('error', (error: Error & { code?: string }) => {
-            onMessage({
-                type: 'WORKER_ERROR',
-                payload: error.code,
-            });
+            const messages = [
+                createErrorMessage({
+                    path: repository,
+                    ruleId: '',
+                    message: [error.code, error.message]
+                        .filter(Boolean)
+                        .join(' '),
+                }),
+            ];
 
-            const message = [error.code, error.message]
-                .filter(Boolean)
-                .join(' ');
-
-            resolve([
-                createErrorMessage({ message, path: repository, ruleId: '' }),
-            ]);
+            onMessage({ type: 'WORKER_ERROR', payload: error.code });
+            onMessage({ type: 'ON_RESULT', payload: { messages } });
+            resolve();
         });
 
         worker.on('exit', code => {
@@ -74,16 +74,19 @@ function scanRepository(
 
             // 0 = success, 1 = termination
             if (code === 0 || code === 1) {
-                return resolve([]);
+                return resolve();
             }
 
-            resolve([
+            const messages = [
                 createErrorMessage({
                     message: `Worker exited with code ${code}`,
                     path: repository,
                     ruleId: '',
                 }),
-            ]);
+            ];
+
+            onMessage({ type: 'ON_RESULT', payload: { messages } });
+            resolve();
         });
     });
 }
