@@ -87,7 +87,7 @@ export async function runProductionBuild(
         const output: string[] = [];
         ptyProcess.onData(data => {
             debugStream.write(stripAnsi(data));
-            output.push(sanitizeStackTrace(stripAnsi(data)));
+            output.push(data);
         });
 
         ptyProcess.onExit(({ exitCode }) => {
@@ -138,8 +138,7 @@ function sanitizeStackTrace(message?: string): string {
  * - Construct proper consistent render output of node-pty's output
  */
 function parsePtyOutput(output: string[]): string[] {
-    // Discard first and last line, these may contain "debugger attached" messages
-    const textOutput = output.slice(1, output.length - 1).join('');
+    const textOutput = sanitizeStackTrace(stripAnsi(output.join('')));
 
     const [, comparisonResults] =
         textOutput.match(COMPARISON_RESULTS_PATTERN) || [];

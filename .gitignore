@@ -2,6 +2,7 @@ node_modules
 coverage
 log
 libraries-io.json
+*.local.*
 
 # Exclude all from VSCode
 .vscode/**
