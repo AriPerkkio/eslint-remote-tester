@@ -1,6 +1,8 @@
 import fs from 'fs';
 import { spawn } from 'node-pty';
 import stripAnsi from 'strip-ansi';
+import { Jasmine } from 'jest-jasmine2/build/index.d';
+import { Reporter } from 'jest-jasmine2/build/types.d';
 
 import {
     CACHE_LOCATION,
@@ -10,7 +12,8 @@ import {
 import { ComparisonTypes } from '@file-client/result-templates';
 import { Config, ConfigToValidate } from '@config/types';
 
-declare const console: { log: jest.Mock };
+declare const console: { log: jest.Mock; error: (...args: any) => void };
+declare const jasmine: Jasmine;
 
 export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
 export const INTEGRATION_REPO_NAME =
@@ -22,6 +25,7 @@ const COMPARISON_RESULTS_PATTERN = /(Comparison results:[\s|\S]*)Results/;
 const ON_COMPLETE_PATTERN = /("onComplete": )"([\s|\S]*)"/;
 const RULES_UNDER_TESTING_PATTERN = /("rulesUnderTesting": )"([\s|\S]*)",/;
 const ESCAPED_NEWLINE_PATTERN = /\\n/g;
+const DEBUG_LOG = '/tmp/test.debug.log';
 
 let idCounter = 0;
 
@@ -67,10 +71,9 @@ export async function runProductionBuild(
     const { name, cleanup } = createConfiguration(options, baseConfigPath);
 
     return new Promise((resolve, reject) => {
-        const debugLog = '/tmp/test.debug.log';
-        if (fs.existsSync(debugLog)) fs.unlinkSync(debugLog);
+        if (fs.existsSync(DEBUG_LOG)) fs.unlinkSync(DEBUG_LOG);
 
-        const debugStream = fs.createWriteStream(debugLog, {
+        const debugStream = fs.createWriteStream(DEBUG_LOG, {
             encoding: 'utf8',
         });
 
@@ -84,7 +87,7 @@ export async function runProductionBuild(
         const output: string[] = [];
         ptyProcess.onData(data => {
             debugStream.write(stripAnsi(data));
-            output.push(sanitizeStackTrace(stripAnsi(data)));
+            output.push(data);
         });
 
         ptyProcess.onExit(({ exitCode }) => {
@@ -135,8 +138,7 @@ function sanitizeStackTrace(message?: string): string {
  * - Construct proper consistent render output of node-pty's output
  */
 function parsePtyOutput(output: string[]): string[] {
-    // Discard first and last line, these may contain "debugger attached" messages
-    const textOutput = output.slice(1, output.length - 1).join('');
+    const textOutput = sanitizeStackTrace(stripAnsi(output.join('')));
 
     const [, comparisonResults] =
         textOutput.match(COMPARISON_RESULTS_PATTERN) || [];
@@ -192,4 +194,30 @@ export function getComparisonResults(
         },
         { added: '', removed: '' }
     );
+}
+
+/**
+ * Logs output of node-pty when a test fails.
+ * Used to debug flaky integration/smoke tests.
+ */
+export function addFailureLogger(): void {
+    const specDone: Reporter['specDone'] = async result => {
+        if (result.status === 'failed') {
+            if (!fs.existsSync(DEBUG_LOG)) {
+                return console.error('Debug log missing');
+            }
+
+            const logContent = fs.readFileSync(DEBUG_LOG, 'utf8');
+            console.log(
+                [
+                    `Debug log content of "${result.description}"`,
+                    '*********',
+                    logContent,
+                    '*********',
+                ].join('\n')
+            );
+        }
+    };
+
+    jasmine.getEnv().addReporter({ specDone });
 }
