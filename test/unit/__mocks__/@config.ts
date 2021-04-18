@@ -14,3 +14,6 @@ export default new Proxy(mockConfig, {
 });
 
 export const validateConfig = jest.fn().mockResolvedValue(undefined);
+export const resolveConfigurationLocation = jest
+    .fn()
+    .mockReturnValue('mock-configuration-location');
