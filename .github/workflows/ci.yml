@@ -13,6 +13,9 @@ jobs:
     - run: |
         yarn install
         yarn build
+    - run: yarn install
+      name: Install eslint-remote-tester-repositories dependencies
+      working-directory: ./repositories
     - run: yarn lint
 
   unit-test:
@@ -54,3 +57,15 @@ jobs:
         yarn install
         yarn build
     - run: yarn test:smoke
+
+  repositories-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    - run: yarn install
+      working-directory: ./repositories
+    - run: yarn test
+      working-directory: ./repositories

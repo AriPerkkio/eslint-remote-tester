@@ -1,12 +1,11 @@
-const repositories = require('./configs/repositories.json');
-const pathIgnorePattern = require('./configs/pathIgnorePattern');
+const { getRepositories, getPathIgnorePattern } = require('./repositories');
 
 module.exports = {
-    repositories: repositories.slice(0, 15),
+    repositories: getRepositories().slice(0, 15),
 
     extensions: ['js', 'jsx', 'ts', 'tsx'],
 
-    pathIgnorePattern,
+    pathIgnorePattern: getPathIgnorePattern(),
 
     maxFileSizeBytes: undefined,
 

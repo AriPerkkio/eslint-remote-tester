@@ -56,7 +56,7 @@ module.exports = {
             },
         },
         {
-            files: ['ci/*'],
+            files: ['ci/*', 'repositories/*'],
             rules: {
                 'node/no-unpublished-require': 'off',
             },

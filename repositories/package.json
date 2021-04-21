@@ -1,0 +1,28 @@
+{
+    "name": "eslint-remote-tester-repositories",
+    "version": "0.0.1",
+    "author": "Ari Perkkio <ari.perkkio@gmail.com>",
+    "description": "Shared repositories for eslint-remote-tester.config.js",
+    "license": "MIT",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AriPerkkio/eslint-remote-tester"
+    },
+    "homepage": "https://github.com/AriPerkkio/eslint-remote-tester/tree/master/repositories",
+    "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
+    "scripts": {
+        "generate:repositories": "node ./scripts/fetch-libraries.js",
+        "test": "jest"
+    },
+    "devDependencies": {
+        "chalk": "^4.1.0",
+        "jest": "^26.6.3",
+        "node-fetch": "^2.6.1"
+    },
+    "keywords": [
+        "eslint",
+        "eslint-test",
+        "eslint-remote-tester"
+    ]
+}
