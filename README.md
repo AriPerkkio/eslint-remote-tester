@@ -76,7 +76,7 @@ module.exports = {
 
 | Name                        | Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                | Type                                                                               | Required           | Default                                | Example                                                                                                                     |
 | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------- | :----------------- | :------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| `repositories`              | Repositories to scan in format of `owner/project`                                                                                                                                                              | `string[]`                                                                         | :white_check_mark: | :x:                                    | `['mui-org/material-ui', 'reach/reach-ui']`                                                                                 |
+| `repositories`              | Repositories to scan in format of `owner/project`. See [eslint-remote-tester-repositories] for shared list of repositories.                                                                                    | `string[]`                                                                         | :white_check_mark: | :x:                                    | `['mui-org/material-ui', 'reach/reach-ui']`                                                                                 |
 | `extensions`                | Extensions of files under scanning                                                                                                                                                                             | `string[]`                                                                         | :white_check_mark: | :x:                                    | `['js', 'jsx', 'ts', 'tsx']`                                                                                                |
 | `eslintrc`                  | ESLint configuration                                                                                                                                                                                           | See [Configuring ESLint]                                                           | :white_check_mark: | :x:                                    | `{ root: true, extends: ['eslint:all'] }`                                                                                   |
 | `pathIgnorePattern`         | Regexp pattern string used to exclude paths                                                                                                                                                                    | `string`                                                                           | :x:                | :x:                                    | `(node_modules\|docs\|\\/\\.git)`                                                                                           |
@@ -95,6 +95,7 @@ module.exports = {
 [configuring eslint]: https://eslint.org/docs/user-guide/configuring
 [fixing existing rules]: #fixing-existing-rules
 [oncomplete example]: docs/onComplete-arguments.json
+[eslint-remote-tester-repositories]: repositories/README.md
 
 ### Execution
 
@@ -206,4 +207,9 @@ rulesUnderTesting: function ruleFilter(ruleId, options) {
 
 ### Repositories
 
-Target repositories can easily be found using [libraries.io](https://libraries.io/). They provide [an API for querying repositories](https://libraries.io/api#project-dependent-repositories) which depend on certain project. Example usage at [repository-query-script](configs/repository-query-script/fetch-libraries.js).
+For easiest setup `eslint-remote-tester-repositories` npm package is provided.
+See [documentation](repositories/README.md).
+
+Target repositories can easily be found using [libraries.io](https://libraries.io/).
+They provide [an API for querying repositories](https://libraries.io/api#project-dependent-repositories) which depend on certain project.
+Example usage at [repository-query-script](repositories/scripts/fetch-libraries.js).

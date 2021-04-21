@@ -1,9 +1,6 @@
-name: Publish
+name: Publish eslint-remote-tester
 
-on:
-  release:
-    types: [created]
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 jobs:
   build:

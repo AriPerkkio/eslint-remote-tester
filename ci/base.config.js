@@ -1,17 +1,11 @@
-const repositories = require('../configs/repositories.json');
-const pathIgnorePattern = require('../configs/pathIgnorePattern');
-
-function shuffle(array) {
-    return array
-        .map(value => ({ value, order: Math.random() }))
-        .sort((a, b) => a.order - b.order)
-        .map(({ value }) => value);
-}
+const { getRepositories, getPathIgnorePattern } = require('../repositories');
 
 module.exports = {
-    repositories: process.env.CI ? shuffle(repositories) : [repositories[0]],
+    repositories: process.env.CI
+        ? getRepositories({ randomize: process.env.CI })
+        : [getRepositories()][0],
     extensions: ['js', 'jsx', 'ts', 'tsx'],
-    pathIgnorePattern,
+    pathIgnorePattern: getPathIgnorePattern(),
     rulesUnderTesting: [],
     resultParser: 'markdown',
     concurrentTasks: 3,

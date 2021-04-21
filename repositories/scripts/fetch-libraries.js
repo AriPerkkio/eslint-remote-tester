@@ -58,7 +58,7 @@ async function retryFetch(url) {
                 console.log(
                     chalk.red('Request rate limit hit. Sleeping for 60s')
                 );
-                await new Promise(r => setTimeout(r, 60));
+                await new Promise(r => setTimeout(r, 60000));
                 continue;
             }
 
