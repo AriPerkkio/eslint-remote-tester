@@ -3,7 +3,7 @@ name: Publish eslint-remote-tester-repositories
 on: [workflow_dispatch]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -14,7 +14,7 @@ jobs:
       working-directory: ./repositories
     - run: yarn test
       working-directory: ./repositories
-    - run: npm publish --dry-run
+    - run: npm publish
       working-directory: ./repositories
-      #env:
-      #  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
