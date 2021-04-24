@@ -9,7 +9,7 @@ const actualLog = console.log;
 const mockedLog = jest.fn().mockImplementation((...args) => {
     // Support calling console.log when developing tests, e.g. console.log('DEBUG', 'actual log')
     if (args[0] === 'DEBUG') {
-        actualLog(args[1]);
+        actualLog(...args.slice(1));
     }
 });
 
