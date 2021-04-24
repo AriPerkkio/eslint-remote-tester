@@ -202,7 +202,7 @@ rulesUnderTesting: function ruleFilter(ruleId, options) {
 
 ### Configuration
 
--   [react configuration with +150 repositories](eslint-remote-tester.react.config.js)
+-   [react configuration with +150 repositories](docs/eslint-remote-tester.react.config.js)
 -   [small regression for eslint:recommended](eslint-remote-tester.config.js)
 
 ### Repositories
