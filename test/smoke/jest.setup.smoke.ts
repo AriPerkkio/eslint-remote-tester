@@ -1,6 +1,6 @@
 import { addFailureLogger, clearResultsCache } from '../utils';
 
-jest.setTimeout(120000);
+jest.setTimeout(300000);
 addFailureLogger();
 
 beforeEach(async () => {

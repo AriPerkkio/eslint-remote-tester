@@ -25,9 +25,9 @@
         "start:ci": "CI=true yarn start",
         "start:memory-limit-crash": "NODE_OPTIONS=--max_old_space_size=50 node dist",
         "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx",
-        "test": "jest",
-        "test:integration": "jest --config jest.config.integration.js --runInBand",
-        "test:smoke": "jest --config jest.config.smoke.js --runInBand",
+        "test": "jest --config test/unit/jest.config.unit.js",
+        "test:integration": "jest --config test/integration/jest.config.integration.js --runInBand",
+        "test:smoke": "jest --config test/smoke/jest.config.smoke.js --runInBand",
         "validate": "yarn build && yarn lint && yarn test && yarn test:integration",
         "prepare": "husky install"
     },
