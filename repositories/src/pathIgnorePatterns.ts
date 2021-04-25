@@ -1,4 +1,4 @@
-module.exports = `(${[
+export const pathIgnorePatterns = `(${[
     'node_modules',
     '\\/\\.', // Any file or directory starting with dot, e.g. ".git"
     '/dist/',

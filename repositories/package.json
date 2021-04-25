@@ -4,21 +4,35 @@
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "description": "Shared repositories for eslint-remote-tester.config.js",
     "license": "MIT",
-    "main": "index.js",
+    "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/AriPerkkio/eslint-remote-tester"
+        "url": "https://github.com/AriPerkkio/eslint-remote-tester",
+        "directory": "repositories"
     },
     "homepage": "https://github.com/AriPerkkio/eslint-remote-tester/tree/master/repositories",
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "scripts": {
-        "generate:repositories": "node ./scripts/fetch-libraries.js",
+        "prebuild": "rimraf dist",
+        "build": "tsc --project tsconfig.prod.json",
+        "postbuild": "tscpaths --project tsconfig.prod.json --src ./lib --out ./dist",
+        "generate:repositories": "ts-node ./scripts/fetch-libraries.ts",
+        "generate:repositories:unique": "ts-node ./scripts/filter-unique-repos.ts",
         "test": "jest"
     },
     "devDependencies": {
-        "chalk": "^4.1.0",
+        "@types/jest": "^26.0.22",
+        "@types/node-fetch": "^2.5.10",
+        "chalk": "^4.1.1",
         "jest": "^26.6.3",
-        "node-fetch": "^2.6.1"
+        "node-fetch": "^2.6.1",
+        "ts-jest": "^26.5.5",
+        "ts-node": "^9.1.1",
+        "tscpaths": "^0.0.9",
+        "typescript": "^4.2.4"
     },
     "keywords": [
         "eslint",
