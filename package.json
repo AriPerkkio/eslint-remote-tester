@@ -73,7 +73,7 @@
         "nodemon": "^2.0.4",
         "prettier": "2.1.1",
         "rimraf": "^3.0.2",
-        "strip-ansi": "^6.0.0",
+        "strip-ansi": "^7.0.0",
         "ts-jest": "^26.4.4",
         "tscpaths": "^0.0.9",
         "typescript": "^4.2.4"
