@@ -2,35 +2,35 @@
 name: eslint-plugin-import
 
 on:
-  workflow_dispatch: # Manual triggers
-  workflow_run:
-    workflows:
-      - Run all plugin workflows
-    types:
-      - completed
-  schedule:
-    # Every thursday at 02:00
-    - cron: '0 02 * * THU'
+    workflow_dispatch: # Manual triggers
+    workflow_run:
+        workflows:
+            - Run all plugin workflows
+        types:
+            - completed
+    schedule:
+        # Every thursday at 02:00
+        - cron: '0 02 * * THU'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: 14
-    - run: |
-        yarn install
-        yarn build
-        rm -rf ./node_modules
-    - run: |
-        yarn install
-        yarn list | grep eslint
-        yarn log --config ./plugin-configs/eslint-plugin-import.config.js
-      working-directory: ./ci
-    - uses: AriPerkkio/eslint-remote-tester-run-action@v1
-      with:
-        working-directory: ./ci
-        issue-title: "Weekly scheduled smoke test: eslint-plugin-import"
-        eslint-remote-tester-config: plugin-configs/eslint-plugin-import.config.js
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 14
+            - run: |
+                  yarn install
+                  yarn build
+                  rm -rf ./node_modules
+            - run: |
+                  yarn install
+                  yarn list | grep eslint
+                  yarn log --config ./plugin-configs/eslint-plugin-import.config.js
+              working-directory: ./ci
+            - uses: AriPerkkio/eslint-remote-tester-run-action@v1
+              with:
+                  working-directory: ./ci
+                  issue-title: 'Weekly scheduled smoke test: eslint-plugin-import'
+                  eslint-remote-tester-config: plugin-configs/eslint-plugin-import.config.js

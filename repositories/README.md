@@ -22,7 +22,7 @@ Get list of repositories as `string[]`.
 
 #### Options
 
-- `randomize`: `boolean` | Whether to randomize order of repositories. Defaults to `false`.
+-   `randomize`: `boolean` | Whether to randomize order of repositories. Defaults to `false`.
 
 #### Example
 
