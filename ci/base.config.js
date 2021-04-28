@@ -3,7 +3,7 @@ const { getRepositories, getPathIgnorePattern } = require('../repositories');
 module.exports = {
     repositories: process.env.CI
         ? getRepositories({ randomize: process.env.CI })
-        : [getRepositories()][0],
+        : [getRepositories()[0]],
     extensions: ['js', 'jsx', 'ts', 'tsx'],
     pathIgnorePattern: getPathIgnorePattern(),
     rulesUnderTesting: [],
