@@ -26,6 +26,11 @@ jobs:
                   rm -rf ./node_modules
             - run: |
                   yarn install
+                  yarn build
+                  rm -rf ./node_modules
+              working-directory: ./repositories
+            - run: |
+                  yarn install
                   yarn list | grep eslint
                   yarn log --config ./plugin-configs/eslint-plugin-sonarjs.config.js
               working-directory: ./ci
