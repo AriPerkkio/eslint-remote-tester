@@ -17,7 +17,9 @@ jobs:
                   yarn install
                   yarn build
               name: Install & build eslint-remote-tester
-            - run: yarn install
+            - run: |
+                  yarn install
+                  yarn build
               name: Install eslint-remote-tester-repositories dependencies
               working-directory: ./repositories
             - run: yarn lint
