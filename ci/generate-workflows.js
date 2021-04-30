@@ -26,38 +26,45 @@ const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
 name: ${plugin}
 
 on:
-  workflow_dispatch: # Manual triggers
-  workflow_run:
-    workflows:
-      - Run all plugin workflows
-    types:
-      - completed
-  schedule:
-    # Every thursday at ${generateHours(index)}:00
-    - cron: '0 ${generateHours(index)} * * THU'
+    workflow_dispatch: # Manual triggers
+    workflow_run:
+        workflows:
+            - Run all plugin workflows
+        types:
+            - completed
+    schedule:
+        # Every thursday at ${generateHours(index)}:00
+        - cron: '0 ${generateHours(index)} * * THU'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: 14
-    - run: |
-        yarn install
-        yarn build
-        rm -rf ./node_modules
-    - run: |
-        yarn install
-        yarn list | grep eslint
-        yarn log --config ./plugin-configs/${plugin}.config.js
-      working-directory: ./ci
-    - uses: AriPerkkio/eslint-remote-tester-run-action@v1
-      with:
-        working-directory: ./ci
-        issue-title: "Weekly scheduled smoke test: ${plugin}"
-        eslint-remote-tester-config: plugin-configs/${plugin}.config.js
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 14
+            - name: Install & build eslint-remote-tester
+              run: |
+                  yarn install
+                  yarn build
+                  rm -rf ./node_modules
+            - name: Install & build eslint-remote-tester-repositories
+              run: |
+                  yarn install
+                  yarn build
+                  rm -rf ./node_modules
+              working-directory: ./repositories
+            - run: |
+                  yarn install
+                  yarn list | grep eslint
+                  yarn log --config ./plugin-configs/${plugin}.config.js
+              working-directory: ./ci
+            - uses: AriPerkkio/eslint-remote-tester-run-action@v1
+              with:
+                  working-directory: ./ci
+                  issue-title: 'Weekly scheduled smoke test: ${plugin}'
+                  eslint-remote-tester-config: plugin-configs/${plugin}.config.js
 `;
 
 function generateHours(index) {

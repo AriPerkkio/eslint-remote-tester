@@ -20,10 +20,17 @@ jobs:
             - uses: actions/setup-node@v2
               with:
                   node-version: 14
-            - run: |
+            - name: Install & build eslint-remote-tester
+              run: |
                   yarn install
                   yarn build
                   rm -rf ./node_modules
+            - name: Install & build eslint-remote-tester-repositories
+              run: |
+                  yarn install
+                  yarn build
+                  rm -rf ./node_modules
+              working-directory: ./repositories
             - run: |
                   yarn install
                   yarn list | grep eslint

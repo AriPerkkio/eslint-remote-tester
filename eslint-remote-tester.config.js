@@ -1,4 +1,7 @@
-const { getRepositories, getPathIgnorePattern } = require('./repositories');
+const {
+    getRepositories,
+    getPathIgnorePattern,
+} = require('eslint-remote-tester-repositories');
 
 module.exports = {
     repositories: getRepositories().slice(0, 15),

@@ -1,6 +1,4 @@
-/* eslint-env jest */
-
-const { getRepositories, getPathIgnorePattern } = require('../index');
+import { getRepositories, getPathIgnorePattern } from '../src';
 
 describe('getRepositories', () => {
     test('is function', () => {

@@ -29,6 +29,7 @@
         "eslint-plugin-testing-library": "latest",
         "eslint-plugin-unicorn": "latest",
         "eslint-remote-tester": "../",
+        "eslint-remote-tester-repositories": "../repositories",
         "react": "16.13.1",
         "typescript": "^4"
     }
