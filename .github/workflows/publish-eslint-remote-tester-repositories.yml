@@ -12,6 +12,8 @@ jobs:
                   node-version: 14
             - run: yarn install
               working-directory: ./repositories
+            - run: yarn build
+              working-directory: ./repositories
             - run: yarn test
               working-directory: ./repositories
             - run: npm publish
