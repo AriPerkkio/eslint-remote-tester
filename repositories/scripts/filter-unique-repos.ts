@@ -1,4 +1,5 @@
 import { writeFileSync } from 'fs';
+import { resolve } from 'path';
 
 import repos from '../src/repositories.json';
 
@@ -11,7 +12,7 @@ console.log(
 );
 
 writeFileSync(
-    '../src/repositories.json',
+    resolve(__dirname, '../src/repositories.json'),
     JSON.stringify(uniqueRepos, null, 4),
     'utf8'
 );
