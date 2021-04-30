@@ -9,9 +9,6 @@
         "lint": "eslint-remote-tester",
         "log": "node ./log-config.js"
     },
-    "dependencies": {
-        "eslint-remote-tester-repositories": "../repositories"
-    },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "latest",
         "@typescript-eslint/parser": "latest",
@@ -32,6 +29,7 @@
         "eslint-plugin-testing-library": "latest",
         "eslint-plugin-unicorn": "latest",
         "eslint-remote-tester": "../",
+        "eslint-remote-tester-repositories": "../repositories",
         "react": "16.13.1",
         "typescript": "^4"
     }
