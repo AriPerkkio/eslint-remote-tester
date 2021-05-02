@@ -31,6 +31,7 @@ const UNKNOWN_RULE_ID = 'unable-to-parse-rule-id';
 const LINE_REGEX = /while linting <text>:(([0-9]+)?)/;
 
 const MAX_LINT_TIME_SECONDS = 5;
+const MAX_ROW_LENGTH = 1000;
 
 /**
  * Create error message for LintMessage results
@@ -103,7 +104,10 @@ function getMessageReducer(repository: string) {
  */
 function constructCodeFrame(
     source: ESLint.LintResult['source'],
-    message: Linter.LintMessage
+    message: Pick<
+        Linter.LintMessage,
+        'line' | 'column' | 'endLine' | 'endColumn'
+    >
 ): Linter.LintMessage['source'] {
     if (!source) return undefined;
 
@@ -115,7 +119,16 @@ function constructCodeFrame(
         location.end = { line: message.endLine, column: message.endColumn };
     }
 
-    return codeFrameColumns(source, location);
+    const rows = codeFrameColumns(source, location).split('\n');
+    const limitedRows = rows.map(row => {
+        if (row.length > MAX_ROW_LENGTH) {
+            return row.slice(0, MAX_ROW_LENGTH - 3) + '...';
+        }
+
+        return row;
+    });
+
+    return limitedRows.join('\n');
 }
 
 /**
@@ -134,7 +147,7 @@ function parseErrorStack(error: Error, file: SourceFile): LintMessage {
 
     // Include erroneous line to source when line was successfully parsed from the stack
     const source =
-        line > 0 ? codeFrameColumns(content, { start: { line } }) : undefined;
+        line > 0 ? constructCodeFrame(content, { line, column: 0 }) : undefined;
 
     return createErrorMessage({
         path,
