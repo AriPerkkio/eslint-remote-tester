@@ -31,3 +31,6 @@ export class Worker {
         listeners[event].push(listener);
     }
 }
+
+export const parentPort = { postMessage: jest.fn() };
+export const workerData = { repository: 'mock-repository' };

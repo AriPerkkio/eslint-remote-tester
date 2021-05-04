@@ -2,6 +2,7 @@ const DEFAULT_MOCK_CONFIG = {
     repositories: ['mock-repo-1', 'mock-repo-2', 'mock-repo-3'],
     logLevel: 'verbose',
     resultParser: 'markdown',
+    rulesUnderTesting: ['mock-rule-id'],
 };
 
 export const mockConfig = jest.fn().mockReturnValue(DEFAULT_MOCK_CONFIG);
