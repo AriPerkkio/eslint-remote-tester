@@ -308,8 +308,12 @@ describe('integration', () => {
     test('calls onComplete hook with the results', async () => {
         const { output } = await runProductionBuild({
             CI: true,
-            onComplete: function onComplete(results) {
+            onComplete: function onComplete(results, _, repositoryCount) {
                 console.log('[TEST-ON-COMPLETE-START]');
+
+                console.log('[REPOSITORY-COUNT-START]');
+                console.log(repositoryCount);
+                console.log('[REPOSITORY-COUNT-END]');
 
                 results.forEach(result => {
                     Object.entries(result).forEach(([key, value]) => {
@@ -335,6 +339,9 @@ describe('integration', () => {
 
         expect(onCompleteCall).toMatchInlineSnapshot(`
             "[TEST-ON-COMPLETE-START]
+            [REPOSITORY-COUNT-START]
+            1
+            [REPOSITORY-COUNT-END]
             .
             [REPOSITORY]
             eslint-remote-tester-integration-test-target

@@ -167,14 +167,14 @@ class ProgressLogger {
         const notifyListeners = () =>
             this.listeners.exit.forEach(listener => listener());
 
-        // Erroneous exit handler should not crash whole application.
-        // Log the error and move on.
-        exitHandler()
+        exitHandler(this.scannedRepositories)
             .then(messages => {
                 messages.forEach(message => this.addNewMessage(message));
                 notifyListeners();
             })
             .catch(error => {
+                // Erroneous exit handler should not crash whole application.
+                // Log the error and move on.
                 console.error(error);
                 notifyListeners();
             });
