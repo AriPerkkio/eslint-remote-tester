@@ -8,6 +8,7 @@ import {
 } from '@config/types';
 
 jest.unmock('@config');
+jest.unmock('eslint');
 
 const DEFAULT_CONFIGURATION: ConfigWithOptionals = {
     repositories: ['test-repo', 'test-repot-2'],
