@@ -7,9 +7,10 @@
 
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
-
 import chalk from 'chalk';
 import __fetch from 'node-fetch';
+
+import { isRepositoryPublic } from './utils';
 
 type DependentRepository = {
     host_type: 'GitHub';
@@ -145,23 +146,6 @@ const filterRepository = ({
 }: DependentRepository) => host_type === 'GitHub' && !isPrivate && !fork;
 
 const parseRepositoryName = ({ full_name }: DependentRepository) => full_name;
-
-const isRepositoryPublic = async (repository: string) => {
-    try {
-        console.log(chalk.yellow`Requesting https://github.com/${repository}`);
-
-        const response = await __fetch(`https://github.com/${repository}`);
-        const isPublic = response.status === 200;
-
-        if (!isPublic) {
-            console.log(chalk.yellow`${repository} is private`);
-        }
-
-        return isPublic;
-    } catch (_) {
-        return false;
-    }
-};
 
 const main = async () => {
     for (let page = 1; page < MAX_REQUEST; page++) {

@@ -1,0 +1,18 @@
+name: Check for private repositories
+
+on: [workflow_dispatch]
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 14
+            - run: yarn install
+              working-directory: ./repositories
+            - run: yarn build
+              working-directory: ./repositories
+            - run: yarn filter:repositories:private
+              working-directory: ./repositories

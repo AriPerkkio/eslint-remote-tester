@@ -20,7 +20,8 @@
         "build": "tsc --project tsconfig.prod.json",
         "postbuild": "tscpaths --project tsconfig.prod.json --src ./lib --out ./dist",
         "generate:repositories": "ts-node ./scripts/fetch-libraries.ts",
-        "generate:repositories:unique": "ts-node ./scripts/filter-unique-repos.ts",
+        "filter:repositories:private": "ts-node ./scripts/filter-private-repos.ts",
+        "filter:repositories:unique": "ts-node ./scripts/filter-unique-repos.ts",
         "test": "jest"
     },
     "devDependencies": {
