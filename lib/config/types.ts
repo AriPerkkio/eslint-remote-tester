@@ -32,7 +32,8 @@ export interface Config {
     updateComparisonReference: boolean;
     onComplete?: (
         results: Result[],
-        comparisonResults: ComparisonResults | null
+        comparisonResults: ComparisonResults | null,
+        repositoryCount: number
     ) => Promise<void> | void;
 }
 

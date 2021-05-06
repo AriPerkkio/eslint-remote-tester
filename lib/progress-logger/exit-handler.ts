@@ -11,7 +11,9 @@ import { LogMessage } from './types';
 /**
  * Callback invoked once scan is complete and application is about to exit
  */
-export default async function onExit(): Promise<LogMessage[]> {
+export default async function onExit(
+    scannedRepositories: number
+): Promise<LogMessage[]> {
     const messages: LogMessage[] = [];
     const errors = [];
 
@@ -43,7 +45,8 @@ export default async function onExit(): Promise<LogMessage[]> {
         try {
             const onCompletePromise = config.onComplete(
                 results,
-                comparisonResults
+                comparisonResults,
+                scannedRepositories
             );
 
             if (onCompletePromise instanceof Promise) {

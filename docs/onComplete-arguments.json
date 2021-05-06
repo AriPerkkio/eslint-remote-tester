@@ -76,5 +76,6 @@
                 "source": "  5 | \n  6 | new Vue({\n> 7 |   render: h => h(App),\n    |           ^\n  8 | }).$mount('#app')\n  9 | "
             }
         ]
-    }
+    },
+    "repositoryCount": 123
 }
