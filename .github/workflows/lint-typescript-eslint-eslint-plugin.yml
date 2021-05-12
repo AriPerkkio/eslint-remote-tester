@@ -36,7 +36,7 @@ jobs:
                   yarn list | grep eslint
                   yarn log --config ./plugin-configs/typescript-eslint-eslint-plugin.config.js
               working-directory: ./ci
-            - uses: AriPerkkio/eslint-remote-tester-run-action@v1
+            - uses: AriPerkkio/eslint-remote-tester-run-action@v1.1.1
               with:
                   working-directory: ./ci
                   issue-title: 'Weekly scheduled smoke test: typescript-eslint-eslint-plugin'
