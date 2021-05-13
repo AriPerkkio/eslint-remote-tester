@@ -3,13 +3,13 @@ import fetch from 'node-fetch';
 
 export async function isRepositoryPublic(repository: string): Promise<boolean> {
     try {
-        console.log(chalk.yellow`Requesting https://github.com/${repository}`);
-
         const response = await fetch(`https://github.com/${repository}`);
-        const isPublic = response.status !== 404;
+        const isPublic = response.status === 200;
 
         if (!isPublic) {
-            console.log(chalk.yellow`${repository} is private`);
+            console.log(
+                chalk.yellow`https://github.com/${repository} HTTP${response.status}`
+            );
         }
 
         return isPublic;
