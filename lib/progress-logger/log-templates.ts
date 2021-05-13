@@ -55,8 +55,10 @@ export const REPOSITORIES_STATUS_TEMPLATE = (
 
 export const CI_STATUS_TEMPLATE = (
     scannedRepositories: number,
+    errorCount: number,
     tasks: Task[]
 ): string => `[INFO/STATUS] ${REPOSITORIES_STATUS_TEMPLATE(scannedRepositories)}
+[INFO/STATUS] Errors (${errorCount})
 ${tasks.map(task => CI_TASK_TEMPLATE(task)).join('\n')}\n`;
 
 const CI_TASK_TEMPLATE = (task: Task): string =>
