@@ -61,6 +61,9 @@ class ProgressLogger {
     /** Count of finished repositories */
     scannedRepositories = 0;
 
+    /** Total count of errors */
+    private errorCount = 0;
+
     /** Event listeners */
     private listeners: Listeners = {
         exit: [],
@@ -94,7 +97,10 @@ class ProgressLogger {
     /**
      * Subscribe on logger's events
      */
-    on<T = ListenerType>(event: T & ListenerType, listener: Listener<T>) {
+    on<T extends ListenerType = ListenerType>(
+        event: T & ListenerType,
+        listener: Listener<T>
+    ) {
         const eventListeners = this.listeners[event];
 
         if (eventListeners) {
@@ -260,6 +266,8 @@ class ProgressLogger {
         const hasErrors = resultCount > 0;
 
         this.scannedRepositories++;
+        this.errorCount += resultCount;
+
         this.addNewMessage({
             content: Templates.LINT_END_TEMPLATE(repository, resultCount),
             color: hasErrors ? 'red' : 'green',
@@ -412,6 +420,7 @@ class ProgressLogger {
         if (['verbose', 'info'].includes(config.logLevel)) {
             const message = Templates.CI_STATUS_TEMPLATE(
                 this.scannedRepositories,
+                this.errorCount,
                 this.tasks
             );
 

@@ -221,3 +221,16 @@ export function addFailureLogger(): void {
 
     jasmine.getEnv().addReporter({ specDone });
 }
+
+/**
+ * Get last call arguments of given mocked callback
+ * - Returns array incase of multiple call arguments
+ * - Returns a single value incase of single call argument
+ */
+export function getLastCallArguments(callback: jest.Mock): unknown {
+    if (!callback.mock.calls) return null;
+
+    const [lastCall] = callback.mock.calls;
+
+    return lastCall.length > 1 ? lastCall : lastCall[0];
+}
