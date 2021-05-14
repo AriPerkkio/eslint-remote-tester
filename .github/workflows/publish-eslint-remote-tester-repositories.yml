@@ -16,6 +16,7 @@ jobs:
               working-directory: ./repositories
             - run: yarn test
               working-directory: ./repositories
+            - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
             - run: npm publish
               working-directory: ./repositories
               env:
