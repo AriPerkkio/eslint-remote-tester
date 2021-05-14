@@ -7,7 +7,7 @@ import {
 } from '@file-client/repository-client';
 import SimpleGit from '__mocks__/simple-git';
 
-const EXPECTED_CACHE = './.cache-eslint-remote-tester';
+const EXPECTED_CACHE = './node_modules/.cache-eslint-remote-tester';
 
 describe('repository-client', () => {
     beforeEach(() => {

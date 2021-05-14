@@ -208,7 +208,7 @@ describe('integration', () => {
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
             [DONE] Finished scan of 1 repositories
-            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 
             "
         `);
@@ -248,7 +248,7 @@ describe('integration', () => {
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
             [DONE] Finished scan of 1 repositories
-            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 
             "
         `);
@@ -257,11 +257,11 @@ describe('integration', () => {
 
         expect(cachedRun.output.pop()).toMatchInlineSnapshot(`
             "Full log:
-            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
             [DONE] Finished scan of 1 repositories
-            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 
             "
         `);
@@ -1092,7 +1092,7 @@ describe('integration', () => {
              eol-last - AriPerkkio/eslint-remote-tester-integration-test-target
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 21 errors
             [DONE] Finished scan of 1 repositories
-            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 
             "
         `);
