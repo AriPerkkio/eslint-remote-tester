@@ -208,6 +208,7 @@ describe('integration', () => {
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
             [DONE] Finished scan of 1 repositories
+            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
 
             "
         `);
@@ -221,12 +222,12 @@ describe('integration', () => {
     });
 
     test('repositories are cached', async () => {
-        const cleanRun = await runProductionBuild();
+        const cleanRun = await runProductionBuild({ CI: true });
 
         expect(cleanRun.output.some(row => /CLONING/.test(row))).toBe(true);
         expect(fs.existsSync(REPOSITORY_CACHE)).toBe(true);
 
-        const cachedRun = await runProductionBuild();
+        const cachedRun = await runProductionBuild({ CI: true });
 
         expect(cachedRun.output.some(row => /CLONING/.test(row))).toBe(false);
         expect(cachedRun.output.some(row => /PULLING/.test(row))).toBe(true);
@@ -237,6 +238,33 @@ describe('integration', () => {
         await runProductionBuild({ cache: false });
 
         expect(fs.existsSync(REPOSITORY_CACHE)).toBe(false);
+    });
+
+    test('cache status is rendered on CLI mode', async () => {
+        const cleanRun = await runProductionBuild({ CI: false });
+
+        expect(cleanRun.output.pop()).toMatchInlineSnapshot(`
+            "Full log:
+            [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
+            [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
+            [DONE] Finished scan of 1 repositories
+            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+
+            "
+        `);
+
+        const cachedRun = await runProductionBuild({ CI: false });
+
+        expect(cachedRun.output.pop()).toMatchInlineSnapshot(`
+            "Full log:
+            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+            [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
+            [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
+            [DONE] Finished scan of 1 repositories
+            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
+
+            "
+        `);
     });
 
     // TODO: How to mock setTimeout calls when process is not ran by Jest
@@ -1023,6 +1051,7 @@ describe('integration', () => {
     test('calls rulesUnderTesting filter with ruleId and repository', async () => {
         const { output } = await runProductionBuild({
             CI: false,
+            logLevel: 'verbose',
             rulesUnderTesting: (ruleId, options) => {
                 const { parentPort } = require('worker_threads');
 
@@ -1063,6 +1092,7 @@ describe('integration', () => {
              eol-last - AriPerkkio/eslint-remote-tester-integration-test-target
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 21 errors
             [DONE] Finished scan of 1 repositories
+            [INFO] Cached repositories (1) at ./.cache-eslint-remote-tester
 
             "
         `);

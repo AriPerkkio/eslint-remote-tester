@@ -7,6 +7,7 @@ import {
     RESULTS_LOCATION,
     RESULTS_COMPARE_DIR,
     RESULTS_COMPARISON_CACHE_LOCATION,
+    CACHE_LOCATION,
 } from '@file-client';
 import {
     Result,
@@ -49,6 +50,10 @@ function createResults(): void {
 
 function createComparisonCache(...results: Result[]): void {
     removeComparisonCache();
+
+    if (!fs.existsSync(CACHE_LOCATION)) {
+        fs.mkdirSync(CACHE_LOCATION);
+    }
 
     fs.writeFileSync(
         RESULTS_COMPARISON_CACHE_LOCATION,

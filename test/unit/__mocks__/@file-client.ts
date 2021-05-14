@@ -4,6 +4,10 @@ export const writeResults = jest.fn();
 export const prepareResultsDirectory = jest.fn();
 export const removeCachedRepository = jest.fn();
 export const getFilesMock = jest.fn();
+export const getCacheStatus = () => ({
+    countOfRepositories: 0,
+    location: 'mock-cache',
+});
 
 export const ResultsStore = {
     getResults: jest.fn().mockReturnValue(['MOCK_RESULT']),

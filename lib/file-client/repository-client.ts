@@ -72,3 +72,36 @@ export async function removeCachedRepository(
         fs.rmdirSync(repoLocation, { recursive: true });
     }
 }
+
+/**
+ * Get status of cache. Includes count of cached repositories and location of the cache.
+ */
+export function getCacheStatus(): {
+    countOfRepositories: number;
+    location: string;
+} {
+    let countOfRepositories = 0;
+
+    if (fs.existsSync(CACHE_LOCATION)) {
+        // Root level directories are users/organizations, e.g. `@testing-library`
+        const repositoryOwners = fs.readdirSync(CACHE_LOCATION);
+
+        repositoryOwners.forEach(repositoryOwner => {
+            const stats = fs.statSync(`${CACHE_LOCATION}/${repositoryOwner}`);
+
+            // Check type just to be sure
+            if (!stats.isDirectory()) return;
+
+            const repositories = fs.readdirSync(
+                `${CACHE_LOCATION}/${repositoryOwner}`
+            );
+
+            countOfRepositories += repositories.length;
+        });
+    }
+
+    return {
+        countOfRepositories,
+        location: CACHE_LOCATION,
+    };
+}

@@ -68,10 +68,11 @@ module.exports = {
             },
         },
         {
-            files: ['*.test.ts*'],
+            files: ['*.test.ts*', '**/__mocks__/*'],
             rules: {
                 '@typescript-eslint/no-non-null-assertion': 'off',
                 '@typescript-eslint/ban-ts-comment': 'off',
+                '@typescript-eslint/explicit-module-boundary-types': 'off',
             },
         },
     ],

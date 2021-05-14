@@ -82,7 +82,15 @@ export async function runProductionBuild(
             encoding: 'utf8',
             cols: 999, // Prevent word wrap
             rows: 999, // Prevent ink from erasing the screen,
-            env: { ...process.env, NODE_OPTIONS: '--max_old_space_size=5120' },
+            env: {
+                ...process.env,
+
+                // For smoke test to not crash
+                NODE_OPTIONS: '--max_old_space_size=5120',
+
+                // Force ink to render even when run in CI
+                CI: 'false',
+            },
         });
         const output: string[] = [];
         ptyProcess.onData(data => {
@@ -149,11 +157,11 @@ function parsePtyOutput(output: string[]): string[] {
 }
 
 /**
- * Remove possible result caches
+ * Remove possible repository caches
  */
-export function clearResultsCache(): void {
-    if (fs.existsSync(REPOSITORY_CACHE)) {
-        fs.rmdirSync(REPOSITORY_CACHE, { recursive: true });
+export function clearRepositoryCache(): void {
+    if (fs.existsSync(CACHE_LOCATION)) {
+        fs.rmdirSync(CACHE_LOCATION, { recursive: true });
     }
 }
 

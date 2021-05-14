@@ -69,11 +69,7 @@ const MessagesScrollBox: React.FC = ({ children }) => {
     }
 
     return (
-        <Box
-            flexDirection='column'
-            marginTop={scannedRepositories > 0 ? 1 : 0}
-            height={areaHeight}
-        >
+        <Box flexDirection='column' marginTop={1} height={areaHeight}>
             {visibleMessages}
         </Box>
     );

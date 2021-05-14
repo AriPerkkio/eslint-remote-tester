@@ -4,7 +4,7 @@ import { renderApplication } from '@ui';
 import config, { validateConfig } from '@config';
 import engine from '@engine';
 import { LintMessage } from '@engine/types';
-import { prepareResultsDirectory, writeResults } from '@file-client';
+import * as fileClient from '@file-client';
 import logger from '@progress-logger';
 
 /**
@@ -25,8 +25,10 @@ async function main() {
     }
 
     await validateConfig(config);
-    prepareResultsDirectory();
+    fileClient.prepareResultsDirectory();
+
     renderApplication();
+    logger.onCacheStatus(fileClient.getCacheStatus());
 
     // Start x amount of task runners parallel until we are out of repositories to scan
     await Promise.all(
@@ -36,6 +38,7 @@ async function main() {
     );
 
     logger.onAllRepositoriesScanned();
+    logger.onCacheStatus(fileClient.getCacheStatus());
 }
 
 /**
@@ -120,7 +123,7 @@ async function scanRepo(repository: string) {
     );
 
     try {
-        await writeResults(results, repository);
+        await fileClient.writeResults(results, repository);
     } catch (e) {
         logger.onWriteFailure(repository, e);
     }

@@ -61,6 +61,11 @@ export const CI_STATUS_TEMPLATE = (
 [INFO/STATUS] Errors (${errorCount})
 ${tasks.map(task => CI_TASK_TEMPLATE(task)).join('\n')}\n`;
 
+export const CACHE_STATUS_TEMPLATE = (
+    repositoriesCount: number,
+    location: string
+): string => `[INFO] Cached repositories (${repositoriesCount}) at ${location}`;
+
 const CI_TASK_TEMPLATE = (task: Task): string =>
     `[INFO]${TASK_TEMPLATE(task)}`.replace(CI_TEMPLATE_TASK_REGEXP, '/');
 
