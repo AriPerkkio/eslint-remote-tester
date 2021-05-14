@@ -22,6 +22,7 @@ class MockLogger {
     onReadFailure = jest.fn();
     onWriteFailure = jest.fn();
     onLintEnd = jest.fn();
+    onCacheStatus = jest.fn();
 
     on = jest.fn().mockImplementation((event: ListenerType, listener) => {
         const eventListeners = this.mockListeners[event];

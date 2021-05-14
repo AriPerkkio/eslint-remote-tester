@@ -2,6 +2,7 @@ import fs from 'fs';
 
 import {
     cloneRepository,
+    getCacheStatus,
     removeCachedRepository,
 } from '@file-client/repository-client';
 import SimpleGit from '__mocks__/simple-git';
@@ -64,6 +65,27 @@ describe('repository-client', () => {
             expect(fs.existsSync(`${EXPECTED_CACHE}/${repository}`)).toBe(
                 false
             );
+        });
+    });
+
+    describe('getCacheStatus', () => {
+        test('returns count of repositories', () => {
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-1`);
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-1/repository-1`);
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-1/repository-2`);
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-1/repository-3`);
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-1/repository-4`);
+
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-2`);
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-2/repository-1`);
+
+            fs.mkdirSync(`${EXPECTED_CACHE}/user-3`);
+
+            expect(getCacheStatus().countOfRepositories).toBe(5);
+        });
+
+        test('returns location of cache', () => {
+            expect(getCacheStatus().location).toBe(EXPECTED_CACHE);
         });
     });
 });

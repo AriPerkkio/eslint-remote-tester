@@ -429,6 +429,28 @@ class ProgressLogger {
     }
 
     /**
+     * Log status of cache. Includes count of cached repositories and location of cache.
+     * Only used in CLI
+     */
+    onCacheStatus(status: { countOfRepositories: number; location: string }) {
+        if (config.CI) return;
+
+        // Prevent logging useless "0 cached repositories" cases
+        if (status.countOfRepositories <= 0) return;
+
+        if (['verbose', 'info'].includes(config.logLevel)) {
+            this.addNewMessage({
+                content: Templates.CACHE_STATUS_TEMPLATE(
+                    status.countOfRepositories,
+                    status.location
+                ),
+                level: 'info',
+                color: 'yellow',
+            });
+        }
+    }
+
+    /**
      * Log notification about reaching scan time limit and notify listeners
      */
     private onScanTimeout() {
@@ -448,7 +470,7 @@ class ProgressLogger {
         this.addNewMessage({
             content: Templates.DEBUG_TEMPLATE(messages.join('\n')),
             color: 'yellow',
-            level: 'verbose',
+            level: 'error', // Always visible
         });
     }
 }
