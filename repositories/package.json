@@ -19,9 +19,10 @@
         "prebuild": "rimraf dist",
         "build": "tsc --project tsconfig.prod.json",
         "postbuild": "tscpaths --project tsconfig.prod.json --src ./lib --out ./dist",
-        "generate:repositories": "ts-node ./scripts/fetch-libraries.ts",
-        "filter:repositories:private": "ts-node ./scripts/filter-private-repos.ts",
-        "filter:repositories:unique": "ts-node ./scripts/filter-unique-repos.ts",
+        "generate": "ts-node ./scripts/fetch-libraries.ts",
+        "filter:private": "ts-node ./scripts/filter-private-repos.ts",
+        "filter:unique": "ts-node ./scripts/filter-unique-repos.ts",
+        "remove": "ts-node ./scripts/remove-repositories.ts",
         "test": "jest"
     },
     "devDependencies": {
