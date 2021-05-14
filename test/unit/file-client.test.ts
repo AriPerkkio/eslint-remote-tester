@@ -97,6 +97,18 @@ function createComparisonResults(): void {
     );
 }
 
+function getCacheLocation() {
+    let location = '';
+
+    jest.resetModuleRegistry();
+    jest.isolateModules(() => {
+        location = require('../../lib/file-client/file-constants')
+            .CACHE_LOCATION;
+    });
+
+    return location;
+}
+
 describe('file-client', () => {
     describe('prepareResultsDirectory', () => {
         afterEach(() => {
@@ -242,6 +254,33 @@ describe('file-client', () => {
             await writeComparisonResults({ added: [], removed: [] }, [
                 generateResult(),
             ]);
+        });
+    });
+
+    describe('CACHE_LOCATION', () => {
+        test('is initialized under package in node_modules', () => {
+            jest.mock('fs', () => ({ existsSync: () => true }));
+
+            expect(getCacheLocation()).toBe(
+                './node_modules/eslint-remote-tester/.cache-eslint-remote-tester'
+            );
+        });
+
+        test('is initialized under node_modules when package is not installed', () => {
+            jest.mock('fs', () => ({
+                existsSync: (path: string) =>
+                    path !== './node_modules/eslint-remote-tester',
+            }));
+
+            expect(getCacheLocation()).toBe(
+                './node_modules/.cache-eslint-remote-tester'
+            );
+        });
+
+        test('is initialized in root when node_modules is not available', () => {
+            jest.mock('fs', () => ({ existsSync: () => false }));
+
+            expect(getCacheLocation()).toBe('./.cache-eslint-remote-tester');
         });
     });
 });

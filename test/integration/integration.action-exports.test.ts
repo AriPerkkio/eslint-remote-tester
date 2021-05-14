@@ -29,7 +29,7 @@ describe('integration - compare action exports', () => {
         expect(
             actionExports.RESULTS_COMPARISON_CACHE_LOCATION
         ).toMatchInlineSnapshot(
-            `"./.cache-eslint-remote-tester/.comparison-cache.json"`
+            `"./node_modules/.cache-eslint-remote-tester/.comparison-cache.json"`
         );
     });
 
