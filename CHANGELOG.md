@@ -1,3 +1,19 @@
+# [1.2.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.1.0...v1.2.0) (2021-05-15)
+
+### Bug Fixes
+
+-   **compare:** do not "git pull" when in comparison mode ([e3cbc0f](https://github.com/AriPerkkio/eslint-remote-tester/commit/e3cbc0f9b21e82bd08fc378e3504651347a81faa))
+-   **engine:** ignore eslint inline configurations ([93616dd](https://github.com/AriPerkkio/eslint-remote-tester/commit/93616dde4e95c6c98ec832adbae879e12761f3c1)), closes [#38](https://github.com/AriPerkkio/eslint-remote-tester/issues/38)
+-   **engine:** report worker crashes correctly ([#43](https://github.com/AriPerkkio/eslint-remote-tester/issues/43)) ([82cb301](https://github.com/AriPerkkio/eslint-remote-tester/commit/82cb30127a79b23d961b6896851c380405eaabd0))
+-   **results:** limit rows of results into 1000 characters ([#101](https://github.com/AriPerkkio/eslint-remote-tester/issues/101)) ([14c170e](https://github.com/AriPerkkio/eslint-remote-tester/commit/14c170e6588c31746b2caab1bcfba4f995e770c4))
+
+### Features
+
+-   move cache under `node_modules` ([83cb6e5](https://github.com/AriPerkkio/eslint-remote-tester/commit/83cb6e51d73fc7aa1153a409a255310c3954e148))
+-   **ci:** include count of errors in ci status messages ([#126](https://github.com/AriPerkkio/eslint-remote-tester/issues/126)) ([d34660f](https://github.com/AriPerkkio/eslint-remote-tester/commit/d34660fd28de475628bf261eebd107c2f317712b))
+-   **cli:** log status of cached repositories ([dc5580c](https://github.com/AriPerkkio/eslint-remote-tester/commit/dc5580ca9df5437cbf31ed456eac557bde210925))
+-   pass count of scanned repositories to `config.onComplete` ([#102](https://github.com/AriPerkkio/eslint-remote-tester/issues/102)) ([814f6f0](https://github.com/AriPerkkio/eslint-remote-tester/commit/814f6f04c4129aea8841a0c5ba448550e5629823))
+
 # [1.1.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.0.1...v1.1.0) (2021-02-10)
 
 ### Features
