@@ -65,7 +65,7 @@
         "eslint-plugin-prettier": "^3.1.4",
         "eslint-plugin-react": "^7.21.5",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "eslint-remote-tester-repositories": "^0.0.1",
+        "eslint-remote-tester-repositories": "^0.0.2",
         "husky": "^6.0.0",
         "ink-testing-library": "^2.1.0",
         "jest": "^26.6.1",

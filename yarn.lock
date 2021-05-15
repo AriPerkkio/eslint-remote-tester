@@ -2329,10 +2329,10 @@ eslint-plugin-react@^7.21.5:
     resolve "^2.0.0-next.3"
     string.prototype.matchall "^4.0.4"
 
-eslint-remote-tester-repositories@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-remote-tester-repositories/-/eslint-remote-tester-repositories-0.0.1.tgz#026d62442ad39cbfd2738c423eca9b847c3de13b"
-  integrity sha512-xvFMSTA3IijM0FNQ2WyB9EPOkR2usEznhaLP/84mpV5UeKTCFECqERhdHFnH9V4JCLEqKdAET7vEOfMnHofgvg==
+eslint-remote-tester-repositories@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-remote-tester-repositories/-/eslint-remote-tester-repositories-0.0.2.tgz#be5910c81e2b4e63140180c09cd1d15863627a3a"
+  integrity sha512-lKvRwJBlW4q7dBT3FFFzUAEn+UY8Ac4oz/2sWEoS5R1he/EI4oTJPUtqWOE6p8nrJWh8GCDcZcOilYPxTWVFbQ==
 
 eslint-scope@^5.0.0, eslint-scope@^5.1.1:
   version "5.1.1"
