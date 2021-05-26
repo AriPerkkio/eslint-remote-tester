@@ -43,9 +43,7 @@ describe('repository-client', () => {
                 onPullFailure: jest.fn(),
             });
 
-            expect(
-                SimpleGit().clone
-            ).toHaveBeenCalledWith(
+            expect(SimpleGit().clone).toHaveBeenCalledWith(
                 'https://github.com/mock-user/mock-repository.git',
                 `${EXPECTED_CACHE}/${repository}`,
                 { '--depth': 1 }

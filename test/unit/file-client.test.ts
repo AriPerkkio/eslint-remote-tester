@@ -102,8 +102,8 @@ function getCacheLocation() {
 
     jest.resetModuleRegistry();
     jest.isolateModules(() => {
-        location = require('../../lib/file-client/file-constants')
-            .CACHE_LOCATION;
+        location =
+            require('../../lib/file-client/file-constants').CACHE_LOCATION;
     });
 
     return location;
