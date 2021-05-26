@@ -34,9 +34,9 @@ describe('integration', () => {
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
                 at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
-                at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:256:26)
-                at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:285:22)
-                at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:299:14)
+                at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:293:26)
+                at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
+                at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
                 at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
                 at <removed>/node_modules/eslint/lib/linter/linter.js:954:32
                 at Array.forEach (<anonymous>)
@@ -125,9 +125,9 @@ describe('integration', () => {
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
                 at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
-                at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:256:26)
-                at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:285:22)
-                at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:299:14)
+                at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:293:26)
+                at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
+                at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
                 at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
                 at <removed>/node_modules/eslint/lib/linter/linter.js:954:32
                 at Array.forEach (<anonymous>)
@@ -413,9 +413,9 @@ describe('integration', () => {
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
                 at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
-                at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:256:26)
-                at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:285:22)
-                at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:299:14)
+                at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:293:26)
+                at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
+                at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
                 at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
                 at <removed>/node_modules/eslint/lib/linter/linter.js:954:32
                 at Array.forEach (<anonymous>)
