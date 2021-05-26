@@ -46,9 +46,8 @@ export default function Results(): JSX.Element {
     );
 
     const comparisonResults = ResultsStore.getComparisonResults();
-    const formattedComparisonResults = formatComparisonResults(
-        comparisonResults
-    );
+    const formattedComparisonResults =
+        formatComparisonResults(comparisonResults);
 
     const items: string[] = [
         ...formattedComparisonResults,
