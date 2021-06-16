@@ -38,7 +38,7 @@ describe('integration', () => {
                 at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
                 at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
                 at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-                at <removed>/node_modules/eslint/lib/linter/linter.js:954:32
+                at <removed>/node_modules/eslint/lib/linter/linter.js:956:32
                 at Array.forEach (<anonymous>)
 
             Repository: AriPerkkio/eslint-remote-tester-integration-test-target
@@ -129,7 +129,7 @@ describe('integration', () => {
                 at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
                 at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
                 at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-                at <removed>/node_modules/eslint/lib/linter/linter.js:954:32
+                at <removed>/node_modules/eslint/lib/linter/linter.js:956:32
                 at Array.forEach (<anonymous>)
             \`\`\`
 
@@ -417,7 +417,7 @@ describe('integration', () => {
                 at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
                 at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
                 at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-                at <removed>/node_modules/eslint/lib/linter/linter.js:954:32
+                at <removed>/node_modules/eslint/lib/linter/linter.js:956:32
                 at Array.forEach (<anonymous>)
             [ERROR]
             .
