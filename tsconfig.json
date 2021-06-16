@@ -1,11 +1,8 @@
 {
+    "extends": "@tsconfig/node12/tsconfig.json",
     "compilerOptions": {
-        "strict": true,
-        "module": "commonjs",
-        "target": "es6",
         "outDir": "dist",
         "moduleResolution": "node",
-        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "jsx": "react",
