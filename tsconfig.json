@@ -1,5 +1,5 @@
 {
-    "extends": "@tsconfig/node12/tsconfig.json",
+    "extends": "./node_modules/@tsconfig/node12/tsconfig.json",
     "compilerOptions": {
         "outDir": "dist",
         "moduleResolution": "node",
