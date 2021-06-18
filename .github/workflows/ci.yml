@@ -88,6 +88,9 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
             - run: yarn install
+              name: Install eslint-remote-tester
+            - run: yarn install
+              name: Install eslint-remote-tester-repositories
               working-directory: ./repositories
             - run: yarn test
               working-directory: ./repositories
