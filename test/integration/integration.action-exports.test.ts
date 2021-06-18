@@ -58,7 +58,7 @@ describe('integration - compare action exports', () => {
             export { RESULT_COMPARISON_CACHE, RESULTS_COMPARISON_CACHE_LOCATION, } from './file-client/file-constants';
             export { default as validateConfig } from './config/validator';
             export { Config, ConfigToValidate } from './config/types';
-            "
+            //# sourceMappingURL=exports-for-compare-action.d.ts.map"
         `);
     });
 });
