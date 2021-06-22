@@ -49,6 +49,7 @@
     "devDependencies": {
         "@commitlint/cli": "^12.1.1",
         "@commitlint/config-conventional": "^12.1.1",
+        "@tsconfig/node12": "^1.0.8",
         "@types/babel__code-frame": "^7.0.2",
         "@types/eslint": "^7.2.2",
         "@types/jest": "^26.0.15",
