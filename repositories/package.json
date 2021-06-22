@@ -18,7 +18,7 @@
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "tsc --project tsconfig.prod.json",
-        "postbuild": "tscpaths --project tsconfig.prod.json --src ./lib --out ./dist",
+        "postbuild": "tsc-alias -p tsconfig.prod.json",
         "generate": "ts-node ./scripts/fetch-libraries.ts",
         "filter:private": "ts-node ./scripts/filter-private-repos.ts",
         "filter:unique": "ts-node ./scripts/filter-unique-repos.ts",
@@ -33,7 +33,7 @@
         "node-fetch": "^2.6.1",
         "ts-jest": "^26.5.5",
         "ts-node": "^9.1.1",
-        "tscpaths": "^0.0.9",
+        "tsc-alias": "^1.3.3",
         "typescript": "^4.2.4"
     },
     "keywords": [
