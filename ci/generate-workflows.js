@@ -48,13 +48,14 @@ jobs:
               run: |
                   yarn install
                   yarn build
-                  rm -rf ./node_modules
             - name: Install & build eslint-remote-tester-repositories
               run: |
                   yarn install
                   yarn build
                   rm -rf ./node_modules
               working-directory: ./repositories
+            - name: Cleanup
+              run: rm -rf ./node_modules
             - run: |
                   yarn install
                   yarn list | grep eslint
