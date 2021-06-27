@@ -1,6 +1,14 @@
 /**
  * eslint-configs and eslint-plugins are handled the same way here.
  * Both are called plugins in this context.
+ *
+ * Before running this file, ensure that:
+ *
+ * 1. You are using yarn
+ * 2. You have run "yarn install && yarn build" on ./ and ./repositories
+ * 3. After the previous step you have run "yarn install" on ./ci
+ *
+ * If you need to regenerate the output quickly, without rerunning the tests, set the SKIP_TESTS env variable
  */
 
 const fs = require('fs');
@@ -44,6 +52,15 @@ jobs:
             - uses: actions/setup-node@v2
               with:
                   node-version: 14
+            - name: Get yarn cache directory path
+              id: yarn-cache-dir-path
+              run: echo "::set-output name=dir::$(yarn cache dir)"
+            - uses: actions/cache@v2
+              with:
+                  path: $\{{ steps.yarn-cache-dir-path.outputs.dir }}
+                  key: $\{{ runner.os }}-yarn-$\{{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      $\{{ runner.os }}-yarn-
             - name: Install & build eslint-remote-tester
               run: |
                   yarn install
@@ -125,6 +142,10 @@ function printBadgeMarkdown(plugins) {
 
 function testPlugins(plugins) {
     plugins.forEach(plugin => {
+        console.log(`yarn lint --config ./plugin-configs/${plugin}.config.js`, {
+            stdio: 'inherit',
+            cwd: path.resolve(__dirname),
+        });
         execSync(`yarn lint --config ./plugin-configs/${plugin}.config.js`, {
             stdio: 'inherit',
             cwd: path.resolve(__dirname),
@@ -142,8 +163,8 @@ const plugins = dependencies
 plugins.push('eslint-core');
 plugins.push('eslint-core-ts');
 
-validateConfigsExist(plugins);
-testPlugins(plugins);
+if (!process.env.SKIP_TESTS) validateConfigsExist(plugins);
+if (!process.env.SKIP_TESTS) testPlugins(plugins);
 cleanPreviousWorkflow(plugins);
 generateWorkflows(plugins);
 printBadgeMarkdown(plugins);
