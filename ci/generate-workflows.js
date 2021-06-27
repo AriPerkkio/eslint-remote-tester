@@ -2,12 +2,11 @@
  * eslint-configs and eslint-plugins are handled the same way here.
  * Both are called plugins in this context.
  *
- * To run this file, ensure that:
+ * Before running this file, ensure that:
  *
- * 1. You use yarn
- * 2. You run "yarn install && yarn build" on ./ and ./repositories
- * 3. That you after 2. run "yarn install" on ./ci
- * 4. Only after this you can run this file
+ * 1. You are using yarn
+ * 2. You have run "yarn install && yarn build" on ./ and ./repositories
+ * 3. After the previous step you have run "yarn install" on ./ci
  *
  * If you need to regenerate the output quickly, without rerunning the tests, set the SKIP_TESTS env variable
  */
