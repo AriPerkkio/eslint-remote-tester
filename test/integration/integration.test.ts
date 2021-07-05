@@ -19,7 +19,7 @@ describe('integration', () => {
             Repository: AriPerkkio/eslint-remote-tester-integration-test-target
             Rule: unable-to-parse-rule-id
             Message: Cannot read property 'someAttribute' of undefined
-            Occurred while linting <text>:2
+            Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
             Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
             Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
 
@@ -29,7 +29,7 @@ describe('integration', () => {
 
             Error:
             TypeError: Cannot read property 'someAttribute' of undefined
-            Occurred while linting <text>:2
+            Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
                 at Identifier (<removed>/eslint-local-rules.js:22:56)
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
@@ -108,7 +108,7 @@ describe('integration', () => {
         expect(results).toMatchInlineSnapshot(`
             "## Rule: unable-to-parse-rule-id
 
-            -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <text>:2\`
+            -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2\`
             -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
             -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
 
@@ -120,7 +120,7 @@ describe('integration', () => {
 
             \`\`\`
             TypeError: Cannot read property 'someAttribute' of undefined
-            Occurred while linting <text>:2
+            Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
                 at Identifier (<removed>/eslint-local-rules.js:22:56)
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
@@ -385,7 +385,7 @@ describe('integration', () => {
             .
             [MESSAGE]
             Cannot read property 'someAttribute' of undefined
-            Occurred while linting <text>:2
+            Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
             [MESSAGE]
             .
             [PATH]
@@ -408,7 +408,7 @@ describe('integration', () => {
             .
             [ERROR]
             TypeError: Cannot read property 'someAttribute' of undefined
-            Occurred while linting <text>:2
+            Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
                 at Identifier (<removed>/eslint-local-rules.js:22:56)
                 at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
                 at Array.forEach (<anonymous>)
