@@ -9,16 +9,16 @@ export class ESLint {
         ESLint.mockConstructor(config);
     }
 
-    async lintText(source: string): Promise<LintResult[]> {
+    async lintFiles(filePath: string): Promise<LintResult[]> {
         return [
             {
-                filePath: './mock/path/file.ts',
+                filePath,
                 errorCount: 0,
                 warningCount: 0,
                 fixableErrorCount: 0,
                 fixableWarningCount: 0,
                 usedDeprecatedRules: [],
-                source,
+                source: '/'.repeat(2000),
                 messages: [
                     {
                         line: 1,

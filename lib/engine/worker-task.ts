@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { parentPort, workerData } from 'worker_threads';
 import { ESLint, Linter } from 'eslint';
 import { codeFrameColumns, SourceLocation } from '@babel/code-frame';
@@ -28,7 +29,8 @@ const RULE_REGEXP = /rules\/(.*?)\.js/;
 const UNKNOWN_RULE_ID = 'unable-to-parse-rule-id';
 
 // Regex used to attempt parsing out line which caused linter to crash
-const LINE_REGEX = /while linting <text>:(([0-9]+)?)/;
+// https://github.com/eslint/eslint/blob/ed1da5d96af2587b7211854e45cf8657ef808710/lib/linter/linter.js#L1194
+const LINE_REGEX = /Occurred while linting \S*:([0-9]+)?/;
 
 const MAX_LINT_TIME_SECONDS = 5;
 const MAX_ROW_LENGTH = 1000;
@@ -69,6 +71,7 @@ async function executionTimeWarningWrapper<T>(
  */
 function getMessageReducer(repository: string) {
     function messageFilter(message: Linter.LintMessage) {
+        // TODO: Unhandled messages from and/or plugins should likely be reported as warnings
         if (!message.ruleId) return false;
 
         if (typeof config.rulesUnderTesting === 'function') {
@@ -136,7 +139,7 @@ function constructCodeFrame(
  * source code.
  */
 function parseErrorStack(error: Error, file: SourceFile): LintMessage {
-    const { content, path } = file;
+    const { path } = file;
 
     const stack = error.stack || '';
     const ruleMatch = stack.match(RULE_REGEXP) || [];
@@ -146,8 +149,12 @@ function parseErrorStack(error: Error, file: SourceFile): LintMessage {
     const line = parseInt(lineMatch.pop() || '0');
 
     // Include erroneous line to source when line was successfully parsed from the stack
-    const source =
-        line > 0 ? constructCodeFrame(content, { line, column: 0 }) : undefined;
+    let source;
+
+    if (line > 0) {
+        const content = fs.readFileSync(path, 'utf-8');
+        source = constructCodeFrame(content, { line, column: 0 });
+    }
 
     return createErrorMessage({
         path,
@@ -183,6 +190,10 @@ export default async function workerTask(): Promise<void> {
         // Only rules set in configuration are expected.
         // Ignore all inline configurations found from target repositories.
         allowInlineConfig: false,
+
+        // Lint all given files, ignore none. Cache is located under node_modules.
+        // config.pathIgnorePattern is used for exclusions.
+        ignore: false,
     });
 
     const { repository } = workerData as WorkerData;
@@ -202,12 +213,12 @@ export default async function workerTask(): Promise<void> {
 
     for (const [index, file] of files.entries()) {
         const fileIndex = index + 1;
-        const { content, path } = file;
+        const { path } = file;
         let result: ESLint.LintResult[];
 
         try {
             result = await executionTimeWarningWrapper(
-                () => linter.lintText(content),
+                () => linter.lintFiles(path),
 
                 // Warn about files taking more than 5s to lint
                 // Useful to identify minified files commited to remote

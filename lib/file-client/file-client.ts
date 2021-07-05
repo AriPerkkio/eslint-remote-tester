@@ -5,7 +5,6 @@ import { cloneRepository, RepositoryClientOptions } from './repository-client';
 import config from '@config';
 
 export interface SourceFile {
-    content: string;
     path: string;
 }
 
@@ -92,10 +91,7 @@ export async function getFiles({
         return paths
             .filter(path => config.extensions.some(ext => path.endsWith(ext)))
             .filter(path => !isFileIgnored(path))
-            .map(path => ({
-                path,
-                content: fs.readFileSync(path, 'utf8'),
-            }));
+            .map(path => ({ path }));
     } catch (e) {
         onReadFailure();
         return [];
