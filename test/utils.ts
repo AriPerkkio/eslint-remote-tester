@@ -24,6 +24,7 @@ const LAST_RENDER_PATTERN = /(Results|Full log)[\s|\S]*/;
 const COMPARISON_RESULTS_PATTERN = /(Comparison results:[\s|\S]*)Results/;
 const ON_COMPLETE_PATTERN = /("onComplete": )"([\s|\S]*)"/;
 const RULES_UNDER_TESTING_PATTERN = /("rulesUnderTesting": )"([\s|\S]*)",/;
+const ESLINTRC_PATTERN = /("eslintrc": )"([\s|\S]*)",/;
 const ESCAPED_NEWLINE_PATTERN = /\\n/g;
 const DEBUG_LOG = '/tmp/test.debug.log';
 
@@ -50,10 +51,14 @@ function createConfiguration(
     if (typeof options.rulesUnderTesting === 'function') {
         config.rulesUnderTesting = options.rulesUnderTesting.toString() as any;
     }
+    if (typeof options.eslintrc === 'function') {
+        config.eslintrc = options.eslintrc.toString() as any;
+    }
 
     const configText = JSON.stringify(config, null, 4)
         .replace(ON_COMPLETE_PATTERN, '$1$2')
         .replace(RULES_UNDER_TESTING_PATTERN, '$1$2,')
+        .replace(ESLINTRC_PATTERN, '$1$2,')
         .replace(ESCAPED_NEWLINE_PATTERN, '\n');
 
     fs.writeFileSync(name, `module.exports=${configText}`, 'utf8');

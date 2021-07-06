@@ -126,19 +126,26 @@ export default async function validate(
 
     errors.push(validateStringArray('extensions', extensions));
 
-    if (!eslintrc || Object.keys(eslintrc).length === 0) {
+    if (!eslintrc) {
         errors.push(`Missing eslintrc.`);
     } else {
         try {
             // This will throw when eslintrc is invalid
             const linter = new ESLint({
                 useEslintrc: false,
-                overrideConfig: eslintrc,
+                overrideConfig:
+                    typeof eslintrc === 'function' ? eslintrc() : eslintrc,
             });
 
             errors.push(await validateEslintRules(linter));
         } catch (e) {
             errors.push(`eslintrc: ${e.message}`);
+
+            if (typeof eslintrc === 'function') {
+                errors.push(
+                    'Note that "config.eslintrc" is called with empty options during configuration validation.'
+                );
+            }
         }
     }
 

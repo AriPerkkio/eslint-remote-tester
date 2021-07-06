@@ -157,12 +157,20 @@ describe('validateConfig', () => {
             });
         });
 
+        test('eslintrc accepts function', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                eslintrc: () => ({ rules: {} }),
+            });
+        });
+
         test('rulesUnderTesting is optional', async () => {
             await validateConfig({
                 ...DEFAULT_CONFIGURATION,
                 rulesUnderTesting: undefined,
             });
         });
+
         test('rulesUnderTesting accepts empty array', async () => {
             await validateConfig({
                 ...DEFAULT_CONFIGURATION,
@@ -480,7 +488,7 @@ describe('validateConfig', () => {
             expect(validationError).toMatch('Missing eslintrc');
         });
 
-        test('eslintrc is validated', async () => {
+        test('eslintrc as object is validated', async () => {
             await validateConfig({
                 ...DEFAULT_CONFIGURATION,
                 eslintrc: { 'not-valid-key': true } as any,
@@ -492,6 +500,24 @@ describe('validateConfig', () => {
             );
             expect(validationError).toMatch(
                 'Unexpected top-level property "not-valid-key"'
+            );
+        });
+
+        test('eslintrc as function is validated', async () => {
+            await validateConfig({
+                ...DEFAULT_CONFIGURATION,
+                eslintrc: () => ({ 'not-valid-key': true } as any),
+            });
+
+            const [validationError] = getConsoleLogCalls();
+            expect(validationError).toMatch(
+                'eslintrc: ESLint configuration in CLIOptions is invalid'
+            );
+            expect(validationError).toMatch(
+                'Unexpected top-level property "not-valid-key"'
+            );
+            expect(validationError).toMatch(
+                'Note that "config.eslintrc" is called with empty options during configuration validation.'
             );
         });
 
