@@ -1,7 +1,12 @@
+const fs = require('fs');
+const { resolve } = require('path');
+const { execSync } = require('child_process');
 const {
     getRepositories,
     getPathIgnorePattern,
 } = require('eslint-remote-tester-repositories');
+
+const TS_CONFIG_PATTERN = /tsconfig\.json/;
 
 module.exports = {
     repositories: getRepositories().slice(0, 15),
@@ -18,19 +23,43 @@ module.exports = {
 
     concurrentTasks: 3,
 
-    eslintrc: {
-        root: true,
-        env: {
-            es6: true,
-        },
-        parserOptions: {
-            ecmaVersion: 2020,
-            sourceType: 'module',
-            ecmaFeatures: {
-                jsx: true,
+    eslintrc: function initializeLinter(options) {
+        const eslintrc = {
+            root: true,
+            env: {
+                es6: true,
             },
-        },
-        extends: ['eslint:recommended'],
+            parserOptions: {
+                ecmaVersion: 2020,
+                sourceType: 'module',
+                ecmaFeatures: {
+                    jsx: true,
+                },
+            },
+            extends: ['eslint:recommended'],
+        };
+
+        if (options) {
+            const tsconfig = findTsConfig(options);
+
+            if (tsconfig) {
+                eslintrc.parserOptions.tsconfigRootDir = options.location;
+                eslintrc.parserOptions.project = [tsconfig];
+                eslintrc.plugins = ['@typescript-eslint'];
+                eslintrc.extends = ['plugin:@typescript-eslint/all'];
+
+                try {
+                    execSync('yarn install --ignore-scripts --ignore-engines', {
+                        cwd: options.location,
+                        stdio: 'ignore',
+                    });
+                } catch (e) {
+                    // Ignore
+                }
+            }
+        }
+
+        return eslintrc;
     },
 
     cache: true,
@@ -38,27 +67,16 @@ module.exports = {
     compare: false,
 
     updateComparisonReference: true,
-
-    /**
-     * Optional callback invoked once scan is complete.
-     *
-     * @param {{
-     *     repository: string,
-     *     repositoryOwner: string,
-     *     rule: string,
-     *     message: string,
-     *     path: string,
-     *     link: string,
-     *     extension: string,
-     *     source: string,
-     *     error: (string|undefined),
-     * }[]} results Results of the scan, if any
-     *
-     * @param {{
-     *     added: {}[],
-     *     removed: {}[]
-     * }} comparisonResults Comparison results of the scan, if any
-     * @returns {Promise<void>|void}
-     */
-    onComplete: undefined,
 };
+
+function findTsConfig(options) {
+    if (!options) return undefined;
+
+    const tsconfig = fs
+        .readdirSync(options.location)
+        .find(file => TS_CONFIG_PATTERN.test(file));
+
+    if (tsconfig) {
+        return resolve(options.location, tsconfig);
+    }
+}
