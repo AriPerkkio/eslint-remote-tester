@@ -31,13 +31,11 @@ function scanRepository(
                 configurationLocation: resolveConfigurationLocation(),
             },
 
-            // TODO: use worker.SHARE_ENV. Figure out how to combine it with GIT_TERMINAL_PROMPT
             env: {
+                ...process.env,
+
                 // Prevent git from prompting password. Instead just fail repository cloning.
                 GIT_TERMINAL_PROMPT: '0',
-
-                // Pass CI flag to worker_threads
-                CI: process.env.CI,
             },
         });
 
