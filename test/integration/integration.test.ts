@@ -9,6 +9,8 @@ import {
     REPOSITORY_CACHE,
 } from '../utils';
 
+const DEBUG_LOG_PATTERN = /\[DEBUG (\S|:)*\] /g;
+
 describe('integration', () => {
     test('results are rendered on CI mode', async () => {
         const { output } = await runProductionBuild({ CI: true });
@@ -1065,32 +1067,70 @@ describe('integration', () => {
         });
 
         const finalLog = output.pop();
-        const withoutTimestamps = finalLog!.replace(/\[DEBUG (\S|:)*\]/g, '');
+        const withoutTimestamps = finalLog!.replace(DEBUG_LOG_PATTERN, '');
 
         expect(withoutTimestamps).toMatchInlineSnapshot(`
             "Full log:
-             no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-var - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-empty - AriPerkkio/eslint-remote-tester-integration-test-target
-             one-var - AriPerkkio/eslint-remote-tester-integration-test-target
-             vars-on-top - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-var - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
-             id-length - AriPerkkio/eslint-remote-tester-integration-test-target
-             quote-props - AriPerkkio/eslint-remote-tester-integration-test-target
-             getter-return - AriPerkkio/eslint-remote-tester-integration-test-target
-             space-before-function-paren - AriPerkkio/eslint-remote-tester-integration-test-target
-             strict - AriPerkkio/eslint-remote-tester-integration-test-target
-             space-before-blocks - AriPerkkio/eslint-remote-tester-integration-test-target
-             capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-compare-neg-zero - AriPerkkio/eslint-remote-tester-integration-test-target
-             no-magic-numbers - AriPerkkio/eslint-remote-tester-integration-test-target
-             indent - AriPerkkio/eslint-remote-tester-integration-test-target
-             capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
-             eol-last - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-var - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-empty - AriPerkkio/eslint-remote-tester-integration-test-target
+            one-var - AriPerkkio/eslint-remote-tester-integration-test-target
+            vars-on-top - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-var - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
+            id-length - AriPerkkio/eslint-remote-tester-integration-test-target
+            quote-props - AriPerkkio/eslint-remote-tester-integration-test-target
+            getter-return - AriPerkkio/eslint-remote-tester-integration-test-target
+            space-before-function-paren - AriPerkkio/eslint-remote-tester-integration-test-target
+            strict - AriPerkkio/eslint-remote-tester-integration-test-target
+            space-before-blocks - AriPerkkio/eslint-remote-tester-integration-test-target
+            capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-compare-neg-zero - AriPerkkio/eslint-remote-tester-integration-test-target
+            no-magic-numbers - AriPerkkio/eslint-remote-tester-integration-test-target
+            indent - AriPerkkio/eslint-remote-tester-integration-test-target
+            capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
+            eol-last - AriPerkkio/eslint-remote-tester-integration-test-target
             [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 21 errors
+            [DONE] Finished scan of 1 repositories
+            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
+
+            "
+        `);
+    });
+
+    test('calls eslintrc function with repository and its location', async () => {
+        const { output } = await runProductionBuild({
+            CI: false,
+            logLevel: 'verbose',
+            eslintrc: options => {
+                const { parentPort } = require('worker_threads');
+
+                if (parentPort) {
+                    parentPort.postMessage({
+                        type: 'DEBUG',
+                        payload: `location: ${options?.location}`,
+                    });
+
+                    parentPort.postMessage({
+                        type: 'DEBUG',
+                        payload: `repository: ${options?.repository}`,
+                    });
+                }
+
+                return { root: true, extends: ['eslint:all'] };
+            },
+        });
+
+        const finalLog = output.pop();
+        const withoutTimestamps = finalLog!.replace(DEBUG_LOG_PATTERN, '');
+
+        expect(withoutTimestamps).toMatchInlineSnapshot(`
+            "Full log:
+            location: <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target
+            repository: AriPerkkio/eslint-remote-tester-integration-test-target
+            [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
             [DONE] Finished scan of 1 repositories
             [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 

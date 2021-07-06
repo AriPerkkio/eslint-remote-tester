@@ -23,7 +23,12 @@ export interface Config {
         | ((ruleId: string, options: { repository: string }) => boolean);
     resultParser: ResultParser;
     concurrentTasks: number;
-    eslintrc: Linter.Config;
+    eslintrc:
+        | Linter.Config
+        | ((options?: {
+              repository: string;
+              location: string;
+          }) => Linter.Config);
     CI: boolean;
     logLevel: LogLevel;
     cache: boolean;

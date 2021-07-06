@@ -1,11 +1,17 @@
 import fs from 'fs';
 import { parentPort, workerData } from 'worker_threads';
+import { resolve } from 'path';
 import { ESLint, Linter } from 'eslint';
 import { codeFrameColumns, SourceLocation } from '@babel/code-frame';
 
 import { LintMessage, WorkerData } from './types';
 import config from '@config';
-import { getFiles, removeCachedRepository, SourceFile } from '@file-client';
+import {
+    CACHE_LOCATION,
+    getFiles,
+    removeCachedRepository,
+    SourceFile,
+} from '@file-client';
 
 export type WorkerMessage =
     | { type: 'START' }
@@ -183,19 +189,6 @@ const postMessage = (message: WorkerMessage) => {
  * - Keep progress-logger up-to-date of status via onMessage
  */
 export default async function workerTask(): Promise<void> {
-    const linter = new ESLint({
-        useEslintrc: false,
-        overrideConfig: config.eslintrc,
-
-        // Only rules set in configuration are expected.
-        // Ignore all inline configurations found from target repositories.
-        allowInlineConfig: false,
-
-        // Lint all given files, ignore none. Cache is located under node_modules.
-        // config.pathIgnorePattern is used for exclusions.
-        ignore: false,
-    });
-
     const { repository } = workerData as WorkerData;
     const messageReducer = getMessageReducer(repository);
 
@@ -207,6 +200,27 @@ export default async function workerTask(): Promise<void> {
         onPullFailure: () => postMessage({ type: 'PULL_FAILURE' }),
         onRead: () => postMessage({ type: 'READ' }),
         onReadFailure: () => postMessage({ type: 'READ_FAILURE' }),
+    });
+
+    const eslintrc =
+        typeof config.eslintrc === 'function'
+            ? config.eslintrc({
+                  repository,
+                  location: resolve(`${CACHE_LOCATION}/${repository}`),
+              })
+            : config.eslintrc;
+
+    const linter = new ESLint({
+        useEslintrc: false,
+        overrideConfig: eslintrc,
+
+        // Only rules set in configuration are expected.
+        // Ignore all inline configurations found from target repositories.
+        allowInlineConfig: false,
+
+        // Lint all given files, ignore none. Cache is located under node_modules.
+        // config.pathIgnorePattern is used for exclusions.
+        ignore: false,
     });
 
     postMessage({ type: 'LINT_START', payload: files.length });
