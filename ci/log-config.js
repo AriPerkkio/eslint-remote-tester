@@ -14,5 +14,26 @@ const config = { ...rawConfig, repositories, pathIgnorePattern };
 
 console.log(`Configuration (${path})
 
-${JSON.stringify(config, null, 4)}
+${stringify(config)}
 `);
+
+// https://gist.github.com/cowboy/3749767
+function stringify(obj) {
+    const placeholder = '____PLACEHOLDER____';
+    const fns = [];
+    let json = JSON.stringify(
+        obj,
+        function (_, value) {
+            if (typeof value === 'function') {
+                fns.push(value);
+                return placeholder;
+            }
+            return value;
+        },
+        4
+    );
+    json = json.replace(new RegExp('"' + placeholder + '"', 'g'), () =>
+        fns.shift()
+    );
+    return json;
+}
