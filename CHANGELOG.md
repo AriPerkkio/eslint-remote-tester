@@ -1,3 +1,14 @@
+# [1.3.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.2.0...v1.3.0) (2021-07-10)
+
+### Bug Fixes
+
+-   pass main thread's environment variables to worker threads ([bd294f5](https://github.com/AriPerkkio/eslint-remote-tester/commit/bd294f581c615e60f9bc195e8affd1d3829fc775))
+
+### Features
+
+-   compile to target the actual feature set of Node >=12 ([#173](https://github.com/AriPerkkio/eslint-remote-tester/issues/173)) ([65ec3d8](https://github.com/AriPerkkio/eslint-remote-tester/commit/65ec3d89ccc511cd0f9528d2b007b4ca8a07c1ea))
+-   support `config.eslintrc` as function ([6079cab](https://github.com/AriPerkkio/eslint-remote-tester/commit/6079cabae8d5ca2207edf4a6c30c07b7ee414653))
+
 # [1.2.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.1.0...v1.2.0) (2021-05-15)
 
 ### Bug Fixes
