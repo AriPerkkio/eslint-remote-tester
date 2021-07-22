@@ -12,23 +12,25 @@ module.exports = {
             const tsConfigLocation = findTsConfig(options);
 
             if (tsConfigLocation) {
+                // Attempt to install project dependencies and enable all rules from plugin.
+                // This step may fail if dependencies cannot be installed without additional manual steps.
                 try {
                     execSync('yarn install --ignore-scripts --ignore-engines', {
                         cwd: options.location,
                         stdio: 'ignore',
                     });
-                } catch (e) {
-                    // Ignore installation errors
-                }
 
-                return {
-                    ...baseEslintrc,
-                    parserOptions: {
-                        ...baseEslintrc.parserOptions,
-                        tsconfigRootDir: options.location,
-                        project: [tsConfigLocation],
-                    },
-                };
+                    return {
+                        ...baseEslintrc,
+                        parserOptions: {
+                            ...baseEslintrc.parserOptions,
+                            tsconfigRootDir: options.location,
+                            project: [tsConfigLocation],
+                        },
+                    };
+                } catch (e) {
+                    // Fallback to non-type-aware ruleset when dependency installation fails
+                }
             }
         }
 
