@@ -96,7 +96,15 @@ function generateHours(index) {
 }
 
 function formatPluginName(plugin) {
-    return plugin.replace(/\//g, '-').replace(/@/g, '');
+    return (
+        plugin
+            // Next-js plugin to "eslint-plugin-next"
+            .replace('@next/', '')
+
+            // Generic handling for other scoped plugins, e.g. typescript-eslint
+            .replace(/\//g, '-')
+            .replace(/@/g, '')
+    );
 }
 
 function validateConfigsExist(plugins) {

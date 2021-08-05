@@ -10,6 +10,7 @@
         "log": "node ./log-config.js"
     },
     "devDependencies": {
+        "@next/eslint-plugin-next": "latest",
         "@typescript-eslint/eslint-plugin": "latest",
         "@typescript-eslint/parser": "latest",
         "eslint": "^7",
