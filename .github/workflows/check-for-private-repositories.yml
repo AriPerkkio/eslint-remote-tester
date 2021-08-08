@@ -19,5 +19,5 @@ jobs:
                   yarn build
               name: Install eslint-remote-tester-repositories
               working-directory: ./repositories
-            - run: yarn filter:repositories:private
+            - run: yarn filter:private
               working-directory: ./repositories
