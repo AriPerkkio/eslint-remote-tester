@@ -52,7 +52,7 @@
         "@tsconfig/node12": "^1.0.8",
         "@types/babel__code-frame": "^7.0.2",
         "@types/eslint": "^7.2.2",
-        "@types/jest": "^26.0.15",
+        "@types/jest": "^27.0.0",
         "@types/node": "^15.0.0",
         "@types/object-hash": "^2.1.0",
         "@types/react": "^16.9.53",
