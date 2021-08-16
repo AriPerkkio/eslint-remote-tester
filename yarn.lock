@@ -6457,9 +6457,9 @@ ts-jest@^26.4.4:
     yargs-parser "20.x"
 
 tsc-alias@^1.3.3:
-  version "1.3.8"
-  resolved "https://registry.yarnpkg.com/tsc-alias/-/tsc-alias-1.3.8.tgz#8dc670cf217b04a4f3f9e1c56def9cfda1f7759d"
-  integrity sha512-Ss0jjDjq5inr6ZJEw0IAS3/UxWMLgq4/tsH/yAbXJQHL5yccX+uaU5e2jSYy4VUsxWdZjKXFsUwcslk/4BWfgA==
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/tsc-alias/-/tsc-alias-1.3.9.tgz#0c9d1dd571c0a97af8159d20e7cd4ce6aaab1799"
+  integrity sha512-PXNsdsuygWpvQrt41D7CBndJyZ+8Juf2BDvQ1OJNqq0QsMR4i+A4rfniY/NVwb70gW4nMDJBvNxxvzLJjakXtQ==
   dependencies:
     "@jfonx/console-utils" "^1.0.3"
     "@jfonx/file-utils" "^3.0.1"
