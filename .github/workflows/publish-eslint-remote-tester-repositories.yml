@@ -11,6 +11,9 @@ jobs:
               with:
                   node-version: 14
             - run: yarn install
+              name: Install eslint-remote-tester
+            - run: yarn install
+              name: Install eslint-remote-tester-repositories
               working-directory: ./repositories
             - run: yarn build
               working-directory: ./repositories
