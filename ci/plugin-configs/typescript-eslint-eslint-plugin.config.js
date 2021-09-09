@@ -98,4 +98,5 @@ const rulesWithoutTypeAware = {
     '@typescript-eslint/return-await': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/prefer-return-this-type': 'off',
+    '@typescript-eslint/no-meaningless-void-operator': 'off',
 };
