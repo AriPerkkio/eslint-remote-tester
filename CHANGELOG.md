@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.3.0...v1.3.1) (2021-09-11)
+
+### Bug Fixes
+
+-   **node-16:** avoid deprecation warnings of `fs.rmdirSync` ([#277](https://github.com/AriPerkkio/eslint-remote-tester/issues/277)) ([3a84361](https://github.com/AriPerkkio/eslint-remote-tester/commit/3a8436130e5cc5bef23d7bce22000644a7886dcc))
+
 # [1.3.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.2.0...v1.3.0) (2021-07-10)
 
 ### Bug Fixes
