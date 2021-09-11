@@ -4,6 +4,6 @@ module.exports = {
     ...baseConfig,
     eslintrc: {
         ...baseConfig.eslintrc,
-        extends: ['plugin:unicorn/recommended'],
+        extends: ['plugin:unicorn/all'],
     },
 };
