@@ -5,6 +5,7 @@ import {
     getCacheStatus,
     removeCachedRepository,
 } from '@file-client/repository-client';
+import { removeDirectorySync } from '@file-client/file-utils';
 import SimpleGit from '__mocks__/simple-git';
 
 const EXPECTED_CACHE = './node_modules/.cache-eslint-remote-tester';
@@ -16,7 +17,7 @@ describe('repository-client', () => {
 
         // Clear previous cache
         if (fs.existsSync(EXPECTED_CACHE)) {
-            fs.rmdirSync(EXPECTED_CACHE, { recursive: true });
+            removeDirectorySync(EXPECTED_CACHE);
         }
 
         // Initialize client

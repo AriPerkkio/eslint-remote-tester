@@ -13,6 +13,7 @@ import {
     Result,
     RESULT_PARSER_TO_COMPARE_TEMPLATE,
 } from '@file-client/result-templates';
+import { removeDirectorySync } from '@file-client/file-utils';
 import { mockConfig } from '__mocks__/@config';
 import { getComparisonResults } from '../utils';
 
@@ -35,7 +36,7 @@ const readComparisonCache = () =>
 
 function removeResultsDirectory(): void {
     if (resultsDirectoryExists()) {
-        fs.rmdirSync(RESULTS_LOCATION, { recursive: true });
+        removeDirectorySync(RESULTS_LOCATION);
     }
 }
 
