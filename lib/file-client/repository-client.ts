@@ -1,6 +1,7 @@
 import fs from 'fs';
 import simpleGit from 'simple-git';
 
+import { removeDirectorySync } from './file-utils';
 import { CACHE_LOCATION, URL } from './file-constants';
 import config from '@config';
 
@@ -69,7 +70,7 @@ export async function removeCachedRepository(
     const repoLocation = `${CACHE_LOCATION}/${repository}`;
 
     if (fs.existsSync(repoLocation)) {
-        fs.rmdirSync(repoLocation, { recursive: true });
+        removeDirectorySync(repoLocation);
     }
 }
 

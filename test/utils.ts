@@ -10,6 +10,7 @@ import {
     RESULTS_COMPARE_LOCATION,
 } from '@file-client';
 import { ComparisonTypes } from '@file-client/result-templates';
+import { removeDirectorySync } from '@file-client/file-utils';
 import { Config, ConfigToValidate } from '@config/types';
 
 declare const console: { log: jest.Mock; error: (...args: any) => void };
@@ -166,7 +167,7 @@ function parsePtyOutput(output: string[]): string[] {
  */
 export function clearRepositoryCache(): void {
     if (fs.existsSync(CACHE_LOCATION)) {
-        fs.rmdirSync(CACHE_LOCATION, { recursive: true });
+        removeDirectorySync(CACHE_LOCATION);
     }
 }
 

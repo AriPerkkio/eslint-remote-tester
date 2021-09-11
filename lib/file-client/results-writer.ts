@@ -3,6 +3,7 @@ import { isMainThread } from 'worker_threads';
 import objectHash from 'object-hash';
 
 import ResultsStore from './results-store';
+import { removeDirectorySync } from './file-utils';
 import {
     CACHE_LOCATION,
     RESULTS_COMPARE_LOCATION,
@@ -27,7 +28,7 @@ const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
 export function prepareResultsDirectory(): void {
     if (isMainThread) {
         if (fs.existsSync(RESULTS_LOCATION)) {
-            fs.rmdirSync(RESULTS_LOCATION, { recursive: true });
+            removeDirectorySync(RESULTS_LOCATION);
         }
 
         fs.mkdirSync(RESULTS_LOCATION);
