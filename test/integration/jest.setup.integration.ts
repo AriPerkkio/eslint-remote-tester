@@ -1,7 +1,6 @@
-import { addFailureLogger, clearRepositoryCache } from '../utils';
+import { clearRepositoryCache } from '../utils';
 
 jest.setTimeout(15000);
-addFailureLogger();
 
 beforeEach(async () => {
     clearRepositoryCache();
