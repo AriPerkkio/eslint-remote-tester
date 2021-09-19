@@ -5,6 +5,7 @@
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
+        "useUnknownInCatchVariables": false,
         "jsx": "react",
         "declaration": true,
         "declarationMap": true,
