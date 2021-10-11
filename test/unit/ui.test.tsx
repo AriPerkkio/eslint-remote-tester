@@ -32,6 +32,7 @@ describe('ui', () => {
         expect(MockLogger.mockListeners.task.length).toBeGreaterThan(0);
 
         unmount();
+        jest.runOnlyPendingTimers();
 
         expect(MockLogger.mockListeners.exit).toHaveLength(0);
         expect(MockLogger.mockListeners.message).toHaveLength(0);
