@@ -124,13 +124,18 @@ export function getConsoleLogCalls(): string[] {
 }
 
 /**
- * Sanitize possible stack traces for sensitive paths
- * - Removes absolute root path from stack traces, e.g.
- *   `/home/username/path/to/project/...` -> `<removed>/...`
+ * Sanitize possible stack traces
  * - Guarantees identical stack traces between environments
  */
 function sanitizeStackTrace(message?: string): string {
-    return (message || '').replace(new RegExp(process.cwd(), 'g'), '<removed>');
+    return (
+        (message || '')
+            // Remove absolute root path, e.g. `/home/username/path/to/project/...` -> `<removed>/...`
+            .replace(new RegExp(process.cwd(), 'g'), '<removed>')
+
+            // Remove line numbers
+            .replace(/\.js:(\d*|:)*/g, '.js')
+    );
 }
 
 /**

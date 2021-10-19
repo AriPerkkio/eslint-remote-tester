@@ -20,7 +20,7 @@ test('results are rendered on CI mode', async () => {
         Repository: AriPerkkio/eslint-remote-tester-integration-test-target
         Rule: unable-to-parse-rule-id
         Message: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
+        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
         Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
         Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
 
@@ -30,16 +30,16 @@ test('results are rendered on CI mode', async () => {
 
         Error:
         TypeError: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
-            at Identifier (<removed>/eslint-local-rules.js:22:56)
-            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
+        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+            at Identifier (<removed>/eslint-local-rules.js)
+            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
             at Array.forEach (<anonymous>)
-            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
-            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:293:26)
-            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
-            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
-            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-            at <removed>/node_modules/eslint/lib/linter/linter.js:960:32
+            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
+            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
+            at <removed>/node_modules/eslint/lib/linter/linter.js
             at Array.forEach (<anonymous>)
 
         Repository: AriPerkkio/eslint-remote-tester-integration-test-target
@@ -109,7 +109,7 @@ test('results are written to file system on CLI mode', async () => {
     expect(results).toMatchInlineSnapshot(`
         "## Rule: unable-to-parse-rule-id
 
-        -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2\`
+        -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
         -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
         -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
 
@@ -121,16 +121,16 @@ test('results are written to file system on CLI mode', async () => {
 
         \`\`\`
         TypeError: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
-            at Identifier (<removed>/eslint-local-rules.js:22:56)
-            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
+        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+            at Identifier (<removed>/eslint-local-rules.js)
+            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
             at Array.forEach (<anonymous>)
-            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
-            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:293:26)
-            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
-            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
-            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-            at <removed>/node_modules/eslint/lib/linter/linter.js:960:32
+            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
+            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
+            at <removed>/node_modules/eslint/lib/linter/linter.js
             at Array.forEach (<anonymous>)
         \`\`\`
 
@@ -382,7 +382,7 @@ test('calls onComplete hook with the results', async () => {
         .
         [MESSAGE]
         Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
+        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
         [MESSAGE]
         .
         [PATH]
@@ -405,16 +405,16 @@ test('calls onComplete hook with the results', async () => {
         .
         [ERROR]
         TypeError: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js:2
-            at Identifier (<removed>/eslint-local-rules.js:22:56)
-            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:58
+        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+            at Identifier (<removed>/eslint-local-rules.js)
+            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
             at Array.forEach (<anonymous>)
-            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js:45:38)
-            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:293:26)
-            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:322:22)
-            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js:336:14)
-            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js:711:23)
-            at <removed>/node_modules/eslint/lib/linter/linter.js:960:32
+            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
+            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
+            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
+            at <removed>/node_modules/eslint/lib/linter/linter.js
             at Array.forEach (<anonymous>)
         [ERROR]
         .
