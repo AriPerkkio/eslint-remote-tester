@@ -8,71 +8,69 @@ const REPOSITORY = 'test-repository';
 const cleanup = jest.fn();
 const workerCallback = jest.fn().mockReturnValue(cleanup);
 
-describe('engine', () => {
-    afterEach(() => {
-        Emitter.clear();
+afterEach(() => {
+    Emitter.clear();
+});
+
+test('crashing worker is reported', async () => {
+    const onMessage = jest.fn();
+    const promise = Engine.scanRepository(
+        REPOSITORY,
+        onMessage,
+        workerCallback
+    );
+
+    Emitter.emit('error', { code: 'mock-error' });
+
+    expect(onMessage).toHaveBeenCalledWith({
+        type: 'WORKER_ERROR',
+        payload: 'mock-error',
     });
 
-    test('crashing worker is reported', async () => {
-        const onMessage = jest.fn();
-        const promise = Engine.scanRepository(
-            REPOSITORY,
-            onMessage,
-            workerCallback
-        );
-
-        Emitter.emit('error', { code: 'mock-error' });
-
-        expect(onMessage).toHaveBeenCalledWith({
-            type: 'WORKER_ERROR',
-            payload: 'mock-error',
-        });
-
-        expect(onMessage).toHaveBeenLastCalledWith({
-            type: 'ON_RESULT',
-            payload: {
-                messages: [
-                    {
-                        message: 'mock-error',
-                        path: 'test-repository',
-                        ruleId: '',
-                        column: 0,
-                        line: 0,
-                        severity: 0,
-                    },
-                ],
-            },
-        });
-
-        await promise;
+    expect(onMessage).toHaveBeenLastCalledWith({
+        type: 'ON_RESULT',
+        payload: {
+            messages: [
+                {
+                    message: 'mock-error',
+                    path: 'test-repository',
+                    ruleId: '',
+                    column: 0,
+                    line: 0,
+                    severity: 0,
+                },
+            ],
+        },
     });
 
-    test('unexpected worker exits are reported', async () => {
-        const onMessage = jest.fn();
-        const promise = Engine.scanRepository(
-            REPOSITORY,
-            onMessage,
-            workerCallback
-        );
+    await promise;
+});
 
-        Emitter.emit('exit', 987);
+test('unexpected worker exits are reported', async () => {
+    const onMessage = jest.fn();
+    const promise = Engine.scanRepository(
+        REPOSITORY,
+        onMessage,
+        workerCallback
+    );
 
-        expect(onMessage).toHaveBeenCalledWith({
-            payload: {
-                messages: [
-                    {
-                        message: 'Worker exited with code 987',
-                        path: 'test-repository',
-                        ruleId: '',
-                        column: 0,
-                        line: 0,
-                        severity: 0,
-                    },
-                ],
-            },
-            type: 'ON_RESULT',
-        });
+    Emitter.emit('exit', 987);
 
-        await promise;
+    expect(onMessage).toHaveBeenCalledWith({
+        payload: {
+            messages: [
+                {
+                    message: 'Worker exited with code 987',
+                    path: 'test-repository',
+                    ruleId: '',
+                    column: 0,
+                    line: 0,
+                    severity: 0,
+                },
+            ],
+        },
+        type: 'ON_RESULT',
     });
+
+    await promise;
 });

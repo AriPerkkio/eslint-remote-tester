@@ -2,10 +2,9 @@ import fs from 'fs';
 
 import * as actionExports from '../../dist/exports-for-compare-action';
 
-describe('integration - compare action exports', () => {
-    test('exports RESULT_PARSER_TO_COMPARE_TEMPLATE', () => {
-        expect(actionExports.RESULT_PARSER_TO_COMPARE_TEMPLATE)
-            .toMatchInlineSnapshot(`
+test('exports RESULT_PARSER_TO_COMPARE_TEMPLATE', () => {
+    expect(actionExports.RESULT_PARSER_TO_COMPARE_TEMPLATE)
+        .toMatchInlineSnapshot(`
             Object {
               "markdown": Object {
                 "header": [Function],
@@ -17,40 +16,40 @@ describe('integration - compare action exports', () => {
               },
             }
         `);
-    });
+});
 
-    test('exports RESULT_COMPARISON_CACHE', () => {
-        expect(actionExports.RESULT_COMPARISON_CACHE).toMatchInlineSnapshot(
-            `".comparison-cache.json"`
-        );
-    });
+test('exports RESULT_COMPARISON_CACHE', () => {
+    expect(actionExports.RESULT_COMPARISON_CACHE).toMatchInlineSnapshot(
+        `".comparison-cache.json"`
+    );
+});
 
-    test('exports RESULTS_COMPARISON_CACHE_LOCATION', () => {
-        expect(
-            actionExports.RESULTS_COMPARISON_CACHE_LOCATION
-        ).toMatchInlineSnapshot(
-            `"./node_modules/.cache-eslint-remote-tester/.comparison-cache.json"`
-        );
-    });
+test('exports RESULTS_COMPARISON_CACHE_LOCATION', () => {
+    expect(
+        actionExports.RESULTS_COMPARISON_CACHE_LOCATION
+    ).toMatchInlineSnapshot(
+        `"./node_modules/.cache-eslint-remote-tester/.comparison-cache.json"`
+    );
+});
 
-    test('exports validateConfig', async () => {
-        const consolelog = console.log;
-        console.log = jest.fn();
+test('exports validateConfig', async () => {
+    const consolelog = console.log;
+    console.log = jest.fn();
 
-        expect(() => actionExports.validateConfig({}, false)).rejects
-            .toThrowErrorMatchingInlineSnapshot(`
+    expect(() => actionExports.validateConfig({}, false)).rejects
+        .toThrowErrorMatchingInlineSnapshot(`
             "Configuration validation errors:
             - Missing repositories.
             - Missing extensions.
             - Missing eslintrc."
         `);
 
-        console.log = consolelog;
-    });
+    console.log = consolelog;
+});
 
-    test('exports typings', () => {
-        expect(fs.readFileSync('dist/exports-for-compare-action.d.ts', 'utf8'))
-            .toMatchInlineSnapshot(`
+test('exports typings', () => {
+    expect(fs.readFileSync('dist/exports-for-compare-action.d.ts', 'utf8'))
+        .toMatchInlineSnapshot(`
             "/**
              * Undocumented private API for Github CI action eslint-remote-tester-compare-action
              */
@@ -60,5 +59,4 @@ describe('integration - compare action exports', () => {
             export { Config, ConfigToValidate } from './config/types';
             //# sourceMappingURL=exports-for-compare-action.d.ts.map"
         `);
-    });
 });
