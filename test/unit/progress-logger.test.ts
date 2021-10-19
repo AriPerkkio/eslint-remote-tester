@@ -48,11 +48,11 @@ test('ci status messages include repositories and error count', () => {
     ProgressLogger.onCiStatus();
 
     expect(getLastCallArguments(onCiKeepAlive)).toMatchInlineSnapshot(`
-            "[INFO/STATUS] Repositories (1/5)
-            [INFO/STATUS] Errors (5)
+        "[INFO/STATUS] Repositories (1/5)
+        [INFO/STATUS] Errors (5)
 
-            "
-        `);
+        "
+    `);
 });
 
 test('ci status messages include current tasks', () => {
@@ -66,12 +66,12 @@ test('ci status messages include current tasks', () => {
     ProgressLogger.onCiStatus();
 
     expect(getLastCallArguments(onCiKeepAlive)).toMatchInlineSnapshot(`
-            "[INFO/STATUS] Repositories (0/3)
-            [INFO/STATUS] Errors (0)
-            [INFO/LINTING] repository-one - 12 files
-            [INFO/CLONING] repositry-two
-            [INFO/READING] repository-three
-            [INFO/PULLING] repository-four
-            "
-        `);
+        "[INFO/STATUS] Repositories (0/3)
+        [INFO/STATUS] Errors (0)
+        [INFO/LINTING] repository-one - 12 files
+        [INFO/CLONING] repositry-two
+        [INFO/READING] repository-three
+        [INFO/PULLING] repository-four
+        "
+    `);
 });

@@ -21,13 +21,13 @@ test('does not crash when handling 500Mb results', async () => {
     );
 
     expect(output.pop()).toMatchInlineSnapshot(`
-            "Full log:
-            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
-            [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 56000 errors
-            [DONE] Finished scan of 1 repositories
-            [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
-            [DONE] Result comparison: Added 56000. Removed 56000.
+        "Full log:
+        [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
+        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 56000 errors
+        [DONE] Finished scan of 1 repositories
+        [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
+        [DONE] Result comparison: Added 56000. Removed 56000.
 
-            "
-        `);
+        "
+    `);
 });
