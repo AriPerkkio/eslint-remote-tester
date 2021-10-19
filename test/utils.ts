@@ -135,6 +135,12 @@ function sanitizeStackTrace(message?: string): string {
 
             // Remove line numbers
             .replace(/\.js:(\d*|:)*/g, '.js')
+
+            // Format node@16 error messages to be indentical with node@14
+            .replace(
+                /Cannot read properties of (\w*) \(reading ((\w|')*)\)/g,
+                'Cannot read property $2 of $1'
+            )
     );
 }
 
