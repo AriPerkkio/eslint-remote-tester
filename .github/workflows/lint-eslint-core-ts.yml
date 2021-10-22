@@ -43,10 +43,11 @@ jobs:
               run: rm -rf ./node_modules
             - run: |
                   yarn install
+                  echo "Using ESLint v8"
                   yarn list | grep eslint
                   yarn log --config ./plugin-configs/eslint-core-ts.config.js
               working-directory: ./ci
-            - uses: AriPerkkio/eslint-remote-tester-run-action@v1
+            - uses: AriPerkkio/eslint-remote-tester-run-action@v2
               with:
                   working-directory: ./ci
                   issue-title: 'Weekly scheduled smoke test: eslint-core-ts'

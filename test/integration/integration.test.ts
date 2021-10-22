@@ -21,6 +21,7 @@ test('results are rendered on CI mode', async () => {
         Rule: unable-to-parse-rule-id
         Message: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+        Rule: \\"local-rules/some-unstable-rule\\"
         Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
         Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
 
@@ -31,7 +32,9 @@ test('results are rendered on CI mode', async () => {
         Error:
         TypeError: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+        Rule: \\"local-rules/some-unstable-rule\\"
             at Identifier (<removed>/eslint-local-rules.js)
+            at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
             at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
             at Array.forEach (<anonymous>)
             at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
@@ -40,7 +43,6 @@ test('results are rendered on CI mode', async () => {
             at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
             at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
             at <removed>/node_modules/eslint/lib/linter/linter.js
-            at Array.forEach (<anonymous>)
 
         Repository: AriPerkkio/eslint-remote-tester-integration-test-target
         Rule: no-undef
@@ -109,7 +111,7 @@ test('results are written to file system on CLI mode', async () => {
     expect(results).toMatchInlineSnapshot(`
         "## Rule: unable-to-parse-rule-id
 
-        -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
+        -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js Rule: \\"local-rules/some-unstable-rule\\"\`
         -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
         -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
 
@@ -122,7 +124,9 @@ test('results are written to file system on CLI mode', async () => {
         \`\`\`
         TypeError: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+        Rule: \\"local-rules/some-unstable-rule\\"
             at Identifier (<removed>/eslint-local-rules.js)
+            at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
             at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
             at Array.forEach (<anonymous>)
             at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
@@ -131,7 +135,6 @@ test('results are written to file system on CLI mode', async () => {
             at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
             at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
             at <removed>/node_modules/eslint/lib/linter/linter.js
-            at Array.forEach (<anonymous>)
         \`\`\`
 
         ## Rule: no-undef
@@ -383,6 +386,7 @@ test('calls onComplete hook with the results', async () => {
         [MESSAGE]
         Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+        Rule: \\"local-rules/some-unstable-rule\\"
         [MESSAGE]
         .
         [PATH]
@@ -406,7 +410,9 @@ test('calls onComplete hook with the results', async () => {
         [ERROR]
         TypeError: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+        Rule: \\"local-rules/some-unstable-rule\\"
             at Identifier (<removed>/eslint-local-rules.js)
+            at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
             at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
             at Array.forEach (<anonymous>)
             at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
@@ -415,7 +421,6 @@ test('calls onComplete hook with the results', async () => {
             at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
             at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
             at <removed>/node_modules/eslint/lib/linter/linter.js
-            at Array.forEach (<anonymous>)
         [ERROR]
         .
         [REPOSITORY]

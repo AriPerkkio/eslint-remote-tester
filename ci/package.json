@@ -13,7 +13,7 @@
         "@next/eslint-plugin-next": "latest",
         "@typescript-eslint/eslint-plugin": "latest",
         "@typescript-eslint/parser": "latest",
-        "eslint": "^7",
+        "eslint": "^8 || ^7",
         "eslint-config-airbnb": "latest",
         "eslint-plugin-cypress": "latest",
         "eslint-plugin-import": "latest",
