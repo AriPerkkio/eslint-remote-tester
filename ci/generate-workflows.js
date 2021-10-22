@@ -28,6 +28,14 @@ const WORKFLOW_BADGE = plugin =>
         plugin
     )})`;
 
+// Plugins which do not yet support ESLint v8
+const PLUGINGS_FOR_ESLINT_7 = [
+    'eslint-config-airbnb',
+    'eslint-plugin-react-hooks',
+    'eslint-plugin-react-redux',
+    'eslint-plugin-testing-library',
+];
+
 // prettier-ignore
 const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
 `# This file is auto-generated. See ci/generate-workflows.js
@@ -75,10 +83,11 @@ jobs:
               run: rm -rf ./node_modules
             - run: |
                   yarn install
+                  ${PLUGINGS_FOR_ESLINT_7.includes(plugin) ? 'yarn add --dev eslint@7' : 'echo "Using ESLint v8"'}
                   yarn list | grep eslint
                   yarn log --config ./plugin-configs/${plugin}.config.js
               working-directory: ./ci
-            - uses: AriPerkkio/eslint-remote-tester-run-action@v1
+            - uses: AriPerkkio/eslint-remote-tester-run-action@v2
               with:
                   working-directory: ./ci
                   issue-title: 'Weekly scheduled smoke test: ${plugin}'
