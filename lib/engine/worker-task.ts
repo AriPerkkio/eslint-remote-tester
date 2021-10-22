@@ -31,7 +31,8 @@ export type WorkerMessage =
     | { type: 'DEBUG'; payload: any };
 
 // Regex used to attempt parsing out rule which caused linter to crash
-const RULE_REGEXP = /rules\/(.*?)\.js/;
+const RULE_FROM_TRACE_REGEXP = /Rule: "(.*?)"/;
+const RULE_FROM_PATH_REGEXP = /rules\/(.*?)\.js/;
 const UNKNOWN_RULE_ID = 'unable-to-parse-rule-id';
 
 // Regex used to attempt parsing out line which caused linter to crash
@@ -148,7 +149,13 @@ function parseErrorStack(error: Error, file: SourceFile): LintMessage {
     const { path } = file;
 
     const stack = error.stack || '';
-    const ruleMatch = stack.match(RULE_REGEXP) || [];
+    const ruleMatch =
+        // ESLint v8
+        stack.match(RULE_FROM_TRACE_REGEXP) ||
+        // Older ESLint versions
+        stack.match(RULE_FROM_PATH_REGEXP) ||
+        [];
+
     const ruleId = ruleMatch.pop() || UNKNOWN_RULE_ID;
 
     const lineMatch = stack.match(LINE_REGEX) || [];

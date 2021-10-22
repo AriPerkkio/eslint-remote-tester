@@ -18,7 +18,7 @@ test('results are rendered on CI mode', async () => {
     expect(finalLog).toMatchInlineSnapshot(`
         "Results:
         Repository: AriPerkkio/eslint-remote-tester-integration-test-target
-        Rule: unable-to-parse-rule-id
+        Rule: local-rules/some-unstable-rule
         Message: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
         Rule: \\"local-rules/some-unstable-rule\\"
@@ -109,7 +109,7 @@ test('results are written to file system on CLI mode', async () => {
     const results = getResults();
 
     expect(results).toMatchInlineSnapshot(`
-        "## Rule: unable-to-parse-rule-id
+        "## Rule: local-rules/some-unstable-rule
 
         -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js Rule: \\"local-rules/some-unstable-rule\\"\`
         -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
@@ -209,7 +209,7 @@ test('final log is rendered on CLI mode', async () => {
 
     expect(finalLog).toMatchInlineSnapshot(`
         "Full log:
-        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
+        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: local-rules/some-unstable-rule
         [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
         [DONE] Finished scan of 1 repositories
         [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
@@ -249,7 +249,7 @@ test('cache status is rendered on CLI mode', async () => {
 
     expect(cleanRun.output.pop()).toMatchInlineSnapshot(`
         "Full log:
-        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
+        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: local-rules/some-unstable-rule
         [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
         [DONE] Finished scan of 1 repositories
         [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
@@ -262,7 +262,7 @@ test('cache status is rendered on CLI mode', async () => {
     expect(cachedRun.output.pop()).toMatchInlineSnapshot(`
         "Full log:
         [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
-        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: unable-to-parse-rule-id
+        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target crashed: local-rules/some-unstable-rule
         [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
         [DONE] Finished scan of 1 repositories
         [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
@@ -380,7 +380,7 @@ test('calls onComplete hook with the results', async () => {
         [REPOSITORYOWNER]
         .
         [RULE]
-        unable-to-parse-rule-id
+        local-rules/some-unstable-rule
         [RULE]
         .
         [MESSAGE]
