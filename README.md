@@ -169,7 +169,7 @@ Projects using GitHub CIs can utilize [eslint-remote-tester-run-action](https://
 ### Configuration maintainer making sure all repositories follow the rules
 
 Configuration maintainers (`eslint-config-*)` can check all their repositories follow rules of the configuration.
-By using an all-inclusive filter in `rulesUnderConfiguration` all ESLint reports are picked, e.g. `rulesUnderConfiguration: () => true`.
+By using an all-inclusive filter in `rulesUnderTesting` all ESLint reports are picked, e.g. `rulesUnderTesting: () => true`.
 
 The arguments of filter callback can be used to exclude specific rules from specific repositories:
 
