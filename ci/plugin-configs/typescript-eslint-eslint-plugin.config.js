@@ -8,10 +8,29 @@ module.exports = {
     ...baseConfig,
     concurrentTasks: 1,
     eslintrc: function initializeLinter(options) {
+        const configWithoutTypeAwareRules = {
+            ...baseEslintrc,
+            rules: {
+                ...baseEslintrc.rules,
+                ...rulesWithoutTypeAware,
+            },
+        };
+
         if (options) {
             const tsConfigLocation = findTsConfig(options);
 
             if (tsConfigLocation) {
+                const size = getRepositorySize(options.location);
+
+                // Ignore repositories bigger than 1 GB to avoid "disk out of space" cases
+                if (!size || size > 1_000_000_000) {
+                    console.log(
+                        `Disabling type-aware rules for ${options.repository} due to size (${size}) bytes`
+                    );
+
+                    return configWithoutTypeAwareRules;
+                }
+
                 // Attempt to install project dependencies and enable all rules from plugin.
                 // This step may fail if dependencies cannot be installed without additional manual steps.
                 try {
@@ -34,19 +53,15 @@ module.exports = {
             }
         }
 
-        return {
-            ...baseEslintrc,
-            rules: {
-                ...baseEslintrc.rules,
-                ...rulesWithoutTypeAware,
-            },
-        };
+        return configWithoutTypeAwareRules;
     },
 };
 
 const TS_CONFIG_PATTERN = /tsconfig\.json/;
 
 function findTsConfig(options) {
+    if (!fs.existsSync(options.location)) return null;
+
     const tsconfig = fs
         .readdirSync(options.location)
         .find(file => TS_CONFIG_PATTERN.test(file));
@@ -54,6 +69,14 @@ function findTsConfig(options) {
     if (tsconfig) {
         return resolve(options.location, tsconfig);
     }
+}
+
+function getRepositorySize(cwd) {
+    const size = parseInt(
+        execSync('du --summarize --bytes .', { cwd }).toString()
+    );
+
+    return Number.isNaN(size) ? null : size;
 }
 
 const baseEslintrc = {
