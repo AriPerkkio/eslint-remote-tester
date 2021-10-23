@@ -20,12 +20,12 @@ module.exports = {
             const tsConfigLocation = findTsConfig(options);
 
             if (tsConfigLocation) {
-                const size = getRepositorySize(options.location);
+                const sizeInMegaBytes = getRepositorySize(options.location);
 
                 // Ignore repositories bigger than 1 GB to avoid "disk out of space" cases
-                if (!size || size > 1_000_000_000) {
+                if (!sizeInMegaBytes || sizeInMegaBytes > 1_000) {
                     console.log(
-                        `Disabling type-aware rules for ${options.repository} due to size (${size}) bytes`
+                        `Disabling type-aware rules for ${options.repository} due to size (${sizeInMegaBytes}) MB`
                     );
 
                     return configWithoutTypeAwareRules;
@@ -72,9 +72,8 @@ function findTsConfig(options) {
 }
 
 function getRepositorySize(cwd) {
-    const size = parseInt(
-        execSync('du --summarize --bytes .', { cwd }).toString()
-    );
+    // Note that this command has to be compatible with node:14-alpine image
+    const size = parseInt(execSync('du -sm .', { cwd }).toString());
 
     return Number.isNaN(size) ? null : size;
 }
