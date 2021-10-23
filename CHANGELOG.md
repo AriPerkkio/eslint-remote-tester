@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.3.1...v2.0.0) (2021-10-23)
+
+-   feat!: improve `ruleId` parsing ([69a14c6](https://github.com/AriPerkkio/eslint-remote-tester/commit/69a14c61cceba7d0ae8121b71cd41d168dba933b))
+
+### BREAKING CHANGES
+
+-   Reported rules now may include plugin name,
+    e.g. `no-unstable-components` -> `react/no-unstable-components`
+    These are used in reported results and in some callbacks of eslint-remote-tester.config.js.
+
+*   parse `ruleId` from stack traces provided by ESLint v8
+
 ## [1.3.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.3.0...v1.3.1) (2021-09-11)
 
 ### Bug Fixes
