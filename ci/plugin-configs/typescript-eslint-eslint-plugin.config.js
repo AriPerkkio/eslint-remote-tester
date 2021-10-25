@@ -8,32 +8,18 @@ module.exports = {
     ...baseConfig,
     concurrentTasks: 1,
     eslintrc: function initializeLinter(options) {
-        const configWithoutTypeAwareRules = {
-            ...baseEslintrc,
-            rules: {
-                ...baseEslintrc.rules,
-                ...rulesWithoutTypeAware,
-            },
-        };
-
         if (options) {
             const tsConfigLocation = findTsConfig(options);
 
             if (tsConfigLocation) {
-                const sizeInMegaBytes = getRepositorySize(options.location);
-
-                // Ignore repositories bigger than 1 GB to avoid "disk out of space" cases
-                if (!sizeInMegaBytes || sizeInMegaBytes > 1_000) {
-                    console.log(
-                        `Disabling type-aware rules for ${options.repository} due to size (${sizeInMegaBytes}) MB`
-                    );
-
-                    return configWithoutTypeAwareRules;
-                }
-
                 // Attempt to install project dependencies and enable all rules from plugin.
                 // This step may fail if dependencies cannot be installed without additional manual steps.
                 try {
+                    execSync('yarn cache clean', {
+                        cwd: options.location,
+                        stdio: 'ignore',
+                    });
+
                     execSync('yarn install --ignore-scripts --ignore-engines', {
                         cwd: options.location,
                         stdio: 'ignore',
@@ -53,7 +39,13 @@ module.exports = {
             }
         }
 
-        return configWithoutTypeAwareRules;
+        return {
+            ...baseEslintrc,
+            rules: {
+                ...baseEslintrc.rules,
+                ...rulesWithoutTypeAware,
+            },
+        };
     },
 };
 
@@ -69,13 +61,6 @@ function findTsConfig(options) {
     if (tsconfig) {
         return resolve(options.location, tsconfig);
     }
-}
-
-function getRepositorySize(cwd) {
-    // Note that this command has to be compatible with node:14-alpine image
-    const size = parseInt(execSync('du -sm .', { cwd }).toString());
-
-    return Number.isNaN(size) ? null : size;
 }
 
 const baseEslintrc = {
