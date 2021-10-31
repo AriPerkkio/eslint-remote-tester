@@ -41,7 +41,7 @@
         "chalk": "^4.1.0",
         "ink": "^3.0.8",
         "object-hash": "^2.1.1",
-        "react": "^16.14.0",
+        "react": ">=16.8.0",
         "simple-git": "^2.20.1"
     },
     "devDependencies": {
