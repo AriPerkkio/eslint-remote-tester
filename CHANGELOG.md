@@ -1,3 +1,9 @@
+## [2.0.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.0.0...v2.0.1) (2021-10-31)
+
+### Bug Fixes
+
+-   **deps:** match react version requirement with ink ([#302](https://github.com/AriPerkkio/eslint-remote-tester/issues/302)) ([21824eb](https://github.com/AriPerkkio/eslint-remote-tester/commit/21824ebc84d00f0e7db8499b6ef3358584a53a8b))
+
 # [2.0.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.3.1...v2.0.0) (2021-10-23)
 
 -   feat!: improve `ruleId` parsing ([69a14c6](https://github.com/AriPerkkio/eslint-remote-tester/commit/69a14c61cceba7d0ae8121b71cd41d168dba933b))
