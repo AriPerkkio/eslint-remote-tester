@@ -43,7 +43,7 @@ jobs:
               run: rm -rf ./node_modules
             - run: |
                   yarn install
-                  yarn add --dev eslint@7
+                  echo "Using ESLint v8"
                   yarn list | grep eslint
                   yarn log --config ./plugin-configs/eslint-plugin-testing-library.config.js
               working-directory: ./ci

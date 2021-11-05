@@ -33,7 +33,6 @@ const PLUGINGS_FOR_ESLINT_7 = [
     'eslint-config-airbnb',
     'eslint-plugin-react-hooks',
     'eslint-plugin-react-redux',
-    'eslint-plugin-testing-library',
 ];
 
 // prettier-ignore
