@@ -1,18 +1,35 @@
-import ActualProgressLogger from '@progress-logger';
+import ProgressLogger from '@progress-logger';
 import { LogMessage } from '@progress-logger/types';
 import { mockConfigValue, restoreMockConfig } from '__mocks__/@config';
 import { getLastCallArguments } from '../utils';
 
 jest.unmock('@progress-logger');
 
-let ProgressLogger: typeof ActualProgressLogger;
+// TODO: Use once isolateModules works with jest@27
+// let ProgressLogger: typeof ActualProgressLogger;
 
 beforeEach(() => {
     restoreMockConfig();
 
-    jest.isolateModules(() => {
-        ProgressLogger = require('../../lib/progress-logger').default;
-    });
+    // TODO: Use once isolateModules works with jest@27
+    // jest.isolateModules(() => {
+    //     ProgressLogger = require('../../lib/progress-logger').default;
+    // });
+});
+
+afterEach(() => {
+    // TODO Remove once isolateModules works with jest@27
+    (ProgressLogger as any).messages = [];
+    (ProgressLogger as any).tasks = [];
+    (ProgressLogger as any).scannedRepositories = 0;
+    (ProgressLogger as any).errorCount = 0;
+    (ProgressLogger as any).listeners = {
+        exit: [],
+        message: [],
+        task: [],
+        ciKeepAlive: [],
+        timeout: [],
+    };
 });
 
 test('listeners are notified about new messages', () => {
