@@ -20,7 +20,6 @@ beforeEach(() => {
     }
 
     // Initialize client
-    jest.resetModuleRegistry();
     jest.isolateModules(() => {
         require('../../lib/file-client/repository-client');
     });

@@ -32,8 +32,13 @@ const mockConfig = jest.fn().mockReturnValue(DEFAULT_CONFIGURATION);
 jest.mock('../../eslint-remote-tester.config.js', () => mockConfig());
 
 function getConfig(): Config {
-    jest.resetModules();
-    return require('../../lib/config/config').default;
+    let config: Config;
+
+    jest.isolateModules(() => {
+        config = require('../../lib/config/config').default;
+    });
+
+    return config!;
 }
 
 describe('config', () => {

@@ -101,7 +101,6 @@ function createComparisonResults(): void {
 function getCacheLocation() {
     let location = '';
 
-    jest.resetModuleRegistry();
     jest.isolateModules(() => {
         location =
             require('../../lib/file-client/file-constants').CACHE_LOCATION;
