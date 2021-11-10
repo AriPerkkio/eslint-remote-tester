@@ -29,10 +29,7 @@ const WORKFLOW_BADGE = plugin =>
     )})`;
 
 // Plugins which do not yet support ESLint v8
-const PLUGINGS_FOR_ESLINT_7 = [
-    'eslint-config-airbnb',
-    'eslint-plugin-react-redux',
-];
+const PLUGINGS_FOR_ESLINT_7 = ['eslint-config-airbnb'];
 
 // prettier-ignore
 const WORKFLOW_TEMPLATE = ({ plugin, index }) =>
