@@ -26,7 +26,7 @@ const REPOSITORIES_RAW_CACHE = resolve(`${__dirname}/.repositories-raw-cache`);
 const REPOSITORIES_PUBLIC_CACHE = resolve(
     `${__dirname}/.repositories-public-cache`
 );
-const REPOSITORIES_JSON = resolve(`${__dirname}/../repositories.json`);
+const REPOSITORIES_JSON = resolve(`${__dirname}/../src/repositories.json`);
 
 const API_KEY = process.env.npm_config_libraries_io_api_key;
 if (!API_KEY) {
@@ -129,7 +129,7 @@ const writeToArrayCache = <T>(location: string, results: T[]) => {
         (item, index, array) => array.indexOf(item) === index
     );
 
-    writeFileSync(location, JSON.stringify(newContent, null, 2), ENCODING);
+    writeFileSync(location, JSON.stringify(newContent, null, 4), ENCODING);
 };
 
 const generateDependentRepositoriesUrl = (project: string, page: number) => {
@@ -154,7 +154,7 @@ const main = async () => {
 
         if (dependentRepositories.length === 0) {
             console.log(chalk.green`Stopping at page ${page}`);
-            return process.exit();
+            break;
         }
 
         const repositories = dependentRepositories
@@ -188,4 +188,4 @@ const main = async () => {
     );
 };
 
-main();
+main().catch(console.error);
