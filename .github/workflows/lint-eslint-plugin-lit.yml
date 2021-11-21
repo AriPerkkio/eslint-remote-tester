@@ -1,5 +1,5 @@
 # This file is auto-generated. See ci/generate-workflows.js
-name: eslint-plugin-next
+name: eslint-plugin-lit
 
 on:
     workflow_dispatch: # Manual triggers
@@ -9,8 +9,8 @@ on:
         types:
             - completed
     schedule:
-        # Every thursday at 08:00
-        - cron: '0 08 * * THU'
+        # Every thursday at 06:00
+        - cron: '0 06 * * THU'
 
 jobs:
     lint:
@@ -45,10 +45,10 @@ jobs:
                   yarn install
                   echo "Using ESLint v8"
                   yarn list | grep eslint
-                  yarn log --config ./plugin-configs/eslint-plugin-next.config.js
+                  yarn log --config ./plugin-configs/eslint-plugin-lit.config.js
               working-directory: ./ci
             - uses: AriPerkkio/eslint-remote-tester-run-action@v2
               with:
                   working-directory: ./ci
-                  issue-title: 'Weekly scheduled smoke test: eslint-plugin-next'
-                  eslint-remote-tester-config: plugin-configs/eslint-plugin-next.config.js
+                  issue-title: 'Weekly scheduled smoke test: eslint-plugin-lit'
+                  eslint-remote-tester-config: plugin-configs/eslint-plugin-lit.config.js
