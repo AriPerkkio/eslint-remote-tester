@@ -6,6 +6,7 @@
 [![eslint-plugin-jest](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-jest/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-plugin-jest)
 [![eslint-plugin-jest-dom](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-jest-dom/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-plugin-jest-dom)
 [![eslint-plugin-jsx-a11y](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-jsx-a11y/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-plugin-jsx-a11y)
+[![eslint-plugin-lit](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-lit/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-plugin-lit)
 [![eslint-plugin-mocha](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-mocha/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-plugin-mocha)
 [![eslint-plugin-next](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-next/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-plugin-next)
 [![eslint-plugin-node](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-node/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3Aeslint-plugin-node)

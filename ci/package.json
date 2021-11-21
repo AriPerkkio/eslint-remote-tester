@@ -20,6 +20,7 @@
         "eslint-plugin-jest": "latest",
         "eslint-plugin-jest-dom": "latest",
         "eslint-plugin-jsx-a11y": "latest",
+        "eslint-plugin-lit": "latest",
         "eslint-plugin-mocha": "latest",
         "eslint-plugin-node": "latest",
         "eslint-plugin-react": "latest",
