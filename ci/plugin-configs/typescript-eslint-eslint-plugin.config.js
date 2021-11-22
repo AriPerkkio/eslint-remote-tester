@@ -41,10 +41,7 @@ module.exports = {
 
         return {
             ...baseEslintrc,
-            rules: {
-                ...baseEslintrc.rules,
-                ...rulesWithoutTypeAware,
-            },
+            rules: rulesWithoutTypeAware,
         };
     },
 };
@@ -67,10 +64,6 @@ const baseEslintrc = {
     ...baseConfig.eslintrc,
     plugins: ['@typescript-eslint'],
     extends: ['plugin:@typescript-eslint/all'],
-    rules: {
-        // https://github.com/typescript-eslint/typescript-eslint/issues/3933
-        '@typescript-eslint/no-restricted-imports': ['error', {}],
-    },
 };
 
 const rulesWithoutTypeAware = {
