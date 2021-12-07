@@ -6,6 +6,7 @@ const baseConfig = require('../base.config');
 
 module.exports = {
     ...baseConfig,
+    concurrentTasks: 1,
     eslintrc: function initializeLinter(options) {
         if (options) {
             const tsConfigLocation = findTsConfig(options);
