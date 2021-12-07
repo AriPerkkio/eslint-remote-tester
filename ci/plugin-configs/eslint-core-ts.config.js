@@ -62,6 +62,9 @@ module.exports = {
             indent: 'off',
             quotes: 'off',
             semi: 'off',
+
+            // https://github.com/AriPerkkio/eslint-remote-tester/issues/315
+            'no-restricted-exports': 'off',
         },
     },
 };
