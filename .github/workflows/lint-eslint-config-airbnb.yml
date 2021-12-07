@@ -43,7 +43,6 @@ jobs:
               run: rm -rf ./node_modules
             - run: |
                   yarn install
-                  yarn add --dev eslint@7
                   yarn list | grep eslint
                   yarn log --config ./plugin-configs/eslint-config-airbnb.config.js
               working-directory: ./ci

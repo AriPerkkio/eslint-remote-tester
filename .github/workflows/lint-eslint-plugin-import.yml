@@ -43,7 +43,6 @@ jobs:
               run: rm -rf ./node_modules
             - run: |
                   yarn install
-                  echo "Using ESLint v8"
                   yarn list | grep eslint
                   yarn log --config ./plugin-configs/eslint-plugin-import.config.js
               working-directory: ./ci
