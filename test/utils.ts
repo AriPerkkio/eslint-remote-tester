@@ -136,7 +136,7 @@ function sanitizeStackTrace(message?: string): string {
             // Remove line numbers
             .replace(/\.js:(\d*|:)*/g, '.js')
 
-            // Format node@16 error messages to be indentical with node@14
+            // Format node@16 error messages to be identical with node@14
             .replace(
                 /Cannot read properties of (\w*) \(reading ((\w|')*)\)/g,
                 'Cannot read property $2 of $1'
@@ -211,8 +211,8 @@ export function getComparisonResults(
 
 /**
  * Get last call arguments of given mocked callback
- * - Returns array incase of multiple call arguments
- * - Returns a single value incase of single call argument
+ * - Returns array in case of multiple call arguments
+ * - Returns a single value in case of single call argument
  */
 export function getLastCallArguments(callback: jest.Mock): unknown {
     if (!callback.mock.calls) return null;

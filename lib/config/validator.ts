@@ -283,7 +283,7 @@ export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
 
 /**
  * Validate given rules of `config.eslintrc.rules`
- * - When unknown rules are defined, or known ones are mispelled they are not
+ * - When unknown rules are defined, or known ones are misspelled they are not
  *   reported during linting. We need to specifically look for them.
  */
 async function validateEslintRules(

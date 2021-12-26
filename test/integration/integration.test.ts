@@ -613,7 +613,7 @@ test('erroneous onComplete does not crash application', async () => {
     );
 
     expect(errorLog.join('\n')).toMatchInlineSnapshot(`
-        "Error: Error occured while calling onComplete callback
+        "Error: Error occurred while calling onComplete callback
         TypeError: Cannot read property 'field' of undefined"
     `);
     expect(exitCode).toBe(0);

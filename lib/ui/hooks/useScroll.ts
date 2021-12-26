@@ -88,7 +88,7 @@ export function useScroll(maxScroll: number, maxHeight: number): number {
             return times(maxHeight / 2)(() => dispatch({ type: 'up' }));
         }
 
-        // Scroll to bottm
+        // Scroll to bottom
         if (input === 'G' && key.shift) {
             return times(maxScroll)(() => dispatch({ type: 'down' }));
         }

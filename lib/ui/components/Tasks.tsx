@@ -4,8 +4,8 @@ import { Text } from 'ink';
 import ProgressLogger, { TASK_TEMPLATE } from '@progress-logger';
 import { Task } from '@progress-logger/types';
 
-// 200ms provides smooth enough experience without throttling worst terminals.
-// Modern terminals could handle updates real-time but let's support olders ones too.
+// 200ms provides smooth enough experience without throttling the worst terminals.
+// Modern terminals could handle updates real-time but let's support older ones too.
 export const REFRESH_INTERVAL_MS = 200;
 
 /**

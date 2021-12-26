@@ -42,7 +42,7 @@ test('listeners are notified about new messages', () => {
     expect(onMessage).toHaveBeenCalledWith(message);
 });
 
-test('messages are filterd by config.logLevel', () => {
+test('messages are filtered by config.logLevel', () => {
     mockConfigValue({ logLevel: 'warn' });
 
     const onMessage = jest.fn();
@@ -77,7 +77,7 @@ test('ci status messages include current tasks', () => {
     ProgressLogger.on('ciKeepAlive', onCiKeepAlive);
 
     ProgressLogger.onLintStart('repository-one', 12);
-    ProgressLogger.onRepositoryClone('repositry-two');
+    ProgressLogger.onRepositoryClone('repository-two');
     ProgressLogger.onRepositoryRead('repository-three');
     ProgressLogger.onRepositoryPull('repository-four');
     ProgressLogger.onCiStatus();
@@ -86,7 +86,7 @@ test('ci status messages include current tasks', () => {
         "[INFO/STATUS] Repositories (0/3)
         [INFO/STATUS] Errors (0)
         [INFO/LINTING] repository-one - 12 files
-        [INFO/CLONING] repositry-two
+        [INFO/CLONING] repository-two
         [INFO/READING] repository-three
         [INFO/PULLING] repository-four
         "
