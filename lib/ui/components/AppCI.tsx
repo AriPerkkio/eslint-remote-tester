@@ -10,7 +10,7 @@ import { LogMessage, Task } from '@progress-logger/types';
  * Application for CIs
  * - Message and task updates are rendered directly to stdout due to ink not
  *   updating CIs actively. Only final render is printed -> `<Results />`
- * - CI keep-alive messages are printed in order to avoid CIs timeouting
+ * - CI keep-alive messages are printed in order to avoid CIs timing out
  */
 export default function AppCI(): JSX.Element {
     const done = useOnExit();

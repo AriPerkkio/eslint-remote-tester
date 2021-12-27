@@ -36,7 +36,7 @@ export default async function onExit(
 
             await writeComparisonResults(comparisonResults, results);
         } catch (e) {
-            errors.push('Error occured while generating comparison results');
+            errors.push('Error occurred while generating comparison results');
             errors.push(e.stack);
         }
     }
@@ -53,7 +53,7 @@ export default async function onExit(
                 await onCompletePromise;
             }
         } catch (e) {
-            errors.push('Error occured while calling onComplete callback');
+            errors.push('Error occurred while calling onComplete callback');
             errors.push(e.stack);
         }
     }

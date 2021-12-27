@@ -179,7 +179,7 @@ function parseErrorStack(error: Error, file: SourceFile): LintMessage {
     });
 }
 
-// Wrapper used to enfore WorkerMessage type to parentPort.postMessage calls
+// Wrapper used to enforce WorkerMessage type to parentPort.postMessage calls
 const postMessage = (message: WorkerMessage) => {
     if (parentPort) {
         return parentPort.postMessage(message);
@@ -242,7 +242,7 @@ export default async function workerTask(): Promise<void> {
                 () => linter.lintFiles(path),
 
                 // Warn about files taking more than 5s to lint
-                // Useful to identify minified files commited to remote
+                // Useful to identify minified files committed to remote
                 lintTime =>
                     postMessage({
                         type: 'FILE_LINT_SLOW',

@@ -11,7 +11,7 @@ jest.unmock('@config');
 jest.unmock('eslint');
 
 const DEFAULT_CONFIGURATION: ConfigWithOptionals = {
-    repositories: ['test-repo', 'test-repot-2'],
+    repositories: ['test-repo', 'test-repo-2'],
     extensions: ['ts', 'tsx'],
     eslintrc: { root: true },
     rulesUnderTesting: undefined,

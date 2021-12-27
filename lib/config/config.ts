@@ -45,7 +45,7 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
         defaultCreated = true;
     }
 
-    console.log(chalk.red(`Missing configuratin file ${CONFIGURATION_FILE}.`));
+    console.log(chalk.red(`Missing configuration file ${CONFIGURATION_FILE}.`));
     if (defaultCreated) {
         console.log(
             chalk.green(

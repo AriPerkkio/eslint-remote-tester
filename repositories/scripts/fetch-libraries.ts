@@ -1,7 +1,7 @@
 /**
  * Fetch repositories depending on given project from libraries.io.
  * Unstable API of libraries.io is considered by retrying the requests and
- * caching everything. Failing script can easiliy be restarted and continued
+ * caching everything. Failing script can easily be restarted and continued
  * from previous progress.
  */
 
@@ -83,7 +83,7 @@ const retryFetch = async (url: string) => {
 
 /**
  * Fetch with cache. Writes successful responses into `QUERY_CACHE` in order to
- * minimize reqests. API_KEY is filtered out of cached requests.
+ * minimize requests. API_KEY is filtered out of cached requests.
  */
 const cachedFetch = async (url: string): Promise<DependentRepository[]> => {
     const cache =

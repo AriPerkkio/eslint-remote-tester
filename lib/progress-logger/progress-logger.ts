@@ -79,7 +79,7 @@ class ProgressLogger {
     /** Handle of scan timeout. Used to interrupt scan once time limit has been reached. */
     private scanTimeoutHandle: NodeJS.Timeout | null = null;
 
-    /** Interval of CI status messages. Used to avoid CIs timeouting due to silent stdout. */
+    /** Interval of CI status messages. Used to avoid CIs timing out due to silent stdout. */
     private ciKeepAliveIntervalHandle: NodeJS.Timeout | null = null;
 
     constructor() {

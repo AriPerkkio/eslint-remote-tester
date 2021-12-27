@@ -65,7 +65,7 @@ function constructTreeFromDir(dir: string): string[] {
 }
 
 /**
- * Get all files from given repository matching the extensions set by configuraiton
+ * Get all files from given repository matching the extensions set by configuration
  */
 export async function getFiles({
     repository,
