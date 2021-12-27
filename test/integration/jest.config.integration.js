@@ -7,6 +7,6 @@ module.exports = {
         '<rootDir>/test/integration/jest.setup.integration.ts',
     ],
     watchPathIgnorePatterns: [
-        '<rootDir>/test/integration/integration.config-[0-9]*.js',
+        '<rootDir>/test/integration/integration.config-[0-9]*.[jt]s',
     ],
 };
