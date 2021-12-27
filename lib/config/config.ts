@@ -5,8 +5,8 @@ import { workerData, isMainThread } from 'worker_threads';
 
 import { getConfigWithDefaults } from './validator';
 import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
+import { loadConfig } from './load';
 import { WorkerData } from '@engine/types';
-import { Service } from 'ts-node';
 
 const DEFAULT_CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
 const CLI_ARGS_CONFIG = ['-c', '--config'];
@@ -56,42 +56,6 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
     }
     process.exit();
 }
-
-let registerer: Service | null = null;
-
-/* istanbul ignore next */
-const interopRequireDefault = (obj: any): { default: any } =>
-    obj && obj.__esModule ? obj : { default: obj };
-
-const loadTSConfig = (configPath: string) => {
-    try {
-        registerer ||= require('ts-node').register() as Service;
-    } catch (e: any) {
-        if (e.code === 'MODULE_NOT_FOUND') {
-            throw new Error(
-                `'ts-node' is required for TypeScript configuration files. Make sure it is installed\nError: ${e.message}`
-            );
-        }
-
-        throw e;
-    }
-
-    registerer.enabled(true);
-
-    const configObject = interopRequireDefault(require(configPath)).default;
-
-    registerer.enabled(false);
-
-    return configObject;
-};
-
-const loadConfig = (configPath: string) => {
-    if (configPath.endsWith('.ts')) {
-        return loadTSConfig(configPath);
-    }
-
-    return require(configPath);
-};
 
 const configFileContents = loadConfig(path.resolve(CONFIGURATION_FILE));
 const config = getConfigWithDefaults(configFileContents);
