@@ -1,4 +1,5 @@
 import { getConsoleLogCalls } from '../utils';
+import { loadTSConfig } from '@config/load';
 import validateConfig from '@config/validator';
 import {
     Config,
@@ -749,5 +750,24 @@ describe('validateConfig', () => {
                 'onComplete (fetch(api).then(parseResponse)) should be a function'
             );
         });
+    });
+});
+
+describe('loadTSConfig', () => {
+    test('a helpful error is thrown when ts-node is not present', () => {
+        jest.mock('ts-node', () => {
+            throw new (class extends Error {
+                public code;
+
+                constructor(message?: string) {
+                    super(message);
+                    this.code = 'MODULE_NOT_FOUND';
+                }
+            })();
+        });
+
+        expect(() => loadTSConfig('my-config')).toThrow(
+            `'ts-node' is required for TypeScript configuration files.`
+        );
     });
 });
