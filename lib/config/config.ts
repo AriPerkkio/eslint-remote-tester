@@ -5,6 +5,7 @@ import { workerData, isMainThread } from 'worker_threads';
 
 import { getConfigWithDefaults } from './validator';
 import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
+import { loadConfig } from './load';
 import { WorkerData } from '@engine/types';
 
 const DEFAULT_CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
@@ -56,7 +57,7 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
     process.exit();
 }
 
-const configFileContents = require(path.resolve(CONFIGURATION_FILE));
+const configFileContents = loadConfig(path.resolve(CONFIGURATION_FILE));
 const config = getConfigWithDefaults(configFileContents);
 
 export default config;

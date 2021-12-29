@@ -8,6 +8,7 @@ import {
     INTEGRATION_REPO_NAME,
     REPOSITORY_CACHE,
 } from '../utils';
+import { Config } from '@config/types';
 
 const DEBUG_LOG_PATTERN = /\[DEBUG (\S|:)*\] /g;
 
@@ -1133,5 +1134,67 @@ test('calls eslintrc function with repository and its location', async () => {
         [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 
         "
+    `);
+});
+
+test('loads typescript configuration file', async () => {
+    const { output } = await runProductionBuild(
+        {
+            CI: true,
+            rulesUnderTesting: [],
+            eslintrc: { root: true },
+            onComplete: `function onComplete() {
+                console.log('[TEST-ON-COMPLETE-START]');
+
+                type SomeType = 'a' | 'b' | 'c';
+                const value: SomeType = 'b';
+                console.log('Value of typed const', value);
+
+                console.log('config file:');
+                const index = process.argv.findIndex(a => a === '--config');
+                const config = process.argv[index + 1];
+                console.log(require('fs').readFileSync(config, 'utf8'));
+
+                console.log('[TEST-ON-COMPLETE-END]');
+            }` as unknown as Config['onComplete'],
+        },
+        undefined,
+        'ts'
+    );
+
+    const [onCompleteCall] = output
+        .join('\n')
+        .match(/\[TEST-ON-COMPLETE-START\]([\s|\S]*)\[TEST-ON-COMPLETE-END\]/)!;
+
+    expect(onCompleteCall).toMatchInlineSnapshot(`
+        "[TEST-ON-COMPLETE-START]
+        Value of typed const b
+        config file:
+        export default {
+            \\"repositories\\": [
+                \\"AriPerkkio/eslint-remote-tester-integration-test-target\\"
+            ],
+            \\"extensions\\": [
+                \\".js\\"
+            ],
+            \\"pathIgnorePattern\\": \\"(expected-to-be-excluded)\\",
+            \\"rulesUnderTesting\\": [],
+            \\"eslintrc\\": {
+                \\"root\\": true
+            },
+            \\"CI\\": true,
+            \\"onComplete\\": function onComplete() {
+                        console.log('[TEST-ON-COMPLETE-START]');
+                        type SomeType = 'a' | 'b' | 'c';
+                        const value: SomeType = 'b';
+                        console.log('Value of typed const', value);
+                        console.log('config file:');
+                        const index = process.argv.findIndex(a => a === '--config');
+                        const config = process.argv[index + 1];
+                        console.log(require('fs').readFileSync(config, 'utf8'));
+                        console.log('[TEST-ON-COMPLETE-END]');
+                    }
+        }
+        [TEST-ON-COMPLETE-END]"
     `);
 });

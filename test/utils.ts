@@ -32,9 +32,10 @@ let idCounter = 0;
  */
 function createConfiguration(
     options: ConfigToValidate,
-    baseConfigPath = './integration/base.config.js'
+    baseConfigPath = './integration/base.config.js',
+    fileExtension: 'js' | 'ts'
 ): { name: string; cleanup: () => void } {
-    const name = `./test/integration/integration.config-${idCounter++}.js`;
+    const name = `./test/integration/integration.config-${idCounter++}.${fileExtension}`;
 
     const baseConfig: Config = require(baseConfigPath);
     const config = { ...baseConfig, ...options };
@@ -58,7 +59,10 @@ function createConfiguration(
         .replace(ESLINTRC_PATTERN, '$1$2,')
         .replace(ESCAPED_NEWLINE_PATTERN, '\n');
 
-    fs.writeFileSync(name, `module.exports=${configText}`, 'utf8');
+    const configExport =
+        fileExtension === 'ts' ? 'export default' : 'module.exports=';
+
+    fs.writeFileSync(name, `${configExport} ${configText}`, 'utf8');
 
     return { name, cleanup: () => fs.unlinkSync(name) };
 }
@@ -68,9 +72,14 @@ function createConfiguration(
  */
 export async function runProductionBuild(
     options: ConfigToValidate = {},
-    baseConfigPath?: string
+    baseConfigPath?: string,
+    fileExtension: 'js' | 'ts' = 'js'
 ): Promise<{ output: string[]; exitCode: number }> {
-    const { name, cleanup } = createConfiguration(options, baseConfigPath);
+    const { name, cleanup } = createConfiguration(
+        options,
+        baseConfigPath,
+        fileExtension
+    );
 
     return new Promise((resolve, reject) => {
         const ptyProcess = spawn('node', ['dist', '--config', name], {
