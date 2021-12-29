@@ -59,6 +59,7 @@ Add new script to your `package.json` file.
 Create new configuration file `eslint-remote-tester.config.js` in the root of your project. This is used as configuration file by default. Use `-c` or `--config` argument for custom configuration file, e.g. `--config path/custom.config.js`.
 
 ```js
+/** @type {import('eslint-remote-tester').Config} */
 module.exports = {
     repositories: ['mui-org/material-ui', 'reach/reach-ui'],
     extensions: ['js', 'jsx', 'ts', 'tsx'],
@@ -73,6 +74,23 @@ module.exports = {
         'docs',
     ].join('|')})`,
 };
+```
+
+Configuration file can also be written in TypeScript if [`ts-node`](https://www.npmjs.com/package/ts-node) is installed. Use `--config` argument for TypeScript configuration file, e.g. `--config eslint-remote-tester.config.ts`.
+
+```ts
+import type { Config } from 'eslint-remote-tester';
+
+const config: Config = {
+    repositories: ['mui-org/material-ui', 'reach/reach-ui'],
+    extensions: ['js', 'jsx', 'ts', 'tsx'],
+    eslintrc: {
+        root: true,
+        extends: ['eslint:recommended'],
+    },
+};
+
+export default config;
 ```
 
 #### Configuration options
