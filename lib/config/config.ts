@@ -8,8 +8,18 @@ import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
 import { loadConfig } from './load';
 import { WorkerData } from '@engine/types';
 
-const DEFAULT_CONFIGURATION_FILE = 'eslint-remote-tester.config.js';
+const DEFAULT_CONFIGURATION_FILE_NAME = 'eslint-remote-tester.config';
+const DEFAULT_CONFIGURATION_FILE_JS = `${DEFAULT_CONFIGURATION_FILE_NAME}.js`;
+const DEFAULT_CONFIGURATION_FILE_TS = `${DEFAULT_CONFIGURATION_FILE_NAME}.ts`;
 const CLI_ARGS_CONFIG = ['-c', '--config'];
+
+function determineDefaultConfigFile() {
+    if (fs.existsSync(DEFAULT_CONFIGURATION_FILE_TS)) {
+        return DEFAULT_CONFIGURATION_FILE_TS;
+    }
+
+    return DEFAULT_CONFIGURATION_FILE_JS;
+}
 
 export function resolveConfigurationLocation(): string {
     // Main thread can read config location from args
@@ -28,7 +38,7 @@ export function resolveConfigurationLocation(): string {
     return (
         cliConfigLocation ||
         workerDataConfiguration ||
-        DEFAULT_CONFIGURATION_FILE
+        determineDefaultConfigFile()
     );
 }
 
@@ -37,7 +47,7 @@ const CONFIGURATION_FILE = resolveConfigurationLocation();
 if (!fs.existsSync(CONFIGURATION_FILE)) {
     let defaultCreated = false;
 
-    if (CONFIGURATION_FILE === DEFAULT_CONFIGURATION_FILE) {
+    if (CONFIGURATION_FILE === DEFAULT_CONFIGURATION_FILE_JS) {
         fs.writeFileSync(
             CONFIGURATION_FILE,
             CONFIGURATION_FILE_TEMPLATE,
@@ -50,7 +60,7 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
     if (defaultCreated) {
         console.log(
             chalk.green(
-                `Default configuration file created: ${DEFAULT_CONFIGURATION_FILE}`
+                `Default configuration file created: ${DEFAULT_CONFIGURATION_FILE_JS}`
             )
         );
     }
