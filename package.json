@@ -7,6 +7,7 @@
     "files": [
         "dist"
     ],
+    "types": "dist/types.d.ts",
     "bin": {
         "eslint-remote-tester": "dist/index.js"
     },
