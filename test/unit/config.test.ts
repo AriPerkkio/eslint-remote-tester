@@ -771,3 +771,51 @@ describe('loadTSConfig', () => {
         );
     });
 });
+
+describe('resolveConfigurationLocation', () => {
+    let resolveConfigurationLocation: () => string;
+    const mockExistsSync = jest.fn().mockReturnValue(false);
+    const mockWriteFileSync = jest.fn();
+
+    beforeAll(() => {
+        jest.mock('fs', () => ({
+            existsSync: mockExistsSync,
+            writeFileSync: mockWriteFileSync,
+        }));
+
+        resolveConfigurationLocation =
+            require('../../lib/config').resolveConfigurationLocation;
+    });
+
+    beforeEach(() => {
+        mockExistsSync.mockClear();
+        mockWriteFileSync.mockClear();
+    });
+
+    test('should use value from --config', () => {
+        process.argv.push('--config', 'some-config.js');
+        const location = resolveConfigurationLocation();
+        process.argv.pop();
+        process.argv.pop();
+
+        expect(location).toBe('some-config.js');
+    });
+
+    test('should return default TypeScript config over JavaScript config', () => {
+        mockExistsSync.mockReturnValue(true);
+
+        expect(resolveConfigurationLocation()).toBe(
+            'eslint-remote-tester.config.ts'
+        );
+    });
+
+    test('should return default JavaScript config when TypeScript config does not exist', () => {
+        mockExistsSync.mockImplementation(
+            filename => filename !== 'eslint-remote-tester.config.ts'
+        );
+
+        expect(resolveConfigurationLocation()).toBe(
+            'eslint-remote-tester.config.js'
+        );
+    });
+});
