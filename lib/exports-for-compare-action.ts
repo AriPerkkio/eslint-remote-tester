@@ -1,5 +1,7 @@
 /**
- * Undocumented private API for Github CI action eslint-remote-tester-compare-action
+ * Undocumented private API for Github CI actions:
+ * - `eslint-remote-tester-compare-action`
+ * - `eslint-remote-tester-run-action`
  */
 export {
     RESULT_PARSER_TO_COMPARE_TEMPLATE,
@@ -13,4 +15,5 @@ export {
 } from '@file-client/file-constants';
 
 export { default as validateConfig } from '@config/validator';
+export { loadConfig } from '@config/load';
 export { Config, ConfigToValidate } from '@config/types';
