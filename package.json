@@ -1,6 +1,6 @@
 {
     "name": "eslint-remote-tester",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "description": "Tool for running ESLint on multiple repositories",
     "main": "dist/index.js",
