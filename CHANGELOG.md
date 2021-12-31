@@ -1,3 +1,9 @@
+## [2.1.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.0...v2.1.1) (2021-12-31)
+
+### Bug Fixes
+
+-   include `loadConfig` in private actions API ([#324](https://github.com/AriPerkkio/eslint-remote-tester/issues/324)) ([ecb4633](https://github.com/AriPerkkio/eslint-remote-tester/commit/ecb46335cbe444e792e06f844e3a1ae66adeb4bd))
+
 # [2.1.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.0.1...v2.1.0) (2021-12-31)
 
 ### Bug Fixes
