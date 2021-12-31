@@ -47,15 +47,22 @@ test('exports validateConfig', async () => {
     console.log = consolelog;
 });
 
+test('exports loadConfig', async () => {
+    expect(actionExports.loadConfig).toBeInstanceOf(Function);
+});
+
 test('exports typings', () => {
     expect(fs.readFileSync('dist/exports-for-compare-action.d.ts', 'utf8'))
         .toMatchInlineSnapshot(`
         "/**
-         * Undocumented private API for Github CI action eslint-remote-tester-compare-action
+         * Undocumented private API for Github CI actions:
+         * - \`eslint-remote-tester-compare-action\`
+         * - \`eslint-remote-tester-run-action\`
          */
         export { RESULT_PARSER_TO_COMPARE_TEMPLATE, Result, ComparisonResults, } from './file-client/result-templates';
         export { RESULT_COMPARISON_CACHE, RESULTS_COMPARISON_CACHE_LOCATION, } from './file-client/file-constants';
         export { default as validateConfig } from './config/validator';
+        export { loadConfig } from './config/load';
         export { Config, ConfigToValidate } from './config/types';
         //# sourceMappingURL=exports-for-compare-action.d.ts.map"
     `);
