@@ -1,3 +1,16 @@
+# [2.1.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.0.1...v2.1.0) (2021-12-31)
+
+### Bug Fixes
+
+-   minor typo and grammar adjustments ([#319](https://github.com/AriPerkkio/eslint-remote-tester/issues/319)) ([ac263a7](https://github.com/AriPerkkio/eslint-remote-tester/commit/ac263a7bf1b757d2408e1a7787079e4af4ae57a8))
+-   **repositories:** prevent exiting script too early ([aaeba18](https://github.com/AriPerkkio/eslint-remote-tester/commit/aaeba180f657d2e5a8b0effaaed19bf1201ff7b5))
+
+### Features
+
+-   export configuration types ([#321](https://github.com/AriPerkkio/eslint-remote-tester/issues/321)) ([3d8bee0](https://github.com/AriPerkkio/eslint-remote-tester/commit/3d8bee0a2ceab2f7c37f0245293897c0a83d1831))
+-   load typescript config by default if present ([126033c](https://github.com/AriPerkkio/eslint-remote-tester/commit/126033c72733991bf4c9e8e93fd19a69e15f1acc))
+-   support typescript configs using `ts-node` ([#320](https://github.com/AriPerkkio/eslint-remote-tester/issues/320)) ([b5f1252](https://github.com/AriPerkkio/eslint-remote-tester/commit/b5f1252965f6ac182092c1fc8c8dac01a4258aa5))
+
 ## [2.0.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.0.0...v2.0.1) (2021-10-31)
 
 ### Bug Fixes
@@ -104,7 +117,7 @@
 
 -   **config:** adds compare option ([acb97c5](https://github.com/AriPerkkio/eslint-remote-tester/commit/acb97c5a2160511db2d0d0b7c16bdaab90041a3a))
 -   **config:** adds updateComparisonReference option ([d544578](https://github.com/AriPerkkio/eslint-remote-tester/commit/d544578a5b90811bac491ab72be00ac33f943085))
--   **file-client:** initialize comparison results directory ([19f6136](https://github.com/AriPerkkio/eslint-remote-tester/commit/19f61369d874ab1efbb0db0cc7b6598e30a3944c))
+-   **file-client:** initialize compaison results directory ([19f6136](https://github.com/AriPerkkio/eslint-remote-tester/commit/19f61369d874ab1efbb0db0cc7b6598e30a3944c))
 -   **result-comparator:** generate comparison results ([d8af9c8](https://github.com/AriPerkkio/eslint-remote-tester/commit/d8af9c88e6756fad78ab55896f9275bc002316cf))
 -   **result-comparator:** include comparison results in config.onComplete ([378a2b3](https://github.com/AriPerkkio/eslint-remote-tester/commit/378a2b306eab94352b29e17cc83a7a30ab129d89))
 -   **result-comparator:** render comparison results on ui ([e36d4c9](https://github.com/AriPerkkio/eslint-remote-tester/commit/e36d4c90711e8613788d8285db5fdc97ec57da2b))
