@@ -7,10 +7,11 @@
     "private": true,
     "scripts": {
         "lint": "eslint-remote-tester",
-        "log": "node ./log-config.js"
+        "log": "ts-node ./log-config.ts"
     },
     "devDependencies": {
         "@next/eslint-plugin-next": "latest",
+        "@types/node": "^16",
         "@typescript-eslint/eslint-plugin": "latest",
         "@typescript-eslint/parser": "latest",
         "eslint": "latest",
@@ -33,6 +34,7 @@
         "eslint-remote-tester": "../",
         "eslint-remote-tester-repositories": "../repositories",
         "react": "16.13.1",
+        "ts-node": "latest",
         "typescript": "^4"
     }
 }

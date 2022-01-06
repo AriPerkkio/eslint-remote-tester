@@ -1,14 +1,13 @@
-const {
-    getRepositories,
-    getPathIgnorePattern,
-} = require('eslint-remote-tester-repositories');
-
 module.exports = {
-    repositories: getRepositories().slice(0, 15),
+    repositories: [
+        'AriPerkkio/eslint-remote-tester-integration-test-target',
+        'AriPerkkio/aria-live-capture',
+        'AriPerkkio/extend-to-be-announced',
+        'AriPerkkio/state-mgmt-examples',
+        'AriPerkkio/suspense-examples',
+    ],
 
     extensions: ['js', 'jsx', 'ts', 'tsx'],
-
-    pathIgnorePattern: getPathIgnorePattern(),
 
     maxFileSizeBytes: undefined,
 

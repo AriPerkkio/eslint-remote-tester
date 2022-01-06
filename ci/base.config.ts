@@ -1,15 +1,15 @@
-const {
+import type { Config } from 'eslint-remote-tester';
+import {
     getRepositories,
     getPathIgnorePattern,
-} = require('eslint-remote-tester-repositories');
+} from 'eslint-remote-tester-repositories';
 
-module.exports = {
-    repositories: process.env.CI
-        ? getRepositories({ randomize: process.env.CI })
-        : [getRepositories()[0]],
+const config: Config = {
+    repositories: process.env.PLUGIN_TEST
+        ? [getRepositories()[0]]
+        : getRepositories({ randomize: true }),
     extensions: ['js', 'jsx', 'ts', 'tsx'],
     pathIgnorePattern: getPathIgnorePattern(),
-    rulesUnderTesting: [],
     resultParser: 'markdown',
     concurrentTasks: 3,
     logLevel: process.env.CI ? 'info' : 'verbose',
@@ -40,3 +40,5 @@ module.exports = {
         },
     },
 };
+
+export default config;

@@ -3,6 +3,7 @@
     "compilerOptions": {
         "outDir": "dist",
         "moduleResolution": "node",
+        "resolveJsonModule": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "useUnknownInCatchVariables": false,

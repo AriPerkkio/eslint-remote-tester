@@ -2326,10 +2326,8 @@ eslint-plugin-react@^7.26.1:
     semver "^6.3.0"
     string.prototype.matchall "^4.0.5"
 
-eslint-remote-tester-repositories@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/eslint-remote-tester-repositories/-/eslint-remote-tester-repositories-0.0.2.tgz#be5910c81e2b4e63140180c09cd1d15863627a3a"
-  integrity sha512-lKvRwJBlW4q7dBT3FFFzUAEn+UY8Ac4oz/2sWEoS5R1he/EI4oTJPUtqWOE6p8nrJWh8GCDcZcOilYPxTWVFbQ==
+eslint-remote-tester-repositories@./repositories:
+  version "0.0.3"
 
 eslint-scope@^5.1.1:
   version "5.1.1"

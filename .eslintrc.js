@@ -56,9 +56,10 @@ module.exports = {
             },
         },
         {
-            files: ['ci/*', 'repositories/*'],
+            files: ['ci/**', 'repositories/**'],
             rules: {
                 'node/no-unpublished-require': 'off',
+                'node/no-unpublished-import': 'off',
             },
         },
         {
