@@ -56,40 +56,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: ./.github/actions/smoke-test
               with:
-                  node-version: 14
-            - name: Get yarn cache directory path
-              id: yarn-cache-dir-path
-              run: echo "::set-output name=dir::$(yarn cache dir)"
-            - uses: actions/cache@v2
-              with:
-                  path: $\{{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: $\{{ runner.os }}-yarn-$\{{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      $\{{ runner.os }}-yarn-
-            - name: Install & build eslint-remote-tester
-              run: |
-                  yarn install
-                  yarn build
-            - name: Install & build eslint-remote-tester-repositories
-              run: |
-                  yarn install
-                  yarn build
-                  rm -rf ./node_modules
-              working-directory: ./repositories
-            - name: Cleanup
-              run: rm -rf ./node_modules
-            - run: |
-                  yarn install
-                  yarn list | grep eslint
-                  yarn log --config ./plugin-configs/${plugin}.config.ts
-              working-directory: ./ci
-            - uses: AriPerkkio/eslint-remote-tester-run-action@v3
-              with:
-                  working-directory: ./ci
-                  issue-title: 'Weekly scheduled smoke test: ${plugin}'
-                  eslint-remote-tester-config: plugin-configs/${plugin}.config.ts
+                  config: ${plugin}
 `;
 
 function generateHours(index: number) {
