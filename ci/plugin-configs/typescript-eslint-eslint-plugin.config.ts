@@ -1,10 +1,12 @@
-const fs = require('fs');
-const { resolve } = require('path');
-const { execSync } = require('child_process');
+import fs from 'fs';
+import { resolve } from 'path';
+import { execSync } from 'child_process';
+import { Linter } from 'eslint';
+import type { Config } from 'eslint-remote-tester';
 
-const baseConfig = require('../base.config');
+import baseConfig from '../base.config';
 
-module.exports = {
+const config: Config = {
     ...baseConfig,
     concurrentTasks: 1,
     eslintrc: function initializeLinter(options) {
@@ -48,7 +50,7 @@ module.exports = {
 
 const TS_CONFIG_PATTERN = /tsconfig\.json/;
 
-function findTsConfig(options) {
+function findTsConfig(options: { repository: string; location: string }) {
     if (!fs.existsSync(options.location)) return null;
 
     const tsconfig = fs
@@ -60,13 +62,13 @@ function findTsConfig(options) {
     }
 }
 
-const baseEslintrc = {
+const baseEslintrc: Linter.Config = {
     ...baseConfig.eslintrc,
     plugins: ['@typescript-eslint'],
     extends: ['plugin:@typescript-eslint/all'],
 };
 
-const rulesWithoutTypeAware = {
+const rulesWithoutTypeAware: Linter.Config['rules'] = {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
@@ -108,3 +110,5 @@ const rulesWithoutTypeAware = {
     '@typescript-eslint/no-meaningless-void-operator': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
 };
+
+export default config;

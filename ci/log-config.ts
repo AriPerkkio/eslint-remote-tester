@@ -1,3 +1,5 @@
+import type { Config } from 'eslint-remote-tester';
+
 const args = process.argv;
 const indexOfConfig = args.indexOf('--config');
 
@@ -6,7 +8,7 @@ if (indexOfConfig === -1) {
 }
 
 const path = args[indexOfConfig + 1];
-const rawConfig = require(path);
+const rawConfig: Config = require(path);
 
 const repositories = rawConfig.repositories.length;
 const pathIgnorePattern = rawConfig.pathIgnorePattern.split('|');
@@ -18,7 +20,7 @@ ${stringify(config)}
 `);
 
 // https://gist.github.com/cowboy/3749767
-function stringify(obj) {
+function stringify(obj: unknown) {
     const placeholder = '____PLACEHOLDER____';
     const fns = [];
     let json = JSON.stringify(

@@ -1,6 +1,7 @@
-const baseConfig = require('../base.config');
+import type { Config } from 'eslint-remote-tester';
+import baseConfig from '../base.config';
 
-module.exports = {
+const config: Config = {
     ...baseConfig,
     extensions: ['js', 'jsx'],
     eslintrc: {
@@ -9,3 +10,5 @@ module.exports = {
         extends: ['eslint:all'],
     },
 };
+
+export default config;
