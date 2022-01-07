@@ -63,7 +63,7 @@ module.exports = {
             },
         },
         {
-            files: ['*config*', 'test/**/*.ts*', '*.js'],
+            files: ['*config*', 'ci/**', 'test/**/*.ts*', '*.js'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',
             },

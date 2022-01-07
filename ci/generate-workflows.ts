@@ -11,14 +11,13 @@
  * If you need to regenerate the output quickly, without rerunning the tests, set the SKIP_TESTS env variable
  */
 
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import { execSync } from 'child_process';
-
-import packageJson from './package.json';
 
 type EslingPlugin = string & { readonly _: unique symbol };
 
+const packageJson = require(path.resolve(__dirname, './package.json'));
 const devDependencies: Record<EslingPlugin, unknown> =
     packageJson.devDependencies;
 
