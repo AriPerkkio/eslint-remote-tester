@@ -8,7 +8,7 @@ if (indexOfConfig === -1) {
 }
 
 const path = args[indexOfConfig + 1];
-const rawConfig: Config = require(path);
+const rawConfig: Config = require(path).default;
 
 const repositories = rawConfig.repositories.length;
 const pathIgnorePattern = rawConfig.pathIgnorePattern.split('|');

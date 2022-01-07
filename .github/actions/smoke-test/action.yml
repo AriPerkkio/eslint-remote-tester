@@ -1,0 +1,50 @@
+name: 'Smoke test'
+description: 'Base setup for each smoke test action'
+author: 'AriPerkkio'
+inputs:
+    config:
+        required: true
+        description: 'Name of the plugin configuration'
+runs:
+    using: 'composite'
+    steps:
+        - uses: ./.github/actions/setup-and-cache
+
+        - name: Install & build eslint-remote-tester
+          run: |
+              yarn install
+              yarn build
+          shell: bash
+
+        - name: Install & build eslint-remote-tester-repositories
+          run: |
+              yarn install
+              yarn build
+              rm -rf ./node_modules
+          shell: bash
+          working-directory: ./repositories
+
+        - name: Cleanup
+          run: rm -rf ./node_modules
+          shell: bash
+
+        - name: Install ci-runner dependencies
+          run: yarn install
+          shell: bash
+          working-directory: ./ci
+
+        - name: Log ESLint packages
+          run: yarn list | grep eslint
+          shell: bash
+          working-directory: ./ci
+
+        - name: Log plugin configuration
+          run: yarn log --config ./plugin-configs/${{ inputs.config }}.config.ts
+          shell: bash
+          working-directory: ./ci
+
+        - uses: AriPerkkio/eslint-remote-tester-run-action@v3
+          with:
+              working-directory: ./ci
+              issue-title: 'Weekly scheduled smoke test: ${{ inputs.config }}'
+              eslint-remote-tester-config: plugin-configs/${{ inputs.config }}.config.ts
