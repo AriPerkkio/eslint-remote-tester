@@ -43,7 +43,10 @@ const config: Config = {
 
         return {
             ...baseEslintrc,
-            rules: rulesWithoutTypeAware,
+            rules: {
+                ...baseEslintrc.rules,
+                ...rulesWithoutTypeAware,
+            },
         };
     },
 };
@@ -66,6 +69,10 @@ const baseEslintrc: Linter.Config = {
     ...baseConfig.eslintrc,
     plugins: ['@typescript-eslint'],
     extends: ['plugin:@typescript-eslint/all'],
+    rules: {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/4444
+        '@typescript-eslint/no-invalid-this': 'off',
+    },
 };
 
 const rulesWithoutTypeAware: Linter.Config['rules'] = {
