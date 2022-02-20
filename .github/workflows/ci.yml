@@ -13,16 +13,19 @@ jobs:
             - uses: actions/checkout@v2
             - uses: ./.github/actions/setup-and-cache
 
-            - run: |
+            - name: Install & build eslint-remote-tester
+              run: |
                   yarn install
                   yarn build
-              name: Install & build eslint-remote-tester
-            - run: |
+
+            - name: Install eslint-remote-tester-repositories dependencies
+              run: |
                   yarn install
                   yarn build
-              name: Install eslint-remote-tester-repositories dependencies
               working-directory: ./repositories
-            - run: yarn lint
+
+            - name: Lint
+              run: yarn lint
 
     unit-test:
         runs-on: ubuntu-latest
@@ -34,10 +37,14 @@ jobs:
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
-            - run: |
+
+            - name: Install & build eslint-remote-tester
+              run: |
                   yarn install
                   yarn build
-            - run: yarn test
+
+            - name: Run tests
+              run: yarn test
 
     integration-test:
         runs-on: ubuntu-latest
@@ -49,10 +56,14 @@ jobs:
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
-            - run: |
+
+            - name: Install & build eslint-remote-tester
+              run: |
                   yarn install
                   yarn build
-            - run: yarn test:integration
+
+            - name: Run integration tests
+              run: yarn test:integration
 
     smoke-test:
         runs-on: ubuntu-latest
@@ -64,10 +75,14 @@ jobs:
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
-            - run: |
+
+            - name: Install & build eslint-remote-tester
+              run: |
                   yarn install
                   yarn build
-            - run: yarn test:smoke
+
+            - name: Run smoke tests
+              run: yarn test:smoke
 
     repositories-test:
         runs-on: ubuntu-latest
@@ -79,12 +94,16 @@ jobs:
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
-            - run: yarn install
-              name: Install eslint-remote-tester
-            - run: yarn install
-              name: Install eslint-remote-tester-repositories
+
+            - name: Install & build eslint-remote-tester
+              run: yarn install
+
+            - name: Install eslint-remote-tester-repositories
+              run: yarn install
               working-directory: ./repositories
-            - run: yarn test
+
+            - name: Run repositories tests
+              run: yarn test
               working-directory: ./repositories
 
     ci-runner-test:
@@ -93,20 +112,25 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: ./.github/actions/setup-and-cache
+
             - name: Install & build eslint-remote-tester
               run: |
                   yarn install
                   yarn build
+
             - name: Install & build eslint-remote-tester-repositories
               run: |
                   yarn install
                   yarn build
                   rm -rf ./node_modules
               working-directory: ./repositories
+
             - name: Cleanup
               run: rm -rf ./node_modules
+
             - name: Install ci-runner
               run: yarn install
               working-directory: ./ci
+
             - name: Test ci-runner
               run: yarn generate:workflows
