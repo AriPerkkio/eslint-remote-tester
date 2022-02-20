@@ -6,6 +6,7 @@
     "license": "MIT",
     "private": true,
     "scripts": {
+        "generate": "ts-node ./generate-workflows.ts",
         "lint": "eslint-remote-tester",
         "log": "ts-node ./log-config.ts"
     },

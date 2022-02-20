@@ -133,4 +133,5 @@ jobs:
               working-directory: ./ci
 
             - name: Test ci-runner
-              run: yarn generate:workflows
+              run: yarn generate
+              working-directory: ./ci
