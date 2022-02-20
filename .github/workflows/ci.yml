@@ -103,6 +103,8 @@ jobs:
                   yarn build
                   rm -rf ./node_modules
               working-directory: ./repositories
+            - name: Cleanup
+              run: rm -rf ./node_modules
             - name: Install ci-runner
               run: yarn install
               working-directory: ./ci
