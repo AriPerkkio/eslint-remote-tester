@@ -1,21 +1,47 @@
 name: Publish eslint-remote-tester
 
-on: [workflow_dispatch]
+on:
+    workflow_dispatch:
+        inputs:
+            release-type:
+                type: choice
+                description: Type of the release
+                options:
+                    - patch
+                    - minor
+                    - major
 
 jobs:
     publish:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v1
               with:
-                  node-version: 14
-            - run: yarn install
-            - run: yarn build
+                  node-version: '16'
+                  registry-url: 'https://registry.npmjs.org'
+
+            - name: Install
+              run: yarn install
+
+            - name: Build
+              run: yarn build
 
             # Fixes the "npm ERR! 404 Not Found - PUT https://registry.npmjs.org/eslint-remote-tester - Not found" issue
             - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-            - run: npm publish
+            - name: Configure github-actions git
+              run: |
+                  git config --global user.name 'github-actions'
+                  git config --global user.email 'github-actions@users.noreply.github.com'
+
+            - name: Bump version
+              run: npm version ${{ github.event.inputs.release-type }}
+
+            - name: Push release tag
+              run: git push origin master --follow-tags
+
+            - name: Publish to npm
+              run: npm publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
