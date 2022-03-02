@@ -116,6 +116,7 @@ const rulesWithoutTypeAware: Linter.Config['rules'] = {
     '@typescript-eslint/prefer-return-this-type': 'off',
     '@typescript-eslint/no-meaningless-void-operator': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
+    '@typescript-eslint/no-redundant-type-constituents': 'off',
 };
 
 export default config;
