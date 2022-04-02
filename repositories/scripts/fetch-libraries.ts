@@ -86,8 +86,9 @@ const retryFetch = async (url: string) => {
  * minimize requests. API_KEY is filtered out of cached requests.
  */
 const cachedFetch = async (url: string): Promise<DependentRepository[]> => {
-    const cache =
-        getCache<{ [key: string]: DependentRepository[] }>(QUERY_CACHE);
+    const cache = getCache<{ [key: string]: DependentRepository[] }>(
+        QUERY_CACHE
+    );
     const cacheUrl = url.replace(API_KEY, '<API_KEY>');
 
     if (cache[cacheUrl]) {
