@@ -16,7 +16,7 @@
     "homepage": "https://github.com/AriPerkkio/eslint-remote-tester/tree/master/repositories",
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "scripts": {
-        "prebuild": "rimraf dist",
+        "prebuild": "rm -rf ./dist",
         "build": "tsc --project tsconfig.prod.json",
         "postbuild": "tsc-alias -p tsconfig.prod.json",
         "generate": "ts-node ./scripts/fetch-libraries.ts",

@@ -16,7 +16,7 @@
     },
     "license": "MIT",
     "scripts": {
-        "prebuild": "rimraf dist",
+        "prebuild": "rm -rf ./dist",
         "build": "tsc --project tsconfig.prod.json",
         "postbuild": "tsc-alias -p tsconfig.prod.json",
         "generate:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
@@ -72,7 +72,6 @@
         "lint-staged": "^11.1.2",
         "node-pty": "^0.10.1",
         "prettier": "^2.6.1",
-        "rimraf": "^3.0.2",
         "strip-ansi": "^6.0.0",
         "ts-jest": "^27.1.2",
         "ts-node": "^10.4.0",
