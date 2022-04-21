@@ -1,3 +1,13 @@
+## [2.1.4](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.3...v2.1.4) (2022-04-21)
+
+### Bug Fixes
+
+-   **deps:** use `react@17` ([#359](https://github.com/AriPerkkio/eslint-remote-tester/issues/359)) ([d937271](https://github.com/AriPerkkio/eslint-remote-tester/commit/d93727118651482aeaac44e4fbcedc8747336490))
+
+## [2.1.3](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.2...v2.1.3) (2022-04-20)
+
+## [2.1.2](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.1...v2.1.2) (2022-04-20)
+
 ## [2.1.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.0...v2.1.1) (2021-12-31)
 
 ### Bug Fixes
