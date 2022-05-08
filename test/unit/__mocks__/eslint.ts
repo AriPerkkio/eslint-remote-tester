@@ -19,6 +19,7 @@ export class ESLint {
                 fixableWarningCount: 0,
                 fatalErrorCount: 0,
                 usedDeprecatedRules: [],
+                suppressedMessages: [],
                 source: '/'.repeat(2000),
                 messages: [
                     {
