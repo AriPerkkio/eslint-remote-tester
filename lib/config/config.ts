@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import { workerData, isMainThread } from 'worker_threads';
 
 import { getConfigWithDefaults } from './validator';
-import { CONFIGURATION_FILE_TEMPLATE } from './config-templates';
 import { loadConfig } from './load';
 import { WorkerData } from '@engine/types';
 
@@ -45,25 +44,7 @@ export function resolveConfigurationLocation(): string {
 const CONFIGURATION_FILE = resolveConfigurationLocation();
 
 if (!fs.existsSync(CONFIGURATION_FILE)) {
-    let defaultCreated = false;
-
-    if (CONFIGURATION_FILE === DEFAULT_CONFIGURATION_FILE_JS) {
-        fs.writeFileSync(
-            CONFIGURATION_FILE,
-            CONFIGURATION_FILE_TEMPLATE,
-            'utf8'
-        );
-        defaultCreated = true;
-    }
-
     console.log(chalk.red(`Missing configuration file ${CONFIGURATION_FILE}.`));
-    if (defaultCreated) {
-        console.log(
-            chalk.green(
-                `Default configuration file created: ${DEFAULT_CONFIGURATION_FILE_JS}`
-            )
-        );
-    }
     process.exit();
 }
 
