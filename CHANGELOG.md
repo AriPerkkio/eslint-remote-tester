@@ -1,3 +1,21 @@
+# [3.0.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.4...v3.0.0) (2022-06-12)
+
+-   feat!: never create configuration files ([a26563b](https://github.com/AriPerkkio/eslint-remote-tester/commit/a26563ba29efb65f6bc9545e551102f03a155f4e))
+-   feat!: resolve slow lint time from configuration ([5b33d89](https://github.com/AriPerkkio/eslint-remote-tester/commit/5b33d89613ef23ae3db4e0923e0096f686de9ae7))
+
+### Features
+
+-   **config:** adds slowLintTimeLimit option ([67f759c](https://github.com/AriPerkkio/eslint-remote-tester/commit/67f759cadfb529f1f658d8792d99f352dc6c39c5))
+
+### BREAKING CHANGES
+
+-   Previously a default configuration file was created
+    when given configuration file was not found. Removed configuration file
+    creation completely. It was completely useless.
+-   Previously a warning was logged if linting took more
+    than 5s. Now by default no such warnings are logged. Timelimit for such
+    logs can be configured via `config.slowLintTimeLimit`
+
 ## [2.1.4](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.3...v2.1.4) (2022-04-21)
 
 ### Bug Fixes
