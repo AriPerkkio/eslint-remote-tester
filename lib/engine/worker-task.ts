@@ -39,7 +39,6 @@ const UNKNOWN_RULE_ID = 'unable-to-parse-rule-id';
 // https://github.com/eslint/eslint/blob/ed1da5d96af2587b7211854e45cf8657ef808710/lib/linter/linter.js#L1194
 const LINE_REGEX = /Occurred while linting \S*:([0-9]+)?/;
 
-const MAX_LINT_TIME_SECONDS = 5;
 const MAX_ROW_LENGTH = 1000;
 
 /**
@@ -238,18 +237,21 @@ export default async function workerTask(): Promise<void> {
         let result: ESLint.LintResult[];
 
         try {
-            result = await executionTimeWarningWrapper(
-                () => linter.lintFiles(path),
+            const lintFile = () => linter.lintFiles(path);
 
-                // Warn about files taking more than 5s to lint
-                // Useful to identify minified files committed to remote
-                lintTime =>
-                    postMessage({
-                        type: 'FILE_LINT_SLOW',
-                        payload: { path, lintTime },
-                    }),
-                MAX_LINT_TIME_SECONDS
-            );
+            if (config.slowLintTimeLimit) {
+                result = await executionTimeWarningWrapper(
+                    lintFile,
+                    lintTime =>
+                        postMessage({
+                            type: 'FILE_LINT_SLOW',
+                            payload: { path, lintTime },
+                        }),
+                    config.slowLintTimeLimit
+                );
+            } else {
+                result = await lintFile();
+            }
         } catch (error) {
             // Catch crashing linter
             const crashMessage = parseErrorStack(error, file);

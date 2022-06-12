@@ -2,6 +2,7 @@ import { ESLint } from 'eslint';
 
 import workerTask, { WorkerMessage } from '@engine/worker-task';
 import { parentPort } from '__mocks__/worker_threads';
+import { mockConfigValue } from '__mocks__/@config';
 
 jest.mock('worker_threads', () => require('./__mocks__/worker_threads'));
 
@@ -21,6 +22,11 @@ function getPostMessageCalls<Type extends WorkerMessage['type']>(
 
 beforeEach(() => {
     parentPort.postMessage.mockClear();
+});
+
+afterEach(() => {
+    // @ts-expect-error -- Mock's API
+    ESLint.delay = null;
 });
 
 test('should limit length of results to 1000 characters', async () => {
@@ -44,4 +50,39 @@ test('should limit length of results to 1000 characters', async () => {
 
     // Last three characters should be '...'
     expect(source!.slice(-3)).toBe('...');
+});
+
+test('should warn if lint takes longer than config.slowLintTime', async () => {
+    // @ts-expect-error -- Mock's API
+    ESLint.delay = 3;
+    mockConfigValue({ slowLintTimeLimit: 1 });
+
+    await workerTask();
+
+    const resultMessages = getPostMessageCalls('FILE_LINT_SLOW');
+
+    expect(resultMessages).toHaveLength(1);
+    expect(resultMessages[0].payload.path).toBe('./mock/path/file.ts');
+});
+
+test('should not warn if lint takes less than config.slowLintTime', async () => {
+    // @ts-expect-error -- Mock's API
+    ESLint.delay = 1;
+    mockConfigValue({ slowLintTimeLimit: 3 });
+
+    await workerTask();
+
+    const resultMessages = getPostMessageCalls('FILE_LINT_SLOW');
+    expect(resultMessages).toHaveLength(0);
+});
+
+test('should not warn if config.slowLintTime is not set', async () => {
+    // @ts-expect-error -- Mock's API
+    ESLint.delay = 3;
+    mockConfigValue({ slowLintTimeLimit: undefined });
+
+    await workerTask();
+
+    const resultMessages = getPostMessageCalls('FILE_LINT_SLOW');
+    expect(resultMessages).toHaveLength(0);
 });
