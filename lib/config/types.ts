@@ -59,6 +59,12 @@ export interface Config {
     logLevel: LogLevel;
 
     /**
+     * Time limit before linting of a single file is considered as slow, and
+     * logged as warning. Disabled by default.
+     */
+    slowLintTimeLimit: number | null;
+
+    /**
      * Flag used to enable caching of cloned repositories.
      * For CIs it's ideal to disable caching due to limited disk space.
      */

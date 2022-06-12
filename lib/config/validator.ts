@@ -103,6 +103,7 @@ export default async function validate(
         eslintrc,
         CI,
         logLevel,
+        slowLintTimeLimit,
         cache,
         timeLimit,
         compare,
@@ -208,6 +209,15 @@ export default async function validate(
 
     errors.push(validateOptionalPositiveNumber('timeLimit', timeLimit));
 
+    if (slowLintTimeLimit) {
+        errors.push(
+            validateOptionalPositiveNumber(
+                'slowLintTimeLimit',
+                slowLintTimeLimit
+            )
+        );
+    }
+
     errors.push(validateOptionalBoolean('compare', compare));
     errors.push(
         validateOptionalBoolean(
@@ -271,6 +281,8 @@ export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
         concurrentTasks: config.concurrentTasks || DEFAULT_CONCURRENT_TASKS,
 
         timeLimit: config.timeLimit || DEFAULT_TIME_LIMIT_SECONDS,
+
+        slowLintTimeLimit: config.slowLintTimeLimit || null,
 
         compare: config.compare != null ? config.compare : DEFAULT_COMPARE,
 
