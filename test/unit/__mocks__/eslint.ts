@@ -4,12 +4,19 @@ type LintResult = actual.ESLint.LintResult;
 
 export class ESLint {
     static mockConstructor = jest.fn();
+    static delay: number | null = null;
 
     constructor(config: unknown) {
         ESLint.mockConstructor(config);
     }
 
     async lintFiles(filePath: string): Promise<LintResult[]> {
+        if (ESLint.delay) {
+            const delay = ESLint.delay * 1000;
+
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+
         return [
             {
                 filePath,
