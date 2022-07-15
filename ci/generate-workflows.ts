@@ -15,27 +15,27 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 
-type EslingPlugin = string & { readonly _: unique symbol };
+type EslintPlugin = string & { readonly _: unique symbol };
 
 const packageJson = require(path.resolve(__dirname, './package.json'));
-const devDependencies: Record<EslingPlugin, unknown> =
+const devDependencies: Record<EslintPlugin, unknown> =
     packageJson.devDependencies;
 
-const CONFIG_PATH = (plugin: EslingPlugin) =>
+const CONFIG_PATH = (plugin: EslintPlugin) =>
     path.resolve(`${__dirname}/plugin-configs/${plugin}.config.ts`);
 const WORKFLOW_DIR = path.resolve(`${__dirname}/../.github/workflows`);
 const WORKFLOW_PREFIX = 'lint-';
-const WORKFLOW_PATH = (plugin: EslingPlugin) =>
+const WORKFLOW_PATH = (plugin: EslintPlugin) =>
     `${WORKFLOW_DIR}/${WORKFLOW_PREFIX}${plugin}.yml`;
-const WORKFLOW_LINK = (plugin: EslingPlugin) =>
-    `https://github.com/AriPerkkio/eslint-remote-tester/actions?query=workflow%3A${plugin}`;
-const WORKFLOW_BADGE = (plugin: EslingPlugin) =>
+const WORKFLOW_LINK = (plugin: EslintPlugin) =>
+    `https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/${WORKFLOW_PREFIX}${plugin}.yml`;
+const WORKFLOW_BADGE = (plugin: EslintPlugin) =>
     `[![${plugin}](https://github.com/AriPerkkio/eslint-remote-tester/workflows/${plugin}/badge.svg)](${WORKFLOW_LINK(
         plugin
     )})`;
 
 // prettier-ignore
-const WORKFLOW_TEMPLATE = ({ plugin, index }: { plugin: EslingPlugin, index: number }) =>
+const WORKFLOW_TEMPLATE = ({ plugin, index }: { plugin: EslintPlugin, index: number }) =>
 `# This file is auto-generated. See ci/generate-workflows.ts
 name: ${plugin}
 
@@ -70,7 +70,7 @@ function generateHours(index: number) {
     return `${index > 9 ? '' : '0'}${index}`;
 }
 
-function formatPluginName(plugin: EslingPlugin): EslingPlugin {
+function formatPluginName(plugin: EslintPlugin): EslintPlugin {
     return (
         plugin
             // Next-js plugin to "eslint-plugin-next"
@@ -78,11 +78,11 @@ function formatPluginName(plugin: EslingPlugin): EslingPlugin {
 
             // Generic handling for other scoped plugins, e.g. typescript-eslint
             .replace(/\//g, '-')
-            .replace(/@/g, '') as EslingPlugin
+            .replace(/@/g, '') as EslintPlugin
     );
 }
 
-function validateConfigsExist(plugins: EslingPlugin[]) {
+function validateConfigsExist(plugins: EslintPlugin[]) {
     const missingConfigs = plugins.filter(
         plugin => !fs.existsSync(CONFIG_PATH(plugin))
     );
@@ -108,7 +108,7 @@ function cleanPreviousWorkflow() {
     });
 }
 
-function generateWorkflows(plugins: EslingPlugin[]) {
+function generateWorkflows(plugins: EslintPlugin[]) {
     plugins.forEach((plugin, index) => {
         const path = WORKFLOW_PATH(plugin);
         fs.writeFileSync(path, WORKFLOW_TEMPLATE({ plugin, index }), 'utf8');
@@ -117,13 +117,13 @@ function generateWorkflows(plugins: EslingPlugin[]) {
     });
 }
 
-function printBadgeMarkdown(plugins: EslingPlugin[]) {
+function printBadgeMarkdown(plugins: EslintPlugin[]) {
     const markdown = plugins.map(WORKFLOW_BADGE);
 
     console.log(`\nMarkdown: \n${markdown.join('\n')}`);
 }
 
-function testPlugins(plugins: EslingPlugin[]) {
+function testPlugins(plugins: EslintPlugin[]) {
     plugins.forEach(plugin => {
         const cmd = `yarn lint --config ./plugin-configs/${plugin}.config.ts`;
         console.log(`> ${cmd}`);
@@ -145,8 +145,8 @@ const plugins = dependencies
     .sort();
 
 // ESLint core rules, eslint:all
-plugins.push('eslint-core' as EslingPlugin);
-plugins.push('eslint-core-ts' as EslingPlugin);
+plugins.push('eslint-core' as EslintPlugin);
+plugins.push('eslint-core-ts' as EslintPlugin);
 
 if (!process.env.SKIP_TESTS) validateConfigsExist(plugins);
 if (!process.env.SKIP_TESTS) testPlugins(plugins);
