@@ -27,8 +27,7 @@
         "test": "jest --config test/unit/jest.config.unit.js",
         "test:integration": "jest --config test/integration/jest.config.integration.js --runInBand",
         "test:smoke": "jest --config test/smoke/jest.config.smoke.js --runInBand",
-        "validate": "yarn build && yarn lint && yarn test && yarn test:integration",
-        "prepare": "husky install"
+        "validate": "yarn build && yarn lint && yarn test && yarn test:integration"
     },
     "repository": {
         "type": "git",
@@ -46,8 +45,6 @@
         "simple-git": "^3.7.0"
     },
     "devDependencies": {
-        "@commitlint/cli": "^13.1.0",
-        "@commitlint/config-conventional": "^13.1.0",
         "@tsconfig/node12": "^1.0.9",
         "@types/babel__code-frame": "^7.0.3",
         "@types/eslint": "^8.4.2",
@@ -66,10 +63,8 @@
         "eslint-plugin-react": "^7.29.4",
         "eslint-plugin-react-hooks": "^4.5.0",
         "eslint-remote-tester-repositories": "./repositories",
-        "husky": "^7.0.2",
         "ink-testing-library": "^2.1.0",
         "jest": "^28.1.1",
-        "lint-staged": "^11.1.2",
         "node-pty": "^0.10.1",
         "prettier": "^2.6.1",
         "strip-ansi": "^6.0.0",
@@ -90,14 +85,5 @@
     "keywords": [
         "eslint",
         "eslint-test"
-    ],
-    "lint-staged": {
-        "*.{js,ts,tsx}": [
-            "eslint --fix --max-warnings=0",
-            "prettier --write"
-        ],
-        "*.{json,yml,md}": [
-            "prettier --write"
-        ]
-    }
+    ]
 }
