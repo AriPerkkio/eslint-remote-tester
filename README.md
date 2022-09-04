@@ -45,7 +45,7 @@ The underlying git integration is done via [simple-git](https://github.com/steve
 
 ## Configuration
 
-### Linking your eslint plugin as a dependency
+### Linking your local eslint plugin as a dependency
 
 In order for `eslint-remote-tester`'s `eslint` to know where the definitions for the new rules or modified existing rules are, your eslint plugin folder needs to be symlinked.
 In your plugin folder, dependending on which package manager you use, run:
