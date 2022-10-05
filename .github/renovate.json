@@ -1,0 +1,16 @@
+{
+    "extends": ["schedule:weekly"],
+    "labels": ["dependencies"],
+    "rangeStrategy": "bump",
+    "packageRules": [
+        {
+            "matchUpdateTypes": ["minor", "patch"],
+            "groupName": "all non-major dependencies",
+            "groupSlug": "all-minor-patch"
+        },
+        {
+            "depTypeList": ["peerDependencies", "engines"],
+            "enabled": false
+        }
+    ]
+}
