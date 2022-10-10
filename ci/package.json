@@ -34,7 +34,7 @@
         "eslint-plugin-unicorn": "latest",
         "eslint-remote-tester": "../",
         "eslint-remote-tester-repositories": "../repositories",
-        "react": "^17.0.2",
+        "react": "^18.2.0",
         "ts-node": "latest",
         "typescript": "^4"
     }
