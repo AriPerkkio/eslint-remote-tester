@@ -5,12 +5,12 @@ import * as actionExports from '../../dist/exports-for-compare-action';
 test('exports RESULT_PARSER_TO_COMPARE_TEMPLATE', () => {
     expect(actionExports.RESULT_PARSER_TO_COMPARE_TEMPLATE)
         .toMatchInlineSnapshot(`
-        Object {
-          "markdown": Object {
+        {
+          "markdown": {
             "header": [Function],
             "results": [Function],
           },
-          "plaintext": Object {
+          "plaintext": {
             "header": [Function],
             "results": [Function],
           },

@@ -22,7 +22,7 @@ test('results are rendered on CI mode', async () => {
         Rule: local-rules/some-unstable-rule
         Message: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: \\"local-rules/some-unstable-rule\\"
+        Rule: "local-rules/some-unstable-rule"
         Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
         Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
 
@@ -33,7 +33,7 @@ test('results are rendered on CI mode', async () => {
         Error:
         TypeError: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: \\"local-rules/some-unstable-rule\\"
+        Rule: "local-rules/some-unstable-rule"
             at Identifier (<removed>/eslint-local-rules.js)
             at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
             at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
@@ -112,7 +112,7 @@ test('results are written to file system on CLI mode', async () => {
     expect(results).toMatchInlineSnapshot(`
         "## Rule: local-rules/some-unstable-rule
 
-        -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js Rule: \\"local-rules/some-unstable-rule\\"\`
+        -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js Rule: "local-rules/some-unstable-rule"\`
         -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
         -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
 
@@ -125,7 +125,7 @@ test('results are written to file system on CLI mode', async () => {
         \`\`\`
         TypeError: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: \\"local-rules/some-unstable-rule\\"
+        Rule: "local-rules/some-unstable-rule"
             at Identifier (<removed>/eslint-local-rules.js)
             at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
             at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
@@ -387,7 +387,7 @@ test('calls onComplete hook with the results', async () => {
         [MESSAGE]
         Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: \\"local-rules/some-unstable-rule\\"
+        Rule: "local-rules/some-unstable-rule"
         [MESSAGE]
         .
         [PATH]
@@ -411,7 +411,7 @@ test('calls onComplete hook with the results', async () => {
         [ERROR]
         TypeError: Cannot read property 'someAttribute' of undefined
         Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: \\"local-rules/some-unstable-rule\\"
+        Rule: "local-rules/some-unstable-rule"
             at Identifier (<removed>/eslint-local-rules.js)
             at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
             at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
@@ -1171,19 +1171,19 @@ test('loads typescript configuration file', async () => {
         Value of typed const b
         config file:
         export default {
-            \\"repositories\\": [
-                \\"AriPerkkio/eslint-remote-tester-integration-test-target\\"
+            "repositories": [
+                "AriPerkkio/eslint-remote-tester-integration-test-target"
             ],
-            \\"extensions\\": [
-                \\".js\\"
+            "extensions": [
+                ".js"
             ],
-            \\"pathIgnorePattern\\": \\"(expected-to-be-excluded)\\",
-            \\"rulesUnderTesting\\": [],
-            \\"eslintrc\\": {
-                \\"root\\": true
+            "pathIgnorePattern": "(expected-to-be-excluded)",
+            "rulesUnderTesting": [],
+            "eslintrc": {
+                "root": true
             },
-            \\"CI\\": true,
-            \\"onComplete\\": function onComplete() {
+            "CI": true,
+            "onComplete": function onComplete() {
                         console.log('[TEST-ON-COMPLETE-START]');
                         type SomeType = 'a' | 'b' | 'c';
                         const value: SomeType = 'b';
