@@ -42,7 +42,7 @@
         "ink": "^3.2.0",
         "object-hash": "^3.0.0",
         "react": "^17.0.2",
-        "simple-git": "^3.14.1"
+        "simple-git": "^3.15.0"
     },
     "devDependencies": {
         "@tsconfig/node12": "^1.0.11",
@@ -52,8 +52,8 @@
         "@types/node": "^18.11.9",
         "@types/object-hash": "^2.2.1",
         "@types/react": "^17.0.52",
-        "@typescript-eslint/eslint-plugin": "^5.42.0",
-        "@typescript-eslint/parser": "^5.42.0",
+        "@typescript-eslint/eslint-plugin": "^5.42.1",
+        "@typescript-eslint/parser": "^5.42.1",
         "conventional-changelog-cli": "^2.2.2",
         "eslint": "^8.27.0",
         "eslint-config-prettier": "^8.5.0",
@@ -64,13 +64,13 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-remote-tester-repositories": "./repositories",
         "ink-testing-library": "^2.1.0",
-        "jest": "^29.2.2",
+        "jest": "^29.3.1",
         "node-pty": "^0.10.1",
         "prettier": "^2.7.1",
         "strip-ansi": "^6.0.1",
         "ts-jest": "^29.0.3",
         "ts-node": "^10.9.1",
-        "tsc-alias": "^1.7.0",
+        "tsc-alias": "^1.7.1",
         "typescript": "^4.8.4"
     },
     "peerDependencies": {
