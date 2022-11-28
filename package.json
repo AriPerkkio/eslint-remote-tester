@@ -50,7 +50,7 @@
         "@types/eslint": "^8.4.10",
         "@types/jest": "^29.2.2",
         "@types/node": "^18.11.9",
-        "@types/object-hash": "^2.2.1",
+        "@types/object-hash": "^3.0.0",
         "@types/react": "^17.0.52",
         "@typescript-eslint/eslint-plugin": "^5.42.1",
         "@typescript-eslint/parser": "^5.42.1",
