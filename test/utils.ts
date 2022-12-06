@@ -164,7 +164,7 @@ function parsePtyOutput(output: string[]): string[] {
 
     const [, comparisonResults] =
         textOutput.match(COMPARISON_RESULTS_PATTERN) || [];
-    const [results] = textOutput.match(LAST_RENDER_PATTERN) || [];
+    const [results] = textOutput.match(LAST_RENDER_PATTERN) || [''];
     const logs = textOutput.replace(results, '').split('\r\n').filter(Boolean);
 
     return logs.concat(...[comparisonResults, results].filter(Boolean));
