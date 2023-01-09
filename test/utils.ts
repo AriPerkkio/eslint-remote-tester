@@ -200,7 +200,7 @@ export function getResults(ext: '.md' | '' = '.md'): string {
  */
 export function getComparisonResults(
     ext: '.md' | '' = '.md'
-): Record<typeof ComparisonTypes[number], string> {
+): Record<(typeof ComparisonTypes)[number], string> {
     return ComparisonTypes.reduce(
         (results, type) => {
             const filename = `${RESULTS_COMPARE_LOCATION}/${type}${ext}`;
