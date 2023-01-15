@@ -47,8 +47,8 @@ on:
         types:
             - completed
     schedule:
-        # Every thursday at ${generateHours(index)}:00
-        - cron: '0 ${generateHours(index)} * * THU'
+        # First day of the month at ${generateHours(index)}:00
+        - cron: '0 ${generateHours(index)} 1 * *'
 
 jobs:
     lint:
