@@ -117,6 +117,7 @@ const rulesWithoutTypeAware: Linter.Config['rules'] = {
     '@typescript-eslint/no-meaningless-void-operator': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/no-redundant-type-constituents': 'off',
+    '@typescript-eslint/no-mixed-enums': 'off',
 };
 
 export default config;
