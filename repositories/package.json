@@ -1,6 +1,6 @@
 {
     "name": "eslint-remote-tester-repositories",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "description": "Shared repositories for eslint-remote-tester.config.js",
     "license": "MIT",
