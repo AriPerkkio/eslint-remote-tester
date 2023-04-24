@@ -119,6 +119,7 @@ const rulesWithoutTypeAware: Linter.Config['rules'] = {
     '@typescript-eslint/no-redundant-type-constituents': 'off',
     '@typescript-eslint/no-mixed-enums': 'off',
     '@typescript-eslint/no-duplicate-type-constituents': 'off',
+    '@typescript-eslint/no-unsafe-enum-comparison': 'off',
 };
 
 export default config;
