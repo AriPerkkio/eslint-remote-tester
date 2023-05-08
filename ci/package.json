@@ -12,7 +12,7 @@
     },
     "devDependencies": {
         "@next/eslint-plugin-next": "latest",
-        "@types/node": "^18.16.3",
+        "@types/node": "^18.16.5",
         "@typescript-eslint/eslint-plugin": "latest",
         "@typescript-eslint/parser": "latest",
         "eslint": "latest",
