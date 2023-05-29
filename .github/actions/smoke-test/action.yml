@@ -43,7 +43,7 @@ runs:
           shell: bash
           working-directory: ./ci
 
-        - uses: AriPerkkio/eslint-remote-tester-run-action@v3
+        - uses: AriPerkkio/eslint-remote-tester-run-action@v4
           with:
               working-directory: ./ci
               issue-title: 'Weekly scheduled smoke test: ${{ inputs.config }}'
