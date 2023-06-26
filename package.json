@@ -65,7 +65,7 @@
         "eslint-remote-tester-repositories": "./repositories",
         "ink-testing-library": "^2.1.0",
         "jest": "^29.5.0",
-        "node-pty": "^0.10.1",
+        "node-pty": "^1.0.0",
         "prettier": "^2.8.8",
         "publint": "^0.1.12",
         "strip-ansi": "^6.0.1",
