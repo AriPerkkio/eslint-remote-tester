@@ -528,7 +528,7 @@ describe('validateConfig', () => {
         test('eslintrc as function is validated', async () => {
             await validateConfig({
                 ...DEFAULT_CONFIGURATION,
-                eslintrc: () => ({ 'not-valid-key': true } as any),
+                eslintrc: () => ({ 'not-valid-key': true }) as any,
             });
 
             const [validationError] = getConsoleLogCalls();
