@@ -1,3 +1,9 @@
+## [3.0.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v3.0.0...v3.0.1) (2023-10-01)
+
+### Bug Fixes
+
+-   parse `ruleId` from loading error message ([#475](https://github.com/AriPerkkio/eslint-remote-tester/issues/475)) ([95c89de](https://github.com/AriPerkkio/eslint-remote-tester/commit/95c89de7a609053c92740073befe5f8b7201a8dd))
+
 # [3.0.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v2.1.4...v3.0.0) (2022-06-12)
 
 -   feat!: never create configuration files ([a26563b](https://github.com/AriPerkkio/eslint-remote-tester/commit/a26563ba29efb65f6bc9545e551102f03a155f4e))
@@ -91,9 +97,9 @@
 
 ### Features
 
--   move cache under `node_modules` ([83cb6e5](https://github.com/AriPerkkio/eslint-remote-tester/commit/83cb6e51d73fc7aa1153a409a255310c3954e148))
 -   **ci:** include count of errors in ci status messages ([#126](https://github.com/AriPerkkio/eslint-remote-tester/issues/126)) ([d34660f](https://github.com/AriPerkkio/eslint-remote-tester/commit/d34660fd28de475628bf261eebd107c2f317712b))
 -   **cli:** log status of cached repositories ([dc5580c](https://github.com/AriPerkkio/eslint-remote-tester/commit/dc5580ca9df5437cbf31ed456eac557bde210925))
+-   move cache under `node_modules` ([83cb6e5](https://github.com/AriPerkkio/eslint-remote-tester/commit/83cb6e51d73fc7aa1153a409a255310c3954e148))
 -   pass count of scanned repositories to `config.onComplete` ([#102](https://github.com/AriPerkkio/eslint-remote-tester/issues/102)) ([814f6f0](https://github.com/AriPerkkio/eslint-remote-tester/commit/814f6f04c4129aea8841a0c5ba448550e5629823))
 
 # [1.1.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v1.0.1...v1.1.0) (2021-02-10)
@@ -106,8 +112,8 @@
 
 ### Bug Fixes
 
--   handle results as streams ([562538e](https://github.com/AriPerkkio/eslint-remote-tester/commit/562538ed5d4587a52533beca2396a61efc6c98f3))
 -   **engine:** support large amount of JSONs ([668adb2](https://github.com/AriPerkkio/eslint-remote-tester/commit/668adb27d965e723f5a990726d560433260cc008))
+-   handle results as streams ([562538e](https://github.com/AriPerkkio/eslint-remote-tester/commit/562538ed5d4587a52533beca2396a61efc6c98f3))
 -   include error message in write failure logs ([84100b7](https://github.com/AriPerkkio/eslint-remote-tester/commit/84100b700aa83b6a6a21bd50c0a77a90daf4ddd8))
 
 ### Performance Improvements
@@ -142,9 +148,9 @@
 
 ### Bug Fixes
 
+-   **results:** markdown template formatting ([c0f62fb](https://github.com/AriPerkkio/eslint-remote-tester/commit/c0f62fb0a062df9623470b8f0ae0b48e8aea5593))
 -   **results:** prevent unnecessary text wrap on ci ([a836913](https://github.com/AriPerkkio/eslint-remote-tester/commit/a836913cbdc0eca22fc89c205727a92bc5dd7e8b))
 -   small error ([318d512](https://github.com/AriPerkkio/eslint-remote-tester/commit/318d512d67ee05b471f913ade499ce01c3ee8edd))
--   **results:** markdown template formatting ([c0f62fb](https://github.com/AriPerkkio/eslint-remote-tester/commit/c0f62fb0a062df9623470b8f0ae0b48e8aea5593))
 -   **validator:** resolve result parser properly ([a4af9bb](https://github.com/AriPerkkio/eslint-remote-tester/commit/a4af9bbc8aa042c9e06cd713e70090dcba3f6bb7))
 
 ### Features
@@ -208,10 +214,10 @@
 
 ### Features
 
--   **ci:** ci-keep-alive message ([35c79c6](https://github.com/AriPerkkio/eslint-remote-tester/commit/35c79c6ae8b56ac0983b1fed8373233fc8a06172))
--   **ci:** github actions ([926c717](https://github.com/AriPerkkio/eslint-remote-tester/commit/926c7171260afb22b5b3f60dad8f9e9889e48b1c))
 -   **ci-runner:** add separate ci-runner package ([525ab3e](https://github.com/AriPerkkio/eslint-remote-tester/commit/525ab3ea5f93863bb7c5391d52fdf36daa7d7744))
 -   **ci-runner:** run ci on schedule ([a51bebe](https://github.com/AriPerkkio/eslint-remote-tester/commit/a51bebec8a37f135043ae1e063760ff9c8299592))
+-   **ci:** ci-keep-alive message ([35c79c6](https://github.com/AriPerkkio/eslint-remote-tester/commit/35c79c6ae8b56ac0983b1fed8373233fc8a06172))
+-   **ci:** github actions ([926c717](https://github.com/AriPerkkio/eslint-remote-tester/commit/926c7171260afb22b5b3f60dad8f9e9889e48b1c))
 -   **config:** add cache flag ([5d8d21d](https://github.com/AriPerkkio/eslint-remote-tester/commit/5d8d21dd1a6b0e0a51e86504495bdfb6ecea3379))
 -   **config:** add onComplete hook ([d053d2f](https://github.com/AriPerkkio/eslint-remote-tester/commit/d053d2f9e9999f4fb7861c36372095923687be61))
 
