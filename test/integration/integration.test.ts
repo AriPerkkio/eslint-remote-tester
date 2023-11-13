@@ -1035,17 +1035,12 @@ test('enables all rules when rulesUnderTesting returns true', async () => {
         Rule: no-var
         Rule: no-implicit-globals
         Rule: id-length
-        Rule: quote-props
         Rule: getter-return
-        Rule: space-before-function-paren
         Rule: strict
-        Rule: space-before-blocks
         Rule: capitalized-comments
         Rule: no-compare-neg-zero
         Rule: no-magic-numbers
-        Rule: indent
-        Rule: capitalized-comments
-        Rule: eol-last"
+        Rule: capitalized-comments"
     `);
 });
 
@@ -1080,18 +1075,13 @@ test('calls rulesUnderTesting filter with ruleId and repository', async () => {
         no-var - AriPerkkio/eslint-remote-tester-integration-test-target
         no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
         id-length - AriPerkkio/eslint-remote-tester-integration-test-target
-        quote-props - AriPerkkio/eslint-remote-tester-integration-test-target
         getter-return - AriPerkkio/eslint-remote-tester-integration-test-target
-        space-before-function-paren - AriPerkkio/eslint-remote-tester-integration-test-target
         strict - AriPerkkio/eslint-remote-tester-integration-test-target
-        space-before-blocks - AriPerkkio/eslint-remote-tester-integration-test-target
         capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
         no-compare-neg-zero - AriPerkkio/eslint-remote-tester-integration-test-target
         no-magic-numbers - AriPerkkio/eslint-remote-tester-integration-test-target
-        indent - AriPerkkio/eslint-remote-tester-integration-test-target
         capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
-        eol-last - AriPerkkio/eslint-remote-tester-integration-test-target
-        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 21 errors
+        [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 16 errors
         [DONE] Finished scan of 1 repositories
         [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 

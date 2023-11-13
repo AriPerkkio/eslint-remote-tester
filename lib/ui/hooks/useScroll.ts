@@ -43,8 +43,8 @@ function reducer(state: ScrollState, action: ScrollAction) {
                 state.isScrollAtBottom && maxScroll > 0
                     ? maxScroll
                     : maxScroll === 0
-                    ? 0
-                    : state.scrollTop;
+                      ? 0
+                      : state.scrollTop;
 
             return { ...state, maxScroll, scrollTop };
         }

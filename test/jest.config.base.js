@@ -7,6 +7,7 @@ module.exports = {
     testEnvironment: 'node',
     verbose: true,
     rootDir: process.cwd(),
+    prettierPath: null,
     moduleNameMapper: {
         '^@config(.*)$': '<rootDir>/lib/config$1',
         '^@engine(.*)$': '<rootDir>/lib/engine$1',
