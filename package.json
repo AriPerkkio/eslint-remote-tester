@@ -42,18 +42,18 @@
         "ink": "^3.2.0",
         "object-hash": "^3.0.0",
         "react": "^17.0.2",
-        "simple-git": "^3.21.0"
+        "simple-git": "^3.22.0"
     },
     "devDependencies": {
         "@tsconfig/node12": "^12.1.0",
         "@types/babel__code-frame": "^7.0.6",
         "@types/eslint": "^8.56.0",
         "@types/jest": "^29.5.11",
-        "@types/node": "^20.10.5",
+        "@types/node": "^20.10.6",
         "@types/object-hash": "^3.0.6",
-        "@types/react": "^17.0.73",
-        "@typescript-eslint/eslint-plugin": "^6.15.0",
-        "@typescript-eslint/parser": "^6.15.0",
+        "@types/react": "^17.0.74",
+        "@typescript-eslint/eslint-plugin": "^6.16.0",
+        "@typescript-eslint/parser": "^6.16.0",
         "conventional-changelog-cli": "^4.1.0",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
