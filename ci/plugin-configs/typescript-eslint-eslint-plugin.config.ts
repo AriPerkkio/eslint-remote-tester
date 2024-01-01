@@ -122,6 +122,7 @@ const rulesWithoutTypeAware: Linter.Config['rules'] = {
     '@typescript-eslint/no-unsafe-enum-comparison': 'off',
     '@typescript-eslint/prefer-optional-chain': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
+    '@typescript-eslint/no-useless-template-literals': 'off',
 };
 
 export default config;
