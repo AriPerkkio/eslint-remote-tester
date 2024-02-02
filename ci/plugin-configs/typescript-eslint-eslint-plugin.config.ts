@@ -123,6 +123,7 @@ const rulesWithoutTypeAware: Linter.Config['rules'] = {
     '@typescript-eslint/prefer-optional-chain': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
     '@typescript-eslint/no-useless-template-literals': 'off',
+    '@typescript-eslint/no-array-delete': 'off',
 };
 
 export default config;
