@@ -124,6 +124,7 @@ const rulesWithoutTypeAware: Linter.Config['rules'] = {
     '@typescript-eslint/prefer-destructuring': 'off',
     '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/no-array-delete': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'off',
 };
 
 export default config;
