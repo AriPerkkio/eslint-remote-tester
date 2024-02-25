@@ -6,6 +6,8 @@ import type { Config } from 'eslint-remote-tester';
 
 import baseConfig from '../base.config';
 
+const baseEslintrc = baseConfig.eslintrc as Linter.Config;
+
 const config: Config = {
     ...baseConfig,
     concurrentTasks: 1,
@@ -29,6 +31,8 @@ const config: Config = {
 
                     return {
                         ...baseEslintrc,
+                        plugins: ['@typescript-eslint'],
+                        extends: ['plugin:@typescript-eslint/all'],
                         parserOptions: {
                             ...baseEslintrc.parserOptions,
                             tsconfigRootDir: options.location,
@@ -43,10 +47,11 @@ const config: Config = {
 
         return {
             ...baseEslintrc,
-            rules: {
-                ...baseEslintrc.rules,
-                ...rulesWithoutTypeAware,
-            },
+            plugins: ['@typescript-eslint'],
+            extends: [
+                'plugin:@typescript-eslint/all',
+                'plugin:@typescript-eslint/disable-type-checked',
+            ],
         };
     },
 };
@@ -64,67 +69,5 @@ function findTsConfig(options: { repository: string; location: string }) {
         return resolve(options.location, tsconfig);
     }
 }
-
-const baseEslintrc: Linter.Config = {
-    ...baseConfig.eslintrc,
-    plugins: ['@typescript-eslint'],
-    extends: ['plugin:@typescript-eslint/all'],
-    rules: {
-        // https://github.com/typescript-eslint/typescript-eslint/issues/4444
-        '@typescript-eslint/no-invalid-this': 'off',
-    },
-};
-
-const rulesWithoutTypeAware: Linter.Config['rules'] = {
-    '@typescript-eslint/await-thenable': 'off',
-    '@typescript-eslint/naming-convention': 'off',
-    '@typescript-eslint/no-base-to-string': 'off',
-    '@typescript-eslint/no-confusing-void-expression': 'off',
-    '@typescript-eslint/no-floating-promises': 'off',
-    '@typescript-eslint/no-for-in-array': 'off',
-    '@typescript-eslint/no-misused-promises': 'off',
-    '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
-    '@typescript-eslint/no-unnecessary-condition': 'off',
-    '@typescript-eslint/no-unnecessary-qualifier': 'off',
-    '@typescript-eslint/no-unnecessary-type-arguments': 'off',
-    '@typescript-eslint/no-unnecessary-type-assertion': 'off',
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/no-unsafe-call': 'off',
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
-    '@typescript-eslint/prefer-includes': 'off',
-    '@typescript-eslint/prefer-nullish-coalescing': 'off',
-    '@typescript-eslint/prefer-readonly': 'off',
-    '@typescript-eslint/prefer-readonly-parameter-types': 'off',
-    '@typescript-eslint/prefer-reduce-type-parameter': 'off',
-    '@typescript-eslint/prefer-regexp-exec': 'off',
-    '@typescript-eslint/prefer-string-starts-ends-with': 'off',
-    '@typescript-eslint/promise-function-async': 'off',
-    '@typescript-eslint/require-array-sort-compare': 'off',
-    '@typescript-eslint/restrict-plus-operands': 'off',
-    '@typescript-eslint/restrict-template-expressions': 'off',
-    '@typescript-eslint/strict-boolean-expressions': 'off',
-    '@typescript-eslint/switch-exhaustiveness-check': 'off',
-    '@typescript-eslint/unbound-method': 'off',
-    '@typescript-eslint/dot-notation': 'off',
-    '@typescript-eslint/no-implied-eval': 'off',
-    '@typescript-eslint/no-unsafe-argument': 'off',
-    '@typescript-eslint/no-throw-literal': 'off',
-    '@typescript-eslint/require-await': 'off',
-    '@typescript-eslint/return-await': 'off',
-    '@typescript-eslint/non-nullable-type-assertion-style': 'off',
-    '@typescript-eslint/prefer-return-this-type': 'off',
-    '@typescript-eslint/no-meaningless-void-operator': 'off',
-    '@typescript-eslint/consistent-type-exports': 'off',
-    '@typescript-eslint/no-redundant-type-constituents': 'off',
-    '@typescript-eslint/no-mixed-enums': 'off',
-    '@typescript-eslint/no-duplicate-type-constituents': 'off',
-    '@typescript-eslint/no-unsafe-enum-comparison': 'off',
-    '@typescript-eslint/prefer-optional-chain': 'off',
-    '@typescript-eslint/prefer-destructuring': 'off',
-    '@typescript-eslint/no-useless-template-literals': 'off',
-    '@typescript-eslint/no-array-delete': 'off',
-    '@typescript-eslint/prefer-promise-reject-errors': 'off',
-};
 
 export default config;
