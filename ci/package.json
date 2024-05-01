@@ -16,7 +16,7 @@
         "@types/node": "^20.12.7",
         "@typescript-eslint/eslint-plugin": "latest",
         "@typescript-eslint/parser": "latest",
-        "eslint": "latest",
+        "eslint": "^8",
         "eslint-config-airbnb": "latest",
         "eslint-plugin-cypress": "latest",
         "eslint-plugin-import": "latest",
