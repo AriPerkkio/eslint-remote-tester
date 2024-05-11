@@ -35,10 +35,10 @@
 
 ```sh
 # In your project directory
-$ yarn add --dev eslint-remote-tester
+$ npm install --save-dev eslint-remote-tester
 
 # eslint is also required as peer dependency
-$ yarn add --dev eslint
+$ npm install --save-dev eslint
 ```
 
 The underlying git integration is done via [simple-git](https://github.com/steveukx/git-js). It requires git to be installed and [that it can be called using the command `git`.](https://github.com/steveukx/git-js#dependencies)
@@ -54,10 +54,6 @@ In your plugin folder, dependending on which package manager you use, run:
 # Using npm package manager
 npm link
 npm link [your-plugin-name]
-
-# Or using yarn package manager
-yarn link
-yarn link [your-plugin-name]
 ```
 
 ### package.json
@@ -136,7 +132,7 @@ export default config;
 
 ### Execution
 
-Run `yarn lint:remote`. Results are written into `./eslint-remote-tester-results` folder.
+Run `npm run lint:remote`. Results are written into `./eslint-remote-tester-results` folder.
 
 ## How and when to use
 

@@ -7,17 +7,21 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
+
             - run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
               name: Install & build eslint-remote-tester
+
             - run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
               name: Install eslint-remote-tester-repositories
               working-directory: ./repositories
-            - run: yarn filter:private
+
+            - run: pnpm filter:private
               working-directory: ./repositories

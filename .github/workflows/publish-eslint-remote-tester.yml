@@ -22,10 +22,10 @@ jobs:
                   registry-url: 'https://registry.npmjs.org'
 
             - name: Install
-              run: yarn install
+              run: pnpm install
 
             - name: Build
-              run: yarn build
+              run: pnpm build
 
             # Fixes the "npm ERR! 404 Not Found - PUT https://registry.npmjs.org/eslint-remote-tester - Not found" issue
             - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc

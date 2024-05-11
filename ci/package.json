@@ -3,6 +3,7 @@
     "description": "Dependencies for CI lint runs",
     "version": "1.0.0",
     "main": "index.js",
+    "packageManager": "pnpm@8.15.8",
     "license": "MIT",
     "private": true,
     "scripts": {

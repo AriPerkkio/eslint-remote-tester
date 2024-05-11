@@ -142,6 +142,9 @@ function sanitizeStackTrace(message?: string): string {
             // Remove absolute root path, e.g. `/home/username/path/to/project/...` -> `<removed>/...`
             .replace(new RegExp(process.cwd(), 'g'), '<removed>')
 
+            // Remover pnpm's paths, e.g. '/node_modules/.pnpm/eslint@8.57.0/node_modules/eslint' > '/<package-manager-path>/node_modules/eslint'
+            .replace(/node_modules\/\.pnpm\/([^/])*/g, '<package-manager-path>')
+
             // Remove line numbers
             .replace(/\.js:(\d*|:)*/g, '.js')
 

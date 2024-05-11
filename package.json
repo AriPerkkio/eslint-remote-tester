@@ -7,6 +7,7 @@
     "files": [
         "dist"
     ],
+    "packageManager": "pnpm@8.15.8",
     "types": "dist/types.d.ts",
     "bin": {
         "eslint-remote-tester": "dist/index.js"
@@ -27,7 +28,7 @@
         "test": "jest --config test/unit/jest.config.unit.js",
         "test:integration": "jest --config test/integration/jest.config.integration.js --runInBand",
         "test:smoke": "jest --config test/smoke/jest.config.smoke.js --runInBand",
-        "validate": "yarn build && yarn lint && yarn test && yarn test:integration"
+        "validate": "pnpm build && pnpm lint && pnpm test && pnpm test:integration"
     },
     "repository": {
         "type": "git",

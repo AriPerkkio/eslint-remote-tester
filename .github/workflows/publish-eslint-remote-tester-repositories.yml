@@ -7,19 +7,26 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
-            - run: yarn install
+
+            - run: pnpm install
               name: Install eslint-remote-tester
-            - run: yarn install
+
+            - run: pnpm install
               name: Install eslint-remote-tester-repositories
               working-directory: ./repositories
-            - run: yarn build
+
+            - run: pnpm build
               working-directory: ./repositories
-            - run: yarn test
+
+            - run: pnpm test
               working-directory: ./repositories
+
             - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
             - run: npm publish
               working-directory: ./repositories
               env:

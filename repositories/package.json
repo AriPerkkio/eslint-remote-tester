@@ -5,6 +5,7 @@
     "description": "Shared repositories for eslint-remote-tester.config.js",
     "license": "MIT",
     "main": "dist/index.js",
+    "packageManager": "pnpm@8.15.8",
     "files": [
         "dist"
     ],

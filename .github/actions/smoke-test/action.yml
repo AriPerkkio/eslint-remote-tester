@@ -12,14 +12,14 @@ runs:
 
         - name: Install & build eslint-remote-tester
           run: |
-              yarn install
-              yarn build
+              pnpm install
+              pnpm build
           shell: bash
 
         - name: Install & build eslint-remote-tester-repositories
           run: |
-              yarn install
-              yarn build
+              pnpm install
+              pnpm build
               rm -rf ./node_modules
           shell: bash
           working-directory: ./repositories
@@ -29,17 +29,17 @@ runs:
           shell: bash
 
         - name: Install ci-runner dependencies
-          run: yarn install
+          run: pnpm install
           shell: bash
           working-directory: ./ci
 
         - name: Log ESLint packages
-          run: yarn list | grep eslint
+          run: pnpm list | grep eslint
           shell: bash
           working-directory: ./ci
 
         - name: Log plugin configuration
-          run: yarn log --config ./plugin-configs/${{ inputs.config }}.config.ts
+          run: pnpm log --config ./plugin-configs/${{ inputs.config }}.config.ts
           shell: bash
           working-directory: ./ci
 
