@@ -11,21 +11,22 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+
             - uses: ./.github/actions/setup-and-cache
 
             - name: Install & build eslint-remote-tester
               run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
 
             - name: Install eslint-remote-tester-repositories dependencies
               run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
               working-directory: ./repositories
 
             - name: Lint
-              run: yarn lint
+              run: pnpm lint
 
     unit-test:
         runs-on: ubuntu-latest
@@ -34,17 +35,18 @@ jobs:
                 node-version: [18, 20]
         steps:
             - uses: actions/checkout@v4
+
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
 
             - name: Install & build eslint-remote-tester
               run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
 
             - name: Run tests
-              run: yarn test
+              run: pnpm test
 
     integration-test:
         runs-on: ubuntu-latest
@@ -53,17 +55,18 @@ jobs:
                 node-version: [18, 20]
         steps:
             - uses: actions/checkout@v4
+
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
 
             - name: Install & build eslint-remote-tester
               run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
 
             - name: Run integration tests
-              run: yarn test:integration
+              run: pnpm test:integration
 
     smoke-test:
         runs-on: ubuntu-latest
@@ -72,17 +75,18 @@ jobs:
                 node-version: [18, 20]
         steps:
             - uses: actions/checkout@v4
+
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
 
             - name: Install & build eslint-remote-tester
               run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
 
             - name: Run smoke tests
-              run: yarn test:smoke
+              run: pnpm test:smoke
 
     repositories-test:
         runs-on: ubuntu-latest
@@ -91,19 +95,20 @@ jobs:
                 node-version: [18, 20]
         steps:
             - uses: actions/checkout@v4
+
             - uses: ./.github/actions/setup-and-cache
               with:
                   node-version: ${{ matrix.node-version }}
 
             - name: Install & build eslint-remote-tester
-              run: yarn install
+              run: pnpm install
 
             - name: Install eslint-remote-tester-repositories
-              run: yarn install
+              run: pnpm install
               working-directory: ./repositories
 
             - name: Run repositories tests
-              run: yarn test
+              run: pnpm test
               working-directory: ./repositories
 
     ci-runner-test:
@@ -111,17 +116,18 @@ jobs:
         if: github.ref == 'refs/heads/master'
         steps:
             - uses: actions/checkout@v4
+
             - uses: ./.github/actions/setup-and-cache
 
             - name: Install & build eslint-remote-tester
               run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
 
             - name: Install & build eslint-remote-tester-repositories
               run: |
-                  yarn install
-                  yarn build
+                  pnpm install
+                  pnpm build
                   rm -rf ./node_modules
               working-directory: ./repositories
 
@@ -129,9 +135,9 @@ jobs:
               run: rm -rf ./node_modules
 
             - name: Install ci-runner
-              run: yarn install
+              run: pnpm install
               working-directory: ./ci
 
             - name: Test ci-runner
-              run: yarn generate
+              run: pnpm generate
               working-directory: ./ci

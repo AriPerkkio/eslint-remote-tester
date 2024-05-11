@@ -11,7 +11,7 @@ Provides over 10K GitHub hosted repositories.
 
 ```sh
 # In your project directory
-$ yarn add --dev eslint-remote-tester-repositories
+$ npm install --save-dev eslint-remote-tester-repositories
 ```
 
 ## API

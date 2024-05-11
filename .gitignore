@@ -22,4 +22,4 @@ integration.config-*.[jt]s
 .repositories-raw-cache
 
 # CI
-ci/yarn.lock
+ci/pnpm-lock.yaml

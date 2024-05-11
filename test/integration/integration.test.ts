@@ -17,92 +17,92 @@ test('results are rendered on CI mode', async () => {
     const finalLog = output.pop();
 
     expect(finalLog).toMatchInlineSnapshot(`
-        "Results:
-        Repository: AriPerkkio/eslint-remote-tester-integration-test-target
-        Rule: local-rules/some-unstable-rule
-        Message: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: "local-rules/some-unstable-rule"
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
+"Results:
+Repository: AriPerkkio/eslint-remote-tester-integration-test-target
+Rule: local-rules/some-unstable-rule
+Message: Cannot read property 'someAttribute' of undefined
+Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+Rule: "local-rules/some-unstable-rule"
+Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
 
-          1 | // Identifier.name = attributeForCrashing
-        > 2 | window.attributeForCrashing();
-          3 |
+  1 | // Identifier.name = attributeForCrashing
+> 2 | window.attributeForCrashing();
+  3 |
 
-        Error:
-        TypeError: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: "local-rules/some-unstable-rule"
-            at Identifier (<removed>/eslint-local-rules.js)
-            at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
-            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
-            at Array.forEach (<anonymous>)
-            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
-            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
-            at <removed>/node_modules/eslint/lib/linter/linter.js
+Error:
+TypeError: Cannot read property 'someAttribute' of undefined
+Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+Rule: "local-rules/some-unstable-rule"
+    at Identifier (<removed>/eslint-local-rules.js)
+    at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+    at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
+    at Array.forEach (<anonymous>)
+    at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
+    at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at CodePathAnalyzer.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
+    at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js
 
-        Repository: AriPerkkio/eslint-remote-tester-integration-test-target
-        Rule: no-undef
-        Message: 'bar' is not defined.
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
+Repository: AriPerkkio/eslint-remote-tester-integration-test-target
+Rule: no-undef
+Message: 'bar' is not defined.
+Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
 
-        > 1 | var foo = bar;
-            |           ^^^
-          2 |
-          3 | if (foo) {
-          4 | }
+> 1 | var foo = bar;
+    |           ^^^
+  2 |
+  3 | if (foo) {
+  4 | }
 
-        Repository: AriPerkkio/eslint-remote-tester-integration-test-target
-        Rule: no-empty
-        Message: Empty block statement.
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4
+Repository: AriPerkkio/eslint-remote-tester-integration-test-target
+Rule: no-empty
+Message: Empty block statement.
+Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4
 
-          1 | var foo = bar;
-          2 |
-        > 3 | if (foo) {
-            |          ^
-        > 4 | }
-            | ^^
-          5 |
-          6 | var p = {
-          7 |     get name(){
+  1 | var foo = bar;
+  2 |
+> 3 | if (foo) {
+    |          ^
+> 4 | }
+    | ^^
+  5 |
+  6 | var p = {
+  7 |     get name(){
 
-        Repository: AriPerkkio/eslint-remote-tester-integration-test-target
-        Rule: getter-return
-        Message: Expected to return a value in getter 'name'.
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7
+Repository: AriPerkkio/eslint-remote-tester-integration-test-target
+Rule: getter-return
+Message: Expected to return a value in getter 'name'.
+Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7
 
-           5 |
-           6 | var p = {
-        >  7 |     get name(){
-             |     ^^^^^^^^
-           8 |         // no returns.
-           9 |     }
-          10 | };
+   5 |
+   6 | var p = {
+>  7 |     get name(){
+     |     ^^^^^^^^
+   8 |         // no returns.
+   9 |     }
+  10 | };
 
-        Repository: AriPerkkio/eslint-remote-tester-integration-test-target
-        Rule: no-compare-neg-zero
-        Message: Do not use the '===' operator to compare against -0.
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
+Repository: AriPerkkio/eslint-remote-tester-integration-test-target
+Rule: no-compare-neg-zero
+Message: Do not use the '===' operator to compare against -0.
+Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
 
-          12 |
-          13 |
-        > 14 | if (foo === -0) {
-             |     ^^^^^^^^^^
-          15 |   // prevent no-empty
-          16 | }
+  12 |
+  13 |
+> 14 | if (foo === -0) {
+     |     ^^^^^^^^^^
+  15 |   // prevent no-empty
+  16 | }
 
 
-        "
-    `);
+"
+`);
 });
 
 test('results are written to file system on CLI mode', async () => {
@@ -110,98 +110,98 @@ test('results are written to file system on CLI mode', async () => {
     const results = getResults();
 
     expect(results).toMatchInlineSnapshot(`
-        "## Rule: local-rules/some-unstable-rule
+"## Rule: local-rules/some-unstable-rule
 
-        -   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js Rule: "local-rules/some-unstable-rule"\`
-        -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
-        -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
+-   Message: \`Cannot read property 'someAttribute' of undefined Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js Rule: "local-rules/some-unstable-rule"\`
+-   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js\`
+-   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2)
 
-        \`\`\`js
-          1 | // Identifier.name = attributeForCrashing
-        > 2 | window.attributeForCrashing();
-          3 |
-        \`\`\`
+\`\`\`js
+  1 | // Identifier.name = attributeForCrashing
+> 2 | window.attributeForCrashing();
+  3 |
+\`\`\`
 
-        \`\`\`
-        TypeError: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: "local-rules/some-unstable-rule"
-            at Identifier (<removed>/eslint-local-rules.js)
-            at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
-            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
-            at Array.forEach (<anonymous>)
-            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
-            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
-            at <removed>/node_modules/eslint/lib/linter/linter.js
-        \`\`\`
+\`\`\`
+TypeError: Cannot read property 'someAttribute' of undefined
+Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+Rule: "local-rules/some-unstable-rule"
+    at Identifier (<removed>/eslint-local-rules.js)
+    at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+    at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
+    at Array.forEach (<anonymous>)
+    at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
+    at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at CodePathAnalyzer.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
+    at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js
+\`\`\`
 
-        ## Rule: no-undef
+## Rule: no-undef
 
-        -   Message: \`'bar' is not defined.\`
-        -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-        -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1)
+-   Message: \`'bar' is not defined.\`
+-   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+-   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1)
 
-        \`\`\`js
-        > 1 | var foo = bar;
-            |           ^^^
-          2 |
-          3 | if (foo) {
-          4 | }
-        \`\`\`
+\`\`\`js
+> 1 | var foo = bar;
+    |           ^^^
+  2 |
+  3 | if (foo) {
+  4 | }
+\`\`\`
 
-        ## Rule: no-empty
+## Rule: no-empty
 
-        -   Message: \`Empty block statement.\`
-        -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-        -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4)
+-   Message: \`Empty block statement.\`
+-   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+-   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4)
 
-        \`\`\`js
-          1 | var foo = bar;
-          2 |
-        > 3 | if (foo) {
-            |          ^
-        > 4 | }
-            | ^^
-          5 |
-          6 | var p = {
-          7 |     get name(){
-        \`\`\`
+\`\`\`js
+  1 | var foo = bar;
+  2 |
+> 3 | if (foo) {
+    |          ^
+> 4 | }
+    | ^^
+  5 |
+  6 | var p = {
+  7 |     get name(){
+\`\`\`
 
-        ## Rule: getter-return
+## Rule: getter-return
 
-        -   Message: \`Expected to return a value in getter 'name'.\`
-        -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-        -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7)
+-   Message: \`Expected to return a value in getter 'name'.\`
+-   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+-   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7)
 
-        \`\`\`js
-           5 |
-           6 | var p = {
-        >  7 |     get name(){
-             |     ^^^^^^^^
-           8 |         // no returns.
-           9 |     }
-          10 | };
-        \`\`\`
+\`\`\`js
+   5 |
+   6 | var p = {
+>  7 |     get name(){
+     |     ^^^^^^^^
+   8 |         // no returns.
+   9 |     }
+  10 | };
+\`\`\`
 
-        ## Rule: no-compare-neg-zero
+## Rule: no-compare-neg-zero
 
-        -   Message: \`Do not use the '===' operator to compare against -0.\`
-        -   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
-        -   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
+-   Message: \`Do not use the '===' operator to compare against -0.\`
+-   Path: \`AriPerkkio/eslint-remote-tester-integration-test-target/index.js\`
+-   [Link](https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14)
 
-        \`\`\`js
-          12 |
-          13 |
-        > 14 | if (foo === -0) {
-             |     ^^^^^^^^^^
-          15 |   // prevent no-empty
-          16 | }
-        \`\`\`
-        "
-    `);
+\`\`\`js
+  12 |
+  13 |
+> 14 | if (foo === -0) {
+     |     ^^^^^^^^^^
+  15 |   // prevent no-empty
+  16 | }
+\`\`\`
+"
+`);
 });
 
 test('final log is rendered on CLI mode', async () => {
@@ -367,231 +367,231 @@ test('calls onComplete hook with the results', async () => {
         .match(/\[TEST-ON-COMPLETE-START\]([\s|\S]*)\[TEST-ON-COMPLETE-END\]/)!;
 
     expect(onCompleteCall).toMatchInlineSnapshot(`
-        "[TEST-ON-COMPLETE-START]
-        [REPOSITORY-COUNT-START]
-        1
-        [REPOSITORY-COUNT-END]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        local-rules/some-unstable-rule
-        [RULE]
-        .
-        [MESSAGE]
-        Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: "local-rules/some-unstable-rule"
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-          1 | // Identifier.name = attributeForCrashing
-        > 2 | window.attributeForCrashing();
-          3 |
-        [SOURCE]
-        .
-        [ERROR]
-        TypeError: Cannot read property 'someAttribute' of undefined
-        Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Rule: "local-rules/some-unstable-rule"
-            at Identifier (<removed>/eslint-local-rules.js)
-            at ruleErrorHandler (<removed>/node_modules/eslint/lib/linter/linter.js)
-            at <removed>/node_modules/eslint/lib/linter/safe-emitter.js
-            at Array.forEach (<anonymous>)
-            at Object.emit (<removed>/node_modules/eslint/lib/linter/safe-emitter.js)
-            at NodeEventGenerator.applySelector (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at NodeEventGenerator.applySelectors (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at NodeEventGenerator.enterNode (<removed>/node_modules/eslint/lib/linter/node-event-generator.js)
-            at CodePathAnalyzer.enterNode (<removed>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
-            at <removed>/node_modules/eslint/lib/linter/linter.js
-        [ERROR]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        no-undef
-        [RULE]
-        .
-        [MESSAGE]
-        'bar' is not defined.
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-        > 1 | var foo = bar;
-            |           ^^^
-          2 |
-          3 | if (foo) {
-          4 | }
-        [SOURCE]
-        .
-        [ERROR]
-        undefined
-        [ERROR]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        no-empty
-        [RULE]
-        .
-        [MESSAGE]
-        Empty block statement.
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-          1 | var foo = bar;
-          2 |
-        > 3 | if (foo) {
-            |          ^
-        > 4 | }
-            | ^^
-          5 |
-          6 | var p = {
-          7 |     get name(){
-        [SOURCE]
-        .
-        [ERROR]
-        undefined
-        [ERROR]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        getter-return
-        [RULE]
-        .
-        [MESSAGE]
-        Expected to return a value in getter 'name'.
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-           5 |
-           6 | var p = {
-        >  7 |     get name(){
-             |     ^^^^^^^^
-           8 |         // no returns.
-           9 |     }
-          10 | };
-        [SOURCE]
-        .
-        [ERROR]
-        undefined
-        [ERROR]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        no-compare-neg-zero
-        [RULE]
-        .
-        [MESSAGE]
-        Do not use the '===' operator to compare against -0.
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-          12 |
-          13 |
-        > 14 | if (foo === -0) {
-             |     ^^^^^^^^^^
-          15 |   // prevent no-empty
-          16 | }
-        [SOURCE]
-        .
-        [ERROR]
-        undefined
-        [ERROR]
-        [TEST-ON-COMPLETE-END]"
-    `);
+"[TEST-ON-COMPLETE-START]
+[REPOSITORY-COUNT-START]
+1
+[REPOSITORY-COUNT-END]
+.
+[REPOSITORY]
+eslint-remote-tester-integration-test-target
+[REPOSITORY]
+.
+[REPOSITORYOWNER]
+AriPerkkio
+[REPOSITORYOWNER]
+.
+[RULE]
+local-rules/some-unstable-rule
+[RULE]
+.
+[MESSAGE]
+Cannot read property 'someAttribute' of undefined
+Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+Rule: "local-rules/some-unstable-rule"
+[MESSAGE]
+.
+[PATH]
+AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+[PATH]
+.
+[LINK]
+https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2
+[LINK]
+.
+[EXTENSION]
+js
+[EXTENSION]
+.
+[SOURCE]
+  1 | // Identifier.name = attributeForCrashing
+> 2 | window.attributeForCrashing();
+  3 |
+[SOURCE]
+.
+[ERROR]
+TypeError: Cannot read property 'someAttribute' of undefined
+Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+Rule: "local-rules/some-unstable-rule"
+    at Identifier (<removed>/eslint-local-rules.js)
+    at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+    at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
+    at Array.forEach (<anonymous>)
+    at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
+    at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+    at CodePathAnalyzer.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
+    at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js
+[ERROR]
+.
+[REPOSITORY]
+eslint-remote-tester-integration-test-target
+[REPOSITORY]
+.
+[REPOSITORYOWNER]
+AriPerkkio
+[REPOSITORYOWNER]
+.
+[RULE]
+no-undef
+[RULE]
+.
+[MESSAGE]
+'bar' is not defined.
+[MESSAGE]
+.
+[PATH]
+AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+[PATH]
+.
+[LINK]
+https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
+[LINK]
+.
+[EXTENSION]
+js
+[EXTENSION]
+.
+[SOURCE]
+> 1 | var foo = bar;
+    |           ^^^
+  2 |
+  3 | if (foo) {
+  4 | }
+[SOURCE]
+.
+[ERROR]
+undefined
+[ERROR]
+.
+[REPOSITORY]
+eslint-remote-tester-integration-test-target
+[REPOSITORY]
+.
+[REPOSITORYOWNER]
+AriPerkkio
+[REPOSITORYOWNER]
+.
+[RULE]
+no-empty
+[RULE]
+.
+[MESSAGE]
+Empty block statement.
+[MESSAGE]
+.
+[PATH]
+AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+[PATH]
+.
+[LINK]
+https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L3-L4
+[LINK]
+.
+[EXTENSION]
+js
+[EXTENSION]
+.
+[SOURCE]
+  1 | var foo = bar;
+  2 |
+> 3 | if (foo) {
+    |          ^
+> 4 | }
+    | ^^
+  5 |
+  6 | var p = {
+  7 |     get name(){
+[SOURCE]
+.
+[ERROR]
+undefined
+[ERROR]
+.
+[REPOSITORY]
+eslint-remote-tester-integration-test-target
+[REPOSITORY]
+.
+[REPOSITORYOWNER]
+AriPerkkio
+[REPOSITORYOWNER]
+.
+[RULE]
+getter-return
+[RULE]
+.
+[MESSAGE]
+Expected to return a value in getter 'name'.
+[MESSAGE]
+.
+[PATH]
+AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+[PATH]
+.
+[LINK]
+https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L7-L7
+[LINK]
+.
+[EXTENSION]
+js
+[EXTENSION]
+.
+[SOURCE]
+   5 |
+   6 | var p = {
+>  7 |     get name(){
+     |     ^^^^^^^^
+   8 |         // no returns.
+   9 |     }
+  10 | };
+[SOURCE]
+.
+[ERROR]
+undefined
+[ERROR]
+.
+[REPOSITORY]
+eslint-remote-tester-integration-test-target
+[REPOSITORY]
+.
+[REPOSITORYOWNER]
+AriPerkkio
+[REPOSITORYOWNER]
+.
+[RULE]
+no-compare-neg-zero
+[RULE]
+.
+[MESSAGE]
+Do not use the '===' operator to compare against -0.
+[MESSAGE]
+.
+[PATH]
+AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+[PATH]
+.
+[LINK]
+https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
+[LINK]
+.
+[EXTENSION]
+js
+[EXTENSION]
+.
+[SOURCE]
+  12 |
+  13 |
+> 14 | if (foo === -0) {
+     |     ^^^^^^^^^^
+  15 |   // prevent no-empty
+  16 | }
+[SOURCE]
+.
+[ERROR]
+undefined
+[ERROR]
+[TEST-ON-COMPLETE-END]"
+`);
 });
 
 test('erroneous onComplete does not crash application', async () => {

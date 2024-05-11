@@ -1,14 +1,6 @@
 /**
  * eslint-configs and eslint-plugins are handled the same way here.
  * Both are called plugins in this context.
- *
- * Before running this file, ensure that:
- *
- * 1. You are using yarn
- * 2. You have run "yarn install && yarn build" on ./ and ./repositories
- * 3. After the previous step you have run "yarn install" on ./ci
- *
- * If you need to regenerate the output quickly, without rerunning the tests, set the SKIP_TESTS env variable
  */
 
 import * as fs from 'fs';
@@ -125,7 +117,7 @@ function printBadgeMarkdown(plugins: EslintPlugin[]) {
 
 function testPlugins(plugins: EslintPlugin[]) {
     plugins.forEach(plugin => {
-        const cmd = `yarn lint --config ./plugin-configs/${plugin}.config.ts`;
+        const cmd = `pnpm lint --config ./plugin-configs/${plugin}.config.ts`;
         console.log(`> ${cmd}`);
 
         execSync(cmd, {
