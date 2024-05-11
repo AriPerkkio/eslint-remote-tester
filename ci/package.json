@@ -38,6 +38,6 @@
         "eslint-remote-tester-repositories": "../repositories",
         "react": "^17.0.2",
         "ts-node": "latest",
-        "typescript": "^5.1.6"
+        "typescript": "^5.4.5"
     }
 }
