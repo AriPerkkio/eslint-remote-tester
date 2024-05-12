@@ -5,6 +5,7 @@ on:
         branches:
             - master
     pull_request:
+    workflow_dispatch:
 
 jobs:
     build-and-lint:
@@ -14,16 +15,10 @@ jobs:
 
             - uses: ./.github/actions/setup-and-cache
 
-            - name: Install & build eslint-remote-tester
+            - name: Install & Build
               run: |
                   pnpm install
                   pnpm build
-
-            - name: Install eslint-remote-tester-repositories dependencies
-              run: |
-                  pnpm install
-                  pnpm build
-              working-directory: ./repositories
 
             - name: Lint
               run: pnpm lint
@@ -40,7 +35,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Install & build eslint-remote-tester
+            - name: Install & Build
               run: |
                   pnpm install
                   pnpm build
@@ -60,7 +55,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Install & build eslint-remote-tester
+            - name: Install & Build
               run: |
                   pnpm install
                   pnpm build
@@ -80,64 +75,10 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Install & build eslint-remote-tester
+            - name: Install & Build
               run: |
                   pnpm install
                   pnpm build
 
             - name: Run smoke tests
               run: pnpm test:smoke
-
-    repositories-test:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [18, 20]
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: ./.github/actions/setup-and-cache
-              with:
-                  node-version: ${{ matrix.node-version }}
-
-            - name: Install & build eslint-remote-tester
-              run: pnpm install
-
-            - name: Install eslint-remote-tester-repositories
-              run: pnpm install
-              working-directory: ./repositories
-
-            - name: Run repositories tests
-              run: pnpm test
-              working-directory: ./repositories
-
-    ci-runner-test:
-        runs-on: ubuntu-latest
-        if: github.ref == 'refs/heads/master'
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: ./.github/actions/setup-and-cache
-
-            - name: Install & build eslint-remote-tester
-              run: |
-                  pnpm install
-                  pnpm build
-
-            - name: Install & build eslint-remote-tester-repositories
-              run: |
-                  pnpm install
-                  pnpm build
-                  rm -rf ./node_modules
-              working-directory: ./repositories
-
-            - name: Cleanup
-              run: rm -rf ./node_modules
-
-            - name: Install ci-runner
-              run: pnpm install
-              working-directory: ./ci
-
-            - name: Test ci-runner
-              run: pnpm generate
-              working-directory: ./ci

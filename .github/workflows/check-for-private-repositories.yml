@@ -12,16 +12,10 @@ jobs:
               with:
                   node-version: 20
 
-            - run: |
+            - name: Install & Build
+              run: |
                   pnpm install
                   pnpm build
-              name: Install & build eslint-remote-tester
-
-            - run: |
-                  pnpm install
-                  pnpm build
-              name: Install eslint-remote-tester-repositories
-              working-directory: ./repositories
 
             - run: pnpm filter:private
-              working-directory: ./repositories
+              working-directory: ./packages/repositories

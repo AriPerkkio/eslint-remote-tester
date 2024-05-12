@@ -37,11 +37,13 @@ jobs:
 
             - name: Bump version
               run: npm version ${{ github.event.inputs.release-type }}
+              working-directory: ./packages/eslint-remote-tester
 
             - name: Push release tag
               run: git push origin master --follow-tags
 
             - name: Publish to npm
               run: npm publish
+              working-directory: ./packages/eslint-remote-tester
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

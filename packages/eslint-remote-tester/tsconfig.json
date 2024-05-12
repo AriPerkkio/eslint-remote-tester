@@ -1,0 +1,28 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+        "useUnknownInCatchVariables": false,
+        "jsx": "react",
+        "declaration": true,
+        "declarationMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "@config": ["src/config"],
+            "@config/*": ["src/config/*"],
+            "@engine": ["src/engine"],
+            "@engine/*": ["src/engine/*"],
+            "@file-client": ["src/file-client"],
+            "@file-client/*": ["src/file-client/*"],
+            "@progress-logger": ["src/progress-logger"],
+            "@progress-logger/*": ["src/progress-logger/*"],
+            "@ui": ["src/ui"],
+            "@ui/*": ["src/ui/*"],
+            "__mocks__/*": ["test/unit/__mocks__/*"]
+        }
+    },
+    "include": ["src", "test"]
+}

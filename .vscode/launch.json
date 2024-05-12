@@ -5,7 +5,7 @@
             "name": "Debug",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceFolder}/lib/index.ts",
+            "program": "${workspaceFolder}/src/index.ts",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "console": "integratedTerminal",
             "autoAttachChildProcesses": true
@@ -14,7 +14,7 @@
             "name": "Debug out-of-memory cases",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceFolder}/lib/index.ts",
+            "program": "${workspaceFolder}/src/index.ts",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "console": "integratedTerminal",
             "autoAttachChildProcesses": true,

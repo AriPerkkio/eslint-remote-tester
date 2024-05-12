@@ -1,0 +1,44 @@
+{
+    "name": "eslint-remote-tester-repositories",
+    "version": "1.0.1",
+    "author": "Ari Perkkio <ari.perkkio@gmail.com>",
+    "description": "Shared repositories for eslint-remote-tester.config.js",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AriPerkkio/eslint-remote-tester",
+        "directory": "repositories"
+    },
+    "homepage": "https://github.com/AriPerkkio/eslint-remote-tester/tree/master/repositories",
+    "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
+    "scripts": {
+        "prebuild": "rm -rf ./dist",
+        "build": "tsc --project tsconfig.prod.json",
+        "postbuild": "tsc-alias -p tsconfig.prod.json",
+        "generate": "ts-node ./scripts/fetch-libraries.ts",
+        "filter:private": "ts-node ./scripts/filter-private-repos.ts",
+        "filter:unique": "ts-node ./scripts/filter-unique-repos.ts",
+        "remove": "ts-node ./scripts/remove-repositories.ts",
+        "test": "jest"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.12",
+        "@types/node-fetch": "^2.6.11",
+        "chalk": "^4.1.2",
+        "jest": "^29.7.0",
+        "node-fetch": "^2.7.0",
+        "ts-jest": "^29.1.2",
+        "ts-node": "^10.9.2",
+        "tsc-alias": "^1.8.8",
+        "typescript": "^5.1.6"
+    },
+    "keywords": [
+        "eslint",
+        "eslint-test",
+        "eslint-remote-tester"
+    ]
+}

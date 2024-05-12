@@ -1,34 +1,20 @@
 {
-    "name": "eslint-remote-tester",
-    "version": "3.0.1",
+    "name": "eslint-remote-tester-monorepo",
+    "private": true,
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
-    "description": "Tool for running ESLint on multiple repositories",
-    "main": "dist/index.js",
-    "files": [
-        "dist"
-    ],
     "packageManager": "pnpm@8.15.8",
-    "types": "dist/types.d.ts",
-    "bin": {
-        "eslint-remote-tester": "dist/index.js"
-    },
+    "license": "MIT",
     "engines": {
         "node": ">=12.11"
     },
-    "license": "MIT",
     "scripts": {
-        "prebuild": "rm -rf ./dist",
-        "build": "tsc --project tsconfig.prod.json",
-        "postbuild": "tsc-alias -p tsconfig.prod.json",
+        "build": "pnpm --recursive --stream --reporter-hide-prefix build",
+        "start": "pnpm --recursive --stream --reporter-hide-prefix start",
+        "test": "pnpm --recursive --stream --reporter-hide-prefix test",
+        "test:integration": "pnpm --recursive --stream --reporter-hide-prefix test:integration",
+        "test:smoke": "pnpm --recursive --stream --reporter-hide-prefix test:smoke",
         "generate:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-        "generate:workflows": "ts-node ./ci/generate-workflows.ts",
-        "start": "node dist",
-        "start:memory-limit-crash": "NODE_OPTIONS=--max_old_space_size=50 node dist",
-        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx && publint",
-        "test": "jest --config test/unit/jest.config.unit.js",
-        "test:integration": "jest --config test/integration/jest.config.integration.js --runInBand",
-        "test:smoke": "jest --config test/smoke/jest.config.smoke.js --runInBand",
-        "validate": "pnpm build && pnpm lint && pnpm test && pnpm test:integration"
+        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx && publint"
     },
     "repository": {
         "type": "git",
@@ -36,23 +22,8 @@
     },
     "homepage": "https://github.com/AriPerkkio/eslint-remote-tester",
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
-    "dependencies": {
-        "@babel/code-frame": "^7.24.2",
-        "JSONStream": "^1.3.5",
-        "chalk": "^4.1.2",
-        "ink": "^3.2.0",
-        "object-hash": "^3.0.0",
-        "react": "^17.0.2",
-        "simple-git": "^3.24.0"
-    },
     "devDependencies": {
         "@tsconfig/node12": "^12.1.3",
-        "@types/babel__code-frame": "^7.0.6",
-        "@types/eslint": "^8.56.10",
-        "@types/jest": "^29.5.12",
-        "@types/node": "^20.12.8",
-        "@types/object-hash": "^3.0.6",
-        "@types/react": "^17.0.80",
         "@typescript-eslint/eslint-plugin": "^7.8.0",
         "@typescript-eslint/parser": "^7.8.0",
         "conventional-changelog-cli": "^5.0.0",
@@ -63,8 +34,6 @@
         "eslint-plugin-prettier": "^5.1.3",
         "eslint-plugin-react": "^7.34.1",
         "eslint-plugin-react-hooks": "^4.6.2",
-        "eslint-remote-tester-repositories": "./repositories",
-        "ink-testing-library": "^2.1.0",
         "jest": "^29.7.0",
         "node-pty": "^1.0.0",
         "prettier": "^3.2.5",
@@ -78,11 +47,6 @@
     "peerDependencies": {
         "eslint": ">=7",
         "ts-node": ">=9.0.0"
-    },
-    "peerDependenciesMeta": {
-        "ts-node": {
-            "optional": true
-        }
     },
     "keywords": [
         "eslint",
