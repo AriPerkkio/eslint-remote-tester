@@ -12,22 +12,17 @@ jobs:
               with:
                   node-version: 20
 
-            - run: pnpm install
-              name: Install eslint-remote-tester
-
-            - run: pnpm install
-              name: Install eslint-remote-tester-repositories
-              working-directory: ./repositories
-
-            - run: pnpm build
-              working-directory: ./repositories
+            - name: Install & Build
+              run: |
+                  pnpm install
+                  pnpm build
 
             - run: pnpm test
-              working-directory: ./repositories
+              working-directory: ./packages/repositories
 
             - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
             - run: npm publish
-              working-directory: ./repositories
+              working-directory: ./packages/repositories
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

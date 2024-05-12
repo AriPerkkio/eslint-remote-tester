@@ -1,26 +1,5 @@
 # eslint-remote-tester
 
-[![eslint-config-airbnb](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-config-airbnb/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-config-airbnb.yml)
-[![eslint-plugin-cypress](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-cypress/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-cypress.yml)
-[![eslint-plugin-import](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-import/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-import.yml)
-[![eslint-plugin-jest](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-jest/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-jest.yml)
-[![eslint-plugin-jest-dom](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-jest-dom/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-jest-dom.yml)
-[![eslint-plugin-jsx-a11y](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-jsx-a11y/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-jsx-a11y.yml)
-[![eslint-plugin-lit](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-lit/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-lit.yml)
-[![eslint-plugin-mocha](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-mocha/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-mocha.yml)
-[![eslint-plugin-next](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-next/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-next.yml)
-[![eslint-plugin-node](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-node/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-node.yml)
-[![eslint-plugin-react](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-react/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-react.yml)
-[![eslint-plugin-react-hooks](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-react-hooks/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-react-hooks.yml)
-[![eslint-plugin-react-redux](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-react-redux/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-react-redux.yml)
-[![eslint-plugin-regexp](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-regexp/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-regexp.yml)
-[![eslint-plugin-sonarjs](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-sonarjs/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-sonarjs.yml)
-[![eslint-plugin-testing-library](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-testing-library/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-testing-library.yml)
-[![eslint-plugin-unicorn](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-plugin-unicorn/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-plugin-unicorn.yml)
-[![typescript-eslint-eslint-plugin](https://github.com/AriPerkkio/eslint-remote-tester/workflows/typescript-eslint-eslint-plugin/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-typescript-eslint-eslint-plugin.yml)
-[![eslint-core](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-core/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-core.yml)
-[![eslint-core-ts](https://github.com/AriPerkkio/eslint-remote-tester/workflows/eslint-core-ts/badge.svg)](https://github.com/AriPerkkio/eslint-remote-tester/actions/workflows/lint-eslint-core-ts.yml)
-
 [![version](https://img.shields.io/npm/v/eslint-remote-tester)](https://www.npmjs.com/package/eslint-remote-tester)
 
 [Installation](#installation) | [Configuration](#configuration) | [How and when to use](#how-and-when-to-use) | [Github CI Actions](#github-ci-actions) | [Examples](#Examples)

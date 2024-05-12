@@ -34,7 +34,7 @@ module.exports = {
             'error',
             {
                 convertPath: {
-                    'lib/*.ts': ['^lib/(.+?)\\.ts$', 'dist/$1.js'],
+                    'src/*.ts': ['^src/(.+?)\\.ts$', 'dist/$1.js'],
                 },
             },
         ],
@@ -56,14 +56,14 @@ module.exports = {
             },
         },
         {
-            files: ['ci/**', 'repositories/**'],
+            files: ['packages/repositories/**'],
             rules: {
                 'node/no-unpublished-require': 'off',
                 'node/no-unpublished-import': 'off',
             },
         },
         {
-            files: ['*config*', 'ci/**', 'test/**/*.ts*', '*.js'],
+            files: ['*config*', 'packages/**/test/**/*.ts*', '*.js'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',
             },

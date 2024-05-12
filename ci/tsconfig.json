@@ -1,8 +1,0 @@
-{
-    "compilerOptions": {
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
-        "noEmit": true
-    }
-}
