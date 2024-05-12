@@ -1,5 +1,5 @@
-import { ResultParser } from '@config/types';
-import { LintMessage } from '@engine/types';
+import { type ResultParser } from '../config/types.js';
+import { type LintMessage } from '../engine/types.js';
 
 const NEW_LINE_REGEX = /\n/g;
 

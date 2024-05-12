@@ -1,6 +1,6 @@
 import { ForegroundColor } from 'chalk';
 
-import { LogLevel } from '@config/types';
+import { type LogLevel } from '../config/types.js';
 
 export interface Task {
     step?: 'START' | 'CLONE' | 'PULL' | 'READ' | 'LINT';

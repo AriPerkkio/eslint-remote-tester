@@ -6,9 +6,9 @@ import {
     RESULT_TEMPLATE,
     RESULTS_TEMPLATE_CI_BASE,
     RESULT_COMPARISON_TEMPLATE,
-} from '@file-client';
-import { ComparisonResults } from '@file-client/result-templates';
-import { useExitAfterRender } from '../hooks';
+} from '../../file-client/index.js';
+import { ComparisonResults } from '../../file-client/result-templates.js';
+import { useExitAfterRender } from '../hooks/index.js';
 
 const START_MESSAGE = '\nResults:';
 const NO_ERRORS = ['No errors'];

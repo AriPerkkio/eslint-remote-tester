@@ -1,9 +1,15 @@
 import chalk from 'chalk';
 
-import * as Templates from './log-templates';
-import exitHandler from './exit-handler';
-import { LogMessage, Task, Listeners, Listener, ListenerType } from './types';
-import config from '@config';
+import * as Templates from './log-templates.js';
+import exitHandler from './exit-handler.js';
+import {
+    type LogMessage,
+    type Task,
+    type Listeners,
+    type Listener,
+    type ListenerType,
+} from './types.js';
+import config from '../config/index.js';
 
 const CI_KEEP_ALIVE_INTERVAL_MS = 4.5 * 60 * 1000;
 const DEFAULT_COLOR = (text: string) => text;

@@ -1,14 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { workerData, isMainThread } from 'node:worker_threads';
 import chalk from 'chalk';
-import { workerData, isMainThread } from 'worker_threads';
 
-import { getConfigWithDefaults } from './validator';
-import { loadConfig } from './load';
-import { WorkerData } from '@engine/types';
+import { getConfigWithDefaults } from './validator.js';
+import { loadConfig } from './load.js';
+import { WorkerData } from '../engine/types.js';
 
 const DEFAULT_CONFIGURATION_FILE_NAME = 'eslint-remote-tester.config';
-const DEFAULT_CONFIGURATION_FILE_JS = `${DEFAULT_CONFIGURATION_FILE_NAME}.js`;
+const DEFAULT_CONFIGURATION_FILE_JS = `${DEFAULT_CONFIGURATION_FILE_NAME}.cjs`;
 const DEFAULT_CONFIGURATION_FILE_TS = `${DEFAULT_CONFIGURATION_FILE_NAME}.ts`;
 const CLI_ARGS_CONFIG = ['-c', '--config'];
 

@@ -1,10 +1,13 @@
 import React, { useLayoutEffect } from 'react';
 import { useStdout } from 'ink';
 
-import Results from './Results';
-import { useOnExit } from '../hooks';
-import ProgressLogger, { resolveColor, TASK_TEMPLATE } from '@progress-logger';
-import { LogMessage, Task } from '@progress-logger/types';
+import Results from './Results.js';
+import { useOnExit } from '../hooks/index.js';
+import ProgressLogger, {
+    resolveColor,
+    TASK_TEMPLATE,
+} from '../../progress-logger/index.js';
+import { type LogMessage, type Task } from '../../progress-logger/types.js';
 
 /**
  * Application for CIs

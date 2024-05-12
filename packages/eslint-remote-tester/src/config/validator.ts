@@ -9,7 +9,7 @@ import {
     LogLevels as LOG_LEVELS,
     ResultParser,
     ResultParsers as RESULT_PARSERS,
-} from './types';
+} from './types.js';
 
 const DEFAULT_RESULT_PARSER_CLI: ResultParser = 'markdown';
 const DEFAULT_RESULT_PARSER_CI: ResultParser = 'plaintext';

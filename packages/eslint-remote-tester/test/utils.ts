@@ -1,18 +1,22 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import { spawn } from 'node-pty';
 import stripAnsi from 'strip-ansi';
+import { type Mock } from 'vitest';
 
 import {
     CACHE_LOCATION,
     RESULTS_LOCATION,
     RESULTS_COMPARE_LOCATION,
-} from '@file-client';
-import { ComparisonTypes } from '@file-client/result-templates';
-import { removeDirectorySync } from '@file-client/file-utils';
-import { Config, ConfigToValidate } from '@config/types';
+} from '../src/file-client/index.js';
+import { ComparisonTypes } from '../src/file-client/result-templates';
+import { removeDirectorySync } from '../src/file-client/file-utils';
+import { Config, ConfigToValidate } from '../src/config/types';
+import { createRequire } from 'node:module';
+import { resolve } from 'node:path';
 
-declare const console: { log: jest.Mock; error: (...args: any) => void };
+declare const console: { log: Mock; error: (...args: any) => void };
 
+const require = createRequire(import.meta.url);
 export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
 export const INTEGRATION_REPO_NAME =
     'eslint-remote-tester-integration-test-target';
@@ -32,8 +36,8 @@ let idCounter = 0;
  */
 function createConfiguration(
     options: ConfigToValidate,
-    baseConfigPath = './integration/base.config.js',
-    fileExtension: 'js' | 'ts'
+    baseConfigPath = './integration/base.config.cjs',
+    fileExtension: 'cjs' | 'ts'
 ): { name: string; cleanup: () => void } {
     const name = `./test/integration/integration.config-${idCounter++}.${fileExtension}`;
 
@@ -73,7 +77,7 @@ function createConfiguration(
 export async function runProductionBuild(
     options: ConfigToValidate = {},
     baseConfigPath?: string,
-    fileExtension: 'js' | 'ts' = 'js'
+    fileExtension: 'cjs' | 'ts' = 'cjs'
 ): Promise<{ output: string[]; exitCode: number }> {
     const { name, cleanup } = createConfiguration(
         options,
@@ -140,7 +144,19 @@ function sanitizeStackTrace(message?: string): string {
     return (
         (message || '')
             // Remove absolute root path, e.g. `/home/username/path/to/project/...` -> `<removed>/...`
-            .replace(new RegExp(process.env.INIT_CWD!, 'g'), '<removed>')
+            .replace(
+                new RegExp(process.env.PNPM_SCRIPT_SRC_DIR!, 'g'),
+                '<removed>'
+            )
+
+            // Remove monorepo root
+            .replace(
+                new RegExp(
+                    resolve(process.env.PNPM_SCRIPT_SRC_DIR!, '../..'),
+                    'g'
+                ),
+                '<removed>'
+            )
 
             // Remover pnpm's paths, e.g. '/node_modules/.pnpm/eslint@8.57.0/node_modules/eslint' > '/<package-manager-path>/node_modules/eslint'
             .replace(/node_modules\/\.pnpm\/([^/])*/g, '<package-manager-path>')
@@ -226,7 +242,7 @@ export function getComparisonResults(
  * - Returns array in case of multiple call arguments
  * - Returns a single value in case of single call argument
  */
-export function getLastCallArguments(callback: jest.Mock): unknown {
+export function getLastCallArguments(callback: Mock): unknown {
     if (!callback.mock.calls) return null;
 
     const [lastCall] = callback.mock.calls;

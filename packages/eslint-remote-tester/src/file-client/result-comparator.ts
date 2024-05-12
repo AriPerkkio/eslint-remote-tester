@@ -1,18 +1,18 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import * as JSONStream from 'JSONStream';
 
 import {
     RESULTS_COMPARISON_CACHE_LOCATION,
     RESULTS_COMPARE_LOCATION,
-} from './file-constants';
+} from './file-constants.js';
 import {
     RESULT_PARSER_TO_COMPARE_TEMPLATE,
     RESULT_PARSER_TO_EXTENSION,
     Result,
     ComparisonTypes,
     ComparisonResults,
-} from './result-templates';
-import config from '@config';
+} from './result-templates.js';
+import config from '../config/index.js';
 
 export const RESULT_COMPARISON_TEMPLATE =
     RESULT_PARSER_TO_COMPARE_TEMPLATE[config.resultParser];

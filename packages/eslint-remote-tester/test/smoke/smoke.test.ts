@@ -1,6 +1,7 @@
+import { expect, test } from 'vitest';
 import { runProductionBuild } from '../utils';
 
-const BASE_CONFIG = './smoke/base.config.js';
+const BASE_CONFIG = './smoke/base.config.cjs';
 
 test('does not crash when handling 500Mb results', async () => {
     await runProductionBuild({ CI: false, compare: true }, BASE_CONFIG);

@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 export function removeDirectorySync(dir: string): void {
     // Available in Node 16

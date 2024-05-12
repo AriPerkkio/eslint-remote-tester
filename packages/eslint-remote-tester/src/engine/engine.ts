@@ -1,7 +1,11 @@
-import { Worker, isMainThread } from 'worker_threads';
+import { Worker, isMainThread } from 'node:worker_threads';
+import { fileURLToPath } from 'node:url';
 
-import workerTask, { WorkerMessage, createErrorMessage } from './worker-task';
-import { resolveConfigurationLocation } from '@config';
+import workerTask, {
+    WorkerMessage,
+    createErrorMessage,
+} from './worker-task.js';
+import { resolveConfigurationLocation } from '../config/index.js';
 
 type WorkerCallback<T> = (worker: Worker) => T;
 type CleanupCallback = () => void;
@@ -25,7 +29,7 @@ function scanRepository(
         // Prevents showing blank screen between worker start and repository reading
         onMessage({ type: 'START' });
 
-        const worker = new Worker(__filename, {
+        const worker = new Worker(fileURLToPath(import.meta.url), {
             workerData: {
                 repository,
                 configurationLocation: resolveConfigurationLocation(),

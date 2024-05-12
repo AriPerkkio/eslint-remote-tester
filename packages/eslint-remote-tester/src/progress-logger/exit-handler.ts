@@ -1,12 +1,12 @@
-import config from '@config';
+import config from '../config/index.js';
 import {
     ResultsStore,
     compareResults,
     writeComparisonResults,
-} from '@file-client';
-import { ComparisonResults } from '@file-client/result-templates';
-import { RESULT_COMPARISON_FINISHED } from './log-templates';
-import { LogMessage } from './types';
+} from '../file-client/index.js';
+import { ComparisonResults } from '../file-client/result-templates.js';
+import { RESULT_COMPARISON_FINISHED } from './log-templates.js';
+import { type LogMessage } from './types.js';
 
 /**
  * Callback invoked once scan is complete and application is about to exit

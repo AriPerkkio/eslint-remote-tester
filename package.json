@@ -4,8 +4,14 @@
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
     "packageManager": "pnpm@8.15.8",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AriPerkkio/eslint-remote-tester"
+    },
+    "homepage": "https://github.com/AriPerkkio/eslint-remote-tester",
+    "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "engines": {
-        "node": ">=12.11"
+        "node": "^18.0.0 || >=20.0.0"
     },
     "scripts": {
         "build": "pnpm --recursive --stream --reporter-hide-prefix build",
@@ -14,17 +20,14 @@
         "test:integration": "pnpm --recursive --stream --reporter-hide-prefix test:integration",
         "test:smoke": "pnpm --recursive --stream --reporter-hide-prefix test:smoke",
         "generate:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx && publint",
+        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx && publint packages/**",
         "publish-pr": "pkg-pr-new publish --compact ./packages/eslint-remote-tester ./packages/repositories"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/AriPerkkio/eslint-remote-tester"
     },
-    "homepage": "https://github.com/AriPerkkio/eslint-remote-tester",
-    "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "devDependencies": {
-        "@tsconfig/node12": "^12.1.3",
         "@typescript-eslint/eslint-plugin": "^7.8.0",
         "@typescript-eslint/parser": "^7.8.0",
         "conventional-changelog-cli": "^5.0.0",
@@ -35,20 +38,10 @@
         "eslint-plugin-prettier": "^5.1.3",
         "eslint-plugin-react": "^7.34.1",
         "eslint-plugin-react-hooks": "^4.6.2",
-        "jest": "^29.7.0",
-        "node-pty": "^1.0.0",
         "pkg-pr-new": "^0.0.4",
         "prettier": "^3.2.5",
         "publint": "^0.2.7",
-        "strip-ansi": "^6.0.1",
-        "ts-jest": "^29.1.2",
-        "ts-node": "^10.9.2",
-        "tsc-alias": "^1.8.8",
         "typescript": "^5.1.6"
-    },
-    "peerDependencies": {
-        "eslint": ">=7",
-        "ts-node": ">=9.0.0"
     },
     "keywords": [
         "eslint",

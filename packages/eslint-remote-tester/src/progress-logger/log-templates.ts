@@ -1,6 +1,6 @@
-import { Task } from './types';
-import config from '@config';
-import { CACHE_LOCATION } from '@file-client';
+import { Task } from './types.js';
+import config from '../config/index.js';
+import { CACHE_LOCATION } from '../file-client/index.js';
 
 // Regexp for converting `[INFO][LINTING] reponame` to `[INFO/LINTING] reponame`
 const CI_TEMPLATE_TASK_REGEXP = /\]\[/;

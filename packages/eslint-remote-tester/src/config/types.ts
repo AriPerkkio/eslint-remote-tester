@@ -1,6 +1,6 @@
 import { Linter } from 'eslint';
 
-import { ComparisonResults, Result } from '@file-client/result-templates';
+import { ComparisonResults, Result } from '../file-client/result-templates.js';
 
 type AllKeysOptional<T extends { [K: string]: any }> = {
     [K in keyof T]?: T[K];

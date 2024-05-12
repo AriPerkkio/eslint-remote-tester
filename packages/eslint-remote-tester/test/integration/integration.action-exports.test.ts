@@ -1,6 +1,7 @@
-import fs from 'fs';
+import fs from 'node:fs';
+import { expect, test, vi } from 'vitest';
 
-import * as actionExports from '../../dist/exports-for-compare-action';
+import * as actionExports from '../../dist/exports-for-compare-action.js';
 
 test('exports RESULT_PARSER_TO_COMPARE_TEMPLATE', () => {
     expect(actionExports.RESULT_PARSER_TO_COMPARE_TEMPLATE)
@@ -34,14 +35,14 @@ test('exports RESULTS_COMPARISON_CACHE_LOCATION', () => {
 
 test('exports validateConfig', async () => {
     const consolelog = console.log;
-    console.log = jest.fn();
+    console.log = vi.fn();
 
     expect(() => actionExports.validateConfig({}, false)).rejects
         .toThrowErrorMatchingInlineSnapshot(`
-        "Configuration validation errors:
-        - Missing repositories.
-        - Missing extensions.
-        - Missing eslintrc."
+      [Error: Configuration validation errors:
+      - Missing repositories.
+      - Missing extensions.
+      - Missing eslintrc.]
     `);
 
     console.log = consolelog;
@@ -54,16 +55,16 @@ test('exports loadConfig', async () => {
 test('exports typings', () => {
     expect(fs.readFileSync('dist/exports-for-compare-action.d.ts', 'utf8'))
         .toMatchInlineSnapshot(`
-        "/**
-         * Undocumented private API for Github CI actions:
-         * - \`eslint-remote-tester-compare-action\`
-         * - \`eslint-remote-tester-run-action\`
-         */
-        export { RESULT_PARSER_TO_COMPARE_TEMPLATE, Result, ComparisonResults, } from './file-client/result-templates';
-        export { RESULT_COMPARISON_CACHE, RESULTS_COMPARISON_CACHE_LOCATION, } from './file-client/file-constants';
-        export { default as validateConfig } from './config/validator';
-        export { loadConfig } from './config/load';
-        export { Config, ConfigToValidate } from './config/types';
-        //# sourceMappingURL=exports-for-compare-action.d.ts.map"
-    `);
+"/**
+ * Undocumented private API for Github CI actions:
+ * - \`eslint-remote-tester-compare-action\`
+ * - \`eslint-remote-tester-run-action\`
+ */
+export { RESULT_PARSER_TO_COMPARE_TEMPLATE, Result, ComparisonResults, } from './file-client/result-templates.js';
+export { RESULT_COMPARISON_CACHE, RESULTS_COMPARISON_CACHE_LOCATION, } from './file-client/file-constants.js';
+export { default as validateConfig } from './config/validator.js';
+export { loadConfig } from './config/load.js';
+export { Config, ConfigToValidate } from './config/types.js';
+//# sourceMappingURL=exports-for-compare-action.d.ts.map"
+`);
 });

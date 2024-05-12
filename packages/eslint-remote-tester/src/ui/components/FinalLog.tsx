@@ -1,9 +1,9 @@
 import React from 'react';
 import { Static, Text } from 'ink';
 
-import ProgressLogger from '@progress-logger';
-import { LogMessage } from '@progress-logger/types';
-import { useExitAfterRender } from '../hooks';
+import ProgressLogger from '../../progress-logger/index.js';
+import { LogMessage } from '../../progress-logger/types.js';
+import { useExitAfterRender } from '../hooks/index.js';
 
 const START_MESSAGE: Omit<LogMessage, 'level'> = {
     content: 'Full log:',

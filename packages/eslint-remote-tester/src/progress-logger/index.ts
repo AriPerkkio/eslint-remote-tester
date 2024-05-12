@@ -1,2 +1,2 @@
-export { default, resolveColor } from './progress-logger';
-export * from './log-templates';
+export { default, resolveColor } from './progress-logger.js';
+export * from './log-templates.js';

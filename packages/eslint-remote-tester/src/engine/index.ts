@@ -1,2 +1,2 @@
-export { default } from './engine';
-export { WorkerMessage } from './worker-task';
+export { default } from './engine.js';
+export { WorkerMessage } from './worker-task.js';

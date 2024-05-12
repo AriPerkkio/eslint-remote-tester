@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
 import { Text } from 'ink';
 
-import ProgressLogger from '@progress-logger';
-import { LogMessage } from '@progress-logger/types';
+import ProgressLogger from '../../progress-logger/index.js';
+import { LogMessage } from '../../progress-logger/types.js';
 
 function reducer(messages: LogMessage[], newMessage: LogMessage) {
     return [...messages, newMessage];

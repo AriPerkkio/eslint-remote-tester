@@ -1,13 +1,13 @@
 import React from 'react';
 import { Newline, Text } from 'ink';
 
-import Status from './Status';
-import Tasks from './Tasks';
-import Messages from './Messages';
-import MessagesScrollBox from './MessagesScrollBox';
-import FinalLog from './FinalLog';
-import { useOnExit } from '../hooks';
-import useOnHorizontalResize from '../hooks/useOnHorizontalResize';
+import Status from './Status.js';
+import Tasks from './Tasks.js';
+import Messages from './Messages.js';
+import MessagesScrollBox from './MessagesScrollBox.js';
+import FinalLog from './FinalLog.js';
+import { useOnExit } from '../hooks/index.js';
+import useOnHorizontalResize from '../hooks/useOnHorizontalResize.js';
 
 /**
  * Application for CLIs

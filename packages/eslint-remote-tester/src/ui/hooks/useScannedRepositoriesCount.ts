@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from 'react';
 
-import ProgressLogger from '@progress-logger';
-import { Task } from '@progress-logger/types';
+import ProgressLogger from '../../progress-logger/index.js';
+import { Task } from '../../progress-logger/types.js';
 
 /**
  * Subscribe to count of scanned repositories
