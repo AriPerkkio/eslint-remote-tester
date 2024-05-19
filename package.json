@@ -14,7 +14,8 @@
         "test:integration": "pnpm --recursive --stream --reporter-hide-prefix test:integration",
         "test:smoke": "pnpm --recursive --stream --reporter-hide-prefix test:smoke",
         "generate:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx && publint"
+        "lint": "eslint . --max-warnings 0 --ext .js,.ts,.tsx && publint",
+        "publish-pr": "pkg-pr-new publish --compact ./packages/eslint-remote-tester ./packages/repositories"
     },
     "repository": {
         "type": "git",
@@ -36,6 +37,7 @@
         "eslint-plugin-react-hooks": "^4.6.2",
         "jest": "^29.7.0",
         "node-pty": "^1.0.0",
+        "pkg-pr-new": "^0.0.4",
         "prettier": "^3.2.5",
         "publint": "^0.2.7",
         "strip-ansi": "^6.0.1",

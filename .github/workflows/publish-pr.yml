@@ -1,0 +1,20 @@
+name: Publish Any Commit
+on: [push, pull_request]
+
+jobs:
+    publish-pr:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: ./.github/actions/setup-and-cache
+
+            - name: Install & Build
+              run: |
+                  pnpm install
+                  pnpm build
+
+            - run: pnpm publish-pr
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
