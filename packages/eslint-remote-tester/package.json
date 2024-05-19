@@ -55,7 +55,7 @@
         "conventional-changelog-cli": "^5.0.0",
         "eslint": "^8.57.0",
         "eslint-remote-tester-repositories": "workspace:*",
-        "ink-testing-library": "^2.1.0",
+        "ink-testing-library": "^3.0.0",
         "node-pty": "^1.0.0",
         "strip-ansi": "^6.0.1",
         "ts-node": "^10.9.2",
