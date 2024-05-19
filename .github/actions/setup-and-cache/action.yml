@@ -16,3 +16,10 @@ runs:
           uses: actions/setup-node@v4
           with:
               node-version: ${{ inputs.node-version }}
+
+        - name: Versions
+          shell: bash
+          run: |
+              node --version
+              npm --version
+              pnpm --version

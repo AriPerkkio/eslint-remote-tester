@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { renderApplication } from '@ui';
-import config, { validateConfig } from '@config';
-import engine from '@engine';
-import { LintMessage } from '@engine/types';
-import * as fileClient from '@file-client';
-import logger from '@progress-logger';
+import { renderApplication } from './ui/index.js';
+import config, { validateConfig } from './config/index.js';
+import engine from './engine/index.js';
+import { LintMessage } from './engine/types.js';
+import * as fileClient from './file-client/index.js';
+import logger from './progress-logger/index.js';
 
 /**
  * Entrypoint of the application.

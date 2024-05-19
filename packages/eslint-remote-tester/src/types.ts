@@ -2,7 +2,7 @@
  * Typings exported as part of public API
  */
 
-import type { ConfigWithOptionals } from '@config/types';
+import type { ConfigWithOptionals } from './config/types.js';
 
 /**
  * Configuration for `eslint-remote-tester.config.ts`

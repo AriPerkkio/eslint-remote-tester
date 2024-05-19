@@ -1,7 +1,6 @@
+import { beforeEach } from 'vitest';
 import { clearRepositoryCache } from '../utils';
 
-jest.setTimeout(300000);
-
-beforeEach(async () => {
+beforeEach(() => {
     clearRepositoryCache();
 });

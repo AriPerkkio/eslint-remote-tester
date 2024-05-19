@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'ink';
 
-import config from '@config';
-import AppCI from './components/AppCI';
-import AppCLI from './components/AppCLI';
+import config from '../config/index.js';
+import AppCI from './components/AppCI.js';
+import AppCLI from './components/AppCLI.js';
 
 export default function renderApplication(): void {
     // Both stdout and stdin need to be TTY in order to get scrollbox working

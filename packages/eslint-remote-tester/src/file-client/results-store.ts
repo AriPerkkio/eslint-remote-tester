@@ -1,4 +1,4 @@
-import { ComparisonResults, Result } from './result-templates';
+import { type ComparisonResults, type Result } from './result-templates.js';
 
 /**
  * A single source for the scan's results
@@ -8,7 +8,7 @@ class ResultsStore {
     private comparisonResults: ComparisonResults | null = null;
 
     addResults(...results: Result[]) {
-        this.results.push(...results);
+        results.forEach(result => this.results.push(result));
     }
 
     getResults() {

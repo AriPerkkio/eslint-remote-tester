@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 const ROOT = '.';
 const CACHE_DIR = '/.cache-eslint-remote-tester';

@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import ProgressLogger from '@progress-logger';
+import ProgressLogger from '../../progress-logger/index.js';
 
 /**
  * Subscribe to `exit` event of `ProgressLogger`

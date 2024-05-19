@@ -1,8 +1,11 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
-import { CACHE_LOCATION } from './file-constants';
-import { cloneRepository, RepositoryClientOptions } from './repository-client';
-import config from '@config';
+import { CACHE_LOCATION } from './file-constants.js';
+import {
+    cloneRepository,
+    type RepositoryClientOptions,
+} from './repository-client.js';
+import config from '../config/index.js';
 
 export interface SourceFile {
     path: string;

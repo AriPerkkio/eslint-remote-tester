@@ -1,16 +1,16 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 
-import config from '@config';
+import config from '../../config/index.js';
 import {
     OVERFLOWING_ROWS_TOP,
     OVERFLOWING_ROWS_BOTTOM,
-} from '@progress-logger';
+} from '../../progress-logger/index.js';
 import {
     useScannedRepositoriesCount,
     useStdoutHeight,
     useScroll,
-} from '../hooks';
+} from '../hooks/index.js';
 
 // Status row + empty line between tasks and messages
 const CONTENT_PADDING = 2;

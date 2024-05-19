@@ -1,5 +1,5 @@
-import { pathIgnorePatterns } from './pathIgnorePatterns';
-import repositories from './repositories.json';
+import { pathIgnorePatterns } from './pathIgnorePatterns.js';
+import repositories from './repositories.js';
 
 const shuffle = <T>(array: T[]): T[] =>
     array

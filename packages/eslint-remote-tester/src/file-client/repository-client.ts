@@ -1,9 +1,9 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import simpleGit from 'simple-git';
 
-import { removeDirectorySync } from './file-utils';
-import { CACHE_LOCATION, URL } from './file-constants';
-import config from '@config';
+import { removeDirectorySync } from './file-utils.js';
+import { CACHE_LOCATION, URL } from './file-constants.js';
+import config from '../config/index.js';
 
 export interface RepositoryClientOptions {
     repository: string;

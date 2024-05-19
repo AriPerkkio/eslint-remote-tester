@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { getRepositories, getPathIgnorePattern } from '../src';
 
 describe('getRepositories', () => {

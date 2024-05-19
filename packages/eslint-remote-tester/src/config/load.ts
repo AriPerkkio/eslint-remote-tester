@@ -1,6 +1,8 @@
-import type { Service } from 'ts-node';
+import { createRequire } from 'node:module';
+import type { Service, RegisterOptions } from 'ts-node';
 
 let registerer: Service | null = null;
+const require = createRequire(import.meta.url);
 
 /* istanbul ignore next */
 const interopRequireDefault = (obj: any): { default: any } =>
@@ -10,7 +12,9 @@ const interopRequireDefault = (obj: any): { default: any } =>
 export const loadTSConfig = (configPath: string) => {
     try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        registerer ||= require('ts-node').register() as Service;
+        registerer ||= require('ts-node').register({
+            moduleTypes: { '**/*.ts': 'cjs' },
+        } satisfies RegisterOptions) as Service;
     } catch (e: any) {
         if (e.code === 'MODULE_NOT_FOUND') {
             throw new Error(

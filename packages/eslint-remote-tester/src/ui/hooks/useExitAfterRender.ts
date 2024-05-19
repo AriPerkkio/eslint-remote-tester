@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import { useApp } from 'ink';
 
-import { ResultsStore } from '@file-client';
+import { ResultsStore } from '../../file-client/index.js';
 
 /**
  * Hook for exiting application and process after one final re-render

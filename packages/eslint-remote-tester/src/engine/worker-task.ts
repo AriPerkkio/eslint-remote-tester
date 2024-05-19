@@ -1,17 +1,17 @@
-import fs from 'fs';
-import { parentPort, workerData } from 'worker_threads';
-import { resolve } from 'path';
+import fs from 'node:fs';
+import { parentPort, workerData } from 'node:worker_threads';
+import { resolve } from 'node:path';
 import { ESLint, Linter } from 'eslint';
 import { codeFrameColumns, SourceLocation } from '@babel/code-frame';
 
-import { LintMessage, WorkerData } from './types';
-import config from '@config';
+import { LintMessage, WorkerData } from './types.js';
+import config from '../config/index.js';
 import {
     CACHE_LOCATION,
     getFiles,
     removeCachedRepository,
     SourceFile,
-} from '@file-client';
+} from '../file-client/index.js';
 
 export type WorkerMessage =
     | { type: 'START' }

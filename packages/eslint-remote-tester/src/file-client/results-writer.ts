@@ -1,22 +1,22 @@
-import fs from 'fs';
-import { isMainThread } from 'worker_threads';
+import fs from 'node:fs';
+import { isMainThread } from 'node:worker_threads';
 import objectHash from 'object-hash';
 
-import ResultsStore from './results-store';
-import { removeDirectorySync } from './file-utils';
+import ResultsStore from './results-store.js';
+import { removeDirectorySync } from './file-utils.js';
 import {
     CACHE_LOCATION,
     RESULTS_COMPARE_LOCATION,
     RESULTS_LOCATION,
     URL,
-} from './file-constants';
+} from './file-constants.js';
 import {
     RESULT_PARSER_TO_TEMPLATE,
     RESULT_PARSER_TO_EXTENSION,
     Result,
-} from './result-templates';
-import config from '@config';
-import { LintMessage } from '@engine/types';
+} from './result-templates.js';
+import config from '../config/index.js';
+import { LintMessage } from '../engine/types.js';
 
 export const RESULT_TEMPLATE = RESULT_PARSER_TO_TEMPLATE[config.resultParser];
 const RESULT_EXTENSION = RESULT_PARSER_TO_EXTENSION[config.resultParser];
