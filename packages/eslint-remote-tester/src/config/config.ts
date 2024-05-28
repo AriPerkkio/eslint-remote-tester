@@ -8,7 +8,7 @@ import { loadConfig } from './load.js';
 import { WorkerData } from '../engine/types.js';
 
 const DEFAULT_CONFIGURATION_FILE_NAME = 'eslint-remote-tester.config';
-const DEFAULT_CONFIGURATION_FILE_JS = `${DEFAULT_CONFIGURATION_FILE_NAME}.cjs`;
+const DEFAULT_CONFIGURATION_FILE_JS = `${DEFAULT_CONFIGURATION_FILE_NAME}.js`;
 const DEFAULT_CONFIGURATION_FILE_TS = `${DEFAULT_CONFIGURATION_FILE_NAME}.ts`;
 const CLI_ARGS_CONFIG = ['-c', '--config'];
 
@@ -48,7 +48,7 @@ if (!fs.existsSync(CONFIGURATION_FILE)) {
     process.exit();
 }
 
-const configFileContents = loadConfig(path.resolve(CONFIGURATION_FILE));
+const configFileContents = await loadConfig(path.resolve(CONFIGURATION_FILE));
 const config = getConfigWithDefaults(configFileContents);
 
 export default config;

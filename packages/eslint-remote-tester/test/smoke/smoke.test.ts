@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { runProductionBuild } from '../utils';
 
-const BASE_CONFIG = './smoke/base.config.cjs';
+const BASE_CONFIG = './smoke/base.config.js';
 
 test('does not crash when handling 500Mb results', async () => {
     await runProductionBuild({ CI: false, compare: true }, BASE_CONFIG);
@@ -10,13 +10,15 @@ test('does not crash when handling 500Mb results', async () => {
         {
             CI: false,
             compare: true,
-            eslintrc: {
-                root: true,
-                plugins: ['local-rules'],
-                rules: {
-                    'local-rules/verbose-rule-2': 'error',
-                },
-            },
+            eslintConfig: `async function initialize() {
+                const { FlatCompat } = await import('@eslint/eslintrc');
+                const compat = new FlatCompat({ baseDirectory: process.cwd() });
+
+                return [
+                    ...compat.plugins('eslint-plugin-local-rules'),
+                    { rules: { 'local-rules/verbose-rule-2': 'error' } },
+                ];
+            }` as any,
         },
         BASE_CONFIG
     );

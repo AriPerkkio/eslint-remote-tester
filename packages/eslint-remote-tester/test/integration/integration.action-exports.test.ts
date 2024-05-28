@@ -42,7 +42,7 @@ test('exports validateConfig', async () => {
       [Error: Configuration validation errors:
       - Missing repositories.
       - Missing extensions.
-      - Missing eslintrc.]
+      - Missing eslintConfig.]
     `);
 
     console.log = consolelog;

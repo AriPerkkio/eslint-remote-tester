@@ -211,17 +211,20 @@ export default async function workerTask(): Promise<void> {
         onReadFailure: () => postMessage({ type: 'READ_FAILURE' }),
     });
 
-    const eslintrc =
-        typeof config.eslintrc === 'function'
-            ? config.eslintrc({
+    const eslintConfig =
+        typeof config.eslintConfig === 'function'
+            ? await config.eslintConfig({
                   repository,
                   location: resolve(`${CACHE_LOCATION}/${repository}`),
               })
-            : config.eslintrc;
+            : config.eslintConfig;
 
     const linter = new ESLint({
-        useEslintrc: false,
-        overrideConfig: eslintrc,
+        // @ts-expect-error -- `@types/eslint` for v9 are unavailable
+        overrideConfigFile: true,
+
+        // @ts-expect-error -- `@types/eslint` for v9 are unavailable
+        overrideConfig: eslintConfig,
 
         // Only rules set in configuration are expected.
         // Ignore all inline configurations found from target repositories.
@@ -229,7 +232,8 @@ export default async function workerTask(): Promise<void> {
 
         // Lint all given files, ignore none. Cache is located under node_modules.
         // config.pathIgnorePattern is used for exclusions.
-        ignore: false,
+        ignore: true,
+        ignorePatterns: ['!**/node_modules/'],
     });
 
     postMessage({ type: 'LINT_START', payload: files.length });

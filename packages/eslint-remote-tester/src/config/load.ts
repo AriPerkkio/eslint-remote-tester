@@ -1,42 +1,42 @@
-import { createRequire } from 'node:module';
-import type { Service, RegisterOptions } from 'ts-node';
-
-let registerer: Service | null = null;
-const require = createRequire(import.meta.url);
-
-/* istanbul ignore next */
-const interopRequireDefault = (obj: any): { default: any } =>
-    obj && obj.__esModule ? obj : { default: obj };
-
 /** @internal */
-export const loadTSConfig = (configPath: string) => {
+export const loadTSConfig = async (configPath: string) => {
+    let importx: typeof import('importx') | undefined = undefined;
+    let jiti: typeof import('jiti') | undefined = undefined;
+
     try {
-        registerer ||= require('ts-node').register({
-            moduleTypes: { '**/*.ts': 'cjs' },
-        } satisfies RegisterOptions) as Service;
-    } catch (e: any) {
-        if (e.code === 'MODULE_NOT_FOUND') {
+        importx = await import('importx');
+    } catch {
+        try {
+            jiti = await import('jiti');
+        } catch {
             throw new Error(
-                `'ts-node' is required for TypeScript configuration files. Make sure it is installed\nError: ${e.message}`
+                "'jiti' or 'importx' is required for loading TypeScript configuration files. Make sure to install one of them."
             );
         }
-
-        throw e;
     }
 
-    registerer.enabled(true);
+    if (importx) {
+        const config = await importx.import(configPath, import.meta.url);
+        return config.default;
+    }
 
-    const configObject = interopRequireDefault(require(configPath)).default;
+    if (jiti) {
+        return jiti.default(import.meta.url, {
+            interopDefault: true,
+            esmResolve: true,
+        })(configPath);
+    }
 
-    registerer.enabled(false);
-
-    return configObject;
+    throw new Error(
+        "'jiti' or 'importx' is required for loading TypeScript configuration files. Make sure to install one of them."
+    );
 };
 
-export const loadConfig = (configPath: string) => {
+export const loadConfig = async (configPath: string) => {
     if (configPath.endsWith('.ts')) {
         return loadTSConfig(configPath);
     }
 
-    return require(configPath);
+    const { default: config } = await import(configPath);
+    return config;
 };

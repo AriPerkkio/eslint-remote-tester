@@ -16,7 +16,7 @@
 # In your project directory
 $ npm install --save-dev eslint-remote-tester
 
-# eslint is also required as peer dependency
+# eslint@>=9 is also required as peer dependency
 $ npm install --save-dev eslint
 ```
 
@@ -49,14 +49,13 @@ Add new script to your `package.json` file.
 Create new configuration file `eslint-remote-tester.config.js` in the root of your project. This is used as configuration file by default. Use `-c` or `--config` argument for custom configuration file, e.g. `--config path/custom.config.js`.
 
 ```js
+import js from '@eslint/js';
+
 /** @type {import('eslint-remote-tester').Config} */
-module.exports = {
+const config = {
     repositories: ['mui-org/material-ui', 'reach/reach-ui'],
     extensions: ['js', 'jsx', 'ts', 'tsx'],
-    eslintrc: {
-        root: true,
-        extends: ['eslint:recommended'],
-    },
+    eslintConfig: [js.configs.recommended],
     pathIgnorePattern: `(${[
         'node_modules',
         '\\/\\.', // Any file or directory starting with dot, e.g. ".git"
@@ -64,20 +63,20 @@ module.exports = {
         'docs',
     ].join('|')})`,
 };
+
+export default config;
 ```
 
-Configuration file can also be written in TypeScript if [`ts-node`](https://www.npmjs.com/package/ts-node) is installed. Use `--config` argument for TypeScript configuration file, e.g. `--config eslint-remote-tester.config.ts`.
+Configuration file can also be written in TypeScript if [`jiti`](https://www.npmjs.com/package/jiti) or [`importx`](https://www.npmjs.com/package/importx) is installed. Use `--config` argument for TypeScript configuration file, e.g. `--config eslint-remote-tester.config.ts`.
 
 ```ts
 import type { Config } from 'eslint-remote-tester';
+import js from '@eslint/js';
 
 const config: Config = {
     repositories: ['mui-org/material-ui', 'reach/reach-ui'],
     extensions: ['js', 'jsx', 'ts', 'tsx'],
-    eslintrc: {
-        root: true,
-        extends: ['eslint:recommended'],
-    },
+    eslintConfig: [js.configs.recommended],
 };
 
 export default config;
@@ -85,24 +84,24 @@ export default config;
 
 #### Configuration options
 
-| Name                        | Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                | Type                                                                                                | Required           | Default                                | Example                                                                                                                          |
-| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- | :----------------- | :------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| `repositories`              | Repositories to scan in format of `owner/project`. See [eslint-remote-tester-repositories] for shared list of repositories.                                                                                    | `string[]`                                                                                          | :white_check_mark: | :x:                                    | `['mui-org/material-ui', 'reach/reach-ui']`                                                                                      |
-| `extensions`                | Extensions of files under scanning                                                                                                                                                                             | `string[]`                                                                                          | :white_check_mark: | :x:                                    | `['js', 'jsx', 'ts', 'tsx']`                                                                                                     |
-| `eslintrc`                  | ESLint configuration. Supports lazy initialization based on currently tested repository when a function is passed. Function is called with current repository and its location on filesystem.                  | `object \| ({ location, repository }) => object` See [Configuring ESLint]                           | :white_check_mark: | :x:                                    | `{ root: true, extends: ['eslint:all'] }` `(options) => options.repository === 'my-repo' ? ({ extends: ['eslint:all'] }) : ({})` |
-| `pathIgnorePattern`         | Regexp pattern string used to exclude paths                                                                                                                                                                    | `string`                                                                                            | :x:                | :x:                                    | `(node_modules\|docs\|\\/\\.git)`                                                                                                |
-| `maxFileSizeBytes`          | Max file size used to exclude bigger files                                                                                                                                                                     | `number`                                                                                            | :x:                | `2000000`                              | `1500000`                                                                                                                        |
-| `rulesUnderTesting`         | Array of rules or a filter method used to filter out results. Use `undefined` or empty array when ESLint crashes are the only interest. Filter method is called with `ruleId` and `options`.                   | `string[] \| (ruleId, { repository }) => boolean`                                                   | :x:                | `[]`                                   | `['no-empty', 'react/sort-prop-types']` `(ruleId, options) => ruleId === 'no-undef' && options.repository === 'owner/repo'`      |
-| `resultParser`              | Syntax for the result parser                                                                                                                                                                                   | `plaintext\|markdown`                                                                               | :x:                | `markdown` on CLI. `plaintext` on CI   | `markdown`                                                                                                                       |
-| `concurrentTasks`           | Maximum amount of tasks run concurrently                                                                                                                                                                       | `number`                                                                                            | :x:                | `5`                                    | `3`                                                                                                                              |
-| `CI`                        | Flag used to set CI mode. `process.env.CI` is used when not set.                                                                                                                                               | `boolean`                                                                                           | :x:                | value of `process.env.CI === 'true'`   | `true`                                                                                                                           |
-| `logLevel`                  | Filter log messages based on their priority                                                                                                                                                                    | `verbose\|info\|warn\|error`                                                                        | :x:                | `verbose`                              | `warn`                                                                                                                           |
-| `slowLintTimeLimit`         | Time limit before linting of a single file is considered as slow, and logged as warning. Disabled by default.                                                                                                  | `number\|null`                                                                                      | :x:                | :x:                                    | `5 // 5 seconds`                                                                                                                 |
-| `cache`                     | Flag used to enable caching of cloned repositories. For CIs it's ideal to disable caching due to limited disk space.                                                                                           | `boolean`                                                                                           | :x:                | `true`                                 | `true`                                                                                                                           |
-| `timeLimit`                 | Time limit before scan is interrupted and **exited successfully**. Ideal for avoiding CI timeouts in regression tests.                                                                                         | `number`                                                                                            | :x:                | `5.5 * 60 * 60, // 5 hours 30 minutes` | `5 * 60 * 60 // 5 hours`                                                                                                         |
-| `compare`                   | Flag used to enable result comparison mode. Compares results of two scans and output the diff. Ideal for identifying new false positives when fixing existing rules. See [Fixing existing rules].              | `boolean`                                                                                           | :x:                | `false`                                | `true`                                                                                                                           |
-| `updateComparisonReference` | Flag used to enable result comparison reference updating. Indicates whether comparison base should be updated after scan has finished. Ideal to be turned off once initial comparison base has been collected. | `boolean`                                                                                           | :x:                | `true`                                 | `true`                                                                                                                           |
-| `onComplete`                | Callback invoked once scan is completed. Asynchronous functions are supported. Ideal for extending the process with custom features.                                                                           | `(results, comparisonResults, repositoryCount) => void`\|`Promise<void>`. See [onComplete example]. | :x:                | :x:                                    | `async (results, comparisonResults, repositoryCount) => {}`                                                                      |
+| Name                        | Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                | Type                                                                                                | Required           | Default                                | Example                                                                                                                     |
+| :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- | :----------------- | :------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| `repositories`              | Repositories to scan in format of `owner/project`. See [eslint-remote-tester-repositories] for shared list of repositories.                                                                                    | `string[]`                                                                                          | :white_check_mark: | :x:                                    | `['mui-org/material-ui', 'reach/reach-ui']`                                                                                 |
+| `extensions`                | Extensions of files under scanning                                                                                                                                                                             | `string[]`                                                                                          | :white_check_mark: | :x:                                    | `['js', 'jsx', 'ts', 'tsx']`                                                                                                |
+| `eslintConfig`              | ESLint configuration. Supports lazy initialization based on currently tested repository when a function is passed. Function is called with current repository and its location on filesystem.                  | `object \| ({ location, repository }) => object` See [Configuring ESLint]                           | :white_check_mark: | :x:                                    | `[js.configs.recommended]` `(options) => options.repository === 'my-repo' ? [js.configs.recommended] : []`                  |
+| `pathIgnorePattern`         | Regexp pattern string used to exclude paths                                                                                                                                                                    | `string`                                                                                            | :x:                | :x:                                    | `(node_modules\|docs\|\\/\\.git)`                                                                                           |
+| `maxFileSizeBytes`          | Max file size used to exclude bigger files                                                                                                                                                                     | `number`                                                                                            | :x:                | `2000000`                              | `1500000`                                                                                                                   |
+| `rulesUnderTesting`         | Array of rules or a filter method used to filter out results. Use `undefined` or empty array when ESLint crashes are the only interest. Filter method is called with `ruleId` and `options`.                   | `string[] \| (ruleId, { repository }) => boolean`                                                   | :x:                | `[]`                                   | `['no-empty', 'react/sort-prop-types']` `(ruleId, options) => ruleId === 'no-undef' && options.repository === 'owner/repo'` |
+| `resultParser`              | Syntax for the result parser                                                                                                                                                                                   | `plaintext\|markdown`                                                                               | :x:                | `markdown` on CLI. `plaintext` on CI   | `markdown`                                                                                                                  |
+| `concurrentTasks`           | Maximum amount of tasks run concurrently                                                                                                                                                                       | `number`                                                                                            | :x:                | `5`                                    | `3`                                                                                                                         |
+| `CI`                        | Flag used to set CI mode. `process.env.CI` is used when not set.                                                                                                                                               | `boolean`                                                                                           | :x:                | value of `process.env.CI === 'true'`   | `true`                                                                                                                      |
+| `logLevel`                  | Filter log messages based on their priority                                                                                                                                                                    | `verbose\|info\|warn\|error`                                                                        | :x:                | `verbose`                              | `warn`                                                                                                                      |
+| `slowLintTimeLimit`         | Time limit before linting of a single file is considered as slow, and logged as warning. Disabled by default.                                                                                                  | `number\|null`                                                                                      | :x:                | :x:                                    | `5 // 5 seconds`                                                                                                            |
+| `cache`                     | Flag used to enable caching of cloned repositories. For CIs it's ideal to disable caching due to limited disk space.                                                                                           | `boolean`                                                                                           | :x:                | `true`                                 | `true`                                                                                                                      |
+| `timeLimit`                 | Time limit before scan is interrupted and **exited successfully**. Ideal for avoiding CI timeouts in regression tests.                                                                                         | `number`                                                                                            | :x:                | `5.5 * 60 * 60, // 5 hours 30 minutes` | `5 * 60 * 60 // 5 hours`                                                                                                    |
+| `compare`                   | Flag used to enable result comparison mode. Compares results of two scans and output the diff. Ideal for identifying new false positives when fixing existing rules. See [Fixing existing rules].              | `boolean`                                                                                           | :x:                | `false`                                | `true`                                                                                                                      |
+| `updateComparisonReference` | Flag used to enable result comparison reference updating. Indicates whether comparison base should be updated after scan has finished. Ideal to be turned off once initial comparison base has been collected. | `boolean`                                                                                           | :x:                | `true`                                 | `true`                                                                                                                      |
+| `onComplete`                | Callback invoked once scan is completed. Asynchronous functions are supported. Ideal for extending the process with custom features.                                                                           | `(results, comparisonResults, repositoryCount) => void`\|`Promise<void>`. See [onComplete example]. | :x:                | :x:                                    | `async (results, comparisonResults, repositoryCount) => {}`                                                                 |
 
 [configuring eslint]: https://eslint.org/docs/user-guide/configuring
 [fixing existing rules]: #fixing-existing-rules
@@ -130,7 +129,7 @@ Testing the rule against 1000's of repositories can reveal unexpected results:
 Follow these steps to test the new rule easily:
 
 1. Include new rule in `rulesUnderTesting`
-2. Configure `eslintrc` with the new rule and its options
+2. Configure `eslintConfig` with the new rule and its options
 3. Run `eslint-remote-tester` locally
 4. Check generated results at `./eslint-remote-tester-results`
 
@@ -145,7 +144,7 @@ Example of comparison results can be found at [Examples section](#examples).
 Follow these steps to test code changes of existing rules easily:
 
 1. Include given rule in `rulesUnderTesting`
-2. Configure `eslintrc` with the rule and its options
+2. Configure `eslintConfig` with the rule and its options
 3. Stash code changes of the fix so that the current setup matches the latest build (typically `master` branch)
 4. Enable `compare` in the configuration file. This will generate comparison reference results.
 5. Run `eslint-remote-tester` locally
