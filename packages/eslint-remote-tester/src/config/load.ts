@@ -11,7 +11,6 @@ const interopRequireDefault = (obj: any): { default: any } =>
 /** @internal */
 export const loadTSConfig = (configPath: string) => {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         registerer ||= require('ts-node').register({
             moduleTypes: { '**/*.ts': 'cjs' },
         } satisfies RegisterOptions) as Service;
@@ -27,7 +26,6 @@ export const loadTSConfig = (configPath: string) => {
 
     registerer.enabled(true);
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const configObject = interopRequireDefault(require(configPath)).default;
 
     registerer.enabled(false);

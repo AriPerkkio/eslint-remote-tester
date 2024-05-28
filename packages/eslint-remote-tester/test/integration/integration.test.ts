@@ -601,7 +601,7 @@ test('erroneous onComplete does not crash application', async () => {
             extends: ['eslint:recommended'],
         },
         onComplete: function onComplete(results) {
-            // @ts-ignore
+            // @ts-expect-error -- intentional error
             results.some.nonexisting.field;
         },
     });
@@ -864,7 +864,7 @@ test('calls onComplete hook with the comparison results', async () => {
 
             for (const type of [`added`, `removed`]) {
                 console.log(`[${type.toUpperCase()}]`);
-                // @ts-ignore
+                // @ts-expect-error -- intentional
                 comparisonResults[type].forEach(result => {
                     Object.entries(result).forEach(([key, value]) => {
                         if (key === `__internalHash`) return;
