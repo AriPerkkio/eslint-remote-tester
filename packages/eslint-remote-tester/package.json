@@ -53,7 +53,7 @@
         "@typescript-eslint/eslint-plugin": "^7.11.0",
         "@typescript-eslint/parser": "^7.11.0",
         "conventional-changelog-cli": "^5.0.0",
-        "eslint": "^8.57.0",
+        "eslint": "^9.4.0",
         "eslint-remote-tester-repositories": "workspace:*",
         "ink-testing-library": "^2.1.0",
         "node-pty": "^1.0.0",
