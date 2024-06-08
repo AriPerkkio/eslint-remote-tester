@@ -1,4 +1,7 @@
-module.exports = {
+import js from '@eslint/js';
+
+/** @type {import('./src/config/types').Config} */
+const config = {
     repositories: [
         'AriPerkkio/eslint-remote-tester-integration-test-target',
         'AriPerkkio/aria-live-capture',
@@ -17,20 +20,7 @@ module.exports = {
 
     concurrentTasks: 3,
 
-    eslintrc: {
-        root: true,
-        env: {
-            es6: true,
-        },
-        parserOptions: {
-            ecmaVersion: 2020,
-            sourceType: 'module',
-            ecmaFeatures: {
-                jsx: true,
-            },
-        },
-        extends: ['eslint:recommended'],
-    },
+    eslintConfig: [js.configs.recommended],
 
     cache: true,
 
@@ -61,3 +51,5 @@ module.exports = {
      */
     onComplete: undefined,
 };
+
+export default config;

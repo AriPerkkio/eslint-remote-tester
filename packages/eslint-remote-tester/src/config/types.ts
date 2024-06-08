@@ -45,12 +45,12 @@ export interface Config {
      * Supports lazy initialization based on currently tested repository when a function is passed.
      * Function is called with current repository and its location on filesystem.
      */
-    eslintrc:
-        | Linter.Config
+    eslintConfig:
+        | Linter.FlatConfig
         | ((options?: {
               repository: string;
               location: string;
-          }) => Linter.Config);
+          }) => Linter.FlatConfig | Promise<Linter.FlatConfig>);
 
     /** Flag used to set CI mode. `process.env.CI` is used when not set. */
     CI: boolean;
@@ -102,7 +102,10 @@ export interface Config {
     ) => Promise<void> | void;
 }
 
-type RequiredFields = Pick<Config, 'repositories' | 'extensions' | 'eslintrc'>;
+type RequiredFields = Pick<
+    Config,
+    'repositories' | 'extensions' | 'eslintConfig'
+>;
 type OptionalFields = AllKeysOptional<
     Pick<
         Config,

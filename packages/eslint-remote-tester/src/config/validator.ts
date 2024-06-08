@@ -100,7 +100,7 @@ export default async function validate(
         rulesUnderTesting,
         resultParser,
         concurrentTasks,
-        eslintrc,
+        eslintConfig,
         CI,
         logLevel,
         slowLintTimeLimit,
@@ -127,24 +127,29 @@ export default async function validate(
 
     errors.push(validateStringArray('extensions', extensions));
 
-    if (!eslintrc) {
-        errors.push(`Missing eslintrc.`);
+    if (!eslintConfig) {
+        errors.push(`Missing eslintConfig.`);
     } else {
         try {
-            // This will throw when eslintrc is invalid
+            // This will throw when eslintConfig is invalid
             const linter = new ESLint({
-                useEslintrc: false,
+                // @ts-expect-error -- `@types/eslint` for v9 are unavailable
+                overrideConfigFile: true,
+
+                // @ts-expect-error -- `@types/eslint` for v9 are unavailable
                 overrideConfig:
-                    typeof eslintrc === 'function' ? eslintrc() : eslintrc,
+                    typeof eslintConfig === 'function'
+                        ? await eslintConfig()
+                        : eslintConfig,
             });
 
             errors.push(await validateEslintRules(linter));
         } catch (e) {
-            errors.push(`eslintrc: ${e.message}`);
+            errors.push(`eslintConfig: ${e.message}`);
 
-            if (typeof eslintrc === 'function') {
+            if (typeof eslintConfig === 'function') {
                 errors.push(
-                    'Note that "config.eslintrc" is called with empty options during configuration validation.'
+                    'Note that "config.eslintConfig" is called with empty options during configuration validation.'
                 );
             }
         }
@@ -152,7 +157,7 @@ export default async function validate(
 
     // Optional fields
 
-    // TODO nice-to-have: Validate rules match eslintrc config
+    // TODO nice-to-have: Validate rules match eslintConfig config
     // https://eslint.org/docs/developer-guide/nodejs-api#lintergetrules
     if (rulesUnderTesting) {
         if (Array.isArray(rulesUnderTesting)) {
@@ -294,7 +299,7 @@ export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
 }
 
 /**
- * Validate given rules of `config.eslintrc.rules`
+ * Validate given rules of `config.eslintConfig.rules`
  * - When unknown rules are defined, or known ones are misspelled they are not
  *   reported during linting. We need to specifically look for them.
  */
@@ -313,7 +318,7 @@ async function validateEslintRules(
     }
 
     if (errors.length) {
-        return `Configuration validation errors at eslintrc.rules: \n  - ${errors.join(
+        return `Configuration validation errors at eslintConfig.rules: \n  - ${errors.join(
             '\n  - '
         )}`;
     }

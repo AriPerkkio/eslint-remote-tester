@@ -11,12 +11,19 @@ import {
 import { ComparisonTypes } from '../src/file-client/result-templates';
 import { removeDirectorySync } from '../src/file-client/file-utils';
 import { Config, ConfigToValidate } from '../src/config/types';
-import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 
 declare const console: { log: Mock; error: (...args: any) => void };
 
-const require = createRequire(import.meta.url);
+type TestConfig = Omit<
+    ConfigToValidate,
+    'eslintConfig' | 'rulesUnderTesting' | 'onComplete'
+> & {
+    eslintConfig?: ConfigToValidate['eslintConfig'] | string | [];
+    rulesUnderTesting?: ConfigToValidate['rulesUnderTesting'] | string;
+    onComplete?: ConfigToValidate['onComplete'] | string;
+};
+
 export const INTEGRATION_REPO_OWNER = 'AriPerkkio';
 export const INTEGRATION_REPO_NAME =
     'eslint-remote-tester-integration-test-target';
@@ -25,24 +32,25 @@ export const REPOSITORY_CACHE = `${CACHE_LOCATION}/${INTEGRATION_REPO_OWNER}/${I
 const LAST_RENDER_PATTERN = /(Results|Full log)[\s|\S]*/;
 const COMPARISON_RESULTS_PATTERN = /(Comparison results:[\s|\S]*)Results/;
 const ON_COMPLETE_PATTERN = /("onComplete": )"([\s|\S]*)"/;
-const RULES_UNDER_TESTING_PATTERN = /("rulesUnderTesting": )"([\s|\S]*)",/;
-const ESLINTRC_PATTERN = /("eslintrc": )"([\s|\S]*)",/;
+const RULES_UNDER_TESTING_PATTERN = /("rulesUnderTesting": )"([^"]*)"/;
+const ESLINT_CONFIG_PATTERN = /("eslintConfig": )"([^"]*)"/;
 const ESCAPED_NEWLINE_PATTERN = /\\n/g;
+const ESCAPED_QUOTE_PATTERN = /\\"/g;
 
 let idCounter = 0;
 
 /**
  * Create temporary configuration file for integration test
  */
-function createConfiguration(
-    options: ConfigToValidate,
-    baseConfigPath = './integration/base.config.cjs',
-    fileExtension: 'cjs' | 'ts'
-): { name: string; cleanup: () => void } {
+async function createConfiguration(
+    options: TestConfig,
+    baseConfigPath = './integration/base.config.js',
+    fileExtension: 'js' | 'ts'
+): Promise<{ name: string; cleanup: () => void }> {
     const name = `./test/integration/integration.config-${idCounter++}.${fileExtension}`;
 
-    const baseConfig: Config = require(baseConfigPath);
-    const config = { ...baseConfig, ...options };
+    const { default: baseConfig } = await import(baseConfigPath);
+    const config: Config = { ...baseConfig, ...options };
 
     // Passing function to config file is tricky
     // - Add it as string to JSON
@@ -53,20 +61,21 @@ function createConfiguration(
     if (typeof options.rulesUnderTesting === 'function') {
         config.rulesUnderTesting = options.rulesUnderTesting.toString() as any;
     }
-    if (typeof options.eslintrc === 'function') {
-        config.eslintrc = options.eslintrc.toString() as any;
+    if (typeof options.eslintConfig === 'function') {
+        config.eslintConfig = options.eslintConfig.toString() as any;
+    }
+    if (typeof config.eslintConfig === 'function') {
+        config.eslintConfig = config.eslintConfig.toString() as any;
     }
 
     const configText = JSON.stringify(config, null, 4)
         .replace(ON_COMPLETE_PATTERN, '$1$2')
-        .replace(RULES_UNDER_TESTING_PATTERN, '$1$2,')
-        .replace(ESLINTRC_PATTERN, '$1$2,')
-        .replace(ESCAPED_NEWLINE_PATTERN, '\n');
+        .replace(RULES_UNDER_TESTING_PATTERN, '$1$2')
+        .replace(ESLINT_CONFIG_PATTERN, '$1$2')
+        .replace(ESCAPED_NEWLINE_PATTERN, '\n')
+        .replace(ESCAPED_QUOTE_PATTERN, '"');
 
-    const configExport =
-        fileExtension === 'ts' ? 'export default' : 'module.exports=';
-
-    fs.writeFileSync(name, `${configExport} ${configText}`, 'utf8');
+    fs.writeFileSync(name, `export default ${configText}`, 'utf8');
 
     return { name, cleanup: () => fs.unlinkSync(name) };
 }
@@ -75,11 +84,11 @@ function createConfiguration(
  * Spawn terminal and run the actual production build on it
  */
 export async function runProductionBuild(
-    options: ConfigToValidate = {},
+    options: TestConfig = {},
     baseConfigPath?: string,
-    fileExtension: 'cjs' | 'ts' = 'cjs'
+    fileExtension: 'js' | 'ts' = 'js'
 ): Promise<{ output: string[]; exitCode: number }> {
-    const { name, cleanup } = createConfiguration(
+    const { name, cleanup } = await createConfiguration(
         options,
         baseConfigPath,
         fileExtension
@@ -110,6 +119,10 @@ export async function runProductionBuild(
             cleanup();
 
             const parsedOutput = parsePtyOutput(output);
+
+            if (parsedOutput.find(line => line.includes('Node.js v'))) {
+                reject(new Error(stripAnsi(output.join('\n'))));
+            }
 
             // Identify any 'failed to' messages - these are not expected during
             // testing but can happen due to unstable network etc.

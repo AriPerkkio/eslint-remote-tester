@@ -9,9 +9,12 @@ import {
     INTEGRATION_REPO_NAME,
     REPOSITORY_CACHE,
 } from '../utils';
-import { Config } from '../../src/config/types';
 
 const DEBUG_LOG_PATTERN = /\[DEBUG (\S|:)*\] /g;
+const ESLINT_CONFIG_ALL = `async function initialize() {
+    const { default: js } = await import('@eslint/js');
+    return [js.configs.all];
+}`;
 
 test('results are rendered on CI mode', async () => {
     const { output } = await runProductionBuild({ CI: true });
@@ -35,7 +38,7 @@ test('results are rendered on CI mode', async () => {
       TypeError: Cannot read property 'someAttribute' of undefined
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
-          at Identifier (<removed>/eslint-local-rules.js)
+          at Identifier (<removed>/eslint-local-rules.cjs:22:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
@@ -43,8 +46,8 @@ test('results are rendered on CI mode', async () => {
           at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at CodePathAnalyzer.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js
+          at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
 
       Repository: AriPerkkio/eslint-remote-tester-integration-test-target
       Rule: no-undef
@@ -127,7 +130,7 @@ test('results are written to file system on CLI mode', async () => {
       TypeError: Cannot read property 'someAttribute' of undefined
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
-          at Identifier (<removed>/eslint-local-rules.js)
+          at Identifier (<removed>/eslint-local-rules.cjs:22:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
@@ -135,8 +138,8 @@ test('results are written to file system on CLI mode', async () => {
           at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at CodePathAnalyzer.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js
+          at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       \`\`\`
 
       ## Rule: no-undef
@@ -325,10 +328,7 @@ test('erroneous scan exits with error code', async () => {
 test('successful scan exits without error code', async () => {
     const { exitCode } = await runProductionBuild({
         rulesUnderTesting: [],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:recommended'],
-        },
+        eslintConfig: [],
     });
 
     expect(exitCode).toBe(0);
@@ -410,7 +410,7 @@ test('calls onComplete hook with the results', async () => {
       TypeError: Cannot read property 'someAttribute' of undefined
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
-          at Identifier (<removed>/eslint-local-rules.js)
+          at Identifier (<removed>/eslint-local-rules.cjs:22:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
@@ -418,8 +418,8 @@ test('calls onComplete hook with the results', async () => {
           at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at CodePathAnalyzer.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js
+          at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       [ERROR]
       .
       [REPOSITORY]
@@ -596,12 +596,9 @@ test('erroneous onComplete does not crash application', async () => {
     const { output, exitCode } = await runProductionBuild({
         CI: true,
         rulesUnderTesting: [],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:recommended'],
-        },
+        eslintConfig: [],
         onComplete: function onComplete(results) {
-            // @ts-ignore
+            // @ts-expect-error -- intentional error
             results.some.nonexisting.field;
         },
     });
@@ -623,29 +620,23 @@ test('comparison results are written to file system on CLI mode', async () => {
     await runProductionBuild({
         compare: true,
         CI: false,
+        eslintConfig: ESLINT_CONFIG_ALL,
         rulesUnderTesting: [
             'no-compare-neg-zero', // Used in initial scan, not in second
             // 'no-undef', // Used in second scan, not in first
             'no-empty', // Used in both scans
         ],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:all'],
-        },
     });
 
     const { output } = await runProductionBuild({
         compare: true,
         CI: false,
+        eslintConfig: ESLINT_CONFIG_ALL,
         rulesUnderTesting: [
             // 'no-compare-neg-zero', // Used in initial scan, not in second
             'no-undef', // Used in second scan, not in first
             'no-empty', // Used in both scans
         ],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:all'],
-        },
     });
 
     expect(output.find(row => /comparison/.test(row))).toMatch(
@@ -721,15 +712,12 @@ test('comparison result reference updating can be disabled', async () => {
     await runProductionBuild({
         compare: true,
         CI: false,
+        eslintConfig: ESLINT_CONFIG_ALL,
         rulesUnderTesting: [
             'no-compare-neg-zero', // Used in initial scan, not in second
             // 'no-undef', // Used in second scan, not in first
             'no-empty', // Used in both scans
         ],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:all'],
-        },
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -738,15 +726,12 @@ test('comparison result reference updating can be disabled', async () => {
             updateComparisonReference: false,
             compare: true,
             CI: false,
+            eslintConfig: ESLINT_CONFIG_ALL,
             rulesUnderTesting: [
                 // 'no-compare-neg-zero', // Used in initial scan, not in second
                 'no-undef', // Used in second scan, not in first
                 'no-empty', // Used in both scans
             ],
-            eslintrc: {
-                root: true,
-                extends: ['eslint:all'],
-            },
         });
 
         // Comparison results should not change between runs
@@ -760,29 +745,23 @@ test('comparison results are rendered on CI mode', async () => {
     await runProductionBuild({
         compare: true,
         CI: true,
+        eslintConfig: ESLINT_CONFIG_ALL,
         rulesUnderTesting: [
             'no-compare-neg-zero', // Used in initial scan, not in second
             // 'no-undef', // Used in second scan, not in first
             'no-empty', // Used in both scans
         ],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:all'],
-        },
     });
 
     const { output } = await runProductionBuild({
         compare: true,
         CI: true,
+        eslintConfig: ESLINT_CONFIG_ALL,
         rulesUnderTesting: [
             // 'no-compare-neg-zero', // Used in initial scan, not in second
             'no-undef', // Used in second scan, not in first
             'no-empty', // Used in both scans
         ],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:all'],
-        },
     });
 
     // Remaining errors should be visible in results but not in comparison
@@ -790,45 +769,45 @@ test('comparison results are rendered on CI mode', async () => {
     expect(results).toMatch(/no-empty/);
 
     expect(comparisonResults).toMatchInlineSnapshot(`
-        "Comparison results:
-        Added:
-        Rule: no-undef
-        Message: 'window' is not defined.
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2
+      "Comparison results:
+      Added:
+      Rule: no-undef
+      Message: 'window' is not defined.
+      Path: AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+      Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2
 
-          1 | // Identifier.name = attributeForCrashing
-        > 2 | window.attributeForCrashing();
-            | ^^^^^^
-          3 |
+        1 | // Identifier.name = attributeForCrashing
+      > 2 | window.attributeForCrashing();
+          | ^^^^^^
+        3 |
 
-        Rule: no-undef
-        Message: 'bar' is not defined.
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
+      Rule: no-undef
+      Message: 'bar' is not defined.
+      Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+      Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
 
-        > 1 | var foo = bar;
-            |           ^^^
-          2 |
-          3 | if (foo) {
-          4 | }
-
-
-        Removed:
-        Rule: no-compare-neg-zero
-        Message: Do not use the '===' operator to compare against -0.
-        Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
-
-          12 |
-          13 |
-        > 14 | if (foo === -0) {
-             |     ^^^^^^^^^^
-          15 |   // prevent no-empty
-          16 | }
+      > 1 | var foo = bar;
+          |           ^^^
+        2 |
+        3 | if (foo) {
+        4 | }
 
 
-        "
+      Removed:
+      Rule: no-compare-neg-zero
+      Message: Do not use the '===' operator to compare against -0.
+      Path: AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+      Link: https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
+
+        12 |
+        13 |
+      > 14 | if (foo === -0) {
+           |     ^^^^^^^^^^
+        15 |   // prevent no-empty
+        16 | }
+
+
+      "
     `);
 });
 
@@ -836,35 +815,29 @@ test('calls onComplete hook with the comparison results', async () => {
     await runProductionBuild({
         compare: true,
         CI: true,
+        eslintConfig: ESLINT_CONFIG_ALL,
         rulesUnderTesting: [
             'no-compare-neg-zero', // Used in initial scan, not in second
             // 'no-undef', // Used in second scan, not in first
             'no-empty', // Used in both scans
         ],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:all'],
-        },
     });
 
     const { output } = await runProductionBuild({
         compare: true,
         CI: true,
+        eslintConfig: ESLINT_CONFIG_ALL,
         rulesUnderTesting: [
             // 'no-compare-neg-zero', // Used in initial scan, not in second
             'no-undef', // Used in second scan, not in first
             'no-empty', // Used in both scans
         ],
-        eslintrc: {
-            root: true,
-            extends: ['eslint:all'],
-        },
         onComplete: function onComplete(_, comparisonResults) {
             console.log(`[TEST-ON-COMPLETE-START]`);
 
             for (const type of [`added`, `removed`]) {
                 console.log(`[${type.toUpperCase()}]`);
-                // @ts-ignore
+                // @ts-expect-error -- intentional
                 comparisonResults[type].forEach(result => {
                     Object.entries(result).forEach(([key, value]) => {
                         if (key === `__internalHash`) return;
@@ -888,128 +861,128 @@ test('calls onComplete hook with the comparison results', async () => {
         .match(/\[TEST-ON-COMPLETE-START\]([\s|\S]*)\[TEST-ON-COMPLETE-END\]/)!;
 
     expect(onCompleteCall).toMatchInlineSnapshot(`
-        "[TEST-ON-COMPLETE-START]
-        [ADDED]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        no-undef
-        [RULE]
-        .
-        [MESSAGE]
-        'window' is not defined.
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-          1 | // Identifier.name = attributeForCrashing
-        > 2 | window.attributeForCrashing();
-            | ^^^^^^
-          3 |
-        [SOURCE]
-        .
-        [ERROR]
-        undefined
-        [ERROR]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        no-undef
-        [RULE]
-        .
-        [MESSAGE]
-        'bar' is not defined.
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-        > 1 | var foo = bar;
-            |           ^^^
-          2 |
-          3 | if (foo) {
-          4 | }
-        [SOURCE]
-        .
-        [ERROR]
-        undefined
-        [ERROR]
-        [ADDED]
-        [REMOVED]
-        .
-        [REPOSITORY]
-        eslint-remote-tester-integration-test-target
-        [REPOSITORY]
-        .
-        [REPOSITORYOWNER]
-        AriPerkkio
-        [REPOSITORYOWNER]
-        .
-        [RULE]
-        no-compare-neg-zero
-        [RULE]
-        .
-        [MESSAGE]
-        Do not use the '===' operator to compare against -0.
-        [MESSAGE]
-        .
-        [PATH]
-        AriPerkkio/eslint-remote-tester-integration-test-target/index.js
-        [PATH]
-        .
-        [LINK]
-        https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
-        [LINK]
-        .
-        [EXTENSION]
-        js
-        [EXTENSION]
-        .
-        [SOURCE]
-          12 |
-          13 |
-        > 14 | if (foo === -0) {
-             |     ^^^^^^^^^^
-          15 |   // prevent no-empty
-          16 | }
-        [SOURCE]
-        [REMOVED]
-        [TEST-ON-COMPLETE-END]"
+      "[TEST-ON-COMPLETE-START]
+      [ADDED]
+      .
+      [REPOSITORY]
+      eslint-remote-tester-integration-test-target
+      [REPOSITORY]
+      .
+      [REPOSITORYOWNER]
+      AriPerkkio
+      [REPOSITORYOWNER]
+      .
+      [RULE]
+      no-undef
+      [RULE]
+      .
+      [MESSAGE]
+      'window' is not defined.
+      [MESSAGE]
+      .
+      [PATH]
+      AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
+      [PATH]
+      .
+      [LINK]
+      https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/expected-to-crash-linter.js#L2-L2
+      [LINK]
+      .
+      [EXTENSION]
+      js
+      [EXTENSION]
+      .
+      [SOURCE]
+        1 | // Identifier.name = attributeForCrashing
+      > 2 | window.attributeForCrashing();
+          | ^^^^^^
+        3 |
+      [SOURCE]
+      .
+      [ERROR]
+      undefined
+      [ERROR]
+      .
+      [REPOSITORY]
+      eslint-remote-tester-integration-test-target
+      [REPOSITORY]
+      .
+      [REPOSITORYOWNER]
+      AriPerkkio
+      [REPOSITORYOWNER]
+      .
+      [RULE]
+      no-undef
+      [RULE]
+      .
+      [MESSAGE]
+      'bar' is not defined.
+      [MESSAGE]
+      .
+      [PATH]
+      AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+      [PATH]
+      .
+      [LINK]
+      https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L1-L1
+      [LINK]
+      .
+      [EXTENSION]
+      js
+      [EXTENSION]
+      .
+      [SOURCE]
+      > 1 | var foo = bar;
+          |           ^^^
+        2 |
+        3 | if (foo) {
+        4 | }
+      [SOURCE]
+      .
+      [ERROR]
+      undefined
+      [ERROR]
+      [ADDED]
+      [REMOVED]
+      .
+      [REPOSITORY]
+      eslint-remote-tester-integration-test-target
+      [REPOSITORY]
+      .
+      [REPOSITORYOWNER]
+      AriPerkkio
+      [REPOSITORYOWNER]
+      .
+      [RULE]
+      no-compare-neg-zero
+      [RULE]
+      .
+      [MESSAGE]
+      Do not use the '===' operator to compare against -0.
+      [MESSAGE]
+      .
+      [PATH]
+      AriPerkkio/eslint-remote-tester-integration-test-target/index.js
+      [PATH]
+      .
+      [LINK]
+      https://github.com/AriPerkkio/eslint-remote-tester-integration-test-target/blob/HEAD/index.js#L14-L14
+      [LINK]
+      .
+      [EXTENSION]
+      js
+      [EXTENSION]
+      .
+      [SOURCE]
+        12 |
+        13 |
+      > 14 | if (foo === -0) {
+           |     ^^^^^^^^^^
+        15 |   // prevent no-empty
+        16 | }
+      [SOURCE]
+      [REMOVED]
+      [TEST-ON-COMPLETE-END]"
     `);
 });
 
@@ -1017,28 +990,25 @@ test('enables all rules when rulesUnderTesting returns true', async () => {
     await runProductionBuild({
         CI: false,
         rulesUnderTesting: () => true,
-        eslintrc: { root: true, extends: ['eslint:all'] },
+        eslintConfig: ESLINT_CONFIG_ALL,
     });
     const results = getResults();
     const rules = results.match(/Rule: (\S)*/g) || [];
 
     expect(rules.join('\n')).toMatchInlineSnapshot(`
-        "Rule: no-undef
-        Rule: no-var
-        Rule: no-implicit-globals
-        Rule: no-undef
-        Rule: no-empty
-        Rule: one-var
-        Rule: vars-on-top
-        Rule: no-var
-        Rule: no-implicit-globals
-        Rule: id-length
-        Rule: getter-return
-        Rule: strict
-        Rule: capitalized-comments
-        Rule: no-compare-neg-zero
-        Rule: no-magic-numbers
-        Rule: capitalized-comments"
+      "Rule: no-undef
+      Rule: no-var
+      Rule: no-undef
+      Rule: no-empty
+      Rule: one-var
+      Rule: vars-on-top
+      Rule: no-var
+      Rule: id-length
+      Rule: getter-return
+      Rule: capitalized-comments
+      Rule: no-compare-neg-zero
+      Rule: no-magic-numbers
+      Rule: capitalized-comments"
     `);
 });
 
@@ -1046,16 +1016,17 @@ test('calls rulesUnderTesting filter with ruleId and repository', async () => {
     const { output } = await runProductionBuild({
         CI: false,
         logLevel: 'verbose',
-        rulesUnderTesting: (ruleId, options) => {
-            const { parentPort } = require(`worker_threads`);
-
-            parentPort.postMessage({
-                type: `DEBUG`,
-                payload: `${ruleId} - ${options.repository}`,
+        rulesUnderTesting: `(ruleId, options) => {
+            void import('worker_threads').then(w => {
+                w.parentPort.postMessage({
+                    type: 'DEBUG',
+                    payload: \`\${ruleId} - \${options.repository}\`,
+                });
             });
+
             return true;
-        },
-        eslintrc: { root: true, extends: [`eslint:all`] },
+        }`,
+        eslintConfig: ESLINT_CONFIG_ALL,
     });
 
     const finalLog = output.pop();
@@ -1065,21 +1036,18 @@ test('calls rulesUnderTesting filter with ruleId and repository', async () => {
       "Full log:
       no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
       no-var - AriPerkkio/eslint-remote-tester-integration-test-target
-      no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
       no-undef - AriPerkkio/eslint-remote-tester-integration-test-target
       no-empty - AriPerkkio/eslint-remote-tester-integration-test-target
       one-var - AriPerkkio/eslint-remote-tester-integration-test-target
       vars-on-top - AriPerkkio/eslint-remote-tester-integration-test-target
       no-var - AriPerkkio/eslint-remote-tester-integration-test-target
-      no-implicit-globals - AriPerkkio/eslint-remote-tester-integration-test-target
       id-length - AriPerkkio/eslint-remote-tester-integration-test-target
       getter-return - AriPerkkio/eslint-remote-tester-integration-test-target
-      strict - AriPerkkio/eslint-remote-tester-integration-test-target
       capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
       no-compare-neg-zero - AriPerkkio/eslint-remote-tester-integration-test-target
       no-magic-numbers - AriPerkkio/eslint-remote-tester-integration-test-target
       capitalized-comments - AriPerkkio/eslint-remote-tester-integration-test-target
-      [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 16 errors
+      [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 13 errors
       [DONE] Finished scan of 1 repositories
       [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 
@@ -1087,42 +1055,44 @@ test('calls rulesUnderTesting filter with ruleId and repository', async () => {
     `);
 });
 
-test('calls eslintrc function with repository and its location', async () => {
+test('calls eslingConfig function with repository and its location', async () => {
     const { output } = await runProductionBuild({
         CI: false,
         logLevel: 'verbose',
-        eslintrc: options => {
-            const { parentPort } = require(`worker_threads`);
+        eslintConfig: `async function init(options) {
+            const { parentPort } = await import('worker_threads');
 
             if (parentPort) {
                 parentPort.postMessage({
-                    type: `DEBUG`,
-                    payload: `location: ${options?.location}`,
+                    type: 'DEBUG',
+                    payload: \`location: \${options?.location}\`,
                 });
 
                 parentPort.postMessage({
-                    type: `DEBUG`,
-                    payload: `repository: ${options?.repository}`,
+                    type: 'DEBUG',
+                    payload: \`repository: \${options?.repository}\`,
                 });
             }
 
-            return { root: true, extends: [`eslint:all`] };
-        },
+            return [];
+        }`,
     });
 
     const finalLog = output.pop();
     const withoutTimestamps = finalLog!.replace(DEBUG_LOG_PATTERN, '');
 
-    expect(withoutTimestamps).toMatchInlineSnapshot(`
+    expect(withoutTimestamps).toMatchInlineSnapshot(
+        `
       "Full log:
       location: <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target
       repository: AriPerkkio/eslint-remote-tester-integration-test-target
-      [ERROR] AriPerkkio/eslint-remote-tester-integration-test-target 5 errors
+      [SUCCESS] AriPerkkio/eslint-remote-tester-integration-test-target
       [DONE] Finished scan of 1 repositories
       [INFO] Cached repositories (1) at ./node_modules/.cache-eslint-remote-tester
 
       "
-    `);
+    `
+    );
 });
 
 test('loads typescript configuration file', async () => {
@@ -1130,8 +1100,9 @@ test('loads typescript configuration file', async () => {
         {
             CI: true,
             rulesUnderTesting: [],
-            eslintrc: { root: true },
-            onComplete: `function onComplete() {
+            onComplete: `async function onComplete() {
+                const {readFileSync} = await import('node:fs');
+
                 console.log('[TEST-ON-COMPLETE-START]');
 
                 type SomeType = 'a' | 'b' | 'c';
@@ -1141,10 +1112,10 @@ test('loads typescript configuration file', async () => {
                 console.log('config file:');
                 const index = process.argv.findIndex(a => a === '--config');
                 const config = process.argv[index + 1];
-                console.log(require('fs').readFileSync(config, 'utf8'));
+                console.log(readFileSync(config, 'utf8'));
 
                 console.log('[TEST-ON-COMPLETE-END]');
-            }` as unknown as Config['onComplete'],
+            }`,
         },
         undefined,
         'ts'
@@ -1155,34 +1126,42 @@ test('loads typescript configuration file', async () => {
         .match(/\[TEST-ON-COMPLETE-START\]([\s|\S]*)\[TEST-ON-COMPLETE-END\]/)!;
 
     expect(onCompleteCall).toMatchInlineSnapshot(`
-        "[TEST-ON-COMPLETE-START]
-        Value of typed const b
-        config file:
-        export default {
-            "repositories": [
-                "AriPerkkio/eslint-remote-tester-integration-test-target"
-            ],
-            "extensions": [
-                ".js"
-            ],
-            "pathIgnorePattern": "(expected-to-be-excluded)",
-            "rulesUnderTesting": [],
-            "eslintrc": {
-                "root": true
-            },
-            "CI": true,
-            "onComplete": function onComplete() {
-                        console.log('[TEST-ON-COMPLETE-START]');
-                        type SomeType = 'a' | 'b' | 'c';
-                        const value: SomeType = 'b';
-                        console.log('Value of typed const', value);
-                        console.log('config file:');
-                        const index = process.argv.findIndex(a => a === '--config');
-                        const config = process.argv[index + 1];
-                        console.log(require('fs').readFileSync(config, 'utf8'));
-                        console.log('[TEST-ON-COMPLETE-END]');
-                    }
-        }
-        [TEST-ON-COMPLETE-END]"
+      "[TEST-ON-COMPLETE-START]
+      Value of typed const b
+      config file:
+      export default {
+          "repositories": [
+              "AriPerkkio/eslint-remote-tester-integration-test-target"
+          ],
+          "extensions": [
+              ".js"
+          ],
+          "pathIgnorePattern": "(expected-to-be-excluded)",
+          "rulesUnderTesting": [],
+          "eslintConfig": async function initialize() {
+              const { default: js } = await import('@eslint/js');
+              const { FlatCompat } = await import('@eslint/eslintrc');
+              const compat = new FlatCompat({ baseDirectory: process.cwd() });
+              return [
+                  js.configs.recommended,
+                  ...compat.plugins('eslint-plugin-local-rules'),
+                  { rules: { 'local-rules/some-unstable-rule': 'error' } },
+              ];
+          },
+          "CI": true,
+          "onComplete": async function onComplete() {
+                      const {readFileSync} = await import('node:fs');
+                      console.log('[TEST-ON-COMPLETE-START]');
+                      type SomeType = 'a' | 'b' | 'c';
+                      const value: SomeType = 'b';
+                      console.log('Value of typed const', value);
+                      console.log('config file:');
+                      const index = process.argv.findIndex(a => a === '--config');
+                      const config = process.argv[index + 1];
+                      console.log(readFileSync(config, 'utf8'));
+                      console.log('[TEST-ON-COMPLETE-END]');
+                  }
+      }
+      [TEST-ON-COMPLETE-END]"
     `);
 });
