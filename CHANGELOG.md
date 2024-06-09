@@ -1,3 +1,7 @@
+# [](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.0...v) (2024-06-09)
+
+# [4.0.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v3.0.1...v4.0.0) (2024-06-09)
+
 ## [3.0.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v3.0.0...v3.0.1) (2023-10-01)
 
 ### Bug Fixes
