@@ -37,8 +37,10 @@ jobs:
                   git config --global user.email 'github-actions@users.noreply.github.com'
 
             - name: Bump version
-              run: npm version ${{ github.event.inputs.release-type }}
               working-directory: ./packages/eslint-remote-tester
+              run: |
+                  mkdir .git
+                  npm version ${{ github.event.inputs.release-type }}
 
             - name: Push release tag
               run: git push origin master --follow-tags
