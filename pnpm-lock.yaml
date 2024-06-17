@@ -97,8 +97,8 @@ importers:
         specifier: ^0.3.6
         version: 0.3.6
       ink-testing-library:
-        specifier: ^2.1.0
-        version: 2.1.0(@types/react@17.0.80)
+        specifier: ^4.0.0
+        version: 4.0.0(@types/react@17.0.80)
       jiti:
         specifier: ^1.21.6
         version: 1.21.6
@@ -2261,11 +2261,11 @@ packages:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
     dev: true
 
-  /ink-testing-library@2.1.0(@types/react@17.0.80):
-    resolution: {integrity: sha512-7TNlOjJlJXB33vG7yVa+MMO7hCjaC1bCn+zdpSjknWoLbOWMaFdKc7LJvqVkZ0rZv2+akhjXPrcR/dbxissjUw==}
-    engines: {node: '>=10'}
+  /ink-testing-library@4.0.0(@types/react@17.0.80):
+    resolution: {integrity: sha512-yF92kj3pmBvk7oKbSq5vEALO//o7Z9Ck/OaLNlkzXNeYdwfpxMQkSowGTFUCS5MSu9bWfSZMewGpp7bFc66D7Q==}
+    engines: {node: '>=18'}
     peerDependencies:
-      '@types/react': '>=16.8.0'
+      '@types/react': '>=18.0.0'
     peerDependenciesMeta:
       '@types/react':
         optional: true

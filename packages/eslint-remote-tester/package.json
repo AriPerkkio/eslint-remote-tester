@@ -64,7 +64,7 @@
         "eslint-plugin-local-rules": "^2.0.1",
         "eslint-remote-tester-repositories": "workspace:*",
         "importx": "^0.3.6",
-        "ink-testing-library": "^2.1.0",
+        "ink-testing-library": "^4.0.0",
         "jiti": "^1.21.6",
         "node-pty": "^1.0.0",
         "strip-ansi": "^6.0.1",
