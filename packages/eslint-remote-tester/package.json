@@ -50,7 +50,7 @@
         "ink": "^3.2.0",
         "object-hash": "^3.0.0",
         "react": "^17.0.2",
-        "simple-git": "^3.24.0"
+        "simple-git": "^3.25.0"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.1.0",
@@ -60,12 +60,12 @@
         "@types/object-hash": "^3.0.6",
         "@types/react": "^17.0.80",
         "conventional-changelog-cli": "^5.0.0",
-        "eslint": "^9.4.0",
+        "eslint": "^9.5.0",
         "eslint-plugin-local-rules": "^2.0.1",
         "eslint-remote-tester-repositories": "workspace:*",
-        "importx": "^0.3.5",
+        "importx": "^0.3.6",
         "ink-testing-library": "^2.1.0",
-        "jiti": "^1.21.3",
+        "jiti": "^1.21.6",
         "node-pty": "^1.0.0",
         "strip-ansi": "^6.0.1",
         "typescript": "^5.4.5",
