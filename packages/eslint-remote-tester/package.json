@@ -61,7 +61,7 @@
         "@types/react": "^17.0.80",
         "conventional-changelog-cli": "^5.0.0",
         "eslint": "^9.5.0",
-        "eslint-plugin-local-rules": "^2.0.1",
+        "eslint-plugin-local-rules": "^3.0.2",
         "eslint-remote-tester-repositories": "workspace:*",
         "importx": "^0.3.6",
         "ink-testing-library": "^2.1.0",
