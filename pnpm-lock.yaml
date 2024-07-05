@@ -94,8 +94,8 @@ importers:
         specifier: workspace:*
         version: link:../repositories
       importx:
-        specifier: ^0.3.10
-        version: 0.3.10
+        specifier: 0.3.7
+        version: 0.3.7
       ink-testing-library:
         specifier: ^2.1.0
         version: 2.1.0(@types/react@17.0.80)
@@ -2243,8 +2243,8 @@ packages:
       resolve-from: 4.0.0
     dev: true
 
-  /importx@0.3.10:
-    resolution: {integrity: sha512-BGq0cY3Rd6aYGwTj6wxCh27KmYBne+TZpZ4BiiitfB8fBbKXt/pkhetS1/RFzbaY2aNNjgIlswoAvjrCJX2+tw==}
+  /importx@0.3.7:
+    resolution: {integrity: sha512-K2+4GWH3ftMEbwLUK4IVC1qmk5POIofYb+2dHua1Szl5hQexSKv/QfwruTMzROqFWXnPUDJml5CnRiyk1YAesg==}
     dependencies:
       bundle-require: 5.0.0(esbuild@0.20.2)
       debug: 4.3.5
