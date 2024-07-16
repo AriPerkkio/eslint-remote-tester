@@ -1,4 +1,4 @@
-import {pathToFileURL} from 'node:url';
+import { pathToFileURL } from 'node:url';
 
 /** @internal */
 export const loadTSConfig = async (configPath: string) => {
