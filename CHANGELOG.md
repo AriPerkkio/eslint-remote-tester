@@ -1,4 +1,10 @@
-# [](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.0...v) (2024-06-09)
+# [](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.1...v) (2024-07-16)
+
+## [4.0.1](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.0...v4.0.1) (2024-07-16)
+
+### Bug Fixes
+
+-   config load on Windows ([#538](https://github.com/AriPerkkio/eslint-remote-tester/issues/538)) ([c2360fc](https://github.com/AriPerkkio/eslint-remote-tester/commit/c2360fc80b1316dd6fb7b58402f544f63b76dbfd))
 
 # [4.0.0](https://github.com/AriPerkkio/eslint-remote-tester/compare/v3.0.1...v4.0.0) (2024-06-09)
 
