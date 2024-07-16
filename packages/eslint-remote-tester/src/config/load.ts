@@ -1,3 +1,5 @@
+import {pathToFileURL} from 'node:url';
+
 /** @internal */
 export const loadTSConfig = async (configPath: string) => {
     let importx: typeof import('importx') | undefined = undefined;
@@ -37,6 +39,6 @@ export const loadConfig = async (configPath: string) => {
         return loadTSConfig(configPath);
     }
 
-    const { default: config } = await import(configPath);
+    const { default: config } = await import(pathToFileURL(configPath).href);
     return config;
 };
