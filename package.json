@@ -2,7 +2,7 @@
     "name": "eslint-remote-tester-monorepo",
     "private": true,
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
-    "packageManager": "pnpm@8.15.8",
+    "packageManager": "pnpm@8.15.9",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -28,12 +28,12 @@
         "conventional-changelog-cli": "^5.0.0",
         "eslint": "^9.7.0",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-prettier": "^5.1.3",
+        "eslint-plugin-prettier": "^5.2.1",
         "pkg-pr-new": "^0.0.17",
         "prettier": "^3.3.3",
-        "publint": "^0.2.8",
+        "publint": "^0.2.9",
         "typescript": "^5.5.3",
-        "typescript-eslint": "^7.16.0"
+        "typescript-eslint": "^7.16.1"
     },
     "keywords": [
         "eslint",
