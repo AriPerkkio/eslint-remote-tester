@@ -47,8 +47,8 @@
         "node-fetch": "^2.7.0",
         "ts-node": "^10.9.2",
         "tsc-alias": "^1.8.10",
-        "typescript": "^5.5.3",
-        "vitest": "^2.0.3"
+        "typescript": "^5.5.4",
+        "vitest": "^2.0.4"
     },
     "keywords": [
         "eslint",
