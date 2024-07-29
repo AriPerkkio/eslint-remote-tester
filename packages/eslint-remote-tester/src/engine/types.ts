@@ -1,7 +1,8 @@
-import { Linter } from 'eslint';
+import type { ESLint, Linter } from 'eslint';
 
 export interface LintMessage extends Linter.LintMessage {
     path: string;
+    source?: ESLint.LintResult['source'];
     error?: string;
 }
 
