@@ -133,10 +133,7 @@ export default async function validate(
         try {
             // This will throw when eslintConfig is invalid
             const linter = new ESLint({
-                // @ts-expect-error -- `@types/eslint` for v9 are unavailable
                 overrideConfigFile: true,
-
-                // @ts-expect-error -- `@types/eslint` for v9 are unavailable
                 overrideConfig:
                     typeof eslintConfig === 'function'
                         ? await eslintConfig()

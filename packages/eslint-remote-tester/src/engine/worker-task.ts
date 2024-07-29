@@ -52,7 +52,7 @@ export function createErrorMessage(
         line: 0,
         ...error,
         column: 0,
-        severity: 0,
+        severity: 2,
     };
 }
 
@@ -118,7 +118,7 @@ function constructCodeFrame(
         Linter.LintMessage,
         'line' | 'column' | 'endLine' | 'endColumn'
     >
-): Linter.LintMessage['source'] {
+): LintMessage['source'] {
     if (!source) return undefined;
 
     const location: SourceLocation = {
@@ -220,10 +220,7 @@ export default async function workerTask(): Promise<void> {
             : config.eslintConfig;
 
     const linter = new ESLint({
-        // @ts-expect-error -- `@types/eslint` for v9 are unavailable
         overrideConfigFile: true,
-
-        // @ts-expect-error -- `@types/eslint` for v9 are unavailable
         overrideConfig: eslintConfig,
 
         // Only rules set in configuration are expected.
