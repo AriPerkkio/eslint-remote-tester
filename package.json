@@ -29,11 +29,11 @@
         "eslint": "^9.8.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.2.1",
-        "pkg-pr-new": "^0.0.18",
+        "pkg-pr-new": "^0.0.19",
         "prettier": "^3.3.3",
         "publint": "^0.2.9",
         "typescript": "^5.5.4",
-        "typescript-eslint": "^7.17.0"
+        "typescript-eslint": "^7.18.0"
     },
     "keywords": [
         "eslint",
