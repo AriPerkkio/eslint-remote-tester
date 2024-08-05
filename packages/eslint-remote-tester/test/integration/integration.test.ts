@@ -38,7 +38,7 @@ test('results are rendered on CI mode', async () => {
       TypeError: Cannot read property 'someAttribute' of undefined
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
-          at Identifier (<removed>/eslint-local-rules.cjs:22:56)
+          at Identifier (<removed>/eslint-local-rules.cjs:23:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
@@ -130,7 +130,7 @@ test('results are written to file system on CLI mode', async () => {
       TypeError: Cannot read property 'someAttribute' of undefined
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
-          at Identifier (<removed>/eslint-local-rules.cjs:22:56)
+          at Identifier (<removed>/eslint-local-rules.cjs:23:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
@@ -410,7 +410,7 @@ test('calls onComplete hook with the results', async () => {
       TypeError: Cannot read property 'someAttribute' of undefined
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
-          at Identifier (<removed>/eslint-local-rules.cjs:22:56)
+          at Identifier (<removed>/eslint-local-rules.cjs:23:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
@@ -599,6 +599,7 @@ test('erroneous onComplete does not crash application', async () => {
         eslintConfig: [],
         onComplete: function onComplete(results) {
             // @ts-expect-error -- intentional error
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- intentional error
             results.some.nonexisting.field;
         },
     });

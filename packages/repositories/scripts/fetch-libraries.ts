@@ -75,7 +75,7 @@ const retryFetch = async (url: string) => {
             }
 
             return response;
-        } catch (_) {
+        } catch {
             continue;
         }
     }

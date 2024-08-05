@@ -46,7 +46,7 @@ export async function isRepositoryPublic(
         }
 
         return isPublic;
-    } catch (_) {
+    } catch {
         return false;
     }
 }

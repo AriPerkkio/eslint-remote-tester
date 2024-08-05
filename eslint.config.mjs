@@ -5,7 +5,14 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 export default defineConfig([
     js.configs.recommended,
     ...tseslint.configs.recommended,
-    { ignores: ['**/dist', '.cache-eslint-remote-tester', 'docs'] },
+    {
+        ignores: [
+            '**/dist',
+            'tsconfig.json',
+            '.cache-eslint-remote-tester',
+            'docs',
+        ],
+    },
     {
         rules: {
             '@typescript-eslint/no-explicit-any': 'off',

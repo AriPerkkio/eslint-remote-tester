@@ -95,7 +95,7 @@ export async function getFiles({
             .filter(path => config.extensions.some(ext => path.endsWith(ext)))
             .filter(path => !isFileIgnored(path))
             .map(path => ({ path }));
-    } catch (e) {
+    } catch {
         onReadFailure();
         return [];
     }
