@@ -19,6 +19,7 @@ module.exports = {
             return {
                 Identifier: function (node) {
                     if (node.name === 'attributeForCrashing') {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- intentional
                         node.name.attributeForCrashing.someAttribute;
                     }
                 },

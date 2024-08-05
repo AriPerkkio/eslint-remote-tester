@@ -255,7 +255,7 @@ export function getConfigWithDefaults(config: ConfigWithOptionals): Config {
     if (config.pathIgnorePattern) {
         try {
             pathIgnorePattern = new RegExp(config.pathIgnorePattern);
-        } catch (_) {
+        } catch {
             // Faulty patterns are validated separately by validateConfig
         }
     }

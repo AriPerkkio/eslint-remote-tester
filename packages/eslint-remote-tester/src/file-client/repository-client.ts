@@ -43,7 +43,7 @@ export async function cloneRepository({
                 repoLocation,
                 CLONE_OPTS
             );
-        } catch (e) {
+        } catch {
             onCloneFailure();
         }
     } else {
@@ -55,7 +55,7 @@ export async function cloneRepository({
         try {
             const git = simpleGit({ baseDir: repoLocation });
             await git.pull();
-        } catch (e) {
+        } catch {
             onPullFailure();
         }
     }

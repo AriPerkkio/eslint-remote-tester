@@ -1,4 +1,4 @@
-import { ForegroundColor } from 'chalk';
+import type { ForegroundColor } from 'chalk';
 
 import { type LogLevel } from '../config/types.js';
 
