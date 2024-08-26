@@ -20,8 +20,7 @@
         "test:integration": "pnpm --recursive --stream --reporter-hide-prefix test:integration",
         "test:smoke": "pnpm --recursive --stream --reporter-hide-prefix test:smoke",
         "generate:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-        "lint": "eslint . --max-warnings 0 && publint packages/*",
-        "publish-pr": "pkg-pr-new publish --compact ./packages/eslint-remote-tester ./packages/repositories"
+        "lint": "eslint . --max-warnings 0 && publint packages/*"
     },
     "devDependencies": {
         "@eslint/js": "^9.9.1",
@@ -29,7 +28,6 @@
         "eslint": "^9.9.1",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.2.1",
-        "pkg-pr-new": "^0.0.20",
         "prettier": "^3.3.3",
         "publint": "^0.2.10",
         "typescript": "^5.5.4",

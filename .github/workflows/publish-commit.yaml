@@ -68,3 +68,5 @@ jobs:
                   pnpm dlx pkg-pr-new@0.0 publish --compact --pnpm
                   ./packages/eslint-remote-tester
                   ./packages/repositories
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
