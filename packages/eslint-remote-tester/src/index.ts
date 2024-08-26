@@ -15,6 +15,9 @@ import logger from './progress-logger/index.js';
 async function main() {
     const pool = config.repositories.map(repo => () => scanRepo(repo));
 
+    // @ts-expect-error -- testing
+    console.log('Testing');
+
     async function execute(): Promise<void> {
         const task = pool.shift();
 
