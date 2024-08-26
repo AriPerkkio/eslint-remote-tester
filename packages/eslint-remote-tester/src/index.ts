@@ -7,6 +7,8 @@ import { LintMessage } from './engine/types.js';
 import * as fileClient from './file-client/index.js';
 import logger from './progress-logger/index.js';
 
+// testing
+
 /**
  * Entrypoint of the application.
  * Runs ESLint to given repositories and filters out only the rules being under testing.
