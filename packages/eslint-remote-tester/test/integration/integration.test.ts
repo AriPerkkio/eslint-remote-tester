@@ -47,7 +47,7 @@ test('results are rendered on CI mode', async () => {
           at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
 
       Repository: AriPerkkio/eslint-remote-tester-integration-test-target
       Rule: no-undef
@@ -139,7 +139,7 @@ test('results are written to file system on CLI mode', async () => {
           at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       \`\`\`
 
       ## Rule: no-undef
@@ -419,7 +419,7 @@ test('calls onComplete hook with the results', async () => {
           at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       [ERROR]
       .
       [REPOSITORY]
