@@ -44,7 +44,7 @@
     "homepage": "https://github.com/AriPerkkio/eslint-remote-tester",
     "bugs": "https://github.com/AriPerkkio/eslint-remote-tester",
     "dependencies": {
-        "@babel/code-frame": "^7.24.7",
+        "@babel/code-frame": "^7.25.7",
         "JSONStream": "^1.3.5",
         "chalk": "^4.1.2",
         "ink": "^3.2.0",
@@ -60,7 +60,7 @@
         "@types/object-hash": "^3.0.6",
         "@types/react": "^17.0.83",
         "conventional-changelog-cli": "^5.0.0",
-        "eslint": "^9.11.1",
+        "eslint": "^9.12.0",
         "eslint-plugin-local-rules": "^3.0.2",
         "eslint-remote-tester-repositories": "workspace:*",
         "importx": "^0.5.0",
@@ -69,7 +69,7 @@
         "node-pty": "^1.0.0",
         "strip-ansi": "^6.0.1",
         "typescript": "^5.6.2",
-        "vitest": "^2.1.1"
+        "vitest": "^2.1.2"
     },
     "peerDependencies": {
         "eslint": ">=9",
