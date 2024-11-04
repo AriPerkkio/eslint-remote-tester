@@ -16,7 +16,7 @@ importers:
         version: 5.0.0
       eslint:
         specifier: ^9.13.0
-        version: 9.13.0(jiti@1.21.6)
+        version: 9.13.0(jiti@2.4.0)
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@9.13.0)
@@ -83,7 +83,7 @@ importers:
         version: 5.0.0
       eslint:
         specifier: ^9.13.0
-        version: 9.13.0(jiti@1.21.6)
+        version: 9.13.0(jiti@2.4.0)
       eslint-plugin-local-rules:
         specifier: ^3.0.2
         version: 3.0.2
@@ -97,8 +97,8 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0(@types/react@17.0.83)
       jiti:
-        specifier: ^1.21.6
-        version: 1.21.6
+        specifier: ^2.4.0
+        version: 2.4.0
       node-pty:
         specifier: ^1.0.0
         version: 1.0.0
@@ -603,7 +603,7 @@ packages:
     peerDependencies:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
-      eslint: 9.13.0(jiti@1.21.6)
+      eslint: 9.13.0(jiti@2.4.0)
       eslint-visitor-keys: 3.4.3
     dev: true
 
@@ -975,7 +975,7 @@ packages:
       '@typescript-eslint/type-utils': 8.12.2(eslint@9.13.0)(typescript@5.6.3)
       '@typescript-eslint/utils': 8.12.2(eslint@9.13.0)(typescript@5.6.3)
       '@typescript-eslint/visitor-keys': 8.12.2
-      eslint: 9.13.0(jiti@1.21.6)
+      eslint: 9.13.0(jiti@2.4.0)
       graphemer: 1.4.0
       ignore: 5.3.1
       natural-compare: 1.4.0
@@ -1000,7 +1000,7 @@ packages:
       '@typescript-eslint/typescript-estree': 8.12.2(typescript@5.6.3)
       '@typescript-eslint/visitor-keys': 8.12.2
       debug: 4.3.7
-      eslint: 9.13.0(jiti@1.21.6)
+      eslint: 9.13.0(jiti@2.4.0)
       typescript: 5.6.3
     transitivePeerDependencies:
       - supports-color
@@ -1070,7 +1070,7 @@ packages:
       '@typescript-eslint/scope-manager': 8.12.2
       '@typescript-eslint/types': 8.12.2
       '@typescript-eslint/typescript-estree': 8.12.2(typescript@5.6.3)
-      eslint: 9.13.0(jiti@1.21.6)
+      eslint: 9.13.0(jiti@2.4.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -1719,7 +1719,7 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
-      eslint: 9.13.0(jiti@1.21.6)
+      eslint: 9.13.0(jiti@2.4.0)
     dev: true
 
   /eslint-plugin-local-rules@3.0.2:
@@ -1740,7 +1740,7 @@ packages:
       eslint-config-prettier:
         optional: true
     dependencies:
-      eslint: 9.13.0(jiti@1.21.6)
+      eslint: 9.13.0(jiti@2.4.0)
       eslint-config-prettier: 9.1.0(eslint@9.13.0)
       prettier: 3.3.3
       prettier-linter-helpers: 1.0.0
@@ -1770,7 +1770,7 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dev: true
 
-  /eslint@9.13.0(jiti@1.21.6):
+  /eslint@9.13.0(jiti@2.4.0):
     resolution: {integrity: sha512-EYZK6SX6zjFHST/HRytOdA/zE72Cq/bfw45LSyuwrdvcclb/gqV8RRQxywOBEWO2+WDpva6UZa4CcDeJKzUCFA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     hasBin: true
@@ -1809,7 +1809,7 @@ packages:
       ignore: 5.3.1
       imurmurhash: 0.1.4
       is-glob: 4.0.3
-      jiti: 1.21.6
+      jiti: 2.4.0
       json-stable-stringify-without-jsonify: 1.0.1
       lodash.merge: 4.6.2
       minimatch: 3.1.2
@@ -2108,7 +2108,7 @@ packages:
       bundle-require: 5.0.0(esbuild@0.23.1)
       debug: 4.3.7
       esbuild: 0.23.1
-      jiti: 2.0.0
+      jiti: 2.4.0
       pathe: 1.1.2
       tsx: 4.19.1
     transitivePeerDependencies:
@@ -2245,13 +2245,8 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
-  /jiti@1.21.6:
-    resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
-    hasBin: true
-    dev: true
-
-  /jiti@2.0.0:
-    resolution: {integrity: sha512-CJ7e7Abb779OTRv3lomfp7Mns/Sy1+U4pcAx5VbjxCZD5ZM/VJaXPpPjNKjtSvWQy/H86E49REXR34dl1JEz9w==}
+  /jiti@2.4.0:
+    resolution: {integrity: sha512-H5UpaUI+aHOqZXlYOaFP/8AzKsg+guWu+Pr3Y8i7+Y3zr1aXAvCvTAQ1RxSc6oVD8R8c7brgNtTVP91E7upH/g==}
     hasBin: true
     dev: true
 
