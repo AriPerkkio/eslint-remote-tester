@@ -106,7 +106,7 @@ export default config;
 [configuring eslint]: https://eslint.org/docs/user-guide/configuring
 [fixing existing rules]: #fixing-existing-rules
 [oncomplete example]: docs/onComplete-arguments.json
-[eslint-remote-tester-repositories]: repositories/README.md
+[eslint-remote-tester-repositories]: packages/repositories/README.md
 
 ### Execution
 
