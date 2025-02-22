@@ -89,7 +89,7 @@ export async function writeResults(
         const repositoryOwnerAndName = repository.split('/').join('_');
         const fileName = `${repositoryOwnerAndName}${RESULT_EXTENSION}`;
 
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
             const stream = fs
                 .createWriteStream(`${RESULTS_LOCATION}/${fileName}`, {
                     encoding: 'utf8',

@@ -118,7 +118,7 @@ async function writeComparisons(
         const results = [...comparisonResults[type]];
         if (!results.length) continue;
 
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
             const stream = fs
                 .createWriteStream(
                     `${RESULTS_COMPARE_LOCATION}/${type}${EXTENSION}`,
