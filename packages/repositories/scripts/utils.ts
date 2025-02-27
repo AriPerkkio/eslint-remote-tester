@@ -1,5 +1,6 @@
 import chalk from 'chalk';
-import fetch from 'node-fetch';
+import { writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const MAX_RETRIES = 25;
 const RETRY_SLEEP_SECONDS = 10;
@@ -49,4 +50,14 @@ export async function isRepositoryPublic(
     } catch {
         return false;
     }
+}
+
+export function writeRepositories(repositores: string[]) {
+    writeFileSync(
+        resolve(import.meta.dirname, '../src/repositories.ts'),
+        `export default [\n${repositores
+            .map(name => `    '${name}',\n`)
+            .join('')}];\n`,
+        'utf8'
+    );
 }
