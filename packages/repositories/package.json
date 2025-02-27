@@ -35,17 +35,14 @@
         "prebuild": "rm -rf ./dist",
         "build": "tsc --project tsconfig.prod.json",
         "postbuild": "tsc-alias -p tsconfig.prod.json",
-        "generate": "ts-node ./scripts/fetch-libraries.ts",
-        "filter:private": "ts-node ./scripts/filter-private-repos.ts",
-        "filter:unique": "ts-node ./scripts/filter-unique-repos.ts",
-        "remove": "ts-node ./scripts/remove-repositories.ts",
+        "generate": "node --experimental-strip-types ./scripts/fetch-libraries.ts",
+        "filter:private": "node --experimental-strip-types ./scripts/filter-private-repos.ts",
+        "filter:unique": "node --experimental-strip-types ./scripts/filter-unique-repos.ts",
+        "remove": "node --experimental-strip-types ./scripts/remove-repositories.ts",
         "test": "vitest run"
     },
     "devDependencies": {
-        "@types/node-fetch": "^2.6.12",
         "chalk": "^4.1.2",
-        "node-fetch": "^2.7.0",
-        "ts-node": "^10.9.2",
         "tsc-alias": "^1.8.10",
         "typescript": "^5.7.3",
         "vitest": "^3.0.6"

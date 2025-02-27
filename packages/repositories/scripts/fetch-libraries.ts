@@ -8,9 +8,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 import chalk from 'chalk';
-import __fetch from 'node-fetch';
 
-import { isRepositoryPublic } from './utils';
+import { isRepositoryPublic, writeRepositories } from './utils.ts';
 
 type DependentRepository = {
     host_type: 'GitHub';
@@ -19,6 +18,8 @@ type DependentRepository = {
     private: boolean;
 };
 
+const __dirname = import.meta.dirname;
+
 const MAX_REQUEST = 100;
 const ENCODING = 'utf8';
 const QUERY_CACHE = resolve(`${__dirname}/.query-cache`);
@@ -26,7 +27,6 @@ const REPOSITORIES_RAW_CACHE = resolve(`${__dirname}/.repositories-raw-cache`);
 const REPOSITORIES_PUBLIC_CACHE = resolve(
     `${__dirname}/.repositories-public-cache`
 );
-const REPOSITORIES_JSON = resolve(`${__dirname}/../src/repositories.json`);
 
 const API_KEY = process.env.npm_config_libraries_io_api_key;
 if (!API_KEY) {
@@ -52,20 +52,57 @@ if (!existsSync(REPOSITORIES_PUBLIC_CACHE)) {
     writeFileSync(REPOSITORIES_PUBLIC_CACHE, '[]', ENCODING);
 }
 
+for (let page = 1; page < MAX_REQUEST; page++) {
+    const dependentRepositories = await cachedFetch(
+        generateDependentRepositoriesUrl(PROJECT, page)
+    );
+
+    if (dependentRepositories.length === 0) {
+        console.log(chalk.green`Stopping at page ${page}`);
+        break;
+    }
+
+    const repositories = dependentRepositories
+        .filter(r => r.host_type === 'GitHub' && !r.private && !r.fork)
+        .map(r => r.full_name);
+
+    writeToArrayCache(REPOSITORIES_RAW_CACHE, repositories);
+
+    const cachedPublicRepositories = getCache<string>(
+        REPOSITORIES_PUBLIC_CACHE
+    );
+    const newRepositories = repositories.filter(
+        r => !cachedPublicRepositories.includes(r)
+    );
+    const publicRepositories = [];
+
+    for (const repository of newRepositories) {
+        const isPublic = await isRepositoryPublic(repository);
+
+        if (isPublic) {
+            publicRepositories.push(repository);
+        }
+    }
+
+    writeToArrayCache(REPOSITORIES_PUBLIC_CACHE, publicRepositories);
+}
+
+writeRepositories(getCache<string[]>(REPOSITORIES_PUBLIC_CACHE));
+
 /**
  * Attempt to fetch given URL. Retries five times when request fails.
  */
-const retryFetch = async (url: string) => {
+async function retryFetch(url: string) {
     for (let retries = 1; retries <= 5; retries++) {
         try {
-            const response = await __fetch(url).catch();
+            const response = await fetch(url).catch();
 
             // Libraries.io's 60 request per minute limit
             if (response.status === 429) {
                 console.log(
                     chalk.red('Request rate limit hit. Sleeping for 60s')
                 );
-                await new Promise(r => setTimeout(r, 60000));
+                await new Promise(r => setTimeout(r, 60_000));
                 continue;
             }
 
@@ -79,17 +116,17 @@ const retryFetch = async (url: string) => {
             continue;
         }
     }
-};
+}
 
 /**
  * Fetch with cache. Writes successful responses into `QUERY_CACHE` in order to
  * minimize requests. API_KEY is filtered out of cached requests.
  */
-const cachedFetch = async (url: string): Promise<DependentRepository[]> => {
+async function cachedFetch(url: string): Promise<DependentRepository[]> {
     const cache = getCache<{ [key: string]: DependentRepository[] }>(
         QUERY_CACHE
     );
-    const cacheUrl = url.replace(API_KEY, '<API_KEY>');
+    const cacheUrl = url.replace(API_KEY!, '<API_KEY>');
 
     if (cache[cacheUrl]) {
         console.log(chalk.green`Cache hit ${cacheUrl}`);
@@ -111,7 +148,7 @@ const cachedFetch = async (url: string): Promise<DependentRepository[]> => {
         return [];
     }
 
-    const json = await response.json();
+    const json = (await response.json()) as DependentRepository[];
     writeFileSync(
         QUERY_CACHE,
         JSON.stringify({ ...cache, [cacheUrl]: json }),
@@ -119,74 +156,23 @@ const cachedFetch = async (url: string): Promise<DependentRepository[]> => {
     );
 
     return json;
-};
+}
 
-const getCache = <T>(location: string): T =>
-    JSON.parse(readFileSync(location, ENCODING));
+function getCache<T>(location: string): T {
+    return JSON.parse(readFileSync(location, ENCODING));
+}
 
-const writeToArrayCache = <T>(location: string, results: T[]) => {
+function writeToArrayCache<T>(location: string, results: T[]) {
     const cacheContent = getCache<T[]>(location);
     const newContent = [...cacheContent, ...results].filter(
         (item, index, array) => array.indexOf(item) === index
     );
 
     writeFileSync(location, JSON.stringify(newContent, null, 4), ENCODING);
-};
+}
 
-const generateDependentRepositoriesUrl = (project: string, page: number) => {
+function generateDependentRepositoriesUrl(project: string, page: number) {
     const encodedProject = encodeURIComponent(project);
 
     return `https://libraries.io/api/npm/${encodedProject}/dependent_repositories?api_key=${API_KEY}&per_page=100&page=${page}`;
-};
-
-const filterRepository = ({
-    host_type,
-    private: isPrivate,
-    fork,
-}: DependentRepository) => host_type === 'GitHub' && !isPrivate && !fork;
-
-const parseRepositoryName = ({ full_name }: DependentRepository) => full_name;
-
-const main = async () => {
-    for (let page = 1; page < MAX_REQUEST; page++) {
-        const dependentRepositories = await cachedFetch(
-            generateDependentRepositoriesUrl(PROJECT, page)
-        );
-
-        if (dependentRepositories.length === 0) {
-            console.log(chalk.green`Stopping at page ${page}`);
-            break;
-        }
-
-        const repositories = dependentRepositories
-            .filter(filterRepository)
-            .map(parseRepositoryName);
-
-        writeToArrayCache(REPOSITORIES_RAW_CACHE, repositories);
-
-        const cachedPublicRepositories = getCache<string>(
-            REPOSITORIES_PUBLIC_CACHE
-        );
-        const newRepositories = repositories.filter(
-            r => !cachedPublicRepositories.includes(r)
-        );
-        const publicRepositories = [];
-
-        for (const repository of newRepositories) {
-            const isPublic = await isRepositoryPublic(repository);
-
-            if (isPublic) {
-                publicRepositories.push(repository);
-            }
-        }
-
-        writeToArrayCache(REPOSITORIES_PUBLIC_CACHE, publicRepositories);
-    }
-
-    writeToArrayCache(
-        REPOSITORIES_JSON,
-        getCache<string[]>(REPOSITORIES_PUBLIC_CACHE)
-    );
-};
-
-main().catch(console.error);
+}
