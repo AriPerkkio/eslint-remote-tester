@@ -1,5 +1,5 @@
-import repositories from '../src/repositories';
-import { writeRepositories } from './utils';
+import repositories from '../src/repositories.ts';
+import { writeRepositories } from './utils.ts';
 
 const repositoriesToRemove: string[] = process.argv.slice(2);
 
