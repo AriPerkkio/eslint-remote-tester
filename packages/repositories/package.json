@@ -43,7 +43,7 @@
     },
     "devDependencies": {
         "chalk": "^4.1.2",
-        "tsc-alias": "^1.8.13",
+        "tsc-alias": "^1.8.15",
         "typescript": "^5.8.3",
         "vitest": "^3.1.1"
     },
