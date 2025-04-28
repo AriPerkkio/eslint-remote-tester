@@ -56,11 +56,11 @@
         "@eslint/eslintrc": "^3.3.1",
         "@types/babel__code-frame": "^7.0.6",
         "@types/eslint": "^9.6.1",
-        "@types/node": "^22.14.1",
+        "@types/node": "^22.15.2",
         "@types/object-hash": "^3.0.6",
         "@types/react": "^17.0.85",
         "conventional-changelog-cli": "^5.0.0",
-        "eslint": "9.25.0",
+        "eslint": "9.25.1",
         "eslint-plugin-local-rules": "^3.0.2",
         "eslint-remote-tester-repositories": "workspace:*",
         "importx": "^0.5.2",
@@ -69,7 +69,7 @@
         "node-pty": "^1.0.0",
         "strip-ansi": "^6.0.1",
         "typescript": "^5.8.3",
-        "vitest": "^3.1.1"
+        "vitest": "^3.1.2"
     },
     "peerDependencies": {
         "eslint": ">=9",
