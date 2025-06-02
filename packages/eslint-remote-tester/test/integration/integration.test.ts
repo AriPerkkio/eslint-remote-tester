@@ -43,9 +43,9 @@ test('results are rendered on CI mode', async () => {
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
           at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
-          at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+          at #applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at ESQueryHelper.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
 
@@ -135,9 +135,9 @@ test('results are written to file system on CLI mode', async () => {
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
           at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
-          at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+          at #applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at ESQueryHelper.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       \`\`\`
@@ -415,9 +415,9 @@ test('calls onComplete hook with the results', async () => {
           at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
           at Array.forEach (<anonymous>)
           at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
-          at NodeEventGenerator.applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at NodeEventGenerator.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
-          at NodeEventGenerator.enterNode (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/node-event-generator.js)
+          at #applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at ESQueryHelper.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       [ERROR]
