@@ -37,7 +37,7 @@ test('exports validateConfig', async () => {
     const consolelog = console.log;
     console.log = vi.fn();
 
-    expect(() => actionExports.validateConfig({}, false)).rejects
+    await expect(() => actionExports.validateConfig({}, false)).rejects
         .toThrowErrorMatchingInlineSnapshot(`
       [Error: Configuration validation errors:
       - Missing repositories.
