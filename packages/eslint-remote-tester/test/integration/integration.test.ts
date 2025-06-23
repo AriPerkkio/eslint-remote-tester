@@ -40,11 +40,11 @@ test('results are rendered on CI mode', async () => {
       Rule: "local-rules/some-unstable-rule"
           at Identifier (<removed>/eslint-local-rules.cjs:23:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
+          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js
           at Array.forEach (<anonymous>)
-          at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
-          at #applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
-          at ESQueryHelper.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at SourceCodeVisitor.callSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js)
+          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js
+          at Array.forEach (<anonymous>)
           at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
@@ -132,11 +132,11 @@ test('results are written to file system on CLI mode', async () => {
       Rule: "local-rules/some-unstable-rule"
           at Identifier (<removed>/eslint-local-rules.cjs:23:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
+          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js
           at Array.forEach (<anonymous>)
-          at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
-          at #applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
-          at ESQueryHelper.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at SourceCodeVisitor.callSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js)
+          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js
+          at Array.forEach (<anonymous>)
           at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
@@ -412,11 +412,11 @@ test('calls onComplete hook with the results', async () => {
       Rule: "local-rules/some-unstable-rule"
           at Identifier (<removed>/eslint-local-rules.cjs:23:56)
           at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js
+          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js
           at Array.forEach (<anonymous>)
-          at Object.emit (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/safe-emitter.js)
-          at #applySelector (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
-          at ESQueryHelper.applySelectors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
+          at SourceCodeVisitor.callSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js)
+          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js
+          at Array.forEach (<anonymous>)
           at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
