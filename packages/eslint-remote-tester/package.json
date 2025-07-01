@@ -15,7 +15,7 @@
         },
         "./github-actions": {
             "types": "./dist/exports-for-compare-action.d.ts",
-            "import": "./dist/exports-for-compare-action.js"
+            "import": "./dist/exports-for-compare-action.js",
             "default": "./dist/exports-for-compare-action.js"
         }
     },
