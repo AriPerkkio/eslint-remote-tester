@@ -10,11 +10,13 @@
     "exports": {
         ".": {
             "types": "./dist/types.d.ts",
-            "import": "./dist/index.js"
+            "import": "./dist/index.js",
+            "default": "./dist/index.js"
         },
         "./github-actions": {
             "types": "./dist/exports-for-compare-action.d.ts",
             "import": "./dist/exports-for-compare-action.js"
+            "default": "./dist/exports-for-compare-action.js"
         }
     },
     "files": [
