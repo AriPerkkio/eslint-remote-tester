@@ -11,11 +11,13 @@
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.js"
+            "import": "./dist/index.js",
+            "default": "./dist/index.js"
         },
         "./pathIgnorePatterns": {
             "types": "./dist/pathIgnorePatterns.d.ts",
-            "import": "./dist/pathIgnorePatterns.js"
+            "import": "./dist/pathIgnorePatterns.js",
+            "default": "./dist/pathIgnorePatterns.js"
         }
     },
     "files": [
