@@ -31,8 +31,8 @@ export const loadTSConfig = async (configPath: string) => {
         // This is a good indicator that we're using v2+
         if (jitiModule.createJiti) {
             const jiti = jitiModule.createJiti(import.meta.url);
-            const config: any = await jiti.import(configPath);
-            return config.default;
+            const config = await jiti.import(configPath, {default: true});
+            return config;
         } else {
             // We're using jiti v1 here.
             return jitiModule.default(import.meta.url, {
