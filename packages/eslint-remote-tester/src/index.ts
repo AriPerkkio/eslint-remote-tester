@@ -13,6 +13,8 @@ import logger from './progress-logger/index.js';
  * Results are written to ./eslint-remote-tester-results directory.
  */
 async function main() {
+    await validateConfig(config);
+
     const pool = config.repositories.map(repo => () => scanRepo(repo));
 
     async function execute(): Promise<void> {
@@ -23,8 +25,6 @@ async function main() {
             return execute();
         }
     }
-
-    await validateConfig(config);
     fileClient.prepareResultsDirectory();
 
     renderApplication();
