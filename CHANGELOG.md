@@ -1,4 +1,10 @@
-# [](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.2...v) (2025-07-02)
+# [](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.3...v) (2025-07-25)
+
+## [4.0.3](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.2...v4.0.3) (2025-07-25)
+
+### Bug Fixes
+
+- **config:** unable to load TS configs with `jiti@^2` ([#602](https://github.com/AriPerkkio/eslint-remote-tester/issues/602)) ([879f655](https://github.com/AriPerkkio/eslint-remote-tester/commit/879f65513913af32a88e9d234db533f9375e7b7d))
 
 ## [4.0.2](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.1...v4.0.2) (2025-07-02)
 
