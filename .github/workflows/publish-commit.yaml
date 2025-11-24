@@ -54,7 +54,7 @@ jobs:
                         throw new Error('not allowed')
                       }
 
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
               with:
                   ref: refs/pull/${{ github.event.issue.number }}/head
 
