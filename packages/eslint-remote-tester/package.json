@@ -71,7 +71,7 @@
         "node-pty": "^1.0.0",
         "strip-ansi": "^6.0.1",
         "typescript": "^5.9.3",
-        "vitest": "^4.0.14"
+        "vitest": "^4.0.15"
     },
     "peerDependencies": {
         "eslint": ">=9",
