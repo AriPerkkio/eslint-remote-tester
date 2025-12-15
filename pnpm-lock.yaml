@@ -70,8 +70,8 @@ importers:
         specifier: ^9.6.1
         version: 9.6.1
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: ^25.0.2
+        version: 25.0.2
       '@types/object-hash':
         specifier: ^3.0.6
         version: 3.0.6
@@ -110,7 +110,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.15
-        version: 4.0.15(@types/node@24.10.1)(jiti@2.6.1)
+        version: 4.0.15(@types/node@25.0.2)(jiti@2.6.1)
 
   packages/repositories:
     devDependencies:
@@ -125,7 +125,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.15
-        version: 4.0.15(@types/node@24.10.1)(jiti@2.6.1)
+        version: 4.0.15(@types/node@25.0.2)(jiti@2.6.1)
 
 packages:
 
@@ -976,8 +976,8 @@ packages:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
 
-  /@types/node@24.10.1:
-    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
+  /@types/node@25.0.2:
+    resolution: {integrity: sha512-gWEkeiyYE4vqjON/+Obqcoeffmk0NF15WSBwSs7zwVA2bAbTaE0SJ7P0WNGoJn8uE7fiaV5a7dKYIJriEqOrmA==}
     dependencies:
       undici-types: 7.16.0
     dev: true
@@ -1177,7 +1177,7 @@ packages:
       '@vitest/spy': 4.0.15
       estree-walker: 3.0.3
       magic-string: 0.30.21
-      vite: 7.1.12(@types/node@24.10.1)(jiti@2.6.1)
+      vite: 7.1.12(@types/node@25.0.2)(jiti@2.6.1)
     dev: true
 
   /@vitest/pretty-format@4.0.15:
@@ -2946,7 +2946,7 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite@7.1.12(@types/node@24.10.1)(jiti@2.6.1):
+  /vite@7.1.12(@types/node@25.0.2)(jiti@2.6.1):
     resolution: {integrity: sha512-ZWyE8YXEXqJrrSLvYgrRP7p62OziLW7xI5HYGWFzOvupfAlrLvURSzv/FyGyy0eidogEM3ujU+kUG1zuHgb6Ug==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
@@ -2986,7 +2986,7 @@ packages:
       yaml:
         optional: true
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.0.2
       esbuild: 0.25.11
       fdir: 6.5.0(picomatch@4.0.3)
       jiti: 2.6.1
@@ -2998,7 +2998,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitest@4.0.15(@types/node@24.10.1)(jiti@2.6.1):
+  /vitest@4.0.15(@types/node@25.0.2)(jiti@2.6.1):
     resolution: {integrity: sha512-n1RxDp8UJm6N0IbJLQo+yzLZ2sQCDyl1o0LeugbPWf8+8Fttp29GghsQBjYJVmWq3gBFfe9Hs1spR44vovn2wA==}
     engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
     hasBin: true
@@ -3032,7 +3032,7 @@ packages:
       jsdom:
         optional: true
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.0.2
       '@vitest/expect': 4.0.15
       '@vitest/mocker': 4.0.15(vite@7.1.12)
       '@vitest/pretty-format': 4.0.15
@@ -3051,7 +3051,7 @@ packages:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.1.12(@types/node@24.10.1)(jiti@2.6.1)
+      vite: 7.1.12(@types/node@25.0.2)(jiti@2.6.1)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
       - jiti
