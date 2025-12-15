@@ -23,15 +23,15 @@
         "lint": "eslint . --max-warnings 0 && publint packages/*"
     },
     "devDependencies": {
-        "@eslint/js": "9.39.1",
+        "@eslint/js": "9.39.2",
         "conventional-changelog-cli": "^5.0.0",
-        "eslint": "9.39.1",
+        "eslint": "9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
         "prettier": "^3.7.4",
-        "publint": "^0.3.15",
+        "publint": "^0.3.16",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.48.1"
+        "typescript-eslint": "^8.49.0"
     },
     "keywords": [
         "eslint",
