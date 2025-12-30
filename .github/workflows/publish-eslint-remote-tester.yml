@@ -22,14 +22,20 @@ jobs:
 
             - uses: ./.github/actions/setup-and-cache
 
+            - name: Update npm
+              run: |
+                  npm --version
+                  npm install -g npm@latest
+                  npm --version
+
             - name: Install
               run: pnpm install
 
             - name: Build
               run: pnpm build
 
-            # Fixes the "npm ERR! 404 Not Found - PUT https://registry.npmjs.org/eslint-remote-tester - Not found" issue
-            - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+            - name: Copy README
+              run: cp ./README.md ./packages/eslint-remote-tester/
 
             - name: Configure github-actions git
               run: |
@@ -46,7 +52,5 @@ jobs:
               run: git push origin master --follow-tags
 
             - name: Publish to npm
-              run: npm publish --provenance
+              run: npm publish
               working-directory: ./packages/eslint-remote-tester
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -13,6 +13,12 @@ jobs:
 
             - uses: ./.github/actions/setup-and-cache
 
+            - name: Update npm
+              run: |
+                  npm --version
+                  npm install -g npm@latest
+                  npm --version
+
             - name: Install & Build
               run: |
                   pnpm install
@@ -21,9 +27,5 @@ jobs:
             - run: pnpm test
               working-directory: ./packages/repositories
 
-            - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-            - run: npm publish --provenance
+            - run: npm publish
               working-directory: ./packages/repositories
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
