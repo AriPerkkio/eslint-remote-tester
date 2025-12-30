@@ -1,4 +1,10 @@
-# [](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.3...v) (2025-07-25)
+# [](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.4...v) (2025-12-30)
+
+## [4.0.4](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.3...v4.0.4) (2025-12-30)
+
+### Bug Fixes
+
+- typings of `eslintConfig` to support array ([#628](https://github.com/AriPerkkio/eslint-remote-tester/issues/628)) ([4e89938](https://github.com/AriPerkkio/eslint-remote-tester/commit/4e8993800929ac4d9265db66df316aba01b3e23d))
 
 ## [4.0.3](https://github.com/AriPerkkio/eslint-remote-tester/compare/v4.0.2...v4.0.3) (2025-07-25)
 
