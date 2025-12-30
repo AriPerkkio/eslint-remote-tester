@@ -47,10 +47,14 @@ export interface Config {
      */
     eslintConfig:
         | Linter.FlatConfig
+        | Linter.FlatConfig[]
         | ((options?: {
               repository: string;
               location: string;
-          }) => Linter.FlatConfig | Promise<Linter.FlatConfig>);
+          }) =>
+              | Linter.FlatConfig
+              | Linter.FlatConfig[]
+              | Promise<Linter.FlatConfig | Linter.FlatConfig[]>);
 
     /** Flag used to set CI mode. `process.env.CI` is used when not set. */
     CI: boolean;
