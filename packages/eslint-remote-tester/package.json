@@ -56,9 +56,9 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.3",
-        "@types/babel__code-frame": "^7.0.6",
+        "@types/babel__code-frame": "^7.27.0",
         "@types/eslint": "^9.6.1",
-        "@types/node": "^24.10.4",
+        "@types/node": "^24.10.7",
         "@types/object-hash": "^3.0.6",
         "@types/react": "^17.0.90",
         "conventional-changelog-cli": "^5.0.0",
