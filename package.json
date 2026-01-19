@@ -27,11 +27,11 @@
         "conventional-changelog-cli": "^5.0.0",
         "eslint": "9.39.2",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-prettier": "^5.5.4",
-        "prettier": "^3.7.4",
+        "eslint-plugin-prettier": "^5.5.5",
+        "prettier": "^3.8.0",
         "publint": "^0.3.16",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.52.0"
+        "typescript-eslint": "^8.53.0"
     },
     "keywords": [
         "eslint",
