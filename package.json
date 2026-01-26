@@ -28,10 +28,10 @@
         "eslint": "9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.5",
-        "prettier": "^3.8.0",
-        "publint": "^0.3.16",
+        "prettier": "^3.8.1",
+        "publint": "^0.3.17",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.53.0"
+        "typescript-eslint": "^8.53.1"
     },
     "keywords": [
         "eslint",
