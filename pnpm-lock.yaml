@@ -49,7 +49,7 @@ importers:
         version: 4.1.2
       ink:
         specifier: ^3.2.0
-        version: 3.2.0(@types/react@17.0.90)(react@17.0.2)
+        version: 3.2.0(@types/react@17.0.91)(react@17.0.2)
       object-hash:
         specifier: ^3.0.0
         version: 3.0.0
@@ -70,14 +70,14 @@ importers:
         specifier: ^9.6.1
         version: 9.6.1
       '@types/node':
-        specifier: ^24.10.9
-        version: 24.10.9
+        specifier: ^24.10.12
+        version: 24.10.12
       '@types/object-hash':
         specifier: ^3.0.6
         version: 3.0.6
       '@types/react':
-        specifier: ^17.0.90
-        version: 17.0.90
+        specifier: ^17.0.91
+        version: 17.0.91
       conventional-changelog-cli:
         specifier: ^5.0.0
         version: 5.0.0
@@ -95,7 +95,7 @@ importers:
         version: 0.5.2
       ink-testing-library:
         specifier: ^2.1.0
-        version: 2.1.0(@types/react@17.0.90)
+        version: 2.1.0(@types/react@17.0.91)
       jiti:
         specifier: ^2.6.1
         version: 2.6.1
@@ -110,7 +110,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@types/node@24.10.9)(jiti@2.6.1)
+        version: 4.0.18(@types/node@24.10.12)(jiti@2.6.1)
 
   packages/repositories:
     devDependencies:
@@ -125,7 +125,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@types/node@24.10.9)(jiti@2.6.1)
+        version: 4.0.18(@types/node@24.10.12)(jiti@2.6.1)
 
 packages:
 
@@ -991,8 +991,8 @@ packages:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
 
-  /@types/node@24.10.9:
-    resolution: {integrity: sha512-ne4A0IpG3+2ETuREInjPNhUGis1SFjv1d5asp8MzEAGtOZeTeHVDOYqOgqfhvseqg/iXty2hjBf1zAOb7RNiNw==}
+  /@types/node@24.10.12:
+    resolution: {integrity: sha512-68e+T28EbdmLSTkPgs3+UacC6rzmqrcWFPQs1C8mwJhI/r5Uxr0yEuQotczNRROd1gq30NGxee+fo0rSIxpyAw==}
     dependencies:
       undici-types: 7.16.0
     dev: true
@@ -1008,8 +1008,8 @@ packages:
   /@types/prop-types@15.7.12:
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
 
-  /@types/react@17.0.90:
-    resolution: {integrity: sha512-P9beVR/x06U9rCJzSxtENnOr4BrbJ6VrsrDTc+73TtHv9XHhryXKbjGRB+6oooB2r0G/pQkD/S4dHo/7jUfwFw==}
+  /@types/react@17.0.91:
+    resolution: {integrity: sha512-xauZca6qMeCU3Moy0KxCM9jtf1vyk6qRYK39Ryf3afUqwgNUjRIGoDdS9BcGWgAMGSg1hvP4XcmlYrM66PtqeA==}
     dependencies:
       '@types/prop-types': 15.7.12
       '@types/scheduler': 0.16.8
@@ -1191,7 +1191,7 @@ packages:
       '@vitest/spy': 4.0.18
       estree-walker: 3.0.3
       magic-string: 0.30.21
-      vite: 7.1.12(@types/node@24.10.9)(jiti@2.6.1)
+      vite: 7.1.12(@types/node@24.10.12)(jiti@2.6.1)
     dev: true
 
   /@vitest/pretty-format@4.0.18:
@@ -2094,7 +2094,7 @@ packages:
     engines: {node: '>=18'}
     dev: true
 
-  /ink-testing-library@2.1.0(@types/react@17.0.90):
+  /ink-testing-library@2.1.0(@types/react@17.0.91):
     resolution: {integrity: sha512-7TNlOjJlJXB33vG7yVa+MMO7hCjaC1bCn+zdpSjknWoLbOWMaFdKc7LJvqVkZ0rZv2+akhjXPrcR/dbxissjUw==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -2103,10 +2103,10 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@types/react': 17.0.90
+      '@types/react': 17.0.91
     dev: true
 
-  /ink@3.2.0(@types/react@17.0.90)(react@17.0.2):
+  /ink@3.2.0(@types/react@17.0.91)(react@17.0.2):
     resolution: {integrity: sha512-firNp1q3xxTzoItj/eOOSZQnYSlyrWks5llCTVX37nJ59K3eXbQ8PtzCguqo8YI19EELo5QxaKnJd4VxzhU8tg==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -2116,7 +2116,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@types/react': 17.0.90
+      '@types/react': 17.0.91
       ansi-escapes: 4.3.2
       auto-bind: 4.0.0
       chalk: 4.1.2
@@ -2956,7 +2956,7 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite@7.1.12(@types/node@24.10.9)(jiti@2.6.1):
+  /vite@7.1.12(@types/node@24.10.12)(jiti@2.6.1):
     resolution: {integrity: sha512-ZWyE8YXEXqJrrSLvYgrRP7p62OziLW7xI5HYGWFzOvupfAlrLvURSzv/FyGyy0eidogEM3ujU+kUG1zuHgb6Ug==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
@@ -2996,7 +2996,7 @@ packages:
       yaml:
         optional: true
     dependencies:
-      '@types/node': 24.10.9
+      '@types/node': 24.10.12
       esbuild: 0.25.11
       fdir: 6.5.0(picomatch@4.0.3)
       jiti: 2.6.1
@@ -3008,7 +3008,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitest@4.0.18(@types/node@24.10.9)(jiti@2.6.1):
+  /vitest@4.0.18(@types/node@24.10.12)(jiti@2.6.1):
     resolution: {integrity: sha512-hOQuK7h0FGKgBAas7v0mSAsnvrIgAvWmRFjmzpJ7SwFHH3g1k2u37JtYwOwmEKhK6ZO3v9ggDBBm0La1LCK4uQ==}
     engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
     hasBin: true
@@ -3042,7 +3042,7 @@ packages:
       jsdom:
         optional: true
     dependencies:
-      '@types/node': 24.10.9
+      '@types/node': 24.10.12
       '@vitest/expect': 4.0.18
       '@vitest/mocker': 4.0.18(vite@7.1.12)
       '@vitest/pretty-format': 4.0.18
@@ -3061,7 +3061,7 @@ packages:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.1.12(@types/node@24.10.9)(jiti@2.6.1)
+      vite: 7.1.12(@types/node@24.10.12)(jiti@2.6.1)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
       - jiti
