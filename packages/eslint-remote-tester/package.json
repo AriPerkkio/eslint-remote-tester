@@ -52,7 +52,7 @@
         "ink": "^3.2.0",
         "object-hash": "^3.0.0",
         "react": "^17.0.2",
-        "simple-git": "^3.31.1"
+        "simple-git": "^3.32.2"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.3",
@@ -62,7 +62,7 @@
         "@types/object-hash": "^3.0.6",
         "@types/react": "^17.0.91",
         "conventional-changelog-cli": "^5.0.0",
-        "eslint": "10.0.0",
+        "eslint": "10.0.1",
         "eslint-plugin-local-rules": "^3.0.2",
         "eslint-remote-tester-repositories": "workspace:*",
         "importx": "^0.5.2",
