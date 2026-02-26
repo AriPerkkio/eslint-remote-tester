@@ -2,7 +2,7 @@
     "name": "eslint-remote-tester-monorepo",
     "private": true,
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
-    "packageManager": "pnpm@8.15.9",
+    "packageManager": "pnpm@10.30.3",
     "license": "MIT",
     "repository": {
         "type": "git",
