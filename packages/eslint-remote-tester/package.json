@@ -52,17 +52,17 @@
         "ink": "^3.2.0",
         "object-hash": "^3.0.0",
         "react": "^17.0.2",
-        "simple-git": "^3.32.2"
+        "simple-git": "^3.32.3"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.3.3",
+        "@eslint/eslintrc": "^3.3.4",
         "@types/babel__code-frame": "^7.27.0",
         "@types/eslint": "^9.6.1",
-        "@types/node": "^24.10.13",
+        "@types/node": "^24.11.0",
         "@types/object-hash": "^3.0.6",
         "@types/react": "^17.0.91",
         "conventional-changelog-cli": "^5.0.0",
-        "eslint": "10.0.1",
+        "eslint": "10.0.2",
         "eslint-plugin-local-rules": "^3.0.2",
         "eslint-remote-tester-repositories": "workspace:*",
         "importx": "^0.5.2",
