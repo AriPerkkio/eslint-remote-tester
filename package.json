@@ -31,7 +31,7 @@
         "prettier": "^3.8.3",
         "publint": "^0.3.21",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.59.3"
+        "typescript-eslint": "^8.59.4"
     },
     "keywords": [
         "eslint",
