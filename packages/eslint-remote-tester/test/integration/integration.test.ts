@@ -39,15 +39,15 @@ test('results are rendered on CI mode', async () => {
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
           at Identifier (<removed>/eslint-local-rules.cjs:23:56)
-          at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js
-          at Array.forEach (<anonymous>)
           at SourceCodeVisitor.callSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js
-          at Array.forEach (<anonymous>)
+          at applyStep (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArray (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter.verify (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter.verifyAndFix (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
 
       Repository: AriPerkkio/eslint-remote-tester-integration-test-target
       Rule: no-undef
@@ -131,15 +131,15 @@ test('results are written to file system on CLI mode', async () => {
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
           at Identifier (<removed>/eslint-local-rules.cjs:23:56)
-          at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js
-          at Array.forEach (<anonymous>)
           at SourceCodeVisitor.callSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js
-          at Array.forEach (<anonymous>)
+          at applyStep (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArray (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter.verify (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter.verifyAndFix (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       \`\`\`
 
       ## Rule: no-undef
@@ -411,15 +411,15 @@ test('calls onComplete hook with the results', async () => {
       Occurred while linting <removed>/node_modules/.cache-eslint-remote-tester/AriPerkkio/eslint-remote-tester-integration-test-target/expected-to-crash-linter.js
       Rule: "local-rules/some-unstable-rule"
           at Identifier (<removed>/eslint-local-rules.cjs:23:56)
-          at ruleErrorHandler (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js
-          at Array.forEach (<anonymous>)
           at SourceCodeVisitor.callSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-visitor.js)
-          at <removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js
-          at Array.forEach (<anonymous>)
+          at applyStep (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at SourceCodeTraverser.traverseSync (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/source-code-traverser.js)
           at runRules (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
           at #flatVerifyWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter._verifyWithFlatConfigArray (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter.verify (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
+          at Linter.verifyAndFix (<removed>/<package-manager-path>/node_modules/eslint/lib/linter/linter.js)
       [ERROR]
       .
       [REPOSITORY]
